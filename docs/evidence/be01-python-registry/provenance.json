@@ -1,0 +1,9 @@
+{
+    "retrieved_utc":  "2026-10-11T23:52:56.3222051Z",
+    "repository":  "library/python",
+    "tag":  "3.13-slim-bookworm",
+    "index_digest":  "sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641",
+    "amd64_digest":  "sha256:f040863673aea2570c3ff6a5c3fb4c673a016cbc5375005ad145915922b6b78a",
+    "config_digest":  "sha256:4143a73d5a9804c1bb2f93cc823a7c173dbc62964d4a5ccabcb1167229b0e2b9",
+    "source":  "https://github.com/docker-library/python.git#d2a898cb88e46203577eabc62cdcf6e92aaee176:3.13/slim-bookworm"
+}

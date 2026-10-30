@@ -1,0 +1,42 @@
+[
+  {
+    "path": "ops/tools/be01-services/profile.jq",
+    "sha256": "d7e8a7d982b4e9bac6bbca3daf8f13494a8181a40d4d704dcd7a28fc93b9b633",
+    "lines": 47
+  },
+  {
+    "path": "ops/tools/be01-services/profile-regression.sh",
+    "sha256": "a80ebee722656cdf1311a28ce4d6621c5332358bd336b63c2668caab8ba93889",
+    "lines": 52
+  },
+  {
+    "path": "ops/tools/be01-services-volume-check/checks.sh",
+    "sha256": "d51f8fbe765c077f804dfe1334d33df3316571d14ab1d098325719707d72f050",
+    "lines": 20
+  },
+  {
+    "path": "ops/tools/be01-services/package.sha256",
+    "sha256": "ad4773807748c99d23c763f2a6203a4cde276c68cca09ea6f9f030380252235d",
+    "lines": 14
+  },
+  {
+    "path": "ops/tools/be01-services-app/dispatch.sh",
+    "sha256": "5d159340df518eaf4dcaf7c67d76728befb18b6e34f5761dee1bc124f777541c",
+    "lines": 38
+  },
+  {
+    "path": "ops/tools/be01-services-app/regression.sh",
+    "sha256": "bdab4ccb62c24b4433d4d05c2f1b901155f4e8f4c6dcd47d88d6b42aca55518f",
+    "lines": 82
+  },
+  {
+    "path": "ops/tools/be01-services-app/package.sha256",
+    "sha256": "e00f1937002e6efef78b3a7dd1e733f351955377e95fe43fdbddc1036c3245ef",
+    "lines": 3
+  },
+  {
+    "path": "ops/tools/be01-services-volume-check/package.sha256",
+    "sha256": "af243965b395e7defd021b9f249958ab77b01e881bc2bae30811b63928ca99ad",
+    "lines": 13
+  }
+]

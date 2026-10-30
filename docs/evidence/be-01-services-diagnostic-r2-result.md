@@ -1,0 +1,15 @@
+# Diagnostic allocation 02: delivery bootstrap failure
+
+BE-DIAGNOSTIC-20261012-02 stopped once at delivery bootstrap, native SSH exit1. No files uploaded, frozen invocation NOT_RUN, dispatcher/test/cleanup NOT_RUN; zero tests executed. Both intended delivery and audit absent in subsequent independent reconciliation. The bootstrap used a nested bash -c quoted compound command through Windows native SSH; no stderr identified a failed predicate. Transport quoting is the suspected cause, not a proven failed host/source/image gate. No retry performed.
+
+Frozen invocation a27537d6fa9756bbb1734e801526f9af5e26bd5d82d22a62f6b9b4c7fea59e59 and archive1b2631a11e91e231399b71e18ac9a0fbcb783204bfcf6cd209f2b33a8978cf87 rehashed unchanged locally. Existing dispatcher/checks/reconcile unchanged. Live FE terminal read saved locally; remote test preflight was not reached.
+
+Independent read-only reconciliation completed with remote independent_exit=0. A separate native SSH read of that status exited0. The initial Start-Process reconciliation transport ExitCode property was blank: that original transport status remains UNKNOWN, not rewritten to0. Its complete log and subsequent independently fetched remote status prove reconciliation completion. Full container inventory and exact task-name/nonce-label checks passed; no captured container ID exists because runtime never started. Retained config historical identity unchanged and zero consumers; Ruby/BuildKit/Python identities unchanged against prior authenticated baseline; canonical/nested source checks passed; builder inventory default only. No Docker mutation or deletion occurred; config contents never mounted/read.
+
+Remote evidence: /tmp/be01diagnostic-r2-reconcile.7Dij8zxQ (status, containers.jsonl, labels, config.json, consumers, base comparisons, builders, volumes/images/networks inventories, source.log, df.after).
+Local evidence: C:/Users/Tanzeel/AppData/Local/Temp/be01diagnostic-cda50c78-596d-4f7a-ab55-b7b0f19f380f-runtime (delivery-create.status, fe-terminal.json, independent.sh/log/stderr, independent-ssh.status, independent-status.log, independent-status-ssh.status).
+
+Observed free bytes after reconciliation:272559722496. No fresh before measurement exists for this bootstrap stop, so no attempt delta or reclamation claim. Historical transport/Python limitations remain separate. Allocation relinquished after reconciliation; coordinator acceptance remains separate. Full Auth/private Storage/restart and retained-config cleanup remain unresolved. No next execution authorized by this result.
+
+Follow-up: fresh native SSH status read saved as independent-status-fresh.log/stderr and independent-status-fresh-ssh.status: remote independent_exit=0, native_ssh_exit=0. Original blank independent-ssh.status preserved unchanged. Exact bootstrap PowerShell command saved in delivery-create-command.txt; original SSH stderr was not separately captured (tool displayed none), documented in delivery-create-stderr-note.txt. Quoting diagnosis remains provisional; no remote argv trace or retry.
+

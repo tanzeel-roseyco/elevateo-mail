@@ -1,0 +1,2 @@
+Filesystem        1B-blocks         Used    Available Use% Mounted on
+/dev/md2       468702478336 171907231744 272911241216  39% /

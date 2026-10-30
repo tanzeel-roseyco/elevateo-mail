@@ -1,0 +1,734 @@
+{
+  "status": "STATIC_ONLY_NOT_RUN",
+  "archive": "packet-0a0230d80524551da50808cdec3406d26065273e323c0ce1d0ecf870ca8deb1f.tar",
+  "archive_sha256": "0a0230d80524551da50808cdec3406d26065273e323c0ce1d0ecf870ca8deb1f",
+  "members": [
+    {
+      "path": "apps/server/.dockerignore",
+      "sha256": "6106c5e69f8e4fc7e8c0214e7802e1e1afe8f8bcd18f6bd8c79367babc56d6bf",
+      "bytes": 23,
+      "lines": 4,
+      "mode": "0644",
+      "workspace_sha256": "c0700672000c77e057489c36669f75a07b0564cd55dfb96dca69cb18476136de",
+      "delivery_lf_normalized": true
+    },
+    {
+      "path": "apps/server/Dockerfile",
+      "sha256": "9a42897c22b1dfbd08cb88b79a185a4962e7cab157c0222d1f9b7ea5bb8ac0f9",
+      "bytes": 590,
+      "lines": 13,
+      "mode": "0644",
+      "workspace_sha256": "b0cb60aea2986ba945b3b0a2456166edfeaae845cb77512304377a2254740e67",
+      "delivery_lf_normalized": true
+    },
+    {
+      "path": "apps/server/Gemfile",
+      "sha256": "19044c02efd7ed6fd03abec9f6e051e10248d53b820dd964592fc2e689abfe60",
+      "bytes": 379,
+      "lines": 15,
+      "mode": "0644",
+      "workspace_sha256": "3322e597bf18efb5670c001d8b3e1543940aef5f741c4488bf1812a4f15fc2ab",
+      "delivery_lf_normalized": true
+    },
+    {
+      "path": "apps/server/Gemfile.lock",
+      "sha256": "67b2f69a0ed30c1d9926ab2940fe54173991d238192feca38a8f04b97390ea23",
+      "bytes": 7423,
+      "lines": 306,
+      "mode": "0644",
+      "workspace_sha256": "0773b117257c847ecaf7b999938b5a1d0d4630a4f252a468af98d8e2c5725f1e",
+      "delivery_lf_normalized": true
+    },
+    {
+      "path": "apps/server/Rakefile",
+      "sha256": "ec561de742a266784cc94e681a29b5b3c19b73ffa4898a7077e742d370618a14",
+      "bytes": 67,
+      "lines": 2,
+      "mode": "0644",
+      "workspace_sha256": "7e612418b909fcfbeb2d24f0ab667004bf18e6cbdc4ced9f91a89135264d3e19",
+      "delivery_lf_normalized": true
+    },
+    {
+      "path": "apps/server/Steepfile",
+      "sha256": "7fad25bcb858097f94888267cc89b02aa0a68f4543b6b27f9155d8f7c5d57c8a",
+      "bytes": 363,
+      "lines": 12,
+      "mode": "0644",
+      "workspace_sha256": "c136b2bf959c9529edf42d2b113531e53e311d279c7621c852b194485ff86a6b",
+      "delivery_lf_normalized": true
+    },
+    {
+      "path": "apps/server/app/controllers/application_controller.rb",
+      "sha256": "5fed6f27575e5519f9a13045f84eee809fd358c506867b61a965cab9ed3d8c98",
+      "bytes": 383,
+      "lines": 8,
+      "mode": "0644",
+      "workspace_sha256": "dec75bb004bd18031faa5850be2329a002b1e0d6795fb910363ac70f7ea0eb45",
+      "delivery_lf_normalized": true
+    },
+    {
+      "path": "apps/server/app/controllers/health_controller.rb",
+      "sha256": "369bbddfe8093377ee89a955c8f1b1164a9abf602e947cf0c1b89960bf23bdd7",
+      "bytes": 1040,
+      "lines": 36,
+      "mode": "0644",
+      "workspace_sha256": "225915b1a4a838937a64bd53369c8a42d245a8259c0399f7c0cd0ab9d1416246",
+      "delivery_lf_normalized": true
+    },
+    {
+      "path": "apps/server/bin/rails",
+      "sha256": "0862d7bc09d5ed61785d677ef2dba10ce285387d4d5d9e3d90d97630e3f69ab6",
+      "bytes": 141,
+      "lines": 4,
+      "mode": "0644",
+      "workspace_sha256": "0862d7bc09d5ed61785d677ef2dba10ce285387d4d5d9e3d90d97630e3f69ab6",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "apps/server/bin/worker",
+      "sha256": "37c80474a92ccc9dc963de10e96817e68c51203e3c0b847e578f3d62e22256ad",
+      "bytes": 582,
+      "lines": 15,
+      "mode": "0644",
+      "workspace_sha256": "37c80474a92ccc9dc963de10e96817e68c51203e3c0b847e578f3d62e22256ad",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "apps/server/bin/worker-health",
+      "sha256": "e05b0003f57cbe83217818bdda1db9ac60d39e19f99ade4f8ca410c80b1af2f0",
+      "bytes": 139,
+      "lines": 5,
+      "mode": "0644",
+      "workspace_sha256": "e05b0003f57cbe83217818bdda1db9ac60d39e19f99ade4f8ca410c80b1af2f0",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "apps/server/config.ru",
+      "sha256": "cd06f4ca6833c03189e939314b78470244f616e69f68560ddc609d43f1ca566d",
+      "bytes": 60,
+      "lines": 2,
+      "mode": "0644",
+      "workspace_sha256": "37bff73301c8f763381e45bff1d7b64efb1935b52adfd7109f6f30d6b8e14f00",
+      "delivery_lf_normalized": true
+    },
+    {
+      "path": "apps/server/config/application.rb",
+      "sha256": "938313d8c72317466b33ea707c199e4556f9423bca406e465f93ee1f023e3f2e",
+      "bytes": 1150,
+      "lines": 28,
+      "mode": "0644",
+      "workspace_sha256": "2f8d142bd8fcb532f7e6fe42164ea32a6a6bd3aaa01c2856c98dd4d655fa24d2",
+      "delivery_lf_normalized": true
+    },
+    {
+      "path": "apps/server/config/boot.rb",
+      "sha256": "22c9bd4f8a795557470dde3e9c2b3a1c6a19a6906cdf8add692bc8cd4261b0d7",
+      "bytes": 90,
+      "lines": 2,
+      "mode": "0644",
+      "workspace_sha256": "b40bcdae313fec70f2720e1a235bb6841db2e5588c7b4dea21e37b928de4afa2",
+      "delivery_lf_normalized": true
+    },
+    {
+      "path": "apps/server/config/database.yml",
+      "sha256": "5db77f655405144f4ee892375a83a6aee987001d024dad4a58da641dd6888bfd",
+      "bytes": 364,
+      "lines": 14,
+      "mode": "0644",
+      "workspace_sha256": "50f0f5e55591e152fa2a94a28aa55501dbbbee1b31f979ea3532cf76613331d2",
+      "delivery_lf_normalized": true
+    },
+    {
+      "path": "apps/server/config/environment.rb",
+      "sha256": "dd5c34405b8ad268a97c0798e345a183cddebe7c8f3e250db87be8a4a20e7c91",
+      "bytes": 61,
+      "lines": 2,
+      "mode": "0644",
+      "workspace_sha256": "d51399da8bcd154d42d532e6849204afb0d0202ce6020fdae19b6e15be533b1c",
+      "delivery_lf_normalized": true
+    },
+    {
+      "path": "apps/server/config/routes.rb",
+      "sha256": "594c6fc3ae6e0671e064527b0e3e220b08ada2c4b7e271f0c84fe2748e7f05d9",
+      "bytes": 107,
+      "lines": 4,
+      "mode": "0644",
+      "workspace_sha256": "dccf1f793b07fce49b4ff70d5f6a2d7ced5551cc26912684a58f3baa2d39b001",
+      "delivery_lf_normalized": true
+    },
+    {
+      "path": "apps/server/db/migrate/20261012000001_create_app_foundation.rb",
+      "sha256": "cf06387268570e5920b3bbf7e84dc06dc1ed9242a23038a5288fb7f3cd36e459",
+      "bytes": 4055,
+      "lines": 85,
+      "mode": "0644",
+      "workspace_sha256": "6691621d6f260ea56aecb2faec3dbefdcc590499076f0f11873f1aa47efbe80a",
+      "delivery_lf_normalized": true
+    },
+    {
+      "path": "apps/server/db/migrate/20261012000002_restrict_api_read_membership.rb",
+      "sha256": "031df44311df04768207b207b21a1a012f434f9d765c02005badee74b5d3aff8",
+      "bytes": 3331,
+      "lines": 65,
+      "mode": "0644",
+      "workspace_sha256": "031df44311df04768207b207b21a1a012f434f9d765c02005badee74b5d3aff8",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "apps/server/lib/elevateo/config.rb",
+      "sha256": "909db3a472abd87002aaa3330b6d3079fc3da97ed418455dd2d9cfbce556c873",
+      "bytes": 2791,
+      "lines": 65,
+      "mode": "0644",
+      "workspace_sha256": "8b78f09e84c26db161b96947a113fd7131f9ddbc66ce3bb9478cb7d7a39deb1a",
+      "delivery_lf_normalized": true
+    },
+    {
+      "path": "apps/server/lib/elevateo/heartbeat.rb",
+      "sha256": "9ae5aeebfed65f6f00567484716668cdffc5f9993d489fd448b76748c55cfbee",
+      "bytes": 1023,
+      "lines": 36,
+      "mode": "0644",
+      "workspace_sha256": "9ae5aeebfed65f6f00567484716668cdffc5f9993d489fd448b76748c55cfbee",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "apps/server/lib/elevateo/tenancy.rb",
+      "sha256": "6d38a972fc99f2f873bbc197062dd261eb4fcace3d842125df27c02800180f6c",
+      "bytes": 3542,
+      "lines": 78,
+      "mode": "0644",
+      "workspace_sha256": "6d38a972fc99f2f873bbc197062dd261eb4fcace3d842125df27c02800180f6c",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "apps/server/log/.keep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "lines": 0,
+      "mode": "0644",
+      "workspace_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "apps/server/sig/heartbeat.rbs",
+      "sha256": "2ad718574e60f884b290d047d8bec5a07630c05e9b683c0f4fc389e303bfa281",
+      "bytes": 206,
+      "lines": 8,
+      "mode": "0644",
+      "workspace_sha256": "2ad718574e60f884b290d047d8bec5a07630c05e9b683c0f4fc389e303bfa281",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "apps/server/sig/tenancy.rbs",
+      "sha256": "a181caf20766cffc70926c81341f4179db94d7182ce4d2d30fb889e10bcdf405",
+      "bytes": 1360,
+      "lines": 34,
+      "mode": "0644",
+      "workspace_sha256": "a181caf20766cffc70926c81341f4179db94d7182ce4d2d30fb889e10bcdf405",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "apps/server/test/be_01_r1/authority_guards.rb",
+      "sha256": "e757c6dcdec9984526e35f002cfc4fac884e7a9eb4e5d7a5e91fbaa5d011894c",
+      "bytes": 3213,
+      "lines": 60,
+      "mode": "0644",
+      "workspace_sha256": "e757c6dcdec9984526e35f002cfc4fac884e7a9eb4e5d7a5e91fbaa5d011894c",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "apps/server/test/be_01_r1/authority_guards_test.rb",
+      "sha256": "13d46189b2e700858a27c1e833b816b9a5ca376257571c7ec2cf33051a9eeccb",
+      "bytes": 3254,
+      "lines": 75,
+      "mode": "0644",
+      "workspace_sha256": "13d46189b2e700858a27c1e833b816b9a5ca376257571c7ec2cf33051a9eeccb",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "apps/server/test/be_01_r1/baseline_driver.rb",
+      "sha256": "3e279e4616a85456fabec59a3f2a3153dd533f0ca09804c0a1b7fc1ae95576b7",
+      "bytes": 3860,
+      "lines": 96,
+      "mode": "0644",
+      "workspace_sha256": "3e279e4616a85456fabec59a3f2a3153dd533f0ca09804c0a1b7fc1ae95576b7",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "apps/server/test/be_01_r1/baseline_scenarios.rb",
+      "sha256": "29205f43bcf7229f4ca36f06b9ff34b2c82d4c6c15d67ba5504b09f9ca31e385",
+      "bytes": 6639,
+      "lines": 126,
+      "mode": "0644",
+      "workspace_sha256": "29205f43bcf7229f4ca36f06b9ff34b2c82d4c6c15d67ba5504b09f9ca31e385",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "apps/server/test/be_01_r1/membership_migration_test.rb",
+      "sha256": "aeb3af2619151e38d75283ccda0e0cbc80e9efb0547baccd52e5223cec4bac2d",
+      "bytes": 4133,
+      "lines": 107,
+      "mode": "0644",
+      "workspace_sha256": "aeb3af2619151e38d75283ccda0e0cbc80e9efb0547baccd52e5223cec4bac2d",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "apps/server/test/be_01_r1/tenancy_test.rb",
+      "sha256": "ebb80f9d45d6735d509e19d1953a654286126c7aa9ec1d09ad82b50f96744e4e",
+      "bytes": 11398,
+      "lines": 239,
+      "mode": "0644",
+      "workspace_sha256": "ebb80f9d45d6735d509e19d1953a654286126c7aa9ec1d09ad82b50f96744e4e",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "apps/server/test/be_01_r1/test_helper.rb",
+      "sha256": "fd8d08f84959ddccdd87c3f50e2ff77fe71fb5f017cd8d7607be701803e226b7",
+      "bytes": 1290,
+      "lines": 30,
+      "mode": "0644",
+      "workspace_sha256": "fd8d08f84959ddccdd87c3f50e2ff77fe71fb5f017cd8d7607be701803e226b7",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "apps/server/test/be_01_r1/worker_role_test.rb",
+      "sha256": "2212ca8a045b3fe82746c8105f693ebf11d58801013e4e7203ff40022212b57a",
+      "bytes": 1195,
+      "lines": 22,
+      "mode": "0644",
+      "workspace_sha256": "2212ca8a045b3fe82746c8105f693ebf11d58801013e4e7203ff40022212b57a",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "apps/server/tmp/.keep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "lines": 0,
+      "mode": "0644",
+      "workspace_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "compose.yaml",
+      "sha256": "3481affe11ee70aaefae2f65c7bc54aa250250f03207ae9dacf6517324d97d2a",
+      "bytes": 7930,
+      "lines": 222,
+      "mode": "0644",
+      "workspace_sha256": "953753e0561b1fbd62f9ea6da1c67714c18cb337b90c2cfc6c67253c92456cb5",
+      "delivery_lf_normalized": true
+    },
+    {
+      "path": "docs/evidence/repairs/be01-bootstrap-tools/RUNBOOK.md",
+      "sha256": "78f4ed382c3daef63c9e98b1f8d3d5186f81222e8d53c2b2c8be97b3024f050e",
+      "bytes": 13235,
+      "lines": 79,
+      "mode": "0644",
+      "workspace_sha256": "78f4ed382c3daef63c9e98b1f8d3d5186f81222e8d53c2b2c8be97b3024f050e",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "docs/evidence/repairs/be01-bootstrap-tools/fixture-run.sh",
+      "sha256": "eab086e616fb869a0579a746458565bf121b224ecd10881561ab204634a77221",
+      "bytes": 3191,
+      "lines": 51,
+      "mode": "0644",
+      "workspace_sha256": "eab086e616fb869a0579a746458565bf121b224ecd10881561ab204634a77221",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "docs/evidence/repairs/be01-bootstrap-tools/inventory.sh",
+      "sha256": "32d626cbb2ebc980420337dc5c0359caa20f515d093c64c739c967663617599b",
+      "bytes": 3395,
+      "lines": 52,
+      "mode": "0644",
+      "workspace_sha256": "32d626cbb2ebc980420337dc5c0359caa20f515d093c64c739c967663617599b",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "docs/evidence/repairs/be01-bootstrap-tools/invoke-regression.sh",
+      "sha256": "54a9ebeba4282b387b8febab2bd21c8c10732a90a3539adbab51f63dbca1effc",
+      "bytes": 2174,
+      "lines": 51,
+      "mode": "0644",
+      "workspace_sha256": "54a9ebeba4282b387b8febab2bd21c8c10732a90a3539adbab51f63dbca1effc",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "docs/evidence/repairs/be01-bootstrap-tools/invoke.sh",
+      "sha256": "e83b0d8d7dd42f8e99f5e80bc78dd5007b6e81e1d03cded9bc13376d705fb056",
+      "bytes": 2721,
+      "lines": 47,
+      "mode": "0644",
+      "workspace_sha256": "e83b0d8d7dd42f8e99f5e80bc78dd5007b6e81e1d03cded9bc13376d705fb056",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "docs/evidence/repairs/be01-bootstrap-tools/package.sha256",
+      "sha256": "643328f5bdfdd45102bb43f5aa46d24b7f5026909cfff63f436822b2cfea04d0",
+      "bytes": 1350,
+      "lines": 11,
+      "mode": "0644",
+      "workspace_sha256": "643328f5bdfdd45102bb43f5aa46d24b7f5026909cfff63f436822b2cfea04d0",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "docs/evidence/repairs/be01-bootstrap-tools/parent.sh",
+      "sha256": "935ca15c749f8d2cae700086b685e986c0e927974637a0961b06b0f71501c762",
+      "bytes": 6286,
+      "lines": 97,
+      "mode": "0644",
+      "workspace_sha256": "935ca15c749f8d2cae700086b685e986c0e927974637a0961b06b0f71501c762",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "docs/evidence/repairs/be01-bootstrap-tools/reconcile.sh",
+      "sha256": "fba0bb0fe6cbc561531ce8e4b539645e755d4751d15444b4fe3f821cfdbb283c",
+      "bytes": 2469,
+      "lines": 47,
+      "mode": "0644",
+      "workspace_sha256": "fba0bb0fe6cbc561531ce8e4b539645e755d4751d15444b4fe3f821cfdbb283c",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "docs/evidence/repairs/be01-bootstrap-tools/status-regression.sh",
+      "sha256": "ed678b60a3de7a395634aa274c5a02eada9c6b64cb482e32edf1f8080adacd4d",
+      "bytes": 1812,
+      "lines": 34,
+      "mode": "0644",
+      "workspace_sha256": "ed678b60a3de7a395634aa274c5a02eada9c6b64cb482e32edf1f8080adacd4d",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "docs/evidence/repairs/be01-diagnostic-bootstrap/bootstrap.ps1",
+      "sha256": "0dd7ddede090bb85eaaf6e5b94de1d3ed12011ea288787061384cbefe406484d",
+      "bytes": 4300,
+      "lines": 80,
+      "mode": "0644",
+      "workspace_sha256": "0dd7ddede090bb85eaaf6e5b94de1d3ed12011ea288787061384cbefe406484d",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "docs/evidence/repairs/be01-diagnostic-bootstrap/bootstrap.sh",
+      "sha256": "3ab389aa8f6d022afa3ea531d031b2912d3c0a8911b66ac761df5a4121424db3",
+      "bytes": 884,
+      "lines": 16,
+      "mode": "0644",
+      "workspace_sha256": "3ab389aa8f6d022afa3ea531d031b2912d3c0a8911b66ac761df5a4121424db3",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "docs/evidence/repairs/be01-diagnostic-bootstrap/checks.sh",
+      "sha256": "46bcbc373a111c859ee0ab54a5ff87a2e158c38595b84acc4a2b92e9290d7f39",
+      "bytes": 564,
+      "lines": 12,
+      "mode": "0644",
+      "workspace_sha256": "46bcbc373a111c859ee0ab54a5ff87a2e158c38595b84acc4a2b92e9290d7f39",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "docs/evidence/repairs/be01-diagnostic-bootstrap/fake-ssh.rb",
+      "sha256": "79705a0d32ad99f119d1f208d4bbec8a873b66db610a99406fa1094183ca10c2",
+      "bytes": 809,
+      "lines": 29,
+      "mode": "0644",
+      "workspace_sha256": "79705a0d32ad99f119d1f208d4bbec8a873b66db610a99406fa1094183ca10c2",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "docs/evidence/repairs/be01-diagnostic-bootstrap/fixture.sha256",
+      "sha256": "cd6472a8a82f59724d1a78b79cb22dae48ab53c15c6f813b0f11fdb4f6f65f53",
+      "bytes": 393,
+      "lines": 5,
+      "mode": "0644",
+      "workspace_sha256": "cd6472a8a82f59724d1a78b79cb22dae48ab53c15c6f813b0f11fdb4f6f65f53",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "docs/evidence/repairs/be01-diagnostic-bootstrap/regression.rb",
+      "sha256": "b511c3c1eb7507caffbbb22bf2f3ef619264719ec7264fb633fa9b1238856c50",
+      "bytes": 4939,
+      "lines": 97,
+      "mode": "0644",
+      "workspace_sha256": "b511c3c1eb7507caffbbb22bf2f3ef619264719ec7264fb633fa9b1238856c50",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "docs/evidence/scripts/be-01-r1-fleet02-resources.sh",
+      "sha256": "86681089c789e3b636f518508e8c6cf496d332f69bd69e5696bbc1dd4302aa4d",
+      "bytes": 11026,
+      "lines": 196,
+      "mode": "0644",
+      "workspace_sha256": "86681089c789e3b636f518508e8c6cf496d332f69bd69e5696bbc1dd4302aa4d",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "ops/bin/generate-secrets.rb",
+      "sha256": "c622ff9697f02e8d2dac6fda65b782833a3807f2a9dd2b7dd2fc50cb7e3a143f",
+      "bytes": 5274,
+      "lines": 136,
+      "mode": "0644",
+      "workspace_sha256": "c622ff9697f02e8d2dac6fda65b782833a3807f2a9dd2b7dd2fc50cb7e3a143f",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "ops/compose.r1-test.yaml",
+      "sha256": "47e9352ef23d06f525e2b43022f50540f38ca59a4fa1f5973292637b7d7615a3",
+      "bytes": 2141,
+      "lines": 65,
+      "mode": "0644",
+      "workspace_sha256": "47e9352ef23d06f525e2b43022f50540f38ca59a4fa1f5973292637b7d7615a3",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "ops/compose.secrets.yaml",
+      "sha256": "7f222cc1391dfc78b4fd29b0a2ccb8b6bd2571a78826fc3a2394dc3fc6626999",
+      "bytes": 313,
+      "lines": 9,
+      "mode": "0644",
+      "workspace_sha256": "c74b00a94c80988c439ffe1fb3d523683f7d32dda5b4daae60c6bc0431c2334c",
+      "delivery_lf_normalized": true
+    },
+    {
+      "path": "ops/db/bootstrap.sql",
+      "sha256": "1abda6871c0110dc7f374fdf0fadbe6243013c8b18904ac20e9ec9ff6d33eba1",
+      "bytes": 5304,
+      "lines": 90,
+      "mode": "0644",
+      "workspace_sha256": "1abda6871c0110dc7f374fdf0fadbe6243013c8b18904ac20e9ec9ff6d33eba1",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "ops/local/.gitignore",
+      "sha256": "240a3e0d37d2e86b614063f5347eb02d4f99ca6c254de6b82871ff8d95532a7d",
+      "bytes": 14,
+      "lines": 2,
+      "mode": "0644",
+      "workspace_sha256": "4bb38be6d6d9ef0d2f9bcc339850ff48d821eccfa739369402b354c9ba946ea2",
+      "delivery_lf_normalized": true
+    },
+    {
+      "path": "ops/supabase/db/99-jwt.sql",
+      "sha256": "9db312f7d5f5a6f42788f30069dd632da2bcf295ee16178ae9849864f8b5fa13",
+      "bytes": 244,
+      "lines": 5,
+      "mode": "0644",
+      "workspace_sha256": "9db312f7d5f5a6f42788f30069dd632da2bcf295ee16178ae9849864f8b5fa13",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "ops/supabase/db/99-roles.sql",
+      "sha256": "dc1c7c6117a3c94f9993f22b49fc41d5e4cc301ec9580321459261177bb1a183",
+      "bytes": 457,
+      "lines": 8,
+      "mode": "0644",
+      "workspace_sha256": "dc1c7c6117a3c94f9993f22b49fc41d5e4cc301ec9580321459261177bb1a183",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "ops/tests/db-fixtures.sql",
+      "sha256": "a20dd934aaabd2afef40c0b3c92a9d3e591aa6e498fadab6d3f63db8de60e989",
+      "bytes": 1267,
+      "lines": 16,
+      "mode": "0644",
+      "workspace_sha256": "a20dd934aaabd2afef40c0b3c92a9d3e591aa6e498fadab6d3f63db8de60e989",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "ops/tests/egress-check.ps1",
+      "sha256": "ac7e97a468a830cfda441b089d5a469d670cf7ca9fe26642b0a23de2a5887732",
+      "bytes": 6912,
+      "lines": 127,
+      "mode": "0644",
+      "workspace_sha256": "ac7e97a468a830cfda441b089d5a469d670cf7ca9fe26642b0a23de2a5887732",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "ops/tests/egress-check.sh",
+      "sha256": "8b527c18cbde5616c2384a7c4b974087455a8ac85ee2f910d91900a101b9c18e",
+      "bytes": 5957,
+      "lines": 140,
+      "mode": "0644",
+      "workspace_sha256": "8b527c18cbde5616c2384a7c4b974087455a8ac85ee2f910d91900a101b9c18e",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "ops/tests/egress_assert.rb",
+      "sha256": "39ff773d684f6bf9d82acb8f21ecf86bf841f41cdb33c6e04c6ede9b9dd64120",
+      "bytes": 5403,
+      "lines": 102,
+      "mode": "0644",
+      "workspace_sha256": "39ff773d684f6bf9d82acb8f21ecf86bf841f41cdb33c6e04c6ede9b9dd64120",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "ops/tests/egress_listener.rb",
+      "sha256": "2a76bc16d3075d0fdf2e2507f0450adbd75bd055c80f6d9a9834747bec23b580",
+      "bytes": 240,
+      "lines": 7,
+      "mode": "0644",
+      "workspace_sha256": "2a76bc16d3075d0fdf2e2507f0450adbd75bd055c80f6d9a9834747bec23b580",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "ops/tests/egress_probe.rb",
+      "sha256": "61c131badb6f0fe89e15a5f67318572703cc1bd4aa2ff28b3182ba5bab69f82c",
+      "bytes": 1359,
+      "lines": 29,
+      "mode": "0644",
+      "workspace_sha256": "61c131badb6f0fe89e15a5f67318572703cc1bd4aa2ff28b3182ba5bab69f82c",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "ops/tests/egress_test.rb",
+      "sha256": "d31859d7747c9035b994f167bd84c5f80268af2d2d5c499514183838a5f237bf",
+      "bytes": 7262,
+      "lines": 142,
+      "mode": "0644",
+      "workspace_sha256": "d31859d7747c9035b994f167bd84c5f80268af2d2d5c499514183838a5f237bf",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "ops/tests/fleet02-egress-source.sha256",
+      "sha256": "03d590ddaa39b22c6b1851c9911405473c0b01b0a50fff08001144e66a14638b",
+      "bytes": 5105,
+      "lines": 52,
+      "mode": "0644",
+      "workspace_sha256": "03d590ddaa39b22c6b1851c9911405473c0b01b0a50fff08001144e66a14638b",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "ops/tests/fleet02_powershell_protocol.sh",
+      "sha256": "5c011bd57503af6d17f570a3b2793e7e255c5c45bd50b79dcc6f5aeecc861701",
+      "bytes": 1406,
+      "lines": 24,
+      "mode": "0644",
+      "workspace_sha256": "5c011bd57503af6d17f570a3b2793e7e255c5c45bd50b79dcc6f5aeecc861701",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "ops/tests/heartbeat_test.rb",
+      "sha256": "3e389c563d07baa5f4d25cf1db5fb9d71ead35140bbedd50056f29f16db3ff01",
+      "bytes": 1319,
+      "lines": 36,
+      "mode": "0644",
+      "workspace_sha256": "3e389c563d07baa5f4d25cf1db5fb9d71ead35140bbedd50056f29f16db3ff01",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "ops/tests/membership-catalog.sql",
+      "sha256": "e1a347ce15e6779b93b9b8e4f1dd2baa3d3eac520d3ad294b919193aa1cdc77a",
+      "bytes": 2538,
+      "lines": 30,
+      "mode": "0644",
+      "workspace_sha256": "e1a347ce15e6779b93b9b8e4f1dd2baa3d3eac520d3ad294b919193aa1cdc77a",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "ops/tests/secrets_test.rb",
+      "sha256": "c822e3870cb6359f15471d1cbc7775f5d6a9b69986b64d2af58807a4b39bbd04",
+      "bytes": 4270,
+      "lines": 120,
+      "mode": "0644",
+      "workspace_sha256": "c822e3870cb6359f15471d1cbc7775f5d6a9b69986b64d2af58807a4b39bbd04",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "ops/tools/lane-c-synthetic/cleanup.sh",
+      "sha256": "095fb2a580620b724070a0dc3c0d5400e38a98fc347d034c97f3fe3e47dcc3ec",
+      "bytes": 7722,
+      "lines": 133,
+      "mode": "0644",
+      "workspace_sha256": "095fb2a580620b724070a0dc3c0d5400e38a98fc347d034c97f3fe3e47dcc3ec",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "ops/tools/lane-p-dispatch/dispatch.sha256",
+      "sha256": "4509ce8417eb93167847a67093b435eb000e11b1e82755e8ddcd0803402cdb25",
+      "bytes": 1169,
+      "lines": 11,
+      "mode": "0644",
+      "workspace_sha256": "4509ce8417eb93167847a67093b435eb000e11b1e82755e8ddcd0803402cdb25",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "ops/tools/lane-p-dispatch/parent-run.sh",
+      "sha256": "091abb67db93b235655520115f51f7dd245f4479ae76e99c4239c3e7b7c6d114",
+      "bytes": 5165,
+      "lines": 83,
+      "mode": "0644",
+      "workspace_sha256": "091abb67db93b235655520115f51f7dd245f4479ae76e99c4239c3e7b7c6d114",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "ops/tools/lane-p-dispatch/preflight.sh",
+      "sha256": "bbded0f0293175732e60c42251b54bc1010a3f895ea5b6d49bd37f05f6dfc613",
+      "bytes": 385,
+      "lines": 9,
+      "mode": "0644",
+      "workspace_sha256": "bbded0f0293175732e60c42251b54bc1010a3f895ea5b6d49bd37f05f6dfc613",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "ops/tools/lane-p-dispatch/run-container.sh",
+      "sha256": "3b847a5faa7a59b3c0f8cf325d91429f1d9a5be757fb5ffe29975f9bedde7289",
+      "bytes": 1562,
+      "lines": 24,
+      "mode": "0644",
+      "workspace_sha256": "3b847a5faa7a59b3c0f8cf325d91429f1d9a5be757fb5ffe29975f9bedde7289",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "ops/tools/lane-p-protocol/Dockerfile",
+      "sha256": "815122c2b11123910e890218c6344bd7250eb34d322891a29cb50bd9f7e97ad0",
+      "bytes": 2458,
+      "lines": 30,
+      "mode": "0644",
+      "workspace_sha256": "815122c2b11123910e890218c6344bd7250eb34d322891a29cb50bd9f7e97ad0",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "ops/tools/lane-p-protocol/checks.sh",
+      "sha256": "1d67265211561f1e490db657acbf1bc294876157cb292b134428314ee3078f27",
+      "bytes": 1186,
+      "lines": 22,
+      "mode": "0644",
+      "workspace_sha256": "1d67265211561f1e490db657acbf1bc294876157cb292b134428314ee3078f27",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "ops/tools/lane-p-protocol/gems.rb",
+      "sha256": "47cb5b490e706b30d962b85c961f2b72875a4df4ecf16c35449a8fca8b025b55",
+      "bytes": 238,
+      "lines": 5,
+      "mode": "0644",
+      "workspace_sha256": "47cb5b490e706b30d962b85c961f2b72875a4df4ecf16c35449a8fca8b025b55",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "ops/tools/lane-p-protocol/package.sha256",
+      "sha256": "a86ec51727ac71f3984ef7d5f13649afe2b95c8e1dc719468d357799a34abb1b",
+      "bytes": 413,
+      "lines": 4,
+      "mode": "0644",
+      "workspace_sha256": "a86ec51727ac71f3984ef7d5f13649afe2b95c8e1dc719468d357799a34abb1b",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "ops/tools/lane-p-protocol/provenance.json",
+      "sha256": "85c3b448fb36e48f53eb05a4c3ea5d8c5f86351d476a42aaa9506847119572eb",
+      "bytes": 5404,
+      "lines": 90,
+      "mode": "0644",
+      "workspace_sha256": "85c3b448fb36e48f53eb05a4c3ea5d8c5f86351d476a42aaa9506847119572eb",
+      "delivery_lf_normalized": false
+    },
+    {
+      "path": "payload.sha256",
+      "sha256": "f9acf6d5cb3318edfbdd518a1ec33167ee89d51e29cd36f7fcfaec14d4a53557",
+      "bytes": 8359,
+      "lines": 80,
+      "mode": "0644"
+    }
+  ]
+}
