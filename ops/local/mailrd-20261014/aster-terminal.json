@@ -1,0 +1,21 @@
+{
+  "id": "f159737f-39d9-41df-8fa8-483e68737754",
+  "ok": true,
+  "result": {
+    "terminal": {
+      "handle": "term_a7956ab1-71f0-4293-85ef-acf3f3be98da",
+      "tabId": "8972d138-8e0e-486a-a96c-849ff30e920e",
+      "paneKey": "8972d138-8e0e-486a-a96c-849ff30e920e:bbe1ecc2-bc1a-4d64-be9b-81b877a150ba",
+      "ptyId": "3e4d4246-e3f8-41a1-954b-a9a8c5e90626::C:/Users/Tanzeel/Code and projects/Elevateo Mail - Mailserver R&D 20261014@@331362f4",
+      "worktreeId": "3e4d4246-e3f8-41a1-954b-a9a8c5e90626::C:/Users/Tanzeel/Code and projects/Elevateo Mail - Mailserver R&D 20261014",
+      "title": "Aster",
+      "executionHostId": "local",
+      "incarnationId": "79328acb-9fb8-4a39-8ad8-e34b282b9707",
+      "hostPlatform": "win32",
+      "surface": "visible"
+    }
+  },
+  "_meta": {
+    "runtimeId": "396fae0f-6272-4785-a590-c66df65a0af0"
+  }
+}
