@@ -22,14 +22,20 @@ test('keyboard sign-in: Tab through email and password, Enter submits, the shell
   const heading = page.getByRole('heading', { name: 'Sign in' })
   await expect(heading).toBeFocused() // arrival focus lands on the form heading
   await page.keyboard.press('Tab')
+  await expect(page.getByRole('button', { name: 'Continue with single sign-on' })).toBeFocused()
+  await page.keyboard.press('Tab')
   await expect(page.getByLabel('Email address')).toBeFocused()
   await page.keyboard.type('a@example.test')
+  await page.keyboard.press('Tab')
+  await expect(page.getByRole('button', { name: 'Forgot your password?' })).toBeFocused()
   await page.keyboard.press('Tab')
   await expect(page.getByLabel('Password')).toBeFocused()
   await page.keyboard.type('secret-password')
   await page.keyboard.press('Enter')
   await expectMailboxNavReady(page)
-  await expect(page.getByText('Synthetic organization A')).toBeVisible()
+  const navigation = page.getByRole('button', { name: 'Open navigation' })
+  if (await navigation.isVisible()) await navigation.click()
+  await expect(page.getByRole('button', { name: 'Workspace: Synthetic organization A' })).toBeVisible()
   const stored = await page.evaluate(() => ({ local: localStorage.length, session: sessionStorage.length }))
   expect(stored).toEqual({ local: 0, session: 0 })
 })
@@ -83,10 +89,11 @@ test('recovery reads the same for any address', async ({ page }) => {
 test('workspace switcher: Escape closes it, an explicit switch replaces the identity, sign-out fences the shell', async ({ page }) => {
   await page.goto(ENTRY)
   await expectMailboxNavReady(page)
-  // The switcher and account menu live in the sidebar rail (desktop) or the drawer (narrow).
+  // The workspace switcher lives in the desktop rail or phone drawer; the phone account menu is in the header.
   const trigger = page.getByRole('button', { name: 'Open navigation' })
-  const scope = (await trigger.isVisible()) ? page.getByRole('dialog', { name: 'Navigation' }) : page
-  if (await trigger.isVisible()) await trigger.click()
+  const drawerPresentation = await trigger.isVisible()
+  const scope = drawerPresentation ? page.getByRole('dialog', { name: 'Navigation' }) : page
+  if (drawerPresentation) await trigger.click()
   const switcher = scope.getByRole('button', { name: 'Workspace: Synthetic organization A' })
   await switcher.click()
   const listbox = scope.getByRole('listbox', { name: 'Workspaces' })
@@ -98,11 +105,18 @@ test('workspace switcher: Escape closes it, an explicit switch replaces the iden
 
   await switcher.click()
   await listbox.getByRole('option', { name: /Synthetic organization B/ }).click()
-  await expect(page.getByRole('button', { name: 'Workspace: Synthetic organization B' }).first()).toBeVisible()
+  await expect(listbox).not.toBeVisible()
+  // Identity replacement remounts the shell and closes the phone drawer. Reopen the visible presentation.
+  if (drawerPresentation) await trigger.click()
+  await expect(scope.getByRole('button', { name: 'Workspace: Synthetic organization B' })).toBeVisible()
   await expect(listbox).not.toBeVisible() // the replaced identity remounted the protected subtree
   await page.screenshot({ path: 'e2e/.results/switched-organization.png', fullPage: true })
 
-  const account = (await trigger.isVisible()) ? page.getByRole('button', { name: 'Account menu' }) : page.getByRole('button', { name: 'Account and sign-out' })
+  if (drawerPresentation) {
+    await page.keyboard.press('Escape')
+    await expect(page.getByRole('dialog', { name: 'Navigation' })).not.toBeVisible()
+  }
+  const account = drawerPresentation ? page.getByRole('button', { name: 'Account menu' }) : page.getByRole('button', { name: 'Account and sign-out' })
   await account.click()
   await page.getByRole('menuitem', { name: 'Sign out', exact: true }).click()
   await expect(page.getByRole('heading', { name: 'Sign in' })).toBeVisible()

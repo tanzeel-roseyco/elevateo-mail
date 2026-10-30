@@ -30,7 +30,8 @@ been built or tested yet.
 | Restore and deployment | Encrypted six-volume restore drill; deploy dry run accepts valid and rejects missing configuration | same |
 | Email finder (on `feature/email-finder`) | 53 backend tests, 12 browser cases, 1,131 web unit tests, build, `deploy.sh config` | [finder receipt](docs/completion/email-finder-20261029.md) |
 
-| Web gate (merged `main`, `feature/final-readiness`) | Contract checks, lint, typecheck, 1,184 unit tests, build, bundle budget | `apps/web/docker/test.Dockerfile` run, 2026-10-30 |
+| Web gate (merged `main`, `feature/final-readiness`) | Contract checks, lint, typecheck, 1,190 unit tests, build, bundle budget and fixture-marker check pass; Vitest capped at two workers after one default-worker timeout | `apps/web/docker/test.Dockerfile`, scratchpad `unit-two-workers.log`, 2026-10-31 |
+| Fixture Playwright (`feature/final-readiness`) | Each of desktop, desktop-1440, narrow-390 and reduced-motion: 44 passed, 0 failed, 86 skipped; total 176 passed / 344 skipped. Production URL absent; production and visual QA remain unverified | Docker, network disabled, two workers; scratchpad `full-e2e.log` and `e2e-results/full-report.json`, 2026-10-31 |
 
 ## Open
 

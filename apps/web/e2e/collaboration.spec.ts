@@ -82,12 +82,12 @@ test('the C/D mailbox exposes Drafts and Members; the read-only inbox does not',
 
 test('a new draft is created by an explicit save and then listed', async ({ page }, testInfo) => {
   await page.goto(at(`/mailboxes/${MAILBOX}/drafts`))
-  await page.getByRole('button', { name: 'New draft' }).click()
+  await page.getByRole('region', { name: 'Drafts', exact: true }).getByRole('button', { name: 'New draft', exact: true }).click()
   await expect(page.getByRole('heading', { name: 'New draft' })).toBeVisible()
   await expect(page.getByText('Draft only — nothing is sent')).toBeVisible()
   await expect(page.getByText('Not saved yet')).toBeVisible()
   await page.getByLabel('Subject').fill('Browser draft')
-  await page.getByLabel('To').fill('Fixture recipient <recipient@example.test>')
+  await page.getByRole('article', { name: 'Draft', exact: true }).getByLabel('To', { exact: true }).fill('Fixture recipient <recipient@example.test>')
   await page.getByLabel('Message').fill('<script>alert(1)</script> plain body')
   await page.getByRole('button', { name: 'Save draft' }).click()
   await expect(page.getByText('Saved version 1')).toBeVisible()
@@ -113,7 +113,7 @@ test('a definitive conflict never overwrites: my text is kept and rebase re-enab
   await page.getByRole('button', { name: 'Keep my text and continue from the server version' }).click()
   await expect(page.getByRole('alert')).toHaveCount(0)
   await expect(page.getByLabel('Subject')).toHaveValue('Edited in browser')
-  await expect(page.getByText('Unsaved changes')).toBeVisible()
+  await expect(page.getByRole('article', { name: 'Draft', exact: true }).getByText('Unsaved changes', { exact: true })).toBeVisible()
   await expect(page.getByRole('button', { name: 'Save changes' })).toBeEnabled()
 })
 
@@ -145,8 +145,8 @@ test('read state, assignment and an inert note inside the reader', async ({ page
 
   await page.getByRole('button', { name: 'Assign to me' }).click()
   await expect(page.getByText('Assigned to you')).toBeVisible()
-  await page.getByLabel('Assign to user id').fill(READER)
-  await page.getByRole('button', { name: 'Assign', exact: true }).click()
+  await page.getByRole('button', { name: 'Choose assignee', exact: true }).click()
+  await page.getByRole('button', { name: `Assign to user ${READER}`, exact: true }).click()
   await expect(page.getByText(`Assigned to user ${READER}`)).toBeVisible()
 
   const note = '<img src="https://example.invalid/pixel">\n[unsafe](javascript:alert(1))\nPlaintext note'
@@ -158,9 +158,11 @@ test('read state, assignment and an inert note inside the reader', async ({ page
   await capture(page, testInfo, 'reader-collaboration')
 
   // The read mark persisted within this page's fixture state: the list no longer shows it unread.
-  await page.goto(at(`/mailboxes/${MAILBOX}`))
-  await expect(page.locator('a[data-thread]').first()).toBeVisible()
-  await expect(page.locator('a[data-thread]').first()).not.toHaveClass(/font-semibold/)
+  await page.getByRole('link', { name: 'Back to conversations', exact: true }).click()
+  const readThread = page.locator(`a[data-thread][href$="/threads/${THREAD}"]`)
+  await expect(readThread).toBeVisible()
+  await expect(readThread).not.toHaveAccessibleName(/^Unread,/)
+  await expect(readThread.getByText('Synthetic thread', { exact: true })).not.toHaveClass(/font-semibold/)
 })
 
 test('a persistently unconfirmed note stays frozen for retry and can be deliberately abandoned', async ({ page }) => {

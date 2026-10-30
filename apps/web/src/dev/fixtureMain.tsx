@@ -32,15 +32,17 @@ const completion = window.location.hash === '#/auth/complete'
 const simulatedSettings = !new URLSearchParams(window.location.search).has('production-settings')
 // `?production-settings` also drops the simulated connector, delivery-report, People/Members and
 // Personal Details adapters so those screens render exactly what production shows.
+// AIDEV-NOTE: Assignee options also exist in production; both fixture modes must wire the synthetic read port.
 const featureGateways: FeatureGateways = simulatedSettings
   ? {
       simulatedSettings: true,
+      assigneeOptions: gateway,
       connectorGrants: createSimulatedConnectorGrantsGateway(),
       deliveryReports: createSimulatedDeliveryReportsGateway(),
       administration: createSimulatedAdministrationGateway(gateway),
       preferences: createSimulatedPreferencesGateway(),
     }
-  : {}
+  : { assigneeOptions: gateway }
 createRoot(root).render(
   <StrictMode>
     <div className="min-h-full pb-[var(--fixture-inset,0px)]">
