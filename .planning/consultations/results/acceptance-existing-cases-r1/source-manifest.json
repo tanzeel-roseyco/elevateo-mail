@@ -1,0 +1,250 @@
+{
+  "frozen_at": "2026-10-13T22:52:13.668297+00:00",
+  "task_id": "task_d1da752a40c7",
+  "dispatch_id": "ctx_6a0cdf9e4b2f",
+  "heads": {
+    "coordinator": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+    "backend": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+    "frontend": "284aa71d20015b2b9b6a2f00beec9fa3087efe91"
+  },
+  "working_trees": "dirty; raw byte hashes define the source base",
+  "sources": [
+    {
+      "repository": "coordinator",
+      "path": "tests/acceptance/playwright/unavailable.e2e.ts",
+      "head": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "7a9e882e53d03e4c24b951ae615a6809aaab6b0b119670d7de21609ccd7c8852",
+      "physical_lines": 22,
+      "pass": "A"
+    },
+    {
+      "repository": "coordinator",
+      "path": "tests/acceptance/playwright/cases.ts",
+      "head": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "e588cec7c78380d039dc94d0d79e41b46e815cf932f6391ebfb4a427faea5298",
+      "physical_lines": 23,
+      "pass": "A"
+    },
+    {
+      "repository": "coordinator",
+      "path": "tests/acceptance/playwright/draft.e2e.ts",
+      "head": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "45f62ba8a546331949cb3edef8e23517ceb5267c45478f335d9e47606daa3d59",
+      "physical_lines": 46,
+      "pass": "A"
+    },
+    {
+      "repository": "coordinator",
+      "path": "tests/acceptance/playwright/support.ts",
+      "head": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "57e6cbdd67e479f3003b926e089d605118b3e88189a35c8a349599b579a96beb",
+      "physical_lines": 53,
+      "pass": "A"
+    },
+    {
+      "repository": "coordinator",
+      "path": "tests/acceptance/shared/seed-contract.json",
+      "head": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "221d49259f52f2dcc9944a3af7744327cc2cbc1a3030fa4d13ae85b292e6a952",
+      "physical_lines": 22,
+      "pass": "A"
+    },
+    {
+      "repository": "backend",
+      "path": "ops/tests/be02/acceptance_seed.rb",
+      "head": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "d11cc2e713ad7f3bdc60722198606645139419a22d7a2c88ec574bed59a774a3",
+      "physical_lines": 181,
+      "pass": "B"
+    }
+  ],
+  "review_pass_lines": {
+    "A": 166,
+    "B": 181
+  },
+  "total_physical_source_lines": 347,
+  "documents": [
+    {
+      "path": ".planning/POLYGLOT_ARCHITECTURE.md",
+      "head": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "c8d3656cf7c8acc4a898c9a1603241b84ba9da254725856595c25be85ece2cea",
+      "supplied_lines": "all",
+      "full_physical_lines": 122
+    },
+    {
+      "path": ".planning/CLIENTS_AND_CLI_CONNECTORS.md",
+      "head": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "82c92e8c007de491709e5149df7031651028ad5b6272d5fc3713f9d6d0d55801",
+      "supplied_lines": "all",
+      "full_physical_lines": 113
+    },
+    {
+      "path": ".planning/AGENT_ORCHESTRATION.md",
+      "head": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "84562b8099de369f2498dd41f6d579323abbf741d70757c51486619082cfa21f",
+      "supplied_lines": "all",
+      "full_physical_lines": 78
+    },
+    {
+      "path": ".planning/MAIL_ACCOUNTS_AND_ACTIVATION.md",
+      "head": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "9d759caa3ffb1430af0cf3b81a062a584122895fef659246d0c1f37d5028e9e9",
+      "supplied_lines": "all",
+      "full_physical_lines": 51
+    },
+    {
+      "path": ".planning/TASK_BACKLOG.md",
+      "head": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "aba7e19ad1640015e30210d9d37fbfc55410bc5819f0747d4e2ba075dbb7487e",
+      "supplied_lines": "all",
+      "full_physical_lines": 35
+    },
+    {
+      "path": ".planning/research/reuse-market-scan.md",
+      "head": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "6f798e4dfd837498cdc52aa1badd117c8c66d9298feb982d02f029bd6af83723",
+      "supplied_lines": "all",
+      "full_physical_lines": 190
+    },
+    {
+      "path": "docs/component-adoption.md",
+      "head": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "99cdcc56128a4c4ae0864d17c5f95fdf063c72b5f2112336ec9118810936f7e3",
+      "supplied_lines": "all",
+      "full_physical_lines": 48
+    },
+    {
+      "path": "docs/contracts-and-reliability.md",
+      "head": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "6834eee80f7bdfb9dd9437a3417e4a621554ec6f367530ed64fdd5b024a2a6d2",
+      "supplied_lines": "all",
+      "full_physical_lines": 105
+    },
+    {
+      "path": "docs/local-completion-plan.md",
+      "head": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "7e7355a889fd0a24bb62d80dbef752d67b761b7bd97ad4b2c5b8f699b9f5adfa",
+      "supplied_lines": "all",
+      "full_physical_lines": 151
+    },
+    {
+      "path": "AGENTS.md",
+      "head": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "33415df7f7cc5a595c45f5ef526744dd52a1d72d9d0a462fea8a9d9674d88971",
+      "supplied_lines": "all",
+      "full_physical_lines": 21
+    },
+    {
+      "path": ".planning/STANDARDS.md",
+      "head": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "7c01430086ed2dc263c8edcb1b2a9f41b572a23a11b36c1179be802e2874bd10",
+      "supplied_lines": "all",
+      "full_physical_lines": 49
+    },
+    {
+      "path": "LOCAL_BUILD_PROMPT.md",
+      "head": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "7bc9ffe8a3e8556fbba5b78f123941827a9f4bcd5043af35ecd39736eb5041d7",
+      "supplied_lines": "all",
+      "full_physical_lines": 66
+    },
+    {
+      "path": ".planning/consultations/README.md",
+      "head": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "26c1665ea5220654ef84d7393272edf2ff66efae3e8534f3cd8851ad3c2e4338",
+      "supplied_lines": "all",
+      "full_physical_lines": 41
+    },
+    {
+      "path": "docs/completion/test-expansion-plan.md",
+      "head": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "809770209cdbdcbcaba120e26d9693c375ad8ec4a6b33bfa997e2dcb2f92cb81",
+      "supplied_lines": "all",
+      "full_physical_lines": 158
+    },
+    {
+      "path": "documentation.md",
+      "head": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "3cbb45a4a43a8f66a43506c3b06ffd811d663a3cfc48d725103a404747004d40",
+      "supplied_lines": [
+        [
+          1,
+          3
+        ],
+        [
+          50,
+          112
+        ]
+      ],
+      "full_physical_lines": 399
+    },
+    {
+      "path": "README.md",
+      "head": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "59fc2294a1cc9decb7d862e3824befbb8ce4d7028e45400886d305231380ea6c",
+      "supplied_lines": [
+        [
+          1,
+          3
+        ]
+      ],
+      "full_physical_lines": 378
+    },
+    {
+      "path": "state.md",
+      "head": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "4a8d9dc9c0f212e302ce2fc682b67ed46bb809490aad4cc740ae06f91cc210da",
+      "supplied_lines": [
+        [
+          1,
+          3
+        ]
+      ],
+      "full_physical_lines": 414
+    },
+    {
+      "path": "docs/verification/scenario-matrix.json",
+      "head": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "92daafdec8660e3b779f9a209622516cda5d29fa30680b13a3bab9aff47edaf4",
+      "supplied_json": [
+        "partition_policy",
+        "budgets",
+        "status_definitions",
+        "scenarios for SCN-AUTH-001, SCN-AUTH-003, SCN-DRAFT-003, SCN-DRAFT-008, SCN-READ-001"
+      ]
+    }
+  ],
+  "shared_brief_sha256": "3895880fe89c255d3f00429fcd875e37bca64e55ac7e5b057bf1018b3c405bdd",
+  "task_brief_sha256": "641ebddbd04d0002ece0e4d42fafb8339b1eac6add0cade9e629fbce4e5c8cfa",
+  "system_prompt_sha256": "ecaad3ef2fb86bad62a05e23cfdf209ae65d14f0191a980d0d67e89f29d7ba2a",
+  "common_packet_sha256": "05f3699cae0e6b54e5b75d3913b88ec0c5e2b6893a90610a7336b2cddbfb040e",
+  "common_packet_bytes": 275516,
+  "preflight": {
+    "version_sha256": "ced06c95bb4c0780504b700880ceea37cd764283d2be9d3ea2555683183207ea",
+    "version": "2.1.296 (Claude Code)",
+    "help_sha256": "550db4f88ae1d97bf7244ca96dc89554aabd3978241ceb69f79001e816c35f09"
+  },
+  "historic_omissions": "documentation.md outside 1-3 and 50-112; README/state outside 1-3; earlier opinion outputs excluded identically",
+  "inputs": {
+    "fable-5": {
+      "requested_model": "claude-fable-5",
+      "input_sha256": "710032b362136ea95ab69c4c27af39466acd6c67abda5204b8fa965de50f1771",
+      "focus_sha256": "8f2ddb6f9916650a8f8cb93c98e9e7cddaff7f44751e42460cb81b97ac11fc11",
+      "bytes": 276575
+    },
+    "opus-5-5": {
+      "requested_model": "claude-opus-5-5",
+      "input_sha256": "614ffc8955465c202c98e74c1454694970f85f5da82f7f2edc978372186c8402",
+      "focus_sha256": "b0ae63e509cf23ed7283e0962a6305dfcb607d77f619047096203ddc83911704",
+      "bytes": 276628
+    },
+    "fable-5-1": {
+      "requested_model": "claude-fable-5-1",
+      "input_sha256": "0031878035492c0dfc63f39d650fcae943df9a26d5eb0dcc2e9cdf1f9587d34d",
+      "focus_sha256": "95d740050c77d242a452bc20b82313928426df11747658a02848411d0e3ff5cc",
+      "bytes": 276633
+    }
+  },
+  "cli_timeout_seconds": 900,
+  "cost_bound": "No numeric cost cap supplied; provider usage recorded if returned"
+}

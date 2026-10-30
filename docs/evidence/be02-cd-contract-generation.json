@@ -1,0 +1,321 @@
+{
+    "task":  "be02-cd-35bdb90899b24281bbecff35beb5ad35",
+    "task_id":  "task_9a43620259a4",
+    "dispatch_id":  "ctx_a295d15ea381",
+    "worker_terminal":  "term_fb6e7df2-ef63-4b6a-b31b-0c75771849a6",
+    "result":  "deterministic_generation_pass_consumer_copies_verified",
+    "recorded_utc":  "2026-10-12T22:33:39.5266583Z",
+    "contract_version":  "1.0.0-collaboration.1",
+    "scope":  "Frozen C/D contract generation and consumer synchronization only; application and fixture-schema acceptance remain unproved.",
+    "canonical_design_modified":  false,
+    "input_hashes":  {
+                         "contracts/v1/openapi.json":  "859041382484a3a001ae087ca88e02eeb23540f2cf46aec795b064aa8ea66073",
+                         "contracts/v1/fixtures.json":  "182d8dfad62c49d3a5b9eba836716808709255c66320e3a8a09fc4e7ddae2833",
+                         "contracts/v1/README.md":  "24592cbb5a42e269dc85e813d72d06ebaee6b856c56826a02e3df94912e5ddb2",
+                         "contracts/tooling/package.json":  "38c232b37479b0a5459c1ba63f83291dc4f8e9caf57e17fac7b1b383ef4ff56d",
+                         "contracts/tooling/package-lock.json":  "65132a7eaded1decac12c44f001b0cd1c9deb7c07694ed2cc05a38afb7200a74",
+                         "docs/completion/be02-cd-contract.md":  "2f37e8ecb60f40a17ab2e1f6edbbda64bf5f0312c38c55161f20f6abde87426e"
+                     },
+    "input_archive":  {
+                          "sha256":  "a54bbf994a7d6c9eb4823b4a3e12a5cb9f288567d38a72fc25cd58d0751b78f9",
+                          "bytes":  307712,
+                          "files":  [
+                                        "contracts/v1/openapi.json",
+                                        "contracts/v1/fixtures.json",
+                                        "contracts/v1/README.md",
+                                        "contracts/tooling/package.json",
+                                        "contracts/tooling/package-lock.json"
+                                    ],
+                          "credentials_included":  false
+                      },
+    "host":  {
+                 "alias":  "fleet-02",
+                 "ssh_host":  "188.40.237.70",
+                 "ssh_port":  2222,
+                 "hostname":  "Ubuntu-noble-latest-amd64-base",
+                 "docker_context":  "default",
+                 "docker_endpoint":  "unix:///var/run/docker.sock",
+                 "preflight_exit":  0,
+                 "local_docker_used":  false,
+                 "reason":  "Docker is unavailable locally; the dispatch authorized this remote engine."
+             },
+    "generator":  {
+                      "package":  "openapi-typescript",
+                      "version":  "7.13.0",
+                      "typescript":  "5.9.3",
+                      "node":  "v24.21.0",
+                      "npm":  "11.19.0",
+                      "dependency_changes":  false,
+                      "install_command":  "npm ci --ignore-scripts --no-audit --no-fund --cache /tmp/npm",
+                      "generation_command":  "npm run generate:web"
+                  },
+    "image":  "node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20",
+    "isolation":  {
+                      "independent_containers":  2,
+                      "remove_on_exit":  true,
+                      "image_pull":  "never",
+                      "cpus":  1,
+                      "memory_bytes":  1073741824,
+                      "memory_swap_bytes":  1073741824,
+                      "pids_limit":  128,
+                      "readonly_rootfs":  true,
+                      "readonly_source_bind":  true,
+                      "user":  "remote invoking uid:gid",
+                      "cap_drop":  "ALL",
+                      "no_new_privileges":  true,
+                      "published_ports":  [
+
+                                          ],
+                      "work_tmpfs":  "/work:rw,exec,size=512m,mode=1777",
+                      "npm_cache_tmpfs":  "/tmp:rw,size=256m,mode=1777",
+                      "npm_cache":  "/tmp/npm",
+                      "builds":  0,
+                      "task_label":  "elevateo.task=be02-cd-35bdb90899b24281bbecff35beb5ad35"
+                  },
+    "commands":  {
+                     "archive":  "tar -cf input.tar contracts/v1/openapi.json contracts/v1/fixtures.json contracts/v1/README.md contracts/tooling/package.json contracts/tooling/package-lock.json",
+                     "remote_execution":  "sh /home/tanzeel/elevateo-mail-tests-20261012-ultra/be02-cd-35bdb90899b24281bbecff35beb5ad35/run.sh",
+                     "remote_script_sha256":  "87717673633ce6a79effaefcbf949c612f16bb9a70cbafd8c0644c9a9a5adb8f",
+                     "remote_script":  "#!/bin/sh\nset -eu\n# AIDEV-NOTE: Isolate each generation; only the small generated output leaves the container\u0027s tmpfs.\ntask=be02-cd-35bdb90899b24281bbecff35beb5ad35\nroot=/home/tanzeel/elevateo-mail-tests-20261012-ultra/$task\nimage=node:24.21.0-bookworm-slim@sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20\ncd \"$root\"\ntest \"$(hostname -s)\" = Ubuntu-noble-latest-amd64-base\ntest \"$(docker context show)\" = default\ntest \"$(docker context inspect default --format \u0027{{.Endpoints.docker.Host}}\u0027)\" = unix:///var/run/docker.sock\ndocker image inspect \"$image\" --format \u0027{{json .}}\u0027 \u003e image-inspect.json\ntest \"$(docker image inspect \"$image\" --format \u0027{{json .Config.Volumes}}\u0027)\" = null\ntest \"$(sha256sum input.tar | cut -d \u0027 \u0027 -f1)\" = a54bbf994a7d6c9eb4823b4a3e12a5cb9f288567d38a72fc25cd58d0751b78f9\nmkdir input out1 out2\ntar -xf input.tar -C input\nsha256sum input/contracts/v1/openapi.json input/contracts/v1/fixtures.json input/contracts/v1/README.md input/contracts/tooling/package.json input/contracts/tooling/package-lock.json \u003e input-hashes.txt\ndocker system df \u003e docker-space-before.txt\ndf -B1 --output=size,used,avail \"$root\" \u003e host-space-before.txt\nbefore=$(df -B1 --output=avail \"$root\" | tail -n 1 | tr -d \u0027 \u0027)\nactive=\ncleanup() {\n  status=$?\n  trap - EXIT\n  # AIDEV-NOTE: Names and labels must both match before removing any failed task container.\n  if [ -n \"$active\" ]; then\n    ids=$(docker ps -aq --filter \"name=^/$active$\" --filter \"label=elevateo.task=$task\") || exit 91\n    for id in $ids; do\n      docker inspect \"$id\" --format \u0027{{json .Mounts}}\u0027 \u003e\u003e cleanup-mounts.jsonl || exit 92\n      docker rm -f \"$id\" \u003e\u003e cleanup-removals.txt || exit 93\n    done\n  fi\n  remaining=$(docker ps -aq --filter \"label=elevateo.task=$task\") || exit 94\n  volumes=$(docker volume ls -q --filter \"label=elevateo.task=$task\") || exit 95\n  images=$(docker image ls -q --filter \"label=elevateo.task=$task\") || exit 96\n  docker system df \u003e docker-space-after.txt || exit 97\n  df -B1 --output=size,used,avail \"$root\" \u003e host-space-after.txt\n  after=$(df -B1 --output=avail \"$root\" | tail -n 1 | tr -d \u0027 \u0027)\n  docker image inspect \"$image\" --format \u0027{{.Id}}\u0027 \u003e retained-image.txt || exit 98\n  printf \u0027test_exit=%s\\nremaining_containers=%s\\nremaining_volumes=%s\\nremaining_images=%s\\nfree_bytes_before=%s\\nfree_bytes_after=%s\\n\u0027 \"$status\" \"$remaining\" \"$volumes\" \"$images\" \"$before\" \"$after\" \u003e cleanup.txt\n  cat cleanup.txt\n  test -z \"$remaining$volumes$images\" || exit 99\n  exit \"$status\"\n}\ntrap cleanup EXIT\ntrap \u0027exit 130\u0027 INT\ntrap \u0027exit 143\u0027 TERM\nfor run in 1 2; do\n  active=\"$task-$run\"\n  test -z \"$(docker ps -aq --filter \"name=^/$active$\")\"\n  date -u +%Y-%m-%dT%H:%M:%SZ \u003e \"run$run-started.txt\"\n  timeout --signal=TERM --kill-after=5s 240s docker run --rm --pull=never \\\n    --name \"$active\" --cidfile \"$root/run$run.cid\" --label \"elevateo.task=$task\" \\\n    --user \"$(id -u):$(id -g)\" --read-only --cap-drop ALL --security-opt no-new-privileges \\\n    --pids-limit 128 --memory 1g --memory-swap 1g --cpus 1 \\\n    --tmpfs /work:rw,exec,size=512m,mode=1777 --tmpfs /tmp:rw,size=256m,mode=1777 \\\n    --mount \"type=bind,src=$root/input,dst=/input,readonly\" \\\n    --mount \"type=bind,src=$root/out$run,dst=/output\" --workdir /work \"$image\" \\\n    sh -eu -c \u0027cp -R /input/contracts /work/contracts\n      mkdir -p /work/apps/web/src/data/generated\n      cd /work/contracts/tooling\n      node --version\n      npm --version\n      npm ci --ignore-scripts --no-audit --no-fund --cache /tmp/npm\n      node -p \"require(\\\"./node_modules/openapi-typescript/package.json\\\").version\"\n      npm run generate:web\n      cp /work/apps/web/src/data/generated/api.d.ts /output/api.d.ts\u0027 \u003e \"run$run.log\" 2\u003e\u00261\n  printf \u00270\\n\u0027 \u003e \"run$run-exit.txt\"\n  date -u +%Y-%m-%dT%H:%M:%SZ \u003e \"run$run-finished.txt\"\n  cat \"run$run.log\"\n  active=\ndone\ncmp out1/api.d.ts out2/api.d.ts\nprintf \u00270\\n\u0027 \u003e compare-exit.txt\nsha256sum out1/api.d.ts out2/api.d.ts \u003e generated-hashes.txt\nwc -c -l out1/api.d.ts out2/api.d.ts \u003e generated-counts.txt\ncat generated-hashes.txt generated-counts.txt\n",
+                     "compare":  "cmp out1/api.d.ts out2/api.d.ts",
+                     "source_and_copy_integrity":  "Get-FileHash -Algorithm SHA256 -LiteralPath \u003ceach exact source and destination file\u003e"
+                 },
+    "generated_output":  "apps/web/src/data/generated/api.d.ts",
+    "generated_sha256":  "bb43a39e6fb514268ab9b89e1b443edb752f6e6eb3a7b0c87468cae5a75b077a",
+    "generated_bytes":  129531,
+    "generated_lines":  2827,
+    "independent_runs":  [
+                             {
+                                 "run":  1,
+                                 "container_name":  "be02-cd-35bdb90899b24281bbecff35beb5ad35-1",
+                                 "container_id":  "ca67ebececf222273eaae5d2d809c27a3f8cdc72116db0e689b823a8d93ef7b0",
+                                 "started_utc":  "2026-10-12T22:29:01Z",
+                                 "finished_utc":  "2026-10-12T22:29:04Z",
+                                 "exit_code":  0,
+                                 "sha256":  "bb43a39e6fb514268ab9b89e1b443edb752f6e6eb3a7b0c87468cae5a75b077a",
+                                 "bytes":  129531,
+                                 "lines":  2827,
+                                 "log":  "v24.21.0\n11.19.0\n\nadded 33 packages in 1s\nnpm notice\nnpm notice New major version of npm available! 11.19.0 -\u003e 12.2.0\nnpm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0\nnpm notice To update run: npm install -g npm@12.2.0\nnpm notice\n7.13.0\n\n\u003e elevateo-contract-generation@0.0.0 generate:web\n\u003e openapi-typescript ../v1/openapi.json --output ../../apps/web/src/data/generated/api.d.ts\n\n✨ openapi-typescript 7.13.0\n🚀 ../v1/openapi.json → ../../apps/web/src/data/generated/api.d.ts [192ms]\nnpm notice\nnpm notice New major version of npm available! 11.19.0 -\u003e 12.2.0\nnpm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0\nnpm notice To update run: npm install -g npm@12.2.0\nnpm notice\n"
+                             },
+                             {
+                                 "run":  2,
+                                 "container_name":  "be02-cd-35bdb90899b24281bbecff35beb5ad35-2",
+                                 "container_id":  "4c09a5429af273da7d8ef8b6840cbc9c21bc2957ff1d74ef2851a1faee8f9b98",
+                                 "started_utc":  "2026-10-12T22:29:04Z",
+                                 "finished_utc":  "2026-10-12T22:29:07Z",
+                                 "exit_code":  0,
+                                 "sha256":  "bb43a39e6fb514268ab9b89e1b443edb752f6e6eb3a7b0c87468cae5a75b077a",
+                                 "bytes":  129531,
+                                 "lines":  2827,
+                                 "log":  "v24.21.0\n11.19.0\n\nadded 33 packages in 1s\nnpm notice\nnpm notice New major version of npm available! 11.19.0 -\u003e 12.2.0\nnpm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0\nnpm notice To update run: npm install -g npm@12.2.0\nnpm notice\n7.13.0\n\n\u003e elevateo-contract-generation@0.0.0 generate:web\n\u003e openapi-typescript ../v1/openapi.json --output ../../apps/web/src/data/generated/api.d.ts\n\n✨ openapi-typescript 7.13.0\n🚀 ../v1/openapi.json → ../../apps/web/src/data/generated/api.d.ts [246.2ms]\nnpm notice\nnpm notice New major version of npm available! 11.19.0 -\u003e 12.2.0\nnpm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0\nnpm notice To update run: npm install -g npm@12.2.0\nnpm notice\n"
+                             }
+                         ],
+    "byte_identical":  true,
+    "comparison_exit":  0,
+    "generation_script_exit":  0,
+    "package_install_exits":  [
+                                  0,
+                                  0
+                              ],
+    "application_tests_executed":  false,
+    "application_typecheck_executed":  false,
+    "fixture_conformance_executed":  false,
+    "real_api_acceptance_proved":  false,
+    "fixture_validation":  {
+                               "status":  "not_run_no_existing_tooling_validator_found",
+                               "existing_tooling_inventory":  [
+                                                                  "contracts/tooling/package.json",
+                                                                  "contracts/tooling/package-lock.json",
+                                                                  "contracts/tooling/README.md",
+                                                                  "scripts/import_upstream.py",
+                                                                  "scripts/verify_upstream.py",
+                                                                  "scripts/test_snapshot_tools.py"
+                                                              ],
+                               "search_patterns":  [
+                                                       "fixtures\\.json",
+                                                       "jsonschema",
+                                                       "Ajv",
+                                                       "ajv",
+                                                       "Draft202012",
+                                                       "cd_examples",
+                                                       "cd_requests"
+                                                   ],
+                               "finding":  "The only Ajv match in tooling is a transitive generator dependency, not an existing validator harness. App-owned FE Zod and backend acceptance tests exist outside this dispatch ownership; they were inspected but neither changed nor run.",
+                               "app_owned_examples":  [
+                                                          "Fable FE01 R1/apps/web/src/data/contract.test.ts",
+                                                          "Fable FE01 R1/apps/web/src/data/conformance.test.ts",
+                                                          "Fable FE01 R1/apps/web/src/data/lifecycle-conformance.test.ts",
+                                                          "BE02 Codex/apps/server/test/be_02/read_response_test.rb"
+                                                      ],
+                               "tooling_validator_changes":  [
+
+                                                             ],
+                               "canonical_groups":  [
+                                                        {
+                                                            "group":  "examples",
+                                                            "concrete_fixtures":  17,
+                                                            "schema_validations_executed":  0,
+                                                            "result":  "not_run"
+                                                        },
+                                                        {
+                                                            "group":  "lifecycle_examples",
+                                                            "concrete_fixtures":  3,
+                                                            "schema_validations_executed":  0,
+                                                            "result":  "not_run"
+                                                        },
+                                                        {
+                                                            "group":  "cd_requests",
+                                                            "concrete_fixtures":  8,
+                                                            "schema_validations_executed":  0,
+                                                            "result":  "not_run"
+                                                        },
+                                                        {
+                                                            "group":  "cd_examples",
+                                                            "concrete_fixtures":  41,
+                                                            "schema_validations_executed":  0,
+                                                            "result":  "not_run"
+                                                        }
+                                                    ],
+                               "concrete_fixtures":  69,
+                               "schema_validations_executed":  0,
+                               "pending":  "An authorized validation owner must cover all four canonical fixture groups plus endpoint behavior; generation success is not schema conformance."
+                           },
+    "contract_inventory":  {
+                               "paths":  22,
+                               "operations":  26,
+                               "schemas":  53,
+                               "read_scenarios":  10,
+                               "lifecycle_scenarios":  17,
+                               "cd_scenarios":  36,
+                               "cd_boundary_recipes":  8,
+                               "inventory_is_not_validation":  true
+                           },
+    "consumer_copies":  {
+                            "value":  [
+                                          {
+                                              "root":  "C:/Users/Tanzeel/Code and projects/Elevateo Mail - BE02 Codex",
+                                              "files":  [
+                                                            {
+                                                                "path":  "contracts/v1/openapi.json",
+                                                                "previous_sha256":  "859041382484a3a001ae087ca88e02eeb23540f2cf46aec795b064aa8ea66073",
+                                                                "sha256":  "859041382484a3a001ae087ca88e02eeb23540f2cf46aec795b064aa8ea66073",
+                                                                "bytes":  217402,
+                                                                "verified":  true
+                                                            },
+                                                            {
+                                                                "path":  "contracts/v1/fixtures.json",
+                                                                "previous_sha256":  "182d8dfad62c49d3a5b9eba836716808709255c66320e3a8a09fc4e7ddae2833",
+                                                                "sha256":  "182d8dfad62c49d3a5b9eba836716808709255c66320e3a8a09fc4e7ddae2833",
+                                                                "bytes":  57553,
+                                                                "verified":  true
+                                                            },
+                                                            {
+                                                                "path":  "contracts/v1/README.md",
+                                                                "previous_sha256":  "24592cbb5a42e269dc85e813d72d06ebaee6b856c56826a02e3df94912e5ddb2",
+                                                                "sha256":  "24592cbb5a42e269dc85e813d72d06ebaee6b856c56826a02e3df94912e5ddb2",
+                                                                "bytes":  13599,
+                                                                "verified":  true
+                                                            },
+                                                            {
+                                                                "path":  "contracts/v1/contract-lock.json",
+                                                                "previous_sha256":  "a9a42c57b6b188fe685925c494d10c4218b8bddfa3bb50fd9954b8ffa4ead363",
+                                                                "sha256":  "98b7379b024b639b22ef757552da859a5e7151d41b039ef17a3d5d7ccf9f2a07",
+                                                                "bytes":  1011,
+                                                                "verified":  true
+                                                            },
+                                                            {
+                                                                "path":  "apps/web/src/data/generated/api.d.ts",
+                                                                "previous_sha256":  "19b95855911060455ef31418e4c4cf3339b0f658e38409c24c55581b5667112d",
+                                                                "sha256":  "bb43a39e6fb514268ab9b89e1b443edb752f6e6eb3a7b0c87468cae5a75b077a",
+                                                                "bytes":  129531,
+                                                                "verified":  true
+                                                            }
+                                                        ],
+                                              "verified_utc":  "2026-10-12T22:31:43.4783495Z"
+                                          },
+                                          {
+                                              "root":  "C:/Users/Tanzeel/Code and projects/Elevateo Mail - Fable FE01 R1",
+                                              "files":  [
+                                                            {
+                                                                "path":  "contracts/v1/openapi.json",
+                                                                "previous_sha256":  "f6524b78e870d9af7e6b8c38bda9a327c3d05c8e2c974ef450db489d31c2a7e4",
+                                                                "sha256":  "859041382484a3a001ae087ca88e02eeb23540f2cf46aec795b064aa8ea66073",
+                                                                "bytes":  217402,
+                                                                "verified":  true
+                                                            },
+                                                            {
+                                                                "path":  "contracts/v1/fixtures.json",
+                                                                "previous_sha256":  "ad33209fa8a4eb4ee0fcb7dc51249935023fdaf6b3ec45a876fb51271cd5133f",
+                                                                "sha256":  "182d8dfad62c49d3a5b9eba836716808709255c66320e3a8a09fc4e7ddae2833",
+                                                                "bytes":  57553,
+                                                                "verified":  true
+                                                            },
+                                                            {
+                                                                "path":  "contracts/v1/README.md",
+                                                                "previous_sha256":  "24592cbb5a42e269dc85e813d72d06ebaee6b856c56826a02e3df94912e5ddb2",
+                                                                "sha256":  "24592cbb5a42e269dc85e813d72d06ebaee6b856c56826a02e3df94912e5ddb2",
+                                                                "bytes":  13599,
+                                                                "verified":  true
+                                                            },
+                                                            {
+                                                                "path":  "contracts/v1/contract-lock.json",
+                                                                "previous_sha256":  "a9a42c57b6b188fe685925c494d10c4218b8bddfa3bb50fd9954b8ffa4ead363",
+                                                                "sha256":  "98b7379b024b639b22ef757552da859a5e7151d41b039ef17a3d5d7ccf9f2a07",
+                                                                "bytes":  1011,
+                                                                "verified":  true
+                                                            },
+                                                            {
+                                                                "path":  "apps/web/src/data/generated/api.d.ts",
+                                                                "previous_sha256":  "19b95855911060455ef31418e4c4cf3339b0f658e38409c24c55581b5667112d",
+                                                                "sha256":  "bb43a39e6fb514268ab9b89e1b443edb752f6e6eb3a7b0c87468cae5a75b077a",
+                                                                "bytes":  129531,
+                                                                "verified":  true
+                                                            }
+                                                        ],
+                                              "verified_utc":  "2026-10-12T22:31:43.5212862Z"
+                                          }
+                                      ],
+                            "Count":  2
+                        },
+    "readiness_notification":  {
+                                   "message_id":  "msg_b4fa07ae8fb8",
+                                   "recipient":  "run:run_5cc7ae2ab900",
+                                   "subject":  "C/D generated contract ready in both consumers",
+                                   "sent_utc":  "2026-10-12T22:31:51Z",
+                                   "delivered_means_enqueued_only":  true
+                               },
+    "cleanup":  {
+                    "generation_containers_removed":  2,
+                    "mechanism":  "docker run --rm; container tmpfs working trees and npm caches destroyed on exit",
+                    "task_containers_remaining":  0,
+                    "task_volumes_remaining":  0,
+                    "task_images_remaining":  0,
+                    "images_created":  0,
+                    "volumes_created":  0,
+                    "build_caches_created":  0,
+                    "shared_pinned_node_image_retained":  true,
+                    "other_workloads_mutated":  false,
+                    "broad_prune_performed":  false,
+                    "free_bytes_before":  269952741376,
+                    "free_bytes_after":  269952405504,
+                    "shared_host_delta_bytes":  -335872,
+                    "attributable_disk_reclamation_bytes":  null,
+                    "disk_reclamation_note":  "Disposable work and npm caches lived in tmpfs. The shared-host free-space delta is not attributable reclaimed disk space.",
+                    "docker_space_before":  "TYPE            TOTAL     ACTIVE    SIZE      RECLAIMABLE\nImages          104       57        96.71GB   6.705GB (6%)\nContainers      303       264       917.7MB   101.7MB (11%)\nLocal Volumes   247       57        16.65GB   13.71GB (82%)\nBuild Cache     1         1         4.62MB    0B\n",
+                    "docker_space_after":  "TYPE            TOTAL     ACTIVE    SIZE      RECLAIMABLE\nImages          104       57        96.71GB   6.705GB (6%)\nContainers      303       264       917.8MB   101.7MB (11%)\nLocal Volumes   247       57        16.65GB   13.71GB (82%)\nBuild Cache     1         1         4.62MB    0B\n",
+                    "host_space_before":  "   1B-blocks         Used        Avail\n468702478336 174865727488 269952745472\n",
+                    "host_space_after":  "   1B-blocks         Used        Avail\n468702478336 174866063360 269952409600\n",
+                    "host_space_note":  "The df table and cleanup scalar are separate samples; the 4096-byte differences can include evidence writes and concurrent workloads.",
+                    "windows_docker_disk_compaction":  "Not applicable: no local Windows Docker or WSL disk was used or changed.",
+                    "retained":  "Canonical source archive, two generated outputs and command/log/hash evidence in the exact task directory; shared pinned image."
+                },
+    "remote_evidence_directory":  "/home/tanzeel/elevateo-mail-tests-20261012-ultra/be02-cd-35bdb90899b24281bbecff35beb5ad35",
+    "local_ignored_evidence_directory":  ".env.be02-cd-35bdb90899b24281bbecff35beb5ad35",
+    "changed_canonical_files":  [
+                                    "apps/web/src/data/generated/api.d.ts",
+                                    "contracts/v1/contract-lock.json",
+                                    "docs/evidence/be02-cd-contract-generation.json",
+                                    "docs/completion/be02-cd-generation.md"
+                                ],
+    "no_commits_or_publication":  true
+}

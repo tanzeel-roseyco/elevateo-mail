@@ -1,0 +1,241 @@
+{
+  "verified_at": "2026-10-13T23:12:38.241792+00:00",
+  "task_id": "task_d1da752a40c7",
+  "dispatch_id": "ctx_6a0cdf9e4b2f",
+  "status": "consultation_identity_and_source_integrity_verified_with_explicit_unrelated_document_drift",
+  "application_tests_run": false,
+  "source_files_match": 6,
+  "repository_heads_match": 3,
+  "exact_opinions_verified": 3,
+  "recommendations_disposed": 23,
+  "application_review_physical_lines": 347,
+  "administrative_launcher_lines": 5,
+  "total_source_and_control_lines": 352,
+  "initial_verification_preserved": true,
+  "unresolved_integrity_failures": [],
+  "document_drift": [
+    {
+      "path": "README.md",
+      "lines": [
+        1,
+        3
+      ],
+      "classification": "separate_mount_status_sentence_only",
+      "current_whole_file_sha256": "2df4a841db2746682a3f1a9d502b33b0c5703150bf48e528f3aeda1297e9e15a"
+    },
+    {
+      "path": "state.md",
+      "lines": [
+        1,
+        3
+      ],
+      "classification": "separate_mount_status_sentence_only",
+      "current_whole_file_sha256": "fc3bdb548baca1200628e75a47c883ce99f7cfa58d76a26c1b6ccf5b1669cc1b"
+    },
+    {
+      "path": "documentation.md",
+      "lines": [
+        1,
+        3
+      ],
+      "classification": "separate_mount_status_sentence_only",
+      "current_whole_file_sha256": "ef3956e66f7fbaee2fef66db4dc5d2bf48035c105e0ecf0c86eed79f01e9c3da"
+    },
+    {
+      "path": "documentation.md",
+      "lines": [
+        50,
+        112
+      ],
+      "classification": "unchanged",
+      "current_whole_file_sha256": "ef3956e66f7fbaee2fef66db4dc5d2bf48035c105e0ecf0c86eed79f01e9c3da"
+    }
+  ],
+  "document_drift_classification": "No acceptance API, seed, source or evidence contract changed; mount repair status remains separately owned and not independently tested here",
+  "prompt_hash_semantics": {
+    "manifest_hashes": "UTF-8 in-memory CLI argument with LF",
+    "exact_argument_sha256": "ecaad3ef2fb86bad62a05e23cfdf209ae65d14f0191a980d0d67e89f29d7ba2a",
+    "private_raw_file_sha256": "44da333d6632d665a2c8602c62cb560f340b8598e1c4ab20370685d5fcb7fa84",
+    "raw_crlf_sequences": 2
+  },
+  "private_ignore_verification": {
+    "method": "git check-ignore -z --stdin",
+    "files": 21,
+    "unignored": 0
+  },
+  "administrative_provenance": {
+    "path": "ops/local/acceptance-existing-cases-r1/consult.py",
+    "lines": [
+      45,
+      86,
+      87,
+      94,
+      110
+    ],
+    "sha256": "4a7f4674a41c41e5d977b227690693f6e6899d27936784ec775289e068f5930f"
+  },
+  "final_artifacts_excluding_this_file": [
+    {
+      "path": ".planning/consultations/results/acceptance-existing-cases-r1/fable-5-1.md",
+      "sha256": "ae3ecc0b59732fced64f65a3ad777af733175ae3fa83693da7730c27f938172c",
+      "bytes": 13417
+    },
+    {
+      "path": ".planning/consultations/results/acceptance-existing-cases-r1/fable-5.md",
+      "sha256": "3b9c12094a9a9f64580f97635df5b60832be956ea12529addc0fc1358839d8eb",
+      "bytes": 12056
+    },
+    {
+      "path": ".planning/consultations/results/acceptance-existing-cases-r1/integrity-notes.md",
+      "sha256": "e9bf4cfa6cef4e0c6d7e874055c306236bd352c2a385eb6c1db2a0ae72e2a5a6",
+      "bytes": 3731
+    },
+    {
+      "path": ".planning/consultations/results/acceptance-existing-cases-r1/metadata.json",
+      "sha256": "1af06d4ab52f4b008bbe49f983a621fb3498f866610aeeb088dae075bf32c2c1",
+      "bytes": 10769
+    },
+    {
+      "path": ".planning/consultations/results/acceptance-existing-cases-r1/opus-5-5.md",
+      "sha256": "eb8652d57870b81662078253dd6d0c66ccbc64b6365f3ae1c69c045badae0a35",
+      "bytes": 14019
+    },
+    {
+      "path": ".planning/consultations/results/acceptance-existing-cases-r1/review-ledger.md",
+      "sha256": "3c642457ca8e4347a1d0972530655307ba4d36b6575a36fd70c24f0e62c99bcd",
+      "bytes": 13163
+    },
+    {
+      "path": ".planning/consultations/results/acceptance-existing-cases-r1/source-manifest.json",
+      "sha256": "27fe2fd93e4e4352e8746d74b46eecc78633c20671a58ee58b53a4692c0ae449",
+      "bytes": 9098
+    },
+    {
+      "path": ".planning/consultations/results/acceptance-existing-cases-r1/synthesis.md",
+      "sha256": "37db36d933e80f71663244b3dfa98bbf7931205d4fbff2586d04dd9ba3aa43bc",
+      "bytes": 15065
+    },
+    {
+      "path": ".planning/consultations/results/acceptance-existing-cases-r1/task-brief.md",
+      "sha256": "641ebddbd04d0002ece0e4d42fafb8339b1eac6add0cade9e629fbce4e5c8cfa",
+      "bytes": 8153
+    },
+    {
+      "path": ".planning/consultations/results/acceptance-existing-cases-r1/verification.json",
+      "sha256": "f657a37cf845dce391ca57b29c490936ce21ad1d9874a42e0b8c39fc041b9c39",
+      "bytes": 21224
+    },
+    {
+      "path": "docs/completion/acceptance-existing-cases-design.md",
+      "sha256": "dc49dbade1a5b409f4008ceb820d8c26f5012ef1d853be7745d58ff3637f9e2d",
+      "bytes": 34792
+    }
+  ],
+  "ignored_local_artifacts": [
+    {
+      "path": "ops/local/acceptance-existing-cases-r1/.gitignore",
+      "sha256": "cdbcae15105d6b781e620813c79c7e868740d4e9cc53ce6f5fcbbc12387adf4b",
+      "bytes": 2
+    },
+    {
+      "path": "ops/local/acceptance-existing-cases-r1/claude-help.txt",
+      "sha256": "550db4f88ae1d97bf7244ca96dc89554aabd3978241ceb69f79001e816c35f09",
+      "bytes": 22116
+    },
+    {
+      "path": "ops/local/acceptance-existing-cases-r1/claude-version.txt",
+      "sha256": "ced06c95bb4c0780504b700880ceea37cd764283d2be9d3ea2555683183207ea",
+      "bytes": 22
+    },
+    {
+      "path": "ops/local/acceptance-existing-cases-r1/common-packet.txt",
+      "sha256": "05f3699cae0e6b54e5b75d3913b88ec0c5e2b6893a90610a7336b2cddbfb040e",
+      "bytes": 275516
+    },
+    {
+      "path": "ops/local/acceptance-existing-cases-r1/consult.py",
+      "sha256": "4a7f4674a41c41e5d977b227690693f6e6899d27936784ec775289e068f5930f",
+      "bytes": 11869
+    },
+    {
+      "path": "ops/local/acceptance-existing-cases-r1/executions.json",
+      "sha256": "da34d90c94bc16dbbe828b624c7d9129eedc2e199637eec64bca141f5c3e54cb",
+      "bytes": 6249
+    },
+    {
+      "path": "ops/local/acceptance-existing-cases-r1/fable-5-1.execution.json",
+      "sha256": "aab1fab3c23ef7e5937554cb414d72d45411ab00738b5eb4b29b2e0f8b8e17b0",
+      "bytes": 1952
+    },
+    {
+      "path": "ops/local/acceptance-existing-cases-r1/fable-5-1.input.txt",
+      "sha256": "0031878035492c0dfc63f39d650fcae943df9a26d5eb0dcc2e9cdf1f9587d34d",
+      "bytes": 276633
+    },
+    {
+      "path": "ops/local/acceptance-existing-cases-r1/fable-5-1.raw.json",
+      "sha256": "2a9fb6e1d15768b9339b41dd989d7562d3ab337f676678738574d0d5f7111501",
+      "bytes": 14145
+    },
+    {
+      "path": "ops/local/acceptance-existing-cases-r1/fable-5-1.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "ops/local/acceptance-existing-cases-r1/fable-5.execution.json",
+      "sha256": "caa16b0e695964f16a21c862293617f9fa8d55c363bf50670afef6c7cd63bc07",
+      "bytes": 1916
+    },
+    {
+      "path": "ops/local/acceptance-existing-cases-r1/fable-5.input.txt",
+      "sha256": "710032b362136ea95ab69c4c27af39466acd6c67abda5204b8fa965de50f1771",
+      "bytes": 276575
+    },
+    {
+      "path": "ops/local/acceptance-existing-cases-r1/fable-5.raw.json",
+      "sha256": "16f786c87a36701858235729631c90e4bf630872617cedc86e973d872d4b0b4f",
+      "bytes": 12743
+    },
+    {
+      "path": "ops/local/acceptance-existing-cases-r1/fable-5.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "ops/local/acceptance-existing-cases-r1/matrix-scope.json",
+      "sha256": "5534c2341e8f84fe895ff7a5219ff6361eff91621af1ad5015e76ad61291d9e3",
+      "bytes": 17532
+    },
+    {
+      "path": "ops/local/acceptance-existing-cases-r1/opus-5-5.execution.json",
+      "sha256": "54f944f51e43c1d36f17faf50e97d18174f717027cc0d7586d19e607283b342b",
+      "bytes": 1943
+    },
+    {
+      "path": "ops/local/acceptance-existing-cases-r1/opus-5-5.input.txt",
+      "sha256": "614ffc8955465c202c98e74c1454694970f85f5da82f7f2edc978372186c8402",
+      "bytes": 276628
+    },
+    {
+      "path": "ops/local/acceptance-existing-cases-r1/opus-5-5.raw.json",
+      "sha256": "7bd67551d469f282c5efba38eca9cb6b24dfe22875a6005232d07148cf0a7903",
+      "bytes": 14847
+    },
+    {
+      "path": "ops/local/acceptance-existing-cases-r1/opus-5-5.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "ops/local/acceptance-existing-cases-r1/retain-opinions.py",
+      "sha256": "5c754b069e02b12ec8b24f1aeaf647c1b9b97ac9f6b68cef045b5a76de06d69d",
+      "bytes": 7050
+    },
+    {
+      "path": "ops/local/acceptance-existing-cases-r1/system-prompt.txt",
+      "sha256": "44da333d6632d665a2c8602c62cb560f340b8598e1c4ab20370685d5fcb7fa84",
+      "bytes": 1632
+    }
+  ]
+}

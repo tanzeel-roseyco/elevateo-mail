@@ -1,0 +1,7 @@
+{
+  "tests": "FAILED",
+  "failure": "RuntimeError: auth-rls-concurrency failed; see 018-auth-rls-concurrency.log",
+  "cleanup_passed": true,
+  "finished_at": 1791929690.298894,
+  "source_snapshot": "source.sha256.json"
+}

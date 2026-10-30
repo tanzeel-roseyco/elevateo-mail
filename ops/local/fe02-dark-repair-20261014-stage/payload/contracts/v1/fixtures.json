@@ -1,0 +1,1562 @@
+{
+  "contract_version": "1.0.0-collaboration.1",
+  "purpose": "Synthetic examples and required conformance scenarios; no execution or backend-completion claim.",
+  "error_status_codes": {
+    "400": [
+      "request_invalid",
+      "cursor_invalid"
+    ],
+    "401": [
+      "unauthenticated"
+    ],
+    "404": [
+      "not_available"
+    ],
+    "409": [
+      "context_changed"
+    ],
+    "429": [
+      "rate_limited"
+    ],
+    "500": [
+      "internal_error"
+    ],
+    "503": [
+      "temporarily_unavailable"
+    ]
+  },
+  "examples": {
+    "session_a": {
+      "schema": "openapi.json#/components/schemas/Session",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_A_0123456789",
+        "actor": {
+          "id": "00000000-0000-4000-8000-000000000001",
+          "display_name": "Fixture user A"
+        },
+        "organization": {
+          "id": "00000000-0000-4000-8000-000000000011",
+          "name": "Synthetic organization A"
+        },
+        "simulation_mode": true,
+        "csrf_token": "fixture_token_a_0123456789"
+      }
+    },
+    "session_b": {
+      "schema": "openapi.json#/components/schemas/Session",
+      "status": 200,
+      "body": {
+        "context_id": "context_B_0123456789",
+        "authorization_version": "authz_B_0123456789",
+        "actor": {
+          "id": "00000000-0000-4000-8000-000000000002",
+          "display_name": "Fixture user B"
+        },
+        "organization": {
+          "id": "00000000-0000-4000-8000-000000000012",
+          "name": "Synthetic organization B"
+        },
+        "simulation_mode": true,
+        "csrf_token": "fixture_token_b_0123456789"
+      }
+    },
+    "mailboxes": {
+      "schema": "openapi.json#/components/schemas/MailboxPage",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_A_0123456789",
+        "next_cursor": null,
+        "items": [
+          {
+            "id": "00000000-0000-4000-8000-000000000021",
+            "display_name": "Fixture inbox",
+            "display_address": "person@example.test",
+            "capabilities": {
+              "read": true,
+              "compose": false,
+              "approve_send": false,
+              "manage_members": false
+            }
+          }
+        ]
+      }
+    },
+    "mailboxes_empty": {
+      "schema": "openapi.json#/components/schemas/MailboxPage",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_A_0123456789",
+        "next_cursor": null,
+        "items": []
+      }
+    },
+    "threads": {
+      "schema": "openapi.json#/components/schemas/ThreadPage",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_A_0123456789",
+        "mailbox_id": "00000000-0000-4000-8000-000000000021",
+        "next_cursor": null,
+        "items": [
+          {
+            "id": "00000000-0000-4000-8000-000000000031",
+            "mailbox_id": "00000000-0000-4000-8000-000000000021",
+            "subject": null,
+            "subject_truncated": false,
+            "sender": null,
+            "preview_text": "<img src=\"https://example.invalid/pixel\"> & plaintext",
+            "last_message_at": "2026-10-12T00:00:00Z",
+            "unread": true,
+            "message_count": 1
+          }
+        ]
+      }
+    },
+    "threads_empty": {
+      "schema": "openapi.json#/components/schemas/ThreadPage",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_A_0123456789",
+        "mailbox_id": "00000000-0000-4000-8000-000000000021",
+        "next_cursor": null,
+        "items": []
+      }
+    },
+    "thread_hostile_plaintext": {
+      "schema": "openapi.json#/components/schemas/ThreadDetailPage",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_A_0123456789",
+        "next_cursor": null,
+        "thread": {
+          "id": "00000000-0000-4000-8000-000000000031",
+          "mailbox_id": "00000000-0000-4000-8000-000000000021",
+          "subject": null,
+          "subject_truncated": false,
+          "unread": true,
+          "message_count": 1
+        },
+        "messages": [
+          {
+            "id": "00000000-0000-4000-8000-000000000041",
+            "sender": null,
+            "to": [],
+            "sent_at": null,
+            "body_text": "<script>alert(1)</script>\n<img src=\"https://example.invalid/pixel\">\n[link](javascript:alert(1))\nhttps://example.invalid/do-not-fetch",
+            "body_truncated": false,
+            "attachment_count": 0
+          }
+        ]
+      }
+    },
+    "thread_empty": {
+      "schema": "openapi.json#/components/schemas/ThreadDetailPage",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_A_0123456789",
+        "next_cursor": null,
+        "thread": {
+          "id": "00000000-0000-4000-8000-000000000032",
+          "mailbox_id": "00000000-0000-4000-8000-000000000021",
+          "subject": null,
+          "subject_truncated": false,
+          "unread": true,
+          "message_count": 0
+        },
+        "messages": []
+      }
+    },
+    "thread_truncated": {
+      "schema": "openapi.json#/components/schemas/ThreadDetailPage",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_A_0123456789",
+        "next_cursor": "synthetic_next_cursor_2",
+        "thread": {
+          "id": "00000000-0000-4000-8000-000000000031",
+          "mailbox_id": "00000000-0000-4000-8000-000000000021",
+          "subject": null,
+          "subject_truncated": false,
+          "unread": true,
+          "message_count": 1
+        },
+        "messages": [
+          {
+            "id": "00000000-0000-4000-8000-000000000041",
+            "sender": null,
+            "to": [],
+            "sent_at": null,
+            "body_text": "Synthetic truncated message excerpt",
+            "body_truncated": true,
+            "attachment_count": 0
+          }
+        ]
+      }
+    },
+    "request_invalid": {
+      "schema": "openapi.json#/components/schemas/Error",
+      "status": 400,
+      "body": {
+        "code": "request_invalid",
+        "message": "Synthetic request invalid.",
+        "request_id": "fixture-request-001"
+      }
+    },
+    "cursor_invalid": {
+      "schema": "openapi.json#/components/schemas/Error",
+      "status": 400,
+      "body": {
+        "code": "cursor_invalid",
+        "message": "Synthetic cursor invalid.",
+        "request_id": "fixture-request-001"
+      }
+    },
+    "unauthenticated": {
+      "schema": "openapi.json#/components/schemas/Error",
+      "status": 401,
+      "body": {
+        "code": "unauthenticated",
+        "message": "Synthetic unauthenticated.",
+        "request_id": "fixture-request-001"
+      }
+    },
+    "not_available": {
+      "schema": "openapi.json#/components/schemas/Error",
+      "status": 404,
+      "body": {
+        "code": "not_available",
+        "message": "This item is unavailable.",
+        "request_id": "fixture-request-001"
+      }
+    },
+    "context_changed": {
+      "schema": "openapi.json#/components/schemas/Error",
+      "status": 409,
+      "body": {
+        "code": "context_changed",
+        "message": "Synthetic context changed.",
+        "request_id": "fixture-request-001"
+      }
+    },
+    "rate_limited": {
+      "schema": "openapi.json#/components/schemas/Error",
+      "status": 429,
+      "body": {
+        "code": "rate_limited",
+        "message": "Synthetic rate limited.",
+        "request_id": "fixture-request-001"
+      }
+    },
+    "internal_error": {
+      "schema": "openapi.json#/components/schemas/Error",
+      "status": 500,
+      "body": {
+        "code": "internal_error",
+        "message": "Synthetic internal error.",
+        "request_id": "fixture-request-001"
+      }
+    },
+    "temporarily_unavailable": {
+      "schema": "openapi.json#/components/schemas/Error",
+      "status": 503,
+      "body": {
+        "code": "temporarily_unavailable",
+        "message": "Synthetic temporarily unavailable.",
+        "request_id": "fixture-request-001"
+      }
+    }
+  },
+  "scenarios": [
+    {
+      "id": "stale_mailbox",
+      "steps": [
+        "Start mailbox A request",
+        "Switch to mailbox B and increment request generation",
+        "Resolve A success or error"
+      ],
+      "expect": "Neither response nor error mutates B state."
+    },
+    {
+      "id": "stale_session",
+      "steps": [
+        "Start actor A request",
+        "Replace context with session_b",
+        "Resolve A success or 401"
+      ],
+      "expect": "No A data appears and old A 401 does not clear current B state."
+    },
+    {
+      "id": "current_unauthenticated",
+      "steps": [
+        "Render session_a mail",
+        "Current request returns unauthenticated"
+      ],
+      "expect": "Clear sensitive state, abort outstanding requests, show session-unavailable UI."
+    },
+    {
+      "id": "authorization_changed",
+      "steps": [
+        "Send old authorization version",
+        "Return context_changed",
+        "Re-bootstrap exactly once"
+      ],
+      "expect": "No old data retained; repeated mismatch requires explicit retry."
+    },
+    {
+      "id": "cursor_recovery",
+      "steps": [
+        "Request a scoped page with expired/mismatched cursor",
+        "Return cursor_invalid",
+        "Retry first page once retaining filter"
+      ],
+      "expect": "No repeated recovery loop; no fabricated offset."
+    },
+    {
+      "id": "non_enumeration",
+      "steps": [
+        "Request nonexistent thread",
+        "Request inaccessible thread"
+      ],
+      "expect": "Identical status/code/message and UI; no foreign content."
+    },
+    {
+      "id": "transport_failures",
+      "steps": [
+        "Return malformed/wrong-content-type/oversized/redirected response or exceed timeout"
+      ],
+      "expect": "Deliberate bounded client error, no fallback to fixtures and no partial data."
+    },
+    {
+      "id": "hostile_plaintext",
+      "steps": [
+        "Render thread_hostile_plaintext"
+      ],
+      "expect": "Inert visible strings; no script, HTML, Markdown, autolink, image or attachment load."
+    },
+    {
+      "id": "separate_pagination",
+      "steps": [
+        "Load summary continuation",
+        "Load message continuation in selected thread"
+      ],
+      "expect": "Independent scoped cursors; detail continuation does not replace list cursor."
+    },
+    {
+      "id": "production_failure",
+      "steps": [
+        "Load production entrypoint",
+        "Make API unavailable"
+      ],
+      "expect": "Unavailable UI; no fixture modules/data in bundle or fixture fallback."
+    }
+  ],
+  "lifecycle_error_status_codes": {
+    "400": [
+      "request_invalid",
+      "cursor_invalid"
+    ],
+    "401": [
+      "unauthenticated",
+      "unauthenticated"
+    ],
+    "404": [
+      "not_available"
+    ],
+    "409": [
+      "context_changed"
+    ],
+    "429": [
+      "rate_limited"
+    ],
+    "500": [
+      "internal_error"
+    ],
+    "503": [
+      "temporarily_unavailable"
+    ]
+  },
+  "lifecycle_examples": {
+    "challenge": {
+      "schema": "openapi.json#/components/schemas/AuthChallenge",
+      "value": {
+        "csrf_token": "synthetic_challenge_token_00000001",
+        "expires_at": "2026-10-13T00:05:00Z"
+      }
+    },
+    "logout_pending": {
+      "schema": "openapi.json#/components/schemas/AuthLogout",
+      "value": {
+        "local_revoked": true,
+        "upstream_status": "pending"
+      }
+    },
+    "recovery_accepted": {
+      "schema": "openapi.json#/components/schemas/AuthAccepted",
+      "value": {
+        "accepted": true
+      }
+    }
+  },
+  "lifecycle_scenarios": [
+    "challenge_binds_session_and_pending_entry_without_auth_http",
+    "origin_csrf_duplicate_unknown_and_byte_checks_before_io",
+    "password_login_replaces_supplied_cookie_and_derives_organization",
+    "valid_identity_without_membership_returns_404_and_no_invented_session_payload",
+    "known_unknown_recovery_same_202_upstream_outage_503",
+    "callback_get_never_consumes_hash_or_follows_redirect_and_redacts_query",
+    "accept_sets_password_before_application_access",
+    "ambiguous_verify_never_replays_hash_password_pending_only_retries_password_step",
+    "refresh_expired_access_with_locally_valid_cookie_and_cookie_bound_challenge",
+    "concurrent_refresh_one_auth_call_loser_503_retry_after_1",
+    "logout_racing_late_refresh_never_resurrects_session",
+    "refresh_claim_past_original_request_deadline_revokes_without_replay",
+    "logout_local_global_commit_before_auth_and_survive_auth_outage",
+    "missing_deleted_wrong_user_auth_sid_and_policy_expiry_deny_reads",
+    "transient_or_malformed_auth_returns_503_without_cookie_deletion_or_mail",
+    "organization_switch_checks_membership_rotates_context_and_csrf",
+    "email_and_source_ip_rate_limits_both_enforced_without_trusting_forwarded_headers"
+  ],
+  "cd_setup": {
+    "description": "Separate synthetic C/D state; does not modify original A/B examples. Provision through guarded fixture routines, never infer permissions from IDs or email addresses.",
+    "actor_id": "00000000-0000-4000-8000-000000000001",
+    "organization_id": "00000000-0000-4000-8000-000000000011",
+    "mailbox_id": "00000000-0000-4000-8000-000000000023",
+    "thread_id": "00000000-0000-4000-8000-000000000033",
+    "current_organization_reader_id": "00000000-0000-4000-8000-000000000003",
+    "foreign_actor_id": "00000000-0000-4000-8000-000000000002",
+    "foreign_organization_id": "00000000-0000-4000-8000-000000000012",
+    "mailbox_visibility": "shared",
+    "actor_capabilities": {
+      "read": true,
+      "compose": true,
+      "approve_send": false,
+      "manage_members": true
+    },
+    "context_id": "context_A_0123456789",
+    "authorization_version": "authz_CD_0123456789",
+    "write_headers": {
+      "Origin": "https://mail.example.test",
+      "X-Session-Context": "context_A_0123456789",
+      "X-Authorization-Version": "authz_CD_0123456789",
+      "X-CSRF-Token": "fixture_cd_csrf_0123456789"
+    },
+    "timestamps_are_synthetic": true,
+    "cursors_are_synthetic": true
+  },
+  "cd_error_status_codes": {
+    "400": [
+      "request_invalid",
+      "cursor_invalid"
+    ],
+    "401": [
+      "unauthenticated"
+    ],
+    "404": [
+      "not_available"
+    ],
+    "409": [
+      "context_changed",
+      "draft_conflict",
+      "operation_mismatch",
+      "draft_consumed",
+      "assignment_conflict",
+      "membership_conflict"
+    ],
+    "429": [
+      "rate_limited"
+    ],
+    "500": [
+      "internal_error"
+    ],
+    "503": [
+      "temporarily_unavailable"
+    ]
+  },
+  "cd_requests": {
+    "draft_create_empty": {
+      "schema": "openapi.json#/components/schemas/DraftSaveInput",
+      "value": {
+        "mailbox_id": "00000000-0000-4000-8000-000000000023",
+        "operation_id": "00000000-0000-4000-8000-000000000061",
+        "expected_version": 0,
+        "subject": "",
+        "to": [],
+        "body_text": "",
+        "reply_to_thread_id": null
+      }
+    },
+    "draft_save_plaintext_b": {
+      "schema": "openapi.json#/components/schemas/DraftSaveInput",
+      "value": {
+        "mailbox_id": "00000000-0000-4000-8000-000000000023",
+        "operation_id": "00000000-0000-4000-8000-000000000062",
+        "expected_version": 1,
+        "subject": "Fixture draft",
+        "to": [
+          {
+            "display_name": null,
+            "address": null
+          },
+          {
+            "display_name": "Fixture recipient",
+            "address": "recipient@example.test"
+          }
+        ],
+        "body_text": "Draft plaintext <script>alert(1)</script>\nNo remote image: https://example.invalid/pixel\nUnicode: 📨",
+        "reply_to_thread_id": "00000000-0000-4000-8000-000000000033"
+      }
+    },
+    "read_true": {
+      "schema": "openapi.json#/components/schemas/ThreadReadStateInput",
+      "value": {
+        "mailbox_id": "00000000-0000-4000-8000-000000000023",
+        "read": true
+      }
+    },
+    "read_false": {
+      "schema": "openapi.json#/components/schemas/ThreadReadStateInput",
+      "value": {
+        "mailbox_id": "00000000-0000-4000-8000-000000000023",
+        "read": false
+      }
+    },
+    "assignment_set": {
+      "schema": "openapi.json#/components/schemas/ThreadAssignmentInput",
+      "value": {
+        "mailbox_id": "00000000-0000-4000-8000-000000000023",
+        "assignee_id": "00000000-0000-4000-8000-000000000003",
+        "expected_assignment_version": 0
+      }
+    },
+    "assignment_clear": {
+      "schema": "openapi.json#/components/schemas/ThreadAssignmentInput",
+      "value": {
+        "mailbox_id": "00000000-0000-4000-8000-000000000023",
+        "assignee_id": null,
+        "expected_assignment_version": 1
+      }
+    },
+    "note_create": {
+      "schema": "openapi.json#/components/schemas/ThreadNoteInput",
+      "value": {
+        "mailbox_id": "00000000-0000-4000-8000-000000000023",
+        "note_id": "00000000-0000-4000-8000-000000000071",
+        "body_text": "<img src=\"https://example.invalid/pixel\">\n[unsafe](javascript:alert(1))\nPlaintext note 📨"
+      }
+    },
+    "member_add_reader": {
+      "schema": "openapi.json#/components/schemas/MailboxMemberInput",
+      "value": {
+        "expected_membership_version": 1,
+        "capabilities": {
+          "compose": false,
+          "approve_send": false,
+          "manage_members": false
+        }
+      }
+    }
+  },
+  "cd_examples": {
+    "compose_mailboxes": {
+      "schema": "openapi.json#/components/schemas/MailboxPage",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_CD_0123456789",
+        "next_cursor": null,
+        "items": [
+          {
+            "id": "00000000-0000-4000-8000-000000000023",
+            "display_name": "C/D fixture mailbox",
+            "display_address": "collaboration@example.test",
+            "capabilities": {
+              "read": true,
+              "compose": true,
+              "approve_send": false,
+              "manage_members": true
+            }
+          }
+        ]
+      }
+    },
+    "draft_create_applied": {
+      "schema": "openapi.json#/components/schemas/DraftSaveResult",
+      "status": 200,
+      "body": {
+        "draft_id": "00000000-0000-4000-8000-000000000051",
+        "operation_id": "00000000-0000-4000-8000-000000000061",
+        "version": 1,
+        "state": "editable"
+      }
+    },
+    "draft_save_b_applied": {
+      "schema": "openapi.json#/components/schemas/DraftSaveResult",
+      "status": 200,
+      "body": {
+        "draft_id": "00000000-0000-4000-8000-000000000051",
+        "operation_id": "00000000-0000-4000-8000-000000000062",
+        "version": 2,
+        "state": "editable"
+      }
+    },
+    "draft_current_after_b": {
+      "schema": "openapi.json#/components/schemas/DraftResponse",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_CD_0123456789",
+        "draft": {
+          "id": "00000000-0000-4000-8000-000000000051",
+          "mailbox_id": "00000000-0000-4000-8000-000000000023",
+          "subject": "Fixture draft",
+          "to": [
+            {
+              "display_name": null,
+              "address": null
+            },
+            {
+              "display_name": "Fixture recipient",
+              "address": "recipient@example.test"
+            }
+          ],
+          "body_text": "Draft plaintext <script>alert(1)</script>\nNo remote image: https://example.invalid/pixel\nUnicode: 📨",
+          "reply_to_thread_id": "00000000-0000-4000-8000-000000000033",
+          "version": 2,
+          "state": "editable",
+          "created_at": "2026-10-13T00:00:00Z",
+          "updated_at": "2026-10-13T00:01:00Z"
+        }
+      }
+    },
+    "draft_consumed_read": {
+      "schema": "openapi.json#/components/schemas/DraftResponse",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_CD_0123456789",
+        "draft": {
+          "id": "00000000-0000-4000-8000-000000000051",
+          "mailbox_id": "00000000-0000-4000-8000-000000000023",
+          "subject": "Fixture draft",
+          "to": [
+            {
+              "display_name": null,
+              "address": null
+            },
+            {
+              "display_name": "Fixture recipient",
+              "address": "recipient@example.test"
+            }
+          ],
+          "body_text": "Draft plaintext <script>alert(1)</script>\nNo remote image: https://example.invalid/pixel\nUnicode: 📨",
+          "reply_to_thread_id": "00000000-0000-4000-8000-000000000033",
+          "version": 2,
+          "state": "consumed",
+          "created_at": "2026-10-13T00:00:00Z",
+          "updated_at": "2026-10-13T00:01:00Z"
+        }
+      }
+    },
+    "draft_summaries": {
+      "schema": "openapi.json#/components/schemas/DraftPage",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_CD_0123456789",
+        "mailbox_id": "00000000-0000-4000-8000-000000000023",
+        "next_cursor": null,
+        "items": [
+          {
+            "id": "00000000-0000-4000-8000-000000000051",
+            "mailbox_id": "00000000-0000-4000-8000-000000000023",
+            "subject": "Fixture draft",
+            "subject_truncated": false,
+            "reply_to_thread_id": "00000000-0000-4000-8000-000000000033",
+            "version": 2,
+            "state": "editable",
+            "updated_at": "2026-10-13T00:01:00Z"
+          }
+        ]
+      }
+    },
+    "draft_summaries_empty": {
+      "schema": "openapi.json#/components/schemas/DraftPage",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_CD_0123456789",
+        "mailbox_id": "00000000-0000-4000-8000-000000000023",
+        "next_cursor": null,
+        "items": []
+      }
+    },
+    "operation_a_after_b_or_consumption": {
+      "schema": "openapi.json#/components/schemas/DraftOperationResponse",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_CD_0123456789",
+        "operation": {
+          "operation_id": "00000000-0000-4000-8000-000000000061",
+          "mailbox_id": "00000000-0000-4000-8000-000000000023",
+          "draft_id": "00000000-0000-4000-8000-000000000051",
+          "outcome": "applied",
+          "expected_version": 0,
+          "version": 1,
+          "state": "editable",
+          "recorded_at": "2026-10-13T00:00:00Z",
+          "detail_expires_at": "2026-10-20T00:00:00Z"
+        }
+      }
+    },
+    "operation_conflict": {
+      "schema": "openapi.json#/components/schemas/DraftOperationResponse",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_CD_0123456789",
+        "operation": {
+          "operation_id": "00000000-0000-4000-8000-000000000063",
+          "mailbox_id": "00000000-0000-4000-8000-000000000023",
+          "draft_id": "00000000-0000-4000-8000-000000000051",
+          "outcome": "conflict",
+          "code": "draft_conflict",
+          "expected_version": 1,
+          "current_version": 2,
+          "state": "editable",
+          "recorded_at": "2026-10-13T00:01:00Z",
+          "detail_expires_at": "2026-10-20T00:01:00Z"
+        }
+      }
+    },
+    "operation_missing_draft_conflict": {
+      "schema": "openapi.json#/components/schemas/DraftOperationResponse",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_CD_0123456789",
+        "operation": {
+          "operation_id": "00000000-0000-4000-8000-000000000064",
+          "mailbox_id": "00000000-0000-4000-8000-000000000023",
+          "draft_id": "00000000-0000-4000-8000-000000000052",
+          "outcome": "conflict",
+          "code": "draft_conflict",
+          "expected_version": 1,
+          "current_version": 0,
+          "state": null,
+          "recorded_at": "2026-10-13T00:01:00Z",
+          "detail_expires_at": "2026-10-20T00:01:00Z"
+        }
+      }
+    },
+    "operation_consumed_conflict": {
+      "schema": "openapi.json#/components/schemas/DraftOperationResponse",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_CD_0123456789",
+        "operation": {
+          "operation_id": "00000000-0000-4000-8000-000000000065",
+          "mailbox_id": "00000000-0000-4000-8000-000000000023",
+          "draft_id": "00000000-0000-4000-8000-000000000051",
+          "outcome": "conflict",
+          "code": "draft_consumed",
+          "expected_version": 2,
+          "current_version": 2,
+          "state": "consumed",
+          "recorded_at": "2026-10-13T00:01:00Z",
+          "detail_expires_at": "2026-10-20T00:01:00Z"
+        }
+      }
+    },
+    "operation_expired": {
+      "schema": "openapi.json#/components/schemas/DraftOperationResponse",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_CD_0123456789",
+        "operation": {
+          "operation_id": "00000000-0000-4000-8000-000000000061",
+          "mailbox_id": "00000000-0000-4000-8000-000000000023",
+          "draft_id": "00000000-0000-4000-8000-000000000051",
+          "outcome": "expired"
+        }
+      }
+    },
+    "operation_unknown": {
+      "schema": "openapi.json#/components/schemas/DraftOperationResponse",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_CD_0123456789",
+        "operation": {
+          "operation_id": "00000000-0000-4000-8000-000000000066",
+          "mailbox_id": "00000000-0000-4000-8000-000000000023",
+          "draft_id": "00000000-0000-4000-8000-000000000052",
+          "outcome": "unknown"
+        }
+      }
+    },
+    "read_state_initial": {
+      "schema": "openapi.json#/components/schemas/ThreadReadState",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_CD_0123456789",
+        "thread_id": "00000000-0000-4000-8000-000000000033",
+        "mailbox_id": "00000000-0000-4000-8000-000000000023",
+        "read": false,
+        "read_state_version": 0,
+        "updated_at": null
+      }
+    },
+    "read_state_read": {
+      "schema": "openapi.json#/components/schemas/ThreadReadState",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_CD_0123456789",
+        "thread_id": "00000000-0000-4000-8000-000000000033",
+        "mailbox_id": "00000000-0000-4000-8000-000000000023",
+        "read": true,
+        "read_state_version": 1,
+        "updated_at": "2026-10-13T00:00:00Z"
+      }
+    },
+    "read_state_unread": {
+      "schema": "openapi.json#/components/schemas/ThreadReadState",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_CD_0123456789",
+        "thread_id": "00000000-0000-4000-8000-000000000033",
+        "mailbox_id": "00000000-0000-4000-8000-000000000023",
+        "read": false,
+        "read_state_version": 2,
+        "updated_at": "2026-10-13T00:01:00Z"
+      }
+    },
+    "assignment_initial": {
+      "schema": "openapi.json#/components/schemas/ThreadAssignment",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_CD_0123456789",
+        "thread_id": "00000000-0000-4000-8000-000000000033",
+        "mailbox_id": "00000000-0000-4000-8000-000000000023",
+        "assignee_id": null,
+        "assignment_version": 0,
+        "updated_at": null
+      }
+    },
+    "assignment_set": {
+      "schema": "openapi.json#/components/schemas/ThreadAssignment",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_CD_0123456789",
+        "thread_id": "00000000-0000-4000-8000-000000000033",
+        "mailbox_id": "00000000-0000-4000-8000-000000000023",
+        "assignee_id": "00000000-0000-4000-8000-000000000003",
+        "assignment_version": 1,
+        "updated_at": "2026-10-13T00:00:00Z"
+      }
+    },
+    "assignment_cleared": {
+      "schema": "openapi.json#/components/schemas/ThreadAssignment",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_CD_0123456789",
+        "thread_id": "00000000-0000-4000-8000-000000000033",
+        "mailbox_id": "00000000-0000-4000-8000-000000000023",
+        "assignee_id": null,
+        "assignment_version": 2,
+        "updated_at": "2026-10-13T00:01:00Z"
+      }
+    },
+    "note_created": {
+      "schema": "openapi.json#/components/schemas/ThreadNoteResponse",
+      "status": 201,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_CD_0123456789",
+        "thread_id": "00000000-0000-4000-8000-000000000033",
+        "mailbox_id": "00000000-0000-4000-8000-000000000023",
+        "note": {
+          "id": "00000000-0000-4000-8000-000000000071",
+          "author_id": "00000000-0000-4000-8000-000000000001",
+          "body_text": "<img src=\"https://example.invalid/pixel\">\n[unsafe](javascript:alert(1))\nPlaintext note 📨",
+          "version": 1,
+          "created_at": "2026-10-13T00:00:00Z"
+        }
+      }
+    },
+    "note_replayed": {
+      "schema": "openapi.json#/components/schemas/ThreadNoteResponse",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_CD_0123456789",
+        "thread_id": "00000000-0000-4000-8000-000000000033",
+        "mailbox_id": "00000000-0000-4000-8000-000000000023",
+        "note": {
+          "id": "00000000-0000-4000-8000-000000000071",
+          "author_id": "00000000-0000-4000-8000-000000000001",
+          "body_text": "<img src=\"https://example.invalid/pixel\">\n[unsafe](javascript:alert(1))\nPlaintext note 📨",
+          "version": 1,
+          "created_at": "2026-10-13T00:00:00Z"
+        }
+      }
+    },
+    "notes": {
+      "schema": "openapi.json#/components/schemas/ThreadNotePage",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_CD_0123456789",
+        "thread_id": "00000000-0000-4000-8000-000000000033",
+        "mailbox_id": "00000000-0000-4000-8000-000000000023",
+        "next_cursor": null,
+        "items": [
+          {
+            "id": "00000000-0000-4000-8000-000000000071",
+            "author_id": "00000000-0000-4000-8000-000000000001",
+            "body_text": "<img src=\"https://example.invalid/pixel\">\n[unsafe](javascript:alert(1))\nPlaintext note 📨",
+            "version": 1,
+            "created_at": "2026-10-13T00:00:00Z"
+          }
+        ]
+      }
+    },
+    "notes_empty": {
+      "schema": "openapi.json#/components/schemas/ThreadNotePage",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_CD_0123456789",
+        "thread_id": "00000000-0000-4000-8000-000000000033",
+        "mailbox_id": "00000000-0000-4000-8000-000000000023",
+        "next_cursor": null,
+        "items": []
+      }
+    },
+    "members": {
+      "schema": "openapi.json#/components/schemas/MailboxMemberPage",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_CD_0123456789",
+        "mailbox_id": "00000000-0000-4000-8000-000000000023",
+        "membership_version": 1,
+        "next_cursor": null,
+        "items": [
+          {
+            "user_id": "00000000-0000-4000-8000-000000000001",
+            "capabilities": {
+              "compose": true,
+              "approve_send": false,
+              "manage_members": true
+            }
+          }
+        ]
+      }
+    },
+    "membership_added": {
+      "schema": "openapi.json#/components/schemas/MailboxMembershipResult",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_CD_0123456789",
+        "mailbox_id": "00000000-0000-4000-8000-000000000023",
+        "user_id": "00000000-0000-4000-8000-000000000003",
+        "membership_version": 2,
+        "member": {
+          "user_id": "00000000-0000-4000-8000-000000000003",
+          "capabilities": {
+            "compose": false,
+            "approve_send": false,
+            "manage_members": false
+          }
+        }
+      }
+    },
+    "membership_deleted": {
+      "schema": "openapi.json#/components/schemas/MailboxMembershipResult",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_CD_0123456789",
+        "mailbox_id": "00000000-0000-4000-8000-000000000023",
+        "user_id": "00000000-0000-4000-8000-000000000003",
+        "membership_version": 3,
+        "member": null
+      }
+    },
+    "search_literal_plaintext": {
+      "schema": "openapi.json#/components/schemas/SearchPage",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_CD_0123456789",
+        "q": "<img",
+        "mailbox_id": "00000000-0000-4000-8000-000000000023",
+        "next_cursor": null,
+        "items": [
+          {
+            "id": "00000000-0000-4000-8000-000000000033",
+            "mailbox_id": "00000000-0000-4000-8000-000000000023",
+            "subject": "Synthetic thread",
+            "subject_truncated": false,
+            "sender": {
+              "display_name": "Fixture sender",
+              "address": "sender@example.test"
+            },
+            "preview_text": "<img src=\"https://example.invalid/pixel\"> & plaintext",
+            "last_message_at": "2026-10-13T00:00:00Z",
+            "unread": true,
+            "message_count": 1
+          }
+        ]
+      }
+    },
+    "search_empty": {
+      "schema": "openapi.json#/components/schemas/SearchPage",
+      "status": 200,
+      "body": {
+        "context_id": "context_A_0123456789",
+        "authorization_version": "authz_CD_0123456789",
+        "q": "no matching fixture text",
+        "mailbox_id": null,
+        "next_cursor": null,
+        "items": []
+      }
+    },
+    "request_invalid": {
+      "schema": "openapi.json#/components/schemas/CollaborationError",
+      "status": 400,
+      "body": {
+        "code": "request_invalid",
+        "message": "Synthetic request invalid.",
+        "request_id": "fixture-cd-request-001"
+      }
+    },
+    "cursor_invalid": {
+      "schema": "openapi.json#/components/schemas/CollaborationError",
+      "status": 400,
+      "body": {
+        "code": "cursor_invalid",
+        "message": "Synthetic cursor invalid.",
+        "request_id": "fixture-cd-request-001"
+      }
+    },
+    "unauthenticated": {
+      "schema": "openapi.json#/components/schemas/CollaborationError",
+      "status": 401,
+      "body": {
+        "code": "unauthenticated",
+        "message": "Synthetic unauthenticated.",
+        "request_id": "fixture-cd-request-001"
+      }
+    },
+    "not_available": {
+      "schema": "openapi.json#/components/schemas/CollaborationError",
+      "status": 404,
+      "body": {
+        "code": "not_available",
+        "message": "This item is unavailable.",
+        "request_id": "fixture-cd-request-001"
+      }
+    },
+    "context_changed": {
+      "schema": "openapi.json#/components/schemas/CollaborationError",
+      "status": 409,
+      "body": {
+        "code": "context_changed",
+        "message": "Synthetic context changed.",
+        "request_id": "fixture-cd-request-001"
+      }
+    },
+    "draft_conflict": {
+      "schema": "openapi.json#/components/schemas/CollaborationError",
+      "status": 409,
+      "body": {
+        "code": "draft_conflict",
+        "message": "Synthetic draft conflict.",
+        "request_id": "fixture-cd-request-001"
+      }
+    },
+    "operation_mismatch": {
+      "schema": "openapi.json#/components/schemas/CollaborationError",
+      "status": 409,
+      "body": {
+        "code": "operation_mismatch",
+        "message": "Synthetic operation mismatch.",
+        "request_id": "fixture-cd-request-001"
+      }
+    },
+    "draft_consumed": {
+      "schema": "openapi.json#/components/schemas/CollaborationError",
+      "status": 409,
+      "body": {
+        "code": "draft_consumed",
+        "message": "Synthetic draft consumed.",
+        "request_id": "fixture-cd-request-001"
+      }
+    },
+    "assignment_conflict": {
+      "schema": "openapi.json#/components/schemas/CollaborationError",
+      "status": 409,
+      "body": {
+        "code": "assignment_conflict",
+        "message": "Synthetic assignment conflict.",
+        "request_id": "fixture-cd-request-001"
+      }
+    },
+    "membership_conflict": {
+      "schema": "openapi.json#/components/schemas/CollaborationError",
+      "status": 409,
+      "body": {
+        "code": "membership_conflict",
+        "message": "Synthetic membership conflict.",
+        "request_id": "fixture-cd-request-001"
+      }
+    },
+    "rate_limited": {
+      "schema": "openapi.json#/components/schemas/CollaborationError",
+      "status": 429,
+      "body": {
+        "code": "rate_limited",
+        "message": "Synthetic rate limited.",
+        "request_id": "fixture-cd-request-001"
+      }
+    },
+    "internal_error": {
+      "schema": "openapi.json#/components/schemas/CollaborationError",
+      "status": 500,
+      "body": {
+        "code": "internal_error",
+        "message": "Synthetic internal error.",
+        "request_id": "fixture-cd-request-001"
+      }
+    },
+    "temporarily_unavailable": {
+      "schema": "openapi.json#/components/schemas/CollaborationError",
+      "status": 503,
+      "body": {
+        "code": "temporarily_unavailable",
+        "message": "Synthetic temporarily unavailable.",
+        "request_id": "fixture-cd-request-001"
+      }
+    }
+  },
+  "cd_scenarios": [
+    {
+      "id": "cd_local_revoked_before_context",
+      "steps": [
+        "Use a syntactically valid C/D request with locally revoked session and stale context."
+      ],
+      "expect": "401 unauthenticated, never 409 or protected payload; no write."
+    },
+    {
+      "id": "cd_current_context_and_write_proofs",
+      "steps": [
+        "Use valid session with stale context.",
+        "Separately use current context with missing/wrong Origin or session CSRF, including a lifecycle challenge."
+      ],
+      "expect": "Stale context gives 409 context_changed; invalid write proof gives 400 request_invalid; no mutation or ledger."
+    },
+    {
+      "id": "cd_foreign_non_enumeration",
+      "steps": [
+        "Request absent, foreign-organization, foreign-author draft and inaccessible private mailbox resources.",
+        "Try mismatched mailbox/thread IDs and membership targets outside the selected organization."
+      ],
+      "expect": "404 not_available with exactly This item is unavailable.; no distinguishing identity, version, subject or snippet."
+    },
+    {
+      "id": "cd_raw_boundary_rejection",
+      "steps": [
+        "Repeat query names with equal/different values or percent-encoded aliases; use bracket arrays.",
+        "Send duplicate JSON keys at nested Address/capabilities depth, unknown fields, malformed UTF-8, malformed UUID, U+0000 or unpaired surrogate."
+      ],
+      "expect": "400 request_invalid before merge or mutation; no actor/org/capability supplied in place of server authority."
+    },
+    {
+      "id": "cd_deadline_and_dependency_failure",
+      "steps": [
+        "Timeout Auth before transaction, SQL lock, or complete request serialization.",
+        "Separately throttle a request."
+      ],
+      "expect": "Bounded 503 temporarily_unavailable or 429 rate_limited, no mail content or claimed not-performed outcome; retain draft buffer and operation ID."
+    },
+    {
+      "id": "cd_snapshot_and_revocation_guard",
+      "steps": [
+        "Barrier a protected read before/after snapshot S and commit a guarded membership revocation.",
+        "Race the corresponding write with revocation using fixed session/generation/business lock order."
+      ],
+      "expect": "Before-S revocation is observed; after-S at most one complete old snapshot within 10 seconds; write either commits before guarded revocation or rechecks new authority."
+    },
+    {
+      "id": "draft_empty_create",
+      "steps": [
+        "PUT cd_requests.draft_create_empty at a fresh own UUID.",
+        "GET own draft and list own summaries."
+      ],
+      "expect": "200 draft_create_applied version 1; exact empty fields persist; no sending or implicit read-state change."
+    },
+    {
+      "id": "draft_lost_a_then_b",
+      "steps": [
+        "Apply create operation A but lose its response.",
+        "Apply operation B at expected_version 1.",
+        "Retry exact A and GET operation A."
+      ],
+      "expect": "Retry A is original draft_create_applied version 1; operation lookup is operation_a_after_b_or_consumption; current draft remains B version 2."
+    },
+    {
+      "id": "draft_original_applied_after_consumption",
+      "steps": [
+        "Start from an already consumed reserved-state fixture with a prior applied A ledger.",
+        "Retry exact A, then try a new operation against that draft."
+      ],
+      "expect": "A still returns its original editable version 1 result; new operation returns 409 draft_consumed with recorded metadata; BE-02 exposes no consume action."
+    },
+    {
+      "id": "draft_conflict_replay",
+      "steps": [
+        "Save with stale expected_version under a fresh operation ID.",
+        "Change the current draft through another valid operation.",
+        "Retry exact conflicted operation and look it up."
+      ],
+      "expect": "409 draft_conflict replays; lookup reports the originally recorded current_version/state, not new content or current versions."
+    },
+    {
+      "id": "draft_missing_positive_version",
+      "steps": [
+        "Use expected_version 1 for an absent own draft with a new operation ID.",
+        "Look up that operation."
+      ],
+      "expect": "409 draft_conflict; operation_missing_draft_conflict with current_version 0 and state null; no draft created."
+    },
+    {
+      "id": "draft_operation_digest_or_binding_change",
+      "steps": [
+        "Retry a known operation with changed subject, Address null versus empty value, recipient order, expected version, reply, body, draft or mailbox.",
+        "Keep any changed binding currently authorized."
+      ],
+      "expect": "409 operation_mismatch; original ledger/draft unchanged; object-key order and UUID case alone do not change digest."
+    },
+    {
+      "id": "draft_parallel_identical",
+      "steps": [
+        "Submit identical operation and payload concurrently from two processes."
+      ],
+      "expect": "Both terminal responses converge on one original applied result; one draft increment and one actor/org/operation ledger row."
+    },
+    {
+      "id": "draft_parallel_different_payload",
+      "steps": [
+        "Submit two different payloads under one actor/org/operation ID concurrently."
+      ],
+      "expect": "At most one terminal record wins; authorized other request gets 409 operation_mismatch, never a second save."
+    },
+    {
+      "id": "draft_atomicity_and_disconnect",
+      "steps": [
+        "Crash/roll back before draft plus ledger commit.",
+        "Separately drop connection immediately after commit."
+      ],
+      "expect": "Rollback leaves neither mutation nor terminal ledger; post-commit retry reconciles original outcome; network failure alone establishes neither case."
+    },
+    {
+      "id": "draft_unknown_not_notperformed",
+      "steps": [
+        "Lookup an unknown operation before an in-flight create commits.",
+        "Then allow create to commit and repeat lookup."
+      ],
+      "expect": "First authorized result may be unknown, second applied; unknown never proves not performed and does not trigger a new operation or send."
+    },
+    {
+      "id": "draft_expiry_tombstone",
+      "steps": [
+        "Lookup at recorded_at + 7 days minus one microsecond, then exactly +7 days.",
+        "Repeat exact PUT after expiry and restart ledger cleanup."
+      ],
+      "expect": "Before boundary original detail; at/after boundary expired; PUT 409 operation_mismatch; compacted binding/digest tombstone survives with no BE-02 purge or reexecution."
+    },
+    {
+      "id": "draft_current_authority_before_replay",
+      "steps": [
+        "Revoke compose or organization/mailbox access after a successful save.",
+        "Retry or look up original operation."
+      ],
+      "expect": "Current authority checked first; stale valid context 409, current inaccessible scope 404, revoked session 401; ledger success does not restore access."
+    },
+    {
+      "id": "draft_reply_and_payload_limits",
+      "steps": [
+        "Save non-null reply in same readable mailbox, then foreign/other-mailbox reply.",
+        "Exercise cd_boundary_recipes at/above limits with actual serializer."
+      ],
+      "expect": "Valid payload persists exactly; invalid reply generic 404; above limits 400 request_invalid; no invalid terminal record or partial save."
+    },
+    {
+      "id": "draft_summary_pagination",
+      "steps": [
+        "Create equal updated_at values and subjects over 256 code points, including non-BMP characters.",
+        "Page with small limit and 256 KiB escaped budget; change a draft between pages."
+      ],
+      "expect": "updated_at DESC/id DESC; summaries omit body/recipients and truthfully truncate subject; whole entries/cursor from last included; no cross-page snapshot guarantee, client deduplicates/refetches."
+    },
+    {
+      "id": "read_state_explicit_and_idempotent",
+      "steps": [
+        "GET thread without read state.",
+        "PUT read=true twice, then false.",
+        "Observe B list/detail for the same and another actor."
+      ],
+      "expect": "GET never writes; true returns version 1 twice; false version 2; actor unread is exact inverse; other actor unaffected."
+    },
+    {
+      "id": "read_state_concurrent_and_invalid",
+      "steps": [
+        "Serialize opposing valid read booleans.",
+        "Try non-reader and body actor_id/read:null."
+      ],
+      "expect": "Last committed valid write wins; unauthorized scope 404, invalid closed input 400; no cross-actor state write."
+    },
+    {
+      "id": "assignment_version_and_clear",
+      "steps": [
+        "GET initial assignment; assign eligible peer with version 0; replay with current version 1; clear with version 1.",
+        "Retry old expected version after a change."
+      ],
+      "expect": "Versions 0,1,1,2; no-op preserves timestamp; stale request 409 assignment_conflict even if desired value currently matches."
+    },
+    {
+      "id": "assignment_target_revocation",
+      "steps": [
+        "Try foreign/ineligible target.",
+        "Race eligible target revocation against assignment through generation guards."
+      ],
+      "expect": "Ineligible target generic 404; assignment commits before revocation or observes new ineligibility; historical stored IDs never grant permission."
+    },
+    {
+      "id": "notes_idempotency",
+      "steps": [
+        "POST note_create twice including concurrent identical requests.",
+        "GET notes."
+      ],
+      "expect": "201 then 200 same id/author/content/version 1/created_at; exactly one immutable note."
+    },
+    {
+      "id": "notes_conflict_and_foreign_id",
+      "steps": [
+        "Reuse own visible note ID with different body or accessible thread binding.",
+        "Reuse another author's or hidden note ID."
+      ],
+      "expect": "Own visible mismatch 409 operation_mismatch; other-author/hidden ID generic 404; no changes."
+    },
+    {
+      "id": "notes_plaintext_and_limits",
+      "steps": [
+        "Render cd_examples.notes literally.",
+        "Use empty body, 4096/4097 code points, unknown fields and bytes above request budget."
+      ],
+      "expect": "No HTML/Markdown/autolink or network fetch; empty/oversize/unknown input 400; exact 4096 code points fits configured request budget even worst escaping."
+    },
+    {
+      "id": "notes_order_and_budget",
+      "steps": [
+        "List multiple notes with equal created_at and enough notes to exceed 256 KiB after escaping."
+      ],
+      "expect": "created_at ASC/id ASC; at most 50 whole notes; progress cursor from last included row; no skipped note, unbounded total or partial JSON."
+    },
+    {
+      "id": "members_guarded_versions",
+      "steps": [
+        "List as current manager, add current-org explicit reader with returned revision, PUT same flags with current revision, DELETE with current revision."
+      ],
+      "expect": "Mailbox-wide revision increments once per stored change, no-op preserves revision; affected generations advance; deleting explicit shared membership may leave shared read."
+    },
+    {
+      "id": "members_last_manager_race",
+      "steps": [
+        "Two current managers concurrently attempt to demote/delete themselves at the same mailbox revision.",
+        "Retry after conflict with latest revision."
+      ],
+      "expect": "At most one initial change; no committed result removes the last current manager; conflicts are 409 membership_conflict unless session/context/authority invalidation takes precedence."
+    },
+    {
+      "id": "members_nonmanager_and_target_scope",
+      "steps": [
+        "List or mutate as non-manager.",
+        "As manager target a user outside current organization or inject read/role/actor fields."
+      ],
+      "expect": "Non-manager/foreign target generic 404; unknown fields 400; no implicit provisioning or organization directory."
+    },
+    {
+      "id": "members_delete_and_cursor",
+      "steps": [
+        "DELETE an absent explicit current-org member at current mailbox revision, then at stale revision.",
+        "Change another member between list pages."
+      ],
+      "expect": "Current absent delete is no-op with null member; stale version 409 membership_conflict; stale membership cursor 400 cursor_invalid after current auth/context checks."
+    },
+    {
+      "id": "search_scoping_and_plaintext",
+      "steps": [
+        "Search hostile plaintext present in authorized and foreign/private unreadable messages.",
+        "Restrict to authorized mailbox, then inaccessible mailbox."
+      ],
+      "expect": "Only authorized unchanged ThreadSummary entries, one per thread, no counts/body/highlights; inaccessible requested mailbox generic 404; rendering performs no fetch."
+    },
+    {
+      "id": "search_literal_and_query_limits",
+      "steps": [
+        "Search literal percent, underscore, backslash, apostrophe and mixed-case substring.",
+        "Try missing/empty/whitespace-only/257-code-point/duplicate q or limit 0/51."
+      ],
+      "expect": "Metacharacters never alter query structure or act as wildcards; valid literal search succeeds; invalid boundaries 400 request_invalid."
+    },
+    {
+      "id": "search_order_and_cursor",
+      "steps": [
+        "Search threads with equal and null last_message_at; page at max 50 and 256 KiB.",
+        "Reuse cursor with changed q/mailbox/limit/actor/context/authorization generation or after expiry."
+      ],
+      "expect": "last_message_at DESC NULLS LAST/id DESC; cursor bound to exact filters and scope; invalid cursor 400 after higher-priority current auth/context checks; no data from old scope."
+    },
+    {
+      "id": "cd_noop_and_version_exhaustion",
+      "steps": [
+        "Perform read-state/assignment/membership no-op at maximum revision with matching precondition where required.",
+        "Attempt a changing write at maximum revision."
+      ],
+      "expect": "No-op returns existing revision; changing write 503 temporarily_unavailable before mutation, never integer wrap; a draft save always changes revision."
+    }
+  ],
+  "cd_boundary_recipes": [
+    {
+      "id": "draft_fields_at_limit",
+      "base_request": "cd_requests.draft_create_empty",
+      "replace": {
+        "subject": {
+          "repeat": "📨",
+          "count": 998
+        },
+        "to": {
+          "repeat": {
+            "display_name": null,
+            "address": null
+          },
+          "count": 100
+        },
+        "body_text": {
+          "repeat": "📨",
+          "count": 65536
+        }
+      },
+      "expect": "Valid field lengths; serialized UTF-8 JSON <=1048576 bytes must save."
+    },
+    {
+      "id": "draft_fields_above_limit",
+      "base_request": "cd_requests.draft_create_empty",
+      "independent_replacements": {
+        "subject": {
+          "repeat": "x",
+          "count": 999
+        },
+        "to": {
+          "repeat": {
+            "display_name": null,
+            "address": null
+          },
+          "count": 101
+        },
+        "body_text": {
+          "repeat": "x",
+          "count": 65537
+        }
+      },
+      "expect": "Each independent replacement is 400 request_invalid."
+    },
+    {
+      "id": "draft_json_bytes",
+      "base_request": "cd_requests.draft_create_empty",
+      "recipe": "Use legal JSON whitespace after the value to make exactly 1048576 raw UTF-8 bytes, then 1048577 bytes; no Content-Encoding.",
+      "expect": "Exact budget accepted; one byte above is 400 request_invalid; measure raw received bytes, not parsed object size."
+    },
+    {
+      "id": "draft_get_serialized_maximum",
+      "base_request": "cd_requests.draft_create_empty",
+      "replace": {
+        "subject": {
+          "repeat_code_point": "U+001F",
+          "count": 998
+        },
+        "to": {
+          "repeat": {
+            "display_name": {
+              "repeat_code_point": "U+001F",
+              "count": 256
+            },
+            "address": {
+              "repeat_code_point": "U+001F",
+              "count": 256
+            }
+          },
+          "count": 100
+        },
+        "body_text": {
+          "repeat_code_point": "U+001F",
+          "count": 65536
+        }
+      },
+      "expect": "Build decoded control characters, JSON-escape them; legal request <=1 MiB and complete DraftResponse <=2 MiB without truncation. U+0000 remains forbidden."
+    },
+    {
+      "id": "note_unicode_limit",
+      "base_request": "cd_requests.note_create",
+      "replace": {
+        "body_text": {
+          "repeat": "📨",
+          "count": 4096
+        }
+      },
+      "expect": "4096 code points accepted, 4097 rejected; do not count UTF-16 code units."
+    },
+    {
+      "id": "note_escape_budget",
+      "base_request": "cd_requests.note_create",
+      "replace": {
+        "body_text": {
+          "repeat_code_point": "U+001F",
+          "count": 4096
+        }
+      },
+      "expect": "Actual JSON response note <=65536 bytes; a 50-note list shrinks below 262144 bytes using whole entries."
+    },
+    {
+      "id": "search_unicode_limit",
+      "recipe": "q is 256 repeated U+1F4E8 code points, then 257; decode percent-encoding once before counting.",
+      "expect": "256 accepted, 257 gives 400; no Unicode normalization changes q or cursor binding."
+    },
+    {
+      "id": "version_limit",
+      "recipe": "Use expected version 2147483647, then 2147483648, then negative/fractional/string values; maximum stored state has a separate valid fixture.",
+      "expect": "Out-of-range/type-invalid values 400; correct maximum changing write 503; no-op at maximum remains valid."
+    }
+  ]
+}

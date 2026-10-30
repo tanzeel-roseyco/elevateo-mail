@@ -1,0 +1,24 @@
+{
+  "project": "be02-e141bc46bcd943f2b61ea62568eb722a",
+  "checks": {
+    "containers:elevateo.be02.project=": true,
+    "containers:com.docker.compose.project=": true,
+    "containers:names": true,
+    "volumes:elevateo.be02.project=": true,
+    "volumes:com.docker.compose.project=": true,
+    "volumes:names": true,
+    "networks:elevateo.be02.project=": true,
+    "networks:com.docker.compose.project=": true,
+    "networks:names": true,
+    "images:elevateo.be02.project=": true,
+    "images:com.docker.compose.project=": true,
+    "images:names": true,
+    "builder_absent": true,
+    "environment_absent": true,
+    "source_unchanged": true,
+    "reported_cleanup": true
+  },
+  "passed": true,
+  "free_bytes": 266433044480,
+  "scope": "read-only exact task reconciliation; shared resources retained"
+}

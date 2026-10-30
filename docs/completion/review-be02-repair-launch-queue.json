@@ -1,0 +1,1093 @@
+{
+  "schema": "be02-bounded-review-launch-queue-v1",
+  "ownerTaskId": "task_5ca99abe0ad6",
+  "ownerDispatchId": "ctx_a6d6f2a5112b",
+  "dispatchRunId": "run_5cc7ae2ab900",
+  "reviewCoordinatorRunId": "run_0aea8ea31d1f",
+  "sourceRoot": "C:/Users/Tanzeel/Code and projects/Elevateo Mail - BE02 Codex",
+  "instructions": "Root launches this full independent wave as real Orca workers at depth1, monitors/replies/releases and forwards evidence. Ordinary model/effort null means omit flags and retain authenticated Codex defaults. Design explicitly requests gpt-6-astra/max. No worker created by blocked depth2 launch (effectsApplied=false). No source edits or runtime execution.",
+  "assignments": [
+    {
+      "taskKey": "draft-boundaries",
+      "title": "BE02 repair review: draft-boundaries",
+      "agent": "codex",
+      "model": null,
+      "effort": null,
+      "outputPath": "C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-draft-boundaries.md",
+      "uniqueSourceLines": 280,
+      "passes": [
+        {
+          "pass": 1,
+          "physicalLines": 83,
+          "slices": [
+            {
+              "path": "apps/server/test/be_02/draft_payload_test.rb",
+              "a": 1,
+              "b": 83,
+              "sha256": "2dd71fc87f9ab386f0a94afb6c3db88f0af92d23510d9f637d669097cfa7ad54"
+            }
+          ]
+        },
+        {
+          "pass": 2,
+          "physicalLines": 197,
+          "slices": [
+            {
+              "path": "apps/server/test/be_02/draft_reads_test.rb",
+              "a": 1,
+              "b": 121,
+              "sha256": "00acc66dc1cbba3e87d9d6b21a9709d146b3e2043359f7b592211e5d49d339b6"
+            },
+            {
+              "path": "apps/server/test/be_02/draft_database_test_helper.rb",
+              "a": 1,
+              "b": 76,
+              "sha256": "93f8e02b887400cc646719fe45a89ba147533a77c4d68e32c3f76cc9a1051e5e"
+            }
+          ]
+        }
+      ],
+      "frozenManifests": [
+        {
+          "path": "docs/completion/be02-draft-test-repair.md",
+          "sha256": "456ee9c6ca560c89d93538335eb493076bba40db1493ee6bd630a4eb7a777052"
+        }
+      ],
+      "spec": "You are an independent read-only Orca adversarial correctness reviewer for a completed BE02 repair. Target source root: C:/Users/Tanzeel/Code and projects/Elevateo Mail - BE02 Codex. Coordinator checkout: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion. You may write ONLY your unique report: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-draft-boundaries.md. No source, tests, root docs/code-reviews, commits or fixes. No native subagents or extra agent/model calls. No host application tests, syntax execution, Docker, SSH, purchases, ultrareviews, Devin sessions, live activation or external posts. Report through live Orca preamble; one worker_done exactly once and idle. No further successive assignments permitted under this review allowance.\nRead applicable AGENTS.md, current README/state/documentation, .planning/STANDARDS.md and AGENT_ORCHESTRATION.md. Latest dispatch controls supersede historical routing. Read prose repair manifest(s) at BE02 docs/completion/be02-draft-test-repair.md and original coordinator reports docs/completion/review-be02-draft-test-boundaries.md, plus frozen be02-cd-contract.md/implementation briefs as needed for published interfaces. Documentation prose is context; do not expand source by reading code snippets outside the owned ranges.\nREQUIRED FULL REVIEW RUBRIC:\nDoes this code work? Verify that the code actually fulfills the purpose of the feature or bug fix. Check if the author considered null inputs, empty lists, and max limits. Ensure that changes to state or data structures don't inadvertently break other parts of the entire system. Ensure the developer isn't over-engineering or building things they might need in the future but don't actually know they need now. Check that new classes or functions aren't trying to do too much. Look out for duplicated logic that should be extracted into a shared utility or service. Ensure variable, function, and class names communicate their intent clearly. Check that comments explain why something exists, not just what the code does. Look for deeply nested loops or convoluted conditionals that could be simplified to help future developers read it easily. Confirm that unit and/or integration tests are included and directly cover the changed logic or new feature. Ensure the tests cover both the happy path and failure scenarios. Check if the author has updated relevant documentation. Make sure external inputs are sanitised and permission/authorisation checks are properly enforced. Watch out for unnecessary loops, repeated database queries in hot paths, or operations that could cause bottlenecks.\nOwnership/source allowance: each pass <=200 physical source lines INCLUDING blanks/comments/helper/context. Total <=400 unique source lines for this entire assignment; do not read transitive implementation or extra helpers. Metadata counts/hash may inspect whole files but source content only these ranges. Verify hashes BEFORE review and again before completion; any drift stops affected review and must be reported, not silently retargeted. Read source passes separately, report exact per-pass and unique coverage. Any unavailable interface: ask coordinator for a prose summary instead of exceeding allowance.\nPass 1 (83 physical lines):\napps/server/test/be_02/draft_payload_test.rb:1-83; full-file SHA256 2dd71fc87f9ab386f0a94afb6c3db88f0af92d23510d9f637d669097cfa7ad54\nPass 2 (197 physical lines):\napps/server/test/be_02/draft_reads_test.rb:1-121; full-file SHA256 00acc66dc1cbba3e87d9d6b21a9709d146b3e2043359f7b592211e5d49d339b6\napps/server/test/be_02/draft_database_test_helper.rb:1-76; full-file SHA256 93f8e02b887400cc646719fe45a89ba147533a77c4d68e32c3f76cc9a1051e5e\nTotal assignment 280 unique physical lines. Focus: DTB-03/04/05/06: valid100/101 recipients; ordered digest exact bytes and neutral object keys; included versus lookahead cursor plus equal timestamp tie breaker; absent detail exact code/status/message. Helper setup preserves intent and cannot be mistaken for runtime race evidence.\nAcceptance: durable report with actual terminal/task/dispatch and requested versus observed model if available, exact source hashes/physical ranges, conformance checklist covering purpose, boundary/null/empty/max, state/cross-module coupling, tests happy/failure and evidence limits, comments/docs, security/performance as relevant. Delegate formatting to lint; lint NOT_RUN here. For EACH old finding state statically addressed/not addressed/unknown and rationale. Confirmed new defects require severity, exact source/hash/location, violated invariant, concrete analytical reproduction/mutant, minimal repair and acceptance criterion; report high-confidence findings immediately via Orca to this coordinator. Do not invent defects from omitted context. Distinguish duplicate findings, evidence gaps and actual defects. Include observed defect count and defects/KLOC; zero only when actually observed in bounded review. All runtime acceptance remains NOT_RUN. Obsidian is unavailable; analytical schedules must not be described as execution. Report integration/behavior test gaps to root; no permission to edit. Read coordinator mail at natural checkpoints and immediately before worker_done."
+    },
+    {
+      "taskKey": "draft-authorization",
+      "title": "BE02 repair review: draft-authorization",
+      "agent": "codex",
+      "model": null,
+      "effort": null,
+      "outputPath": "C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-draft-authorization.md",
+      "uniqueSourceLines": 340,
+      "passes": [
+        {
+          "pass": 1,
+          "physicalLines": 131,
+          "slices": [
+            {
+              "path": "apps/server/test/be_02/draft_authorization_test.rb",
+              "a": 1,
+              "b": 131,
+              "sha256": "22f7eef04a7f0aa577c4e7f35e8f3315e00d20a03f4aff05e275e664862b28d1"
+            }
+          ]
+        },
+        {
+          "pass": 2,
+          "physicalLines": 133,
+          "slices": [
+            {
+              "path": "apps/server/test/be_02/draft_database_test.rb",
+              "a": 1,
+              "b": 133,
+              "sha256": "015663b9a0b062db29f8a4ea4978a12320be0fa5e72e15ec8d2a9d09b2600656"
+            }
+          ]
+        },
+        {
+          "pass": 3,
+          "physicalLines": 76,
+          "slices": [
+            {
+              "path": "apps/server/test/be_02/draft_database_test_helper.rb",
+              "a": 1,
+              "b": 76,
+              "sha256": "93f8e02b887400cc646719fe45a89ba147533a77c4d68e32c3f76cc9a1051e5e"
+            }
+          ]
+        }
+      ],
+      "frozenManifests": [
+        {
+          "path": "docs/completion/be02-draft-test-repair.md",
+          "sha256": "456ee9c6ca560c89d93538335eb493076bba40db1493ee6bd630a4eb7a777052"
+        }
+      ],
+      "spec": "You are an independent read-only Orca adversarial correctness reviewer for a completed BE02 repair. Target source root: C:/Users/Tanzeel/Code and projects/Elevateo Mail - BE02 Codex. Coordinator checkout: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion. You may write ONLY your unique report: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-draft-authorization.md. No source, tests, root docs/code-reviews, commits or fixes. No native subagents or extra agent/model calls. No host application tests, syntax execution, Docker, SSH, purchases, ultrareviews, Devin sessions, live activation or external posts. Report through live Orca preamble; one worker_done exactly once and idle. No further successive assignments permitted under this review allowance.\nRead applicable AGENTS.md, current README/state/documentation, .planning/STANDARDS.md and AGENT_ORCHESTRATION.md. Latest dispatch controls supersede historical routing. Read prose repair manifest(s) at BE02 docs/completion/be02-draft-test-repair.md and original coordinator reports docs/completion/review-be02-draft-test-boundaries.md; docs/completion/review-be02-draft-races.md, plus frozen be02-cd-contract.md/implementation briefs as needed for published interfaces. Documentation prose is context; do not expand source by reading code snippets outside the owned ranges.\nREQUIRED FULL REVIEW RUBRIC:\nDoes this code work? Verify that the code actually fulfills the purpose of the feature or bug fix. Check if the author considered null inputs, empty lists, and max limits. Ensure that changes to state or data structures don't inadvertently break other parts of the entire system. Ensure the developer isn't over-engineering or building things they might need in the future but don't actually know they need now. Check that new classes or functions aren't trying to do too much. Look out for duplicated logic that should be extracted into a shared utility or service. Ensure variable, function, and class names communicate their intent clearly. Check that comments explain why something exists, not just what the code does. Look for deeply nested loops or convoluted conditionals that could be simplified to help future developers read it easily. Confirm that unit and/or integration tests are included and directly cover the changed logic or new feature. Ensure the tests cover both the happy path and failure scenarios. Check if the author has updated relevant documentation. Make sure external inputs are sanitised and permission/authorisation checks are properly enforced. Watch out for unnecessary loops, repeated database queries in hot paths, or operations that could cause bottlenecks.\nOwnership/source allowance: each pass <=200 physical source lines INCLUDING blanks/comments/helper/context. Total <=400 unique source lines for this entire assignment; do not read transitive implementation or extra helpers. Metadata counts/hash may inspect whole files but source content only these ranges. Verify hashes BEFORE review and again before completion; any drift stops affected review and must be reported, not silently retargeted. Read source passes separately, report exact per-pass and unique coverage. Any unavailable interface: ask coordinator for a prose summary instead of exceeding allowance.\nPass 1 (131 physical lines):\napps/server/test/be_02/draft_authorization_test.rb:1-131; full-file SHA256 22f7eef04a7f0aa577c4e7f35e8f3315e00d20a03f4aff05e275e664862b28d1\nPass 2 (133 physical lines):\napps/server/test/be_02/draft_database_test.rb:1-133; full-file SHA256 015663b9a0b062db29f8a4ea4978a12320be0fa5e72e15ec8d2a9d09b2600656\nPass 3 (76 physical lines):\napps/server/test/be_02/draft_database_test_helper.rb:1-76; full-file SHA256 93f8e02b887400cc646719fe45a89ba147533a77c4d68e32c3f76cc9a1051e5e\nTotal assignment 340 unique physical lines. Focus: DTB-01/02/05 and DR-02/03: real same-actor dual-organization authority, successful allowed controls, foreign denial/no-write snapshots and composite binding; retention duration original rows; compaction preserves complete permanent metadata. State absent HTTP/equality proof as gaps.\nAcceptance: durable report with actual terminal/task/dispatch and requested versus observed model if available, exact source hashes/physical ranges, conformance checklist covering purpose, boundary/null/empty/max, state/cross-module coupling, tests happy/failure and evidence limits, comments/docs, security/performance as relevant. Delegate formatting to lint; lint NOT_RUN here. For EACH old finding state statically addressed/not addressed/unknown and rationale. Confirmed new defects require severity, exact source/hash/location, violated invariant, concrete analytical reproduction/mutant, minimal repair and acceptance criterion; report high-confidence findings immediately via Orca to this coordinator. Do not invent defects from omitted context. Distinguish duplicate findings, evidence gaps and actual defects. Include observed defect count and defects/KLOC; zero only when actually observed in bounded review. All runtime acceptance remains NOT_RUN. Obsidian is unavailable; analytical schedules must not be described as execution. Report integration/behavior test gaps to root; no permission to edit. Read coordinator mail at natural checkpoints and immediately before worker_done."
+    },
+    {
+      "taskKey": "draft-races",
+      "title": "BE02 repair review: draft-races",
+      "agent": "codex",
+      "model": null,
+      "effort": null,
+      "outputPath": "C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-draft-races.md",
+      "uniqueSourceLines": 233,
+      "passes": [
+        {
+          "pass": 1,
+          "physicalLines": 157,
+          "slices": [
+            {
+              "path": "apps/server/test/be_02/draft_concurrency_test.rb",
+              "a": 1,
+              "b": 157,
+              "sha256": "58cceee542291b5f19bb280e590492c9e4ca5b0bd382d67accf73c904e48086d"
+            }
+          ]
+        },
+        {
+          "pass": 2,
+          "physicalLines": 76,
+          "slices": [
+            {
+              "path": "apps/server/test/be_02/draft_database_test_helper.rb",
+              "a": 1,
+              "b": 76,
+              "sha256": "93f8e02b887400cc646719fe45a89ba147533a77c4d68e32c3f76cc9a1051e5e"
+            }
+          ]
+        }
+      ],
+      "frozenManifests": [
+        {
+          "path": "docs/completion/be02-draft-test-repair.md",
+          "sha256": "456ee9c6ca560c89d93538335eb493076bba40db1493ee6bd630a4eb7a777052"
+        }
+      ],
+      "spec": "You are an independent read-only Orca adversarial correctness reviewer for a completed BE02 repair. Target source root: C:/Users/Tanzeel/Code and projects/Elevateo Mail - BE02 Codex. Coordinator checkout: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion. You may write ONLY your unique report: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-draft-races.md. No source, tests, root docs/code-reviews, commits or fixes. No native subagents or extra agent/model calls. No host application tests, syntax execution, Docker, SSH, purchases, ultrareviews, Devin sessions, live activation or external posts. Report through live Orca preamble; one worker_done exactly once and idle. No further successive assignments permitted under this review allowance.\nRead applicable AGENTS.md, current README/state/documentation, .planning/STANDARDS.md and AGENT_ORCHESTRATION.md. Latest dispatch controls supersede historical routing. Read prose repair manifest(s) at BE02 docs/completion/be02-draft-test-repair.md and original coordinator reports docs/completion/review-be02-draft-races.md; docs/completion/review-be02-draft-test-boundaries.md, plus frozen be02-cd-contract.md/implementation briefs as needed for published interfaces. Documentation prose is context; do not expand source by reading code snippets outside the owned ranges.\nREQUIRED FULL REVIEW RUBRIC:\nDoes this code work? Verify that the code actually fulfills the purpose of the feature or bug fix. Check if the author considered null inputs, empty lists, and max limits. Ensure that changes to state or data structures don't inadvertently break other parts of the entire system. Ensure the developer isn't over-engineering or building things they might need in the future but don't actually know they need now. Check that new classes or functions aren't trying to do too much. Look out for duplicated logic that should be extracted into a shared utility or service. Ensure variable, function, and class names communicate their intent clearly. Check that comments explain why something exists, not just what the code does. Look for deeply nested loops or convoluted conditionals that could be simplified to help future developers read it easily. Confirm that unit and/or integration tests are included and directly cover the changed logic or new feature. Ensure the tests cover both the happy path and failure scenarios. Check if the author has updated relevant documentation. Make sure external inputs are sanitised and permission/authorisation checks are properly enforced. Watch out for unnecessary loops, repeated database queries in hot paths, or operations that could cause bottlenecks.\nOwnership/source allowance: each pass <=200 physical source lines INCLUDING blanks/comments/helper/context. Total <=400 unique source lines for this entire assignment; do not read transitive implementation or extra helpers. Metadata counts/hash may inspect whole files but source content only these ranges. Verify hashes BEFORE review and again before completion; any drift stops affected review and must be reported, not silently retargeted. Read source passes separately, report exact per-pass and unique coverage. Any unavailable interface: ask coordinator for a prose summary instead of exceeding allowance.\nPass 1 (157 physical lines):\napps/server/test/be_02/draft_concurrency_test.rb:1-157; full-file SHA256 58cceee542291b5f19bb280e590492c9e4ca5b0bd382d67accf73c904e48086d\nPass 2 (76 physical lines):\napps/server/test/be_02/draft_database_test_helper.rb:1-76; full-file SHA256 93f8e02b887400cc646719fe45a89ba147533a77c4d68e32c3f76cc9a1051e5e\nTotal assignment 233 unique physical lines. Focus: DR-01 and DTB-01: both commit orders, actual exact blocker identity, active production query, distinct authenticated sessions, absence of broad admin session-prelock masking, bounded worker completion and holder-before-worker shutdown/error propagation. Do not infer missing helper correctness.\nAcceptance: durable report with actual terminal/task/dispatch and requested versus observed model if available, exact source hashes/physical ranges, conformance checklist covering purpose, boundary/null/empty/max, state/cross-module coupling, tests happy/failure and evidence limits, comments/docs, security/performance as relevant. Delegate formatting to lint; lint NOT_RUN here. For EACH old finding state statically addressed/not addressed/unknown and rationale. Confirmed new defects require severity, exact source/hash/location, violated invariant, concrete analytical reproduction/mutant, minimal repair and acceptance criterion; report high-confidence findings immediately via Orca to this coordinator. Do not invent defects from omitted context. Distinguish duplicate findings, evidence gaps and actual defects. Include observed defect count and defects/KLOC; zero only when actually observed in bounded review. All runtime acceptance remains NOT_RUN. Obsidian is unavailable; analytical schedules must not be described as execution. Report integration/behavior test gaps to root; no permission to edit. Read coordinator mail at natural checkpoints and immediately before worker_done."
+    },
+    {
+      "taskKey": "membership-races",
+      "title": "BE02 repair review: membership-races",
+      "agent": "codex",
+      "model": null,
+      "effort": null,
+      "outputPath": "C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-membership-races.md",
+      "uniqueSourceLines": 337,
+      "passes": [
+        {
+          "pass": 1,
+          "physicalLines": 148,
+          "slices": [
+            {
+              "path": "apps/server/test/be_02/mailbox_membership_concurrency_test.rb",
+              "a": 1,
+              "b": 148,
+              "sha256": "65a3f5789e1330d1d837119e2280152c2f49c7c2bc5afa098c16fb7e05cc042f"
+            }
+          ]
+        },
+        {
+          "pass": 2,
+          "physicalLines": 189,
+          "slices": [
+            {
+              "path": "apps/server/test/be_02/mailbox_membership_database_helper.rb",
+              "a": 1,
+              "b": 189,
+              "sha256": "b9e7c939c804f40ceb6302ece846c54544898ad1d216776e4dad452ab9c2be29"
+            }
+          ]
+        }
+      ],
+      "frozenManifests": [
+        {
+          "path": "docs/completion/be02-membership-test-repair.md",
+          "sha256": "dc6a9569efe7cbd77809c19fe04066155a0cd4fa9f1480283bcb157e67f009eb"
+        }
+      ],
+      "spec": "You are an independent read-only Orca adversarial correctness reviewer for a completed BE02 repair. Target source root: C:/Users/Tanzeel/Code and projects/Elevateo Mail - BE02 Codex. Coordinator checkout: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion. You may write ONLY your unique report: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-membership-races.md. No source, tests, root docs/code-reviews, commits or fixes. No native subagents or extra agent/model calls. No host application tests, syntax execution, Docker, SSH, purchases, ultrareviews, Devin sessions, live activation or external posts. Report through live Orca preamble; one worker_done exactly once and idle. No further successive assignments permitted under this review allowance.\nRead applicable AGENTS.md, current README/state/documentation, .planning/STANDARDS.md and AGENT_ORCHESTRATION.md. Latest dispatch controls supersede historical routing. Read prose repair manifest(s) at BE02 docs/completion/be02-membership-test-repair.md and original coordinator reports docs/completion/review-be02-membership-sql-races.md, plus frozen be02-cd-contract.md/implementation briefs as needed for published interfaces. Documentation prose is context; do not expand source by reading code snippets outside the owned ranges.\nREQUIRED FULL REVIEW RUBRIC:\nDoes this code work? Verify that the code actually fulfills the purpose of the feature or bug fix. Check if the author considered null inputs, empty lists, and max limits. Ensure that changes to state or data structures don't inadvertently break other parts of the entire system. Ensure the developer isn't over-engineering or building things they might need in the future but don't actually know they need now. Check that new classes or functions aren't trying to do too much. Look out for duplicated logic that should be extracted into a shared utility or service. Ensure variable, function, and class names communicate their intent clearly. Check that comments explain why something exists, not just what the code does. Look for deeply nested loops or convoluted conditionals that could be simplified to help future developers read it easily. Confirm that unit and/or integration tests are included and directly cover the changed logic or new feature. Ensure the tests cover both the happy path and failure scenarios. Check if the author has updated relevant documentation. Make sure external inputs are sanitised and permission/authorisation checks are properly enforced. Watch out for unnecessary loops, repeated database queries in hot paths, or operations that could cause bottlenecks.\nOwnership/source allowance: each pass <=200 physical source lines INCLUDING blanks/comments/helper/context. Total <=400 unique source lines for this entire assignment; do not read transitive implementation or extra helpers. Metadata counts/hash may inspect whole files but source content only these ranges. Verify hashes BEFORE review and again before completion; any drift stops affected review and must be reported, not silently retargeted. Read source passes separately, report exact per-pass and unique coverage. Any unavailable interface: ask coordinator for a prose summary instead of exceeding allowance.\nPass 1 (148 physical lines):\napps/server/test/be_02/mailbox_membership_concurrency_test.rb:1-148; full-file SHA256 65a3f5789e1330d1d837119e2280152c2f49c7c2bc5afa098c16fb7e05cc042f\nPass 2 (189 physical lines):\napps/server/test/be_02/mailbox_membership_database_helper.rb:1-189; full-file SHA256 b9e7c939c804f40ceb6302ece846c54544898ad1d216776e4dad452ab9c2be29\nTotal assignment 337 unique physical lines. Focus: R1 last-manager schedule discriminates pre-business-lock decision (r and r+1), actual blocker and disjoint guards; R2 reversed fixed actors/targets, existing/missing guards, high-row probe, exact revisions/generations; helper R3 bounded budgets, exception preservation, shutdown ordering. Preserve original CAS/shared-target tests.\nAcceptance: durable report with actual terminal/task/dispatch and requested versus observed model if available, exact source hashes/physical ranges, conformance checklist covering purpose, boundary/null/empty/max, state/cross-module coupling, tests happy/failure and evidence limits, comments/docs, security/performance as relevant. Delegate formatting to lint; lint NOT_RUN here. For EACH old finding state statically addressed/not addressed/unknown and rationale. Confirmed new defects require severity, exact source/hash/location, violated invariant, concrete analytical reproduction/mutant, minimal repair and acceptance criterion; report high-confidence findings immediately via Orca to this coordinator. Do not invent defects from omitted context. Distinguish duplicate findings, evidence gaps and actual defects. Include observed defect count and defects/KLOC; zero only when actually observed in bounded review. All runtime acceptance remains NOT_RUN. Obsidian is unavailable; analytical schedules must not be described as execution. Report integration/behavior test gaps to root; no permission to edit. Read coordinator mail at natural checkpoints and immediately before worker_done."
+    },
+    {
+      "taskKey": "membership-database",
+      "title": "BE02 repair review: membership-database",
+      "agent": "codex",
+      "model": null,
+      "effort": null,
+      "outputPath": "C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-membership-database.md",
+      "uniqueSourceLines": 330,
+      "passes": [
+        {
+          "pass": 1,
+          "physicalLines": 141,
+          "slices": [
+            {
+              "path": "apps/server/test/be_02/mailbox_membership_database_test.rb",
+              "a": 1,
+              "b": 141,
+              "sha256": "f182cb092d31cd97fde022700fc7e6f6cd62e05f10aa9a8bf9bd42c23f958e8b"
+            }
+          ]
+        },
+        {
+          "pass": 2,
+          "physicalLines": 189,
+          "slices": [
+            {
+              "path": "apps/server/test/be_02/mailbox_membership_database_helper.rb",
+              "a": 1,
+              "b": 189,
+              "sha256": "b9e7c939c804f40ceb6302ece846c54544898ad1d216776e4dad452ab9c2be29"
+            }
+          ]
+        }
+      ],
+      "frozenManifests": [
+        {
+          "path": "docs/completion/be02-membership-test-repair.md",
+          "sha256": "dc6a9569efe7cbd77809c19fe04066155a0cd4fa9f1480283bcb157e67f009eb"
+        }
+      ],
+      "spec": "You are an independent read-only Orca adversarial correctness reviewer for a completed BE02 repair. Target source root: C:/Users/Tanzeel/Code and projects/Elevateo Mail - BE02 Codex. Coordinator checkout: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion. You may write ONLY your unique report: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-membership-database.md. No source, tests, root docs/code-reviews, commits or fixes. No native subagents or extra agent/model calls. No host application tests, syntax execution, Docker, SSH, purchases, ultrareviews, Devin sessions, live activation or external posts. Report through live Orca preamble; one worker_done exactly once and idle. No further successive assignments permitted under this review allowance.\nRead applicable AGENTS.md, current README/state/documentation, .planning/STANDARDS.md and AGENT_ORCHESTRATION.md. Latest dispatch controls supersede historical routing. Read prose repair manifest(s) at BE02 docs/completion/be02-membership-test-repair.md and original coordinator reports docs/completion/review-be02-membership-sql-races.md, plus frozen be02-cd-contract.md/implementation briefs as needed for published interfaces. Documentation prose is context; do not expand source by reading code snippets outside the owned ranges.\nREQUIRED FULL REVIEW RUBRIC:\nDoes this code work? Verify that the code actually fulfills the purpose of the feature or bug fix. Check if the author considered null inputs, empty lists, and max limits. Ensure that changes to state or data structures don't inadvertently break other parts of the entire system. Ensure the developer isn't over-engineering or building things they might need in the future but don't actually know they need now. Check that new classes or functions aren't trying to do too much. Look out for duplicated logic that should be extracted into a shared utility or service. Ensure variable, function, and class names communicate their intent clearly. Check that comments explain why something exists, not just what the code does. Look for deeply nested loops or convoluted conditionals that could be simplified to help future developers read it easily. Confirm that unit and/or integration tests are included and directly cover the changed logic or new feature. Ensure the tests cover both the happy path and failure scenarios. Check if the author has updated relevant documentation. Make sure external inputs are sanitised and permission/authorisation checks are properly enforced. Watch out for unnecessary loops, repeated database queries in hot paths, or operations that could cause bottlenecks.\nOwnership/source allowance: each pass <=200 physical source lines INCLUDING blanks/comments/helper/context. Total <=400 unique source lines for this entire assignment; do not read transitive implementation or extra helpers. Metadata counts/hash may inspect whole files but source content only these ranges. Verify hashes BEFORE review and again before completion; any drift stops affected review and must be reported, not silently retargeted. Read source passes separately, report exact per-pass and unique coverage. Any unavailable interface: ask coordinator for a prose summary instead of exceeding allowance.\nPass 1 (141 physical lines):\napps/server/test/be_02/mailbox_membership_database_test.rb:1-141; full-file SHA256 f182cb092d31cd97fde022700fc7e6f6cd62e05f10aa9a8bf9bd42c23f958e8b\nPass 2 (189 physical lines):\napps/server/test/be_02/mailbox_membership_database_helper.rb:1-189; full-file SHA256 b9e7c939c804f40ceb6302ece846c54544898ad1d216776e4dad452ab9c2be29\nTotal assignment 330 unique physical lines. Focus: R3 PID-or-exception publication, useful error retained, shared monotonic deadline and holder-before-worker cleanup; regressions failure before PID and finish without lock, no surviving worker, idle transaction. Review other owned tests for fixture scope, no false positives, preserve original behavior.\nAcceptance: durable report with actual terminal/task/dispatch and requested versus observed model if available, exact source hashes/physical ranges, conformance checklist covering purpose, boundary/null/empty/max, state/cross-module coupling, tests happy/failure and evidence limits, comments/docs, security/performance as relevant. Delegate formatting to lint; lint NOT_RUN here. For EACH old finding state statically addressed/not addressed/unknown and rationale. Confirmed new defects require severity, exact source/hash/location, violated invariant, concrete analytical reproduction/mutant, minimal repair and acceptance criterion; report high-confidence findings immediately via Orca to this coordinator. Do not invent defects from omitted context. Distinguish duplicate findings, evidence gaps and actual defects. Include observed defect count and defects/KLOC; zero only when actually observed in bounded review. All runtime acceptance remains NOT_RUN. Obsidian is unavailable; analytical schedules must not be described as execution. Report integration/behavior test gaps to root; no permission to edit. Read coordinator mail at natural checkpoints and immediately before worker_done."
+    },
+    {
+      "taskKey": "collaboration-http",
+      "title": "BE02 repair review: collaboration-http",
+      "agent": "codex",
+      "model": null,
+      "effort": null,
+      "outputPath": "C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-collaboration-http.md",
+      "uniqueSourceLines": 207,
+      "passes": [
+        {
+          "pass": 1,
+          "physicalLines": 115,
+          "slices": [
+            {
+              "path": "apps/server/test/be_02/collaboration_controller_test.rb",
+              "a": 1,
+              "b": 115,
+              "sha256": "824133c3f2f731be0c92355b619bac89f65e78754394240a557b2c1276efc09d"
+            }
+          ]
+        },
+        {
+          "pass": 2,
+          "physicalLines": 92,
+          "slices": [
+            {
+              "path": "apps/server/test/be_02/collaboration_controller_helper.rb",
+              "a": 1,
+              "b": 92,
+              "sha256": "af4d2ce8e4dca289782f23d1ffc4f1d6e4d0e062c3c36ec3c9c604ee55c447e8"
+            }
+          ]
+        }
+      ],
+      "frozenManifests": [
+        {
+          "path": "docs/completion/be02-collaboration-test-repair.md",
+          "sha256": "1f5941ebc9f86d376083632990755374bd2108f2cb9f8cf10d6f34fcac0ea58a"
+        }
+      ],
+      "spec": "You are an independent read-only Orca adversarial correctness reviewer for a completed BE02 repair. Target source root: C:/Users/Tanzeel/Code and projects/Elevateo Mail - BE02 Codex. Coordinator checkout: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion. You may write ONLY your unique report: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-collaboration-http.md. No source, tests, root docs/code-reviews, commits or fixes. No native subagents or extra agent/model calls. No host application tests, syntax execution, Docker, SSH, purchases, ultrareviews, Devin sessions, live activation or external posts. Report through live Orca preamble; one worker_done exactly once and idle. No further successive assignments permitted under this review allowance.\nRead applicable AGENTS.md, current README/state/documentation, .planning/STANDARDS.md and AGENT_ORCHESTRATION.md. Latest dispatch controls supersede historical routing. Read prose repair manifest(s) at BE02 docs/completion/be02-collaboration-test-repair.md and original coordinator reports docs/completion/review-be02-collaboration-http.md, plus frozen be02-cd-contract.md/implementation briefs as needed for published interfaces. Documentation prose is context; do not expand source by reading code snippets outside the owned ranges.\nREQUIRED FULL REVIEW RUBRIC:\nDoes this code work? Verify that the code actually fulfills the purpose of the feature or bug fix. Check if the author considered null inputs, empty lists, and max limits. Ensure that changes to state or data structures don't inadvertently break other parts of the entire system. Ensure the developer isn't over-engineering or building things they might need in the future but don't actually know they need now. Check that new classes or functions aren't trying to do too much. Look out for duplicated logic that should be extracted into a shared utility or service. Ensure variable, function, and class names communicate their intent clearly. Check that comments explain why something exists, not just what the code does. Look for deeply nested loops or convoluted conditionals that could be simplified to help future developers read it easily. Confirm that unit and/or integration tests are included and directly cover the changed logic or new feature. Ensure the tests cover both the happy path and failure scenarios. Check if the author has updated relevant documentation. Make sure external inputs are sanitised and permission/authorisation checks are properly enforced. Watch out for unnecessary loops, repeated database queries in hot paths, or operations that could cause bottlenecks.\nOwnership/source allowance: each pass <=200 physical source lines INCLUDING blanks/comments/helper/context. Total <=400 unique source lines for this entire assignment; do not read transitive implementation or extra helpers. Metadata counts/hash may inspect whole files but source content only these ranges. Verify hashes BEFORE review and again before completion; any drift stops affected review and must be reported, not silently retargeted. Read source passes separately, report exact per-pass and unique coverage. Any unavailable interface: ask coordinator for a prose summary instead of exceeding allowance.\nPass 1 (115 physical lines):\napps/server/test/be_02/collaboration_controller_test.rb:1-115; full-file SHA256 824133c3f2f731be0c92355b619bac89f65e78754394240a557b2c1276efc09d\nPass 2 (92 physical lines):\napps/server/test/be_02/collaboration_controller_helper.rb:1-92; full-file SHA256 af4d2ce8e4dca289782f23d1ffc4f1d6e4d0e062c3c36ec3c9c604ee55c447e8\nTotal assignment 207 unique physical lines. Focus: CH-01 discriminating valid-JSON whitespace exact cap/cap+1 on all three write routes, honest/forged/missing length, allowed control and no auth/pool/transaction/SQL on rejection. Distinguish in-process Rack authored assertion from actual server adapter evidence.\nAcceptance: durable report with actual terminal/task/dispatch and requested versus observed model if available, exact source hashes/physical ranges, conformance checklist covering purpose, boundary/null/empty/max, state/cross-module coupling, tests happy/failure and evidence limits, comments/docs, security/performance as relevant. Delegate formatting to lint; lint NOT_RUN here. For EACH old finding state statically addressed/not addressed/unknown and rationale. Confirmed new defects require severity, exact source/hash/location, violated invariant, concrete analytical reproduction/mutant, minimal repair and acceptance criterion; report high-confidence findings immediately via Orca to this coordinator. Do not invent defects from omitted context. Distinguish duplicate findings, evidence gaps and actual defects. Include observed defect count and defects/KLOC; zero only when actually observed in bounded review. All runtime acceptance remains NOT_RUN. Obsidian is unavailable; analytical schedules must not be described as execution. Report integration/behavior test gaps to root; no permission to edit. Read coordinator mail at natural checkpoints and immediately before worker_done."
+    },
+    {
+      "taskKey": "collaboration-database",
+      "title": "BE02 repair review: collaboration-database",
+      "agent": "codex",
+      "model": null,
+      "effort": null,
+      "outputPath": "C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-collaboration-database.md",
+      "uniqueSourceLines": 383,
+      "passes": [
+        {
+          "pass": 1,
+          "physicalLines": 183,
+          "slices": [
+            {
+              "path": "apps/server/test/be_02/collaboration_database_test.rb",
+              "a": 1,
+              "b": 183,
+              "sha256": "c45a685feda972497e8089ee016dd890c1abb8c9f5aebaa95ca193535755c8ba"
+            }
+          ]
+        },
+        {
+          "pass": 2,
+          "physicalLines": 200,
+          "slices": [
+            {
+              "path": "apps/server/test/be_02/collaboration_database_helper.rb",
+              "a": 1,
+              "b": 200,
+              "sha256": "ed14323962ffa2258addd7432928f8284ce74218ba8ed9e49001555eb3d50b58"
+            }
+          ]
+        }
+      ],
+      "frozenManifests": [
+        {
+          "path": "docs/completion/be02-collaboration-test-repair.md",
+          "sha256": "1f5941ebc9f86d376083632990755374bd2108f2cb9f8cf10d6f34fcac0ea58a"
+        }
+      ],
+      "spec": "You are an independent read-only Orca adversarial correctness reviewer for a completed BE02 repair. Target source root: C:/Users/Tanzeel/Code and projects/Elevateo Mail - BE02 Codex. Coordinator checkout: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion. You may write ONLY your unique report: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-collaboration-database.md. No source, tests, root docs/code-reviews, commits or fixes. No native subagents or extra agent/model calls. No host application tests, syntax execution, Docker, SSH, purchases, ultrareviews, Devin sessions, live activation or external posts. Report through live Orca preamble; one worker_done exactly once and idle. No further successive assignments permitted under this review allowance.\nRead applicable AGENTS.md, current README/state/documentation, .planning/STANDARDS.md and AGENT_ORCHESTRATION.md. Latest dispatch controls supersede historical routing. Read prose repair manifest(s) at BE02 docs/completion/be02-collaboration-test-repair.md and original coordinator reports docs/completion/review-be02-collaboration-database.md; docs/completion/review-be02-collaboration-races.md, plus frozen be02-cd-contract.md/implementation briefs as needed for published interfaces. Documentation prose is context; do not expand source by reading code snippets outside the owned ranges.\nREQUIRED FULL REVIEW RUBRIC:\nDoes this code work? Verify that the code actually fulfills the purpose of the feature or bug fix. Check if the author considered null inputs, empty lists, and max limits. Ensure that changes to state or data structures don't inadvertently break other parts of the entire system. Ensure the developer isn't over-engineering or building things they might need in the future but don't actually know they need now. Check that new classes or functions aren't trying to do too much. Look out for duplicated logic that should be extracted into a shared utility or service. Ensure variable, function, and class names communicate their intent clearly. Check that comments explain why something exists, not just what the code does. Look for deeply nested loops or convoluted conditionals that could be simplified to help future developers read it easily. Confirm that unit and/or integration tests are included and directly cover the changed logic or new feature. Ensure the tests cover both the happy path and failure scenarios. Check if the author has updated relevant documentation. Make sure external inputs are sanitised and permission/authorisation checks are properly enforced. Watch out for unnecessary loops, repeated database queries in hot paths, or operations that could cause bottlenecks.\nOwnership/source allowance: each pass <=200 physical source lines INCLUDING blanks/comments/helper/context. Total <=400 unique source lines for this entire assignment; do not read transitive implementation or extra helpers. Metadata counts/hash may inspect whole files but source content only these ranges. Verify hashes BEFORE review and again before completion; any drift stops affected review and must be reported, not silently retargeted. Read source passes separately, report exact per-pass and unique coverage. Any unavailable interface: ask coordinator for a prose summary instead of exceeding allowance.\nPass 1 (183 physical lines):\napps/server/test/be_02/collaboration_database_test.rb:1-183; full-file SHA256 c45a685feda972497e8089ee016dd890c1abb8c9f5aebaa95ca193535755c8ba\nPass 2 (200 physical lines):\napps/server/test/be_02/collaboration_database_helper.rb:1-200; full-file SHA256 ed14323962ffa2258addd7432928f8284ce74218ba8ed9e49001555eb3d50b58\nTotal assignment 383 unique physical lines. Focus: CDB-1..4: scoped admin reads/counts/mutations preserve a foreign sentinel; closed keysets/explicit nil/false; independent allowed mailbox/thread controls before cross-pair rejection; same valid INSERT author control and exact insufficient privilege SQLSTATE42501. No-op/max version immutability. Helper201-221 is outside allowance; request interface summary if essential.\nAcceptance: durable report with actual terminal/task/dispatch and requested versus observed model if available, exact source hashes/physical ranges, conformance checklist covering purpose, boundary/null/empty/max, state/cross-module coupling, tests happy/failure and evidence limits, comments/docs, security/performance as relevant. Delegate formatting to lint; lint NOT_RUN here. For EACH old finding state statically addressed/not addressed/unknown and rationale. Confirmed new defects require severity, exact source/hash/location, violated invariant, concrete analytical reproduction/mutant, minimal repair and acceptance criterion; report high-confidence findings immediately via Orca to this coordinator. Do not invent defects from omitted context. Distinguish duplicate findings, evidence gaps and actual defects. Include observed defect count and defects/KLOC; zero only when actually observed in bounded review. All runtime acceptance remains NOT_RUN. Obsidian is unavailable; analytical schedules must not be described as execution. Report integration/behavior test gaps to root; no permission to edit. Read coordinator mail at natural checkpoints and immediately before worker_done."
+    },
+    {
+      "taskKey": "collaboration-helper-races",
+      "title": "BE02 repair review: collaboration-helper-races",
+      "agent": "codex",
+      "model": null,
+      "effort": null,
+      "outputPath": "C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-collaboration-helper-races.md",
+      "uniqueSourceLines": 338,
+      "passes": [
+        {
+          "pass": 1,
+          "physicalLines": 200,
+          "slices": [
+            {
+              "path": "apps/server/test/be_02/collaboration_database_helper.rb",
+              "a": 1,
+              "b": 200,
+              "sha256": "ed14323962ffa2258addd7432928f8284ce74218ba8ed9e49001555eb3d50b58"
+            }
+          ]
+        },
+        {
+          "pass": 2,
+          "physicalLines": 138,
+          "slices": [
+            {
+              "path": "apps/server/test/be_02/collaboration_database_helper.rb",
+              "a": 201,
+              "b": 221,
+              "sha256": "ed14323962ffa2258addd7432928f8284ce74218ba8ed9e49001555eb3d50b58"
+            },
+            {
+              "path": "apps/server/test/be_02/collaboration_concurrency_test.rb",
+              "a": 1,
+              "b": 117,
+              "sha256": "0e4aa70031d8a82a4efeb9cb3ed229e64eabe9fa607ab6afe3bd3e5e805722aa"
+            }
+          ]
+        }
+      ],
+      "frozenManifests": [
+        {
+          "path": "docs/completion/be02-collaboration-test-repair.md",
+          "sha256": "1f5941ebc9f86d376083632990755374bd2108f2cb9f8cf10d6f34fcac0ea58a"
+        }
+      ],
+      "spec": "You are an independent read-only Orca adversarial correctness reviewer for a completed BE02 repair. Target source root: C:/Users/Tanzeel/Code and projects/Elevateo Mail - BE02 Codex. Coordinator checkout: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion. You may write ONLY your unique report: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-collaboration-helper-races.md. No source, tests, root docs/code-reviews, commits or fixes. No native subagents or extra agent/model calls. No host application tests, syntax execution, Docker, SSH, purchases, ultrareviews, Devin sessions, live activation or external posts. Report through live Orca preamble; one worker_done exactly once and idle. No further successive assignments permitted under this review allowance.\nRead applicable AGENTS.md, current README/state/documentation, .planning/STANDARDS.md and AGENT_ORCHESTRATION.md. Latest dispatch controls supersede historical routing. Read prose repair manifest(s) at BE02 docs/completion/be02-collaboration-test-repair.md and original coordinator reports docs/completion/review-be02-collaboration-database.md; docs/completion/review-be02-collaboration-races.md; docs/completion/review-be02-collaboration-design.md, plus frozen be02-cd-contract.md/implementation briefs as needed for published interfaces. Documentation prose is context; do not expand source by reading code snippets outside the owned ranges.\nREQUIRED FULL REVIEW RUBRIC:\nDoes this code work? Verify that the code actually fulfills the purpose of the feature or bug fix. Check if the author considered null inputs, empty lists, and max limits. Ensure that changes to state or data structures don't inadvertently break other parts of the entire system. Ensure the developer isn't over-engineering or building things they might need in the future but don't actually know they need now. Check that new classes or functions aren't trying to do too much. Look out for duplicated logic that should be extracted into a shared utility or service. Ensure variable, function, and class names communicate their intent clearly. Check that comments explain why something exists, not just what the code does. Look for deeply nested loops or convoluted conditionals that could be simplified to help future developers read it easily. Confirm that unit and/or integration tests are included and directly cover the changed logic or new feature. Ensure the tests cover both the happy path and failure scenarios. Check if the author has updated relevant documentation. Make sure external inputs are sanitised and permission/authorisation checks are properly enforced. Watch out for unnecessary loops, repeated database queries in hot paths, or operations that could cause bottlenecks.\nOwnership/source allowance: each pass <=200 physical source lines INCLUDING blanks/comments/helper/context. Total <=400 unique source lines for this entire assignment; do not read transitive implementation or extra helpers. Metadata counts/hash may inspect whole files but source content only these ranges. Verify hashes BEFORE review and again before completion; any drift stops affected review and must be reported, not silently retargeted. Read source passes separately, report exact per-pass and unique coverage. Any unavailable interface: ask coordinator for a prose summary instead of exceeding allowance.\nPass 1 (200 physical lines):\napps/server/test/be_02/collaboration_database_helper.rb:1-200; full-file SHA256 ed14323962ffa2258addd7432928f8284ce74218ba8ed9e49001555eb3d50b58\nPass 2 (138 physical lines):\napps/server/test/be_02/collaboration_database_helper.rb:201-221; full-file SHA256 ed14323962ffa2258addd7432928f8284ce74218ba8ed9e49001555eb3d50b58\napps/server/test/be_02/collaboration_concurrency_test.rb:1-117; full-file SHA256 0e4aa70031d8a82a4efeb9cb3ed229e64eabe9fa607ab6afe3bd3e5e805722aa\nTotal assignment 338 unique physical lines. Focus: All221 helper lines plus races: fixture tenant scoping, second real session same actor, blocker PID rather than generic Lock, absence of business row at barrier, worker exception/timeout/cleanup behavior. Determine actual evidence claims; no production defect invented from omitted base helpers.\nAcceptance: durable report with actual terminal/task/dispatch and requested versus observed model if available, exact source hashes/physical ranges, conformance checklist covering purpose, boundary/null/empty/max, state/cross-module coupling, tests happy/failure and evidence limits, comments/docs, security/performance as relevant. Delegate formatting to lint; lint NOT_RUN here. For EACH old finding state statically addressed/not addressed/unknown and rationale. Confirmed new defects require severity, exact source/hash/location, violated invariant, concrete analytical reproduction/mutant, minimal repair and acceptance criterion; report high-confidence findings immediately via Orca to this coordinator. Do not invent defects from omitted context. Distinguish duplicate findings, evidence gaps and actual defects. Include observed defect count and defects/KLOC; zero only when actually observed in bounded review. All runtime acceptance remains NOT_RUN. Obsidian is unavailable; analytical schedules must not be described as execution. Report integration/behavior test gaps to root; no permission to edit. Read coordinator mail at natural checkpoints and immediately before worker_done."
+    },
+    {
+      "taskKey": "collaboration-services",
+      "title": "BE02 repair review: collaboration-services",
+      "agent": "codex",
+      "model": null,
+      "effort": null,
+      "outputPath": "C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-collaboration-services.md",
+      "uniqueSourceLines": 280,
+      "passes": [
+        {
+          "pass": 1,
+          "physicalLines": 163,
+          "slices": [
+            {
+              "path": "apps/server/test/be_02/collaboration_services_test.rb",
+              "a": 1,
+              "b": 163,
+              "sha256": "604ed91e2413ce1df23412822e2ce797d7b5e715723817be334e43c6b07831e1"
+            }
+          ]
+        },
+        {
+          "pass": 2,
+          "physicalLines": 117,
+          "slices": [
+            {
+              "path": "apps/server/test/be_02/collaboration_concurrency_test.rb",
+              "a": 1,
+              "b": 117,
+              "sha256": "0e4aa70031d8a82a4efeb9cb3ed229e64eabe9fa607ab6afe3bd3e5e805722aa"
+            }
+          ]
+        }
+      ],
+      "frozenManifests": [
+        {
+          "path": "docs/completion/be02-collaboration-test-repair.md",
+          "sha256": "1f5941ebc9f86d376083632990755374bd2108f2cb9f8cf10d6f34fcac0ea58a"
+        }
+      ],
+      "spec": "You are an independent read-only Orca adversarial correctness reviewer for a completed BE02 repair. Target source root: C:/Users/Tanzeel/Code and projects/Elevateo Mail - BE02 Codex. Coordinator checkout: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion. You may write ONLY your unique report: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-collaboration-services.md. No source, tests, root docs/code-reviews, commits or fixes. No native subagents or extra agent/model calls. No host application tests, syntax execution, Docker, SSH, purchases, ultrareviews, Devin sessions, live activation or external posts. Report through live Orca preamble; one worker_done exactly once and idle. No further successive assignments permitted under this review allowance.\nRead applicable AGENTS.md, current README/state/documentation, .planning/STANDARDS.md and AGENT_ORCHESTRATION.md. Latest dispatch controls supersede historical routing. Read prose repair manifest(s) at BE02 docs/completion/be02-collaboration-test-repair.md and original coordinator reports docs/completion/review-be02-collaboration-races.md; docs/completion/review-be02-collaboration-design.md, plus frozen be02-cd-contract.md/implementation briefs as needed for published interfaces. Documentation prose is context; do not expand source by reading code snippets outside the owned ranges.\nREQUIRED FULL REVIEW RUBRIC:\nDoes this code work? Verify that the code actually fulfills the purpose of the feature or bug fix. Check if the author considered null inputs, empty lists, and max limits. Ensure that changes to state or data structures don't inadvertently break other parts of the entire system. Ensure the developer isn't over-engineering or building things they might need in the future but don't actually know they need now. Check that new classes or functions aren't trying to do too much. Look out for duplicated logic that should be extracted into a shared utility or service. Ensure variable, function, and class names communicate their intent clearly. Check that comments explain why something exists, not just what the code does. Look for deeply nested loops or convoluted conditionals that could be simplified to help future developers read it easily. Confirm that unit and/or integration tests are included and directly cover the changed logic or new feature. Ensure the tests cover both the happy path and failure scenarios. Check if the author has updated relevant documentation. Make sure external inputs are sanitised and permission/authorisation checks are properly enforced. Watch out for unnecessary loops, repeated database queries in hot paths, or operations that could cause bottlenecks.\nOwnership/source allowance: each pass <=200 physical source lines INCLUDING blanks/comments/helper/context. Total <=400 unique source lines for this entire assignment; do not read transitive implementation or extra helpers. Metadata counts/hash may inspect whole files but source content only these ranges. Verify hashes BEFORE review and again before completion; any drift stops affected review and must be reported, not silently retargeted. Read source passes separately, report exact per-pass and unique coverage. Any unavailable interface: ask coordinator for a prose summary instead of exceeding allowance.\nPass 1 (163 physical lines):\napps/server/test/be_02/collaboration_services_test.rb:1-163; full-file SHA256 604ed91e2413ce1df23412822e2ce797d7b5e715723817be334e43c6b07831e1\nPass 2 (117 physical lines):\napps/server/test/be_02/collaboration_concurrency_test.rb:1-117; full-file SHA256 0e4aa70031d8a82a4efeb9cb3ed229e64eabe9fa607ab6afe3bd3e5e805722aa\nTotal assignment 280 unique physical lines. Focus: R1 returned state/version/timestamp no-op exactness, ceiling no-op versus real change, expected SQL call counts; R2 alphabetic UUID whose uppercasing differs, canonical response and binds. Race barrier semantics under documented helper interface; ask coordinator for summary instead of reading helper beyond assigned range.\nAcceptance: durable report with actual terminal/task/dispatch and requested versus observed model if available, exact source hashes/physical ranges, conformance checklist covering purpose, boundary/null/empty/max, state/cross-module coupling, tests happy/failure and evidence limits, comments/docs, security/performance as relevant. Delegate formatting to lint; lint NOT_RUN here. For EACH old finding state statically addressed/not addressed/unknown and rationale. Confirmed new defects require severity, exact source/hash/location, violated invariant, concrete analytical reproduction/mutant, minimal repair and acceptance criterion; report high-confidence findings immediately via Orca to this coordinator. Do not invent defects from omitted context. Distinguish duplicate findings, evidence gaps and actual defects. Include observed defect count and defects/KLOC; zero only when actually observed in bounded review. All runtime acceptance remains NOT_RUN. Obsidian is unavailable; analytical schedules must not be described as execution. Report integration/behavior test gaps to root; no permission to edit. Read coordinator mail at natural checkpoints and immediately before worker_done."
+    },
+    {
+      "taskKey": "cursor",
+      "title": "BE02 repair review: cursor",
+      "agent": "codex",
+      "model": null,
+      "effort": null,
+      "outputPath": "C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-cursor.md",
+      "uniqueSourceLines": 321,
+      "passes": [
+        {
+          "pass": 1,
+          "physicalLines": 139,
+          "slices": [
+            {
+              "path": "apps/server/lib/elevateo/thread_notes.rb",
+              "a": 1,
+              "b": 100,
+              "sha256": "161024d2d079bace051db792a30eb6a7b13f117238a72a302d478087432b3437"
+            },
+            {
+              "path": "apps/server/lib/elevateo/mail_search.rb",
+              "a": 1,
+              "b": 39,
+              "sha256": "59f4f97351468cf7aae61810dec2f724e374dace482e8c97177fd38ef9e45acc"
+            }
+          ]
+        },
+        {
+          "pass": 2,
+          "physicalLines": 182,
+          "slices": [
+            {
+              "path": "apps/server/test/be_02/mail_search_test.rb",
+              "a": 1,
+              "b": 88,
+              "sha256": "e4a0988bbbef51e464577181427a71ddaa1676137306726b362c0a310787ee2b"
+            },
+            {
+              "path": "apps/server/test/be_02/thread_notes_cursor_test.rb",
+              "a": 1,
+              "b": 94,
+              "sha256": "4b537a65b5624576d8330fc13737be864b92f2a7570ee44e86e17634d6229c75"
+            }
+          ]
+        }
+      ],
+      "frozenManifests": [
+        {
+          "path": "docs/completion/be02-cursor-repair.md",
+          "sha256": "944907fa3fe29873a4593626aa1058ff14773b4eb2990d7c382e842a966ab4e3"
+        }
+      ],
+      "spec": "You are an independent read-only Orca adversarial correctness reviewer for a completed BE02 repair. Target source root: C:/Users/Tanzeel/Code and projects/Elevateo Mail - BE02 Codex. Coordinator checkout: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion. You may write ONLY your unique report: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-cursor.md. No source, tests, root docs/code-reviews, commits or fixes. No native subagents or extra agent/model calls. No host application tests, syntax execution, Docker, SSH, purchases, ultrareviews, Devin sessions, live activation or external posts. Report through live Orca preamble; one worker_done exactly once and idle. No further successive assignments permitted under this review allowance.\nRead applicable AGENTS.md, current README/state/documentation, .planning/STANDARDS.md and AGENT_ORCHESTRATION.md. Latest dispatch controls supersede historical routing. Read prose repair manifest(s) at BE02 docs/completion/be02-cursor-repair.md and original coordinator reports docs/completion/review-be02-collaboration-services.md; docs/completion/review-be02-collaboration-design.md; docs/completion/review-be02-search-service.md, plus frozen be02-cd-contract.md/implementation briefs as needed for published interfaces. Documentation prose is context; do not expand source by reading code snippets outside the owned ranges.\nREQUIRED FULL REVIEW RUBRIC:\nDoes this code work? Verify that the code actually fulfills the purpose of the feature or bug fix. Check if the author considered null inputs, empty lists, and max limits. Ensure that changes to state or data structures don't inadvertently break other parts of the entire system. Ensure the developer isn't over-engineering or building things they might need in the future but don't actually know they need now. Check that new classes or functions aren't trying to do too much. Look out for duplicated logic that should be extracted into a shared utility or service. Ensure variable, function, and class names communicate their intent clearly. Check that comments explain why something exists, not just what the code does. Look for deeply nested loops or convoluted conditionals that could be simplified to help future developers read it easily. Confirm that unit and/or integration tests are included and directly cover the changed logic or new feature. Ensure the tests cover both the happy path and failure scenarios. Check if the author has updated relevant documentation. Make sure external inputs are sanitised and permission/authorisation checks are properly enforced. Watch out for unnecessary loops, repeated database queries in hot paths, or operations that could cause bottlenecks.\nOwnership/source allowance: each pass <=200 physical source lines INCLUDING blanks/comments/helper/context. Total <=400 unique source lines for this entire assignment; do not read transitive implementation or extra helpers. Metadata counts/hash may inspect whole files but source content only these ranges. Verify hashes BEFORE review and again before completion; any drift stops affected review and must be reported, not silently retargeted. Read source passes separately, report exact per-pass and unique coverage. Any unavailable interface: ask coordinator for a prose summary instead of exceeding allowance.\nPass 1 (139 physical lines):\napps/server/lib/elevateo/thread_notes.rb:1-100; full-file SHA256 161024d2d079bace051db792a30eb6a7b13f117238a72a302d478087432b3437\napps/server/lib/elevateo/mail_search.rb:1-39; full-file SHA256 59f4f97351468cf7aae61810dec2f724e374dace482e8c97177fd38ef9e45acc\nPass 2 (182 physical lines):\napps/server/test/be_02/mail_search_test.rb:1-88; full-file SHA256 e4a0988bbbef51e464577181427a71ddaa1676137306726b362c0a310787ee2b\napps/server/test/be_02/thread_notes_cursor_test.rb:1-94; full-file SHA256 4b537a65b5624576d8330fc13737be864b92f2a7570ee44e86e17634d6229c75\nTotal assignment 321 unique physical lines. Focus: CS-01 = CD-DES-01 duplicate and S-01: malformed/empty/oversize provided cursor => cursor_invalid400 after current resource scope; omitted cursor first page, hidden404, revoked401 before stale409, closed error shape; preserve unknown keys/limits. Full321LOC assigned; no helper source added past400. Shared controller harness is separate review; use published interface.\nAcceptance: durable report with actual terminal/task/dispatch and requested versus observed model if available, exact source hashes/physical ranges, conformance checklist covering purpose, boundary/null/empty/max, state/cross-module coupling, tests happy/failure and evidence limits, comments/docs, security/performance as relevant. Delegate formatting to lint; lint NOT_RUN here. For EACH old finding state statically addressed/not addressed/unknown and rationale. Confirmed new defects require severity, exact source/hash/location, violated invariant, concrete analytical reproduction/mutant, minimal repair and acceptance criterion; report high-confidence findings immediately via Orca to this coordinator. Do not invent defects from omitted context. Distinguish duplicate findings, evidence gaps and actual defects. Include observed defect count and defects/KLOC; zero only when actually observed in bounded review. All runtime acceptance remains NOT_RUN. Obsidian is unavailable; analytical schedules must not be described as execution. Report integration/behavior test gaps to root; no permission to edit. Read coordinator mail at natural checkpoints and immediately before worker_done."
+    },
+    {
+      "taskKey": "compaction",
+      "title": "BE02 repair review: compaction",
+      "agent": "codex",
+      "model": null,
+      "effort": null,
+      "outputPath": "C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-compaction.md",
+      "uniqueSourceLines": 116,
+      "passes": [
+        {
+          "pass": 1,
+          "physicalLines": 50,
+          "slices": [
+            {
+              "path": "apps/server/db/be02_drafts/operations.sql",
+              "a": 1,
+              "b": 50,
+              "sha256": "9b2999a43136a27432a12d72d60793e29ac4a7693fc2f7114ab9dfe43b11d4a1"
+            }
+          ]
+        },
+        {
+          "pass": 2,
+          "physicalLines": 66,
+          "slices": [
+            {
+              "path": "docs/completion/be02-draft-compaction-repair.md",
+              "a": 31,
+              "b": 96,
+              "sha256": "79525e5e1bc0e5e7fc5a8ca43942a02fd69f10b6c94f02e0f7d8b1177c2e17ab"
+            }
+          ]
+        }
+      ],
+      "frozenManifests": [
+        {
+          "path": "docs/completion/be02-draft-compaction-repair.md",
+          "sha256": "79525e5e1bc0e5e7fc5a8ca43942a02fd69f10b6c94f02e0f7d8b1177c2e17ab"
+        }
+      ],
+      "spec": "You are an independent read-only Orca adversarial correctness reviewer for a completed BE02 repair. Target source root: C:/Users/Tanzeel/Code and projects/Elevateo Mail - BE02 Codex. Coordinator checkout: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion. You may write ONLY your unique report: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-compaction.md. No source, tests, root docs/code-reviews, commits or fixes. No native subagents or extra agent/model calls. No host application tests, syntax execution, Docker, SSH, purchases, ultrareviews, Devin sessions, live activation or external posts. Report through live Orca preamble; one worker_done exactly once and idle. No further successive assignments permitted under this review allowance.\nRead applicable AGENTS.md, current README/state/documentation, .planning/STANDARDS.md and AGENT_ORCHESTRATION.md. Latest dispatch controls supersede historical routing. Read prose repair manifest(s) at BE02 docs/completion/be02-draft-compaction-repair.md and original coordinator reports docs/completion/review-be02-cd-transaction-design.md, plus frozen be02-cd-contract.md/implementation briefs as needed for published interfaces. Documentation prose is context; do not expand source by reading code snippets outside the owned ranges.\nREQUIRED FULL REVIEW RUBRIC:\nDoes this code work? Verify that the code actually fulfills the purpose of the feature or bug fix. Check if the author considered null inputs, empty lists, and max limits. Ensure that changes to state or data structures don't inadvertently break other parts of the entire system. Ensure the developer isn't over-engineering or building things they might need in the future but don't actually know they need now. Check that new classes or functions aren't trying to do too much. Look out for duplicated logic that should be extracted into a shared utility or service. Ensure variable, function, and class names communicate their intent clearly. Check that comments explain why something exists, not just what the code does. Look for deeply nested loops or convoluted conditionals that could be simplified to help future developers read it easily. Confirm that unit and/or integration tests are included and directly cover the changed logic or new feature. Ensure the tests cover both the happy path and failure scenarios. Check if the author has updated relevant documentation. Make sure external inputs are sanitised and permission/authorisation checks are properly enforced. Watch out for unnecessary loops, repeated database queries in hot paths, or operations that could cause bottlenecks.\nOwnership/source allowance: each pass <=200 physical source lines INCLUDING blanks/comments/helper/context. Total <=400 unique source lines for this entire assignment; do not read transitive implementation or extra helpers. Metadata counts/hash may inspect whole files but source content only these ranges. Verify hashes BEFORE review and again before completion; any drift stops affected review and must be reported, not silently retargeted. Read source passes separately, report exact per-pass and unique coverage. Any unavailable interface: ask coordinator for a prose summary instead of exceeding allowance.\nPass 1 (50 physical lines):\napps/server/db/be02_drafts/operations.sql:1-50; full-file SHA256 9b2999a43136a27432a12d72d60793e29ac4a7693fc2f7114ab9dfe43b11d4a1\nPass 2 (66 physical lines):\ndocs/completion/be02-draft-compaction-repair.md:31-96; full-file SHA256 79525e5e1bc0e5e7fc5a8ca43942a02fd69f10b6c94f02e0f7d8b1177c2e17ab\nTotal assignment 116 unique physical lines. Focus: DTX-01 captured expiry cutoff correctness, limits/null, SKIP LOCKED, permanent metadata, lookup clock independence. Critically review EXACT proposed nested auto_explain probe in report31-96 (66 executable-recipe physical lines) with prose context: production invocation, custom/generic plan, expiry Index Cond branch, empty guard, rollback, expected counts and actual missing tests. The production plan is NOT_RUN; missing behavior coverage is gap to root, never permission to edit other tests.\nAcceptance: durable report with actual terminal/task/dispatch and requested versus observed model if available, exact source hashes/physical ranges, conformance checklist covering purpose, boundary/null/empty/max, state/cross-module coupling, tests happy/failure and evidence limits, comments/docs, security/performance as relevant. Delegate formatting to lint; lint NOT_RUN here. For EACH old finding state statically addressed/not addressed/unknown and rationale. Confirmed new defects require severity, exact source/hash/location, violated invariant, concrete analytical reproduction/mutant, minimal repair and acceptance criterion; report high-confidence findings immediately via Orca to this coordinator. Do not invent defects from omitted context. Distinguish duplicate findings, evidence gaps and actual defects. Include observed defect count and defects/KLOC; zero only when actually observed in bounded review. All runtime acceptance remains NOT_RUN. Obsidian is unavailable; analytical schedules must not be described as execution. Report integration/behavior test gaps to root; no permission to edit. Read coordinator mail at natural checkpoints and immediately before worker_done."
+    },
+    {
+      "taskKey": "write-races",
+      "title": "BE02 repair review: write-races",
+      "agent": "codex",
+      "model": null,
+      "effort": null,
+      "outputPath": "C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-write-races.md",
+      "uniqueSourceLines": 218,
+      "passes": [
+        {
+          "pass": 1,
+          "physicalLines": 119,
+          "slices": [
+            {
+              "path": "apps/server/test/be_02/write_boundary_concurrency_test.rb",
+              "a": 1,
+              "b": 119,
+              "sha256": "6013c99b6ae3808083c035dca6fd5d6167d92edb3687f41a2cf66dda27692b4a"
+            }
+          ]
+        },
+        {
+          "pass": 2,
+          "physicalLines": 99,
+          "slices": [
+            {
+              "path": "apps/server/test/be_02/write_boundary_database_test_helper.rb",
+              "a": 1,
+              "b": 99,
+              "sha256": "708bdd3a4e0a14f93686ebf71ea7a8f73e259207a8b1c01a9375d4a55935011e"
+            }
+          ]
+        }
+      ],
+      "frozenManifests": [
+        {
+          "path": "docs/completion/be02-write-races-repair.md",
+          "sha256": "98d28cc581bcff2a46812a3fdb3f27f315c3b33145b3966db016452633cff0fc"
+        }
+      ],
+      "spec": "You are an independent read-only Orca adversarial correctness reviewer for a completed BE02 repair. Target source root: C:/Users/Tanzeel/Code and projects/Elevateo Mail - BE02 Codex. Coordinator checkout: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion. You may write ONLY your unique report: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-write-races.md. No source, tests, root docs/code-reviews, commits or fixes. No native subagents or extra agent/model calls. No host application tests, syntax execution, Docker, SSH, purchases, ultrareviews, Devin sessions, live activation or external posts. Report through live Orca preamble; one worker_done exactly once and idle. No further successive assignments permitted under this review allowance.\nRead applicable AGENTS.md, current README/state/documentation, .planning/STANDARDS.md and AGENT_ORCHESTRATION.md. Latest dispatch controls supersede historical routing. Read prose repair manifest(s) at BE02 docs/completion/be02-write-races-repair.md and original coordinator reports docs/completion/review-be02-write-boundary-races.md, plus frozen be02-cd-contract.md/implementation briefs as needed for published interfaces. Documentation prose is context; do not expand source by reading code snippets outside the owned ranges.\nREQUIRED FULL REVIEW RUBRIC:\nDoes this code work? Verify that the code actually fulfills the purpose of the feature or bug fix. Check if the author considered null inputs, empty lists, and max limits. Ensure that changes to state or data structures don't inadvertently break other parts of the entire system. Ensure the developer isn't over-engineering or building things they might need in the future but don't actually know they need now. Check that new classes or functions aren't trying to do too much. Look out for duplicated logic that should be extracted into a shared utility or service. Ensure variable, function, and class names communicate their intent clearly. Check that comments explain why something exists, not just what the code does. Look for deeply nested loops or convoluted conditionals that could be simplified to help future developers read it easily. Confirm that unit and/or integration tests are included and directly cover the changed logic or new feature. Ensure the tests cover both the happy path and failure scenarios. Check if the author has updated relevant documentation. Make sure external inputs are sanitised and permission/authorisation checks are properly enforced. Watch out for unnecessary loops, repeated database queries in hot paths, or operations that could cause bottlenecks.\nOwnership/source allowance: each pass <=200 physical source lines INCLUDING blanks/comments/helper/context. Total <=400 unique source lines for this entire assignment; do not read transitive implementation or extra helpers. Metadata counts/hash may inspect whole files but source content only these ranges. Verify hashes BEFORE review and again before completion; any drift stops affected review and must be reported, not silently retargeted. Read source passes separately, report exact per-pass and unique coverage. Any unavailable interface: ask coordinator for a prose summary instead of exceeding allowance.\nPass 1 (119 physical lines):\napps/server/test/be_02/write_boundary_concurrency_test.rb:1-119; full-file SHA256 6013c99b6ae3808083c035dca6fd5d6167d92edb3687f41a2cf66dda27692b4a\nPass 2 (99 physical lines):\napps/server/test/be_02/write_boundary_database_test_helper.rb:1-99; full-file SHA256 708bdd3a4e0a14f93686ebf71ea7a8f73e259207a8b1c01a9375d4a55935011e\nTotal assignment 218 unique physical lines. Focus: F2 expiry prerequisite before exact blocker, database clock crossing while still blocked, transaction-start mutation discrimination, exact blocker and lock kind on five races, wrong-blocker/exception failure and bounded cleanup. No WG-01/WG-02/F1 or unfinished guard/deadline/numeric edits or review.\nAcceptance: durable report with actual terminal/task/dispatch and requested versus observed model if available, exact source hashes/physical ranges, conformance checklist covering purpose, boundary/null/empty/max, state/cross-module coupling, tests happy/failure and evidence limits, comments/docs, security/performance as relevant. Delegate formatting to lint; lint NOT_RUN here. For EACH old finding state statically addressed/not addressed/unknown and rationale. Confirmed new defects require severity, exact source/hash/location, violated invariant, concrete analytical reproduction/mutant, minimal repair and acceptance criterion; report high-confidence findings immediately via Orca to this coordinator. Do not invent defects from omitted context. Distinguish duplicate findings, evidence gaps and actual defects. Include observed defect count and defects/KLOC; zero only when actually observed in bounded review. All runtime acceptance remains NOT_RUN. Obsidian is unavailable; analytical schedules must not be described as execution. Report integration/behavior test gaps to root; no permission to edit. Read coordinator mail at natural checkpoints and immediately before worker_done."
+    },
+    {
+      "taskKey": "design-draft-membership",
+      "title": "BE02 repair review: design-draft-membership",
+      "agent": "codex",
+      "model": "gpt-6-astra",
+      "effort": "max",
+      "outputPath": "C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-design-draft-membership.md",
+      "uniqueSourceLines": 370,
+      "passes": [
+        {
+          "pass": 1,
+          "physicalLines": 157,
+          "slices": [
+            {
+              "path": "apps/server/test/be_02/draft_concurrency_test.rb",
+              "a": 1,
+              "b": 157,
+              "sha256": "58cceee542291b5f19bb280e590492c9e4ca5b0bd382d67accf73c904e48086d"
+            }
+          ]
+        },
+        {
+          "pass": 2,
+          "physicalLines": 163,
+          "slices": [
+            {
+              "path": "apps/server/test/be_02/mailbox_membership_concurrency_test.rb",
+              "a": 1,
+              "b": 80,
+              "sha256": "65a3f5789e1330d1d837119e2280152c2f49c7c2bc5afa098c16fb7e05cc042f"
+            },
+            {
+              "path": "apps/server/test/be_02/mailbox_membership_database_helper.rb",
+              "a": 85,
+              "b": 167,
+              "sha256": "b9e7c939c804f40ceb6302ece846c54544898ad1d216776e4dad452ab9c2be29"
+            }
+          ]
+        },
+        {
+          "pass": 3,
+          "physicalLines": 50,
+          "slices": [
+            {
+              "path": "apps/server/db/be02_drafts/operations.sql",
+              "a": 1,
+              "b": 50,
+              "sha256": "9b2999a43136a27432a12d72d60793e29ac4a7693fc2f7114ab9dfe43b11d4a1"
+            }
+          ]
+        }
+      ],
+      "frozenManifests": [
+        {
+          "path": "docs/completion/be02-draft-test-repair.md",
+          "sha256": "456ee9c6ca560c89d93538335eb493076bba40db1493ee6bd630a4eb7a777052"
+        },
+        {
+          "path": "docs/completion/be02-membership-test-repair.md",
+          "sha256": "dc6a9569efe7cbd77809c19fe04066155a0cd4fa9f1480283bcb157e67f009eb"
+        }
+      ],
+      "spec": "You are an independent read-only Orca dedicated deep design-tradeoff reviewer for a completed BE02 repair. Target source root: C:/Users/Tanzeel/Code and projects/Elevateo Mail - BE02 Codex. Coordinator checkout: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion. You may write ONLY your unique report: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-design-draft-membership.md. No source, tests, root docs/code-reviews, commits or fixes. No native subagents or extra agent/model calls. No host application tests, syntax execution, Docker, SSH, purchases, ultrareviews, Devin sessions, live activation or external posts. Report through live Orca preamble; one worker_done exactly once and idle. No further successive assignments permitted under this review allowance.\nRead applicable AGENTS.md, current README/state/documentation, .planning/STANDARDS.md and AGENT_ORCHESTRATION.md. Latest dispatch controls supersede historical routing. Read prose repair manifest(s) at BE02 docs/completion/be02-draft-test-repair.md; docs/completion/be02-membership-test-repair.md and original coordinator reports docs/completion/review-be02-draft-races.md; docs/completion/review-be02-membership-sql-races.md; docs/completion/review-be02-cd-transaction-design.md, plus frozen be02-cd-contract.md/implementation briefs as needed for published interfaces. Documentation prose is context; do not expand source by reading code snippets outside the owned ranges.\nREQUIRED FULL REVIEW RUBRIC:\nDoes this code work? Verify that the code actually fulfills the purpose of the feature or bug fix. Check if the author considered null inputs, empty lists, and max limits. Ensure that changes to state or data structures don't inadvertently break other parts of the entire system. Ensure the developer isn't over-engineering or building things they might need in the future but don't actually know they need now. Check that new classes or functions aren't trying to do too much. Look out for duplicated logic that should be extracted into a shared utility or service. Ensure variable, function, and class names communicate their intent clearly. Check that comments explain why something exists, not just what the code does. Look for deeply nested loops or convoluted conditionals that could be simplified to help future developers read it easily. Confirm that unit and/or integration tests are included and directly cover the changed logic or new feature. Ensure the tests cover both the happy path and failure scenarios. Check if the author has updated relevant documentation. Make sure external inputs are sanitised and permission/authorisation checks are properly enforced. Watch out for unnecessary loops, repeated database queries in hot paths, or operations that could cause bottlenecks.\nOwnership/source allowance: each pass <=200 physical source lines INCLUDING blanks/comments/helper/context. Total <=400 unique source lines for this entire assignment; do not read transitive implementation or extra helpers. Metadata counts/hash may inspect whole files but source content only these ranges. Verify hashes BEFORE review and again before completion; any drift stops affected review and must be reported, not silently retargeted. Read source passes separately, report exact per-pass and unique coverage. Any unavailable interface: ask coordinator for a prose summary instead of exceeding allowance.\nPass 1 (157 physical lines):\napps/server/test/be_02/draft_concurrency_test.rb:1-157; full-file SHA256 58cceee542291b5f19bb280e590492c9e4ca5b0bd382d67accf73c904e48086d\nPass 2 (163 physical lines):\napps/server/test/be_02/mailbox_membership_concurrency_test.rb:1-80; full-file SHA256 65a3f5789e1330d1d837119e2280152c2f49c7c2bc5afa098c16fb7e05cc042f\napps/server/test/be_02/mailbox_membership_database_helper.rb:85-167; full-file SHA256 b9e7c939c804f40ceb6302ece846c54544898ad1d216776e4dad452ab9c2be29\nPass 3 (50 physical lines):\napps/server/db/be02_drafts/operations.sql:1-50; full-file SHA256 9b2999a43136a27432a12d72d60793e29ac4a7693fc2f7114ab9dfe43b11d4a1\nTotal assignment 370 unique physical lines. Focus: Dedicated deep design tradeoffs. Analytical schedules for true generation versus shared-session blocker; distinct sessions; last-manager decision versus revision CAS; reversed existing/missing guard acquisition; shutdown release ordering, cancellation and false-pass risk; compaction stable cutoff tradeoff. At most370 unique source lines; DO NOT read the SQL probe from compaction report (outside budget). Obsidian unavailable; label every simulation analytical and runtimeNOT_RUN.\nAcceptance: durable report with actual terminal/task/dispatch and requested versus observed model if available, exact source hashes/physical ranges, conformance checklist covering purpose, boundary/null/empty/max, state/cross-module coupling, tests happy/failure and evidence limits, comments/docs, security/performance as relevant. Delegate formatting to lint; lint NOT_RUN here. For EACH old finding state statically addressed/not addressed/unknown and rationale. Confirmed new defects require severity, exact source/hash/location, violated invariant, concrete analytical reproduction/mutant, minimal repair and acceptance criterion; report high-confidence findings immediately via Orca to this coordinator. Do not invent defects from omitted context. Distinguish duplicate findings, evidence gaps and actual defects. Include observed defect count and defects/KLOC; zero only when actually observed in bounded review. All runtime acceptance remains NOT_RUN. Obsidian is unavailable; analytical schedules must not be described as execution. Report integration/behavior test gaps to root; no permission to edit. Read coordinator mail at natural checkpoints and immediately before worker_done."
+    },
+    {
+      "taskKey": "design-write-collaboration",
+      "title": "BE02 repair review: design-write-collaboration",
+      "agent": "codex",
+      "model": "gpt-6-astra",
+      "effort": "max",
+      "outputPath": "C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-design-write-collaboration.md",
+      "uniqueSourceLines": 335,
+      "passes": [
+        {
+          "pass": 1,
+          "physicalLines": 119,
+          "slices": [
+            {
+              "path": "apps/server/test/be_02/write_boundary_concurrency_test.rb",
+              "a": 1,
+              "b": 119,
+              "sha256": "6013c99b6ae3808083c035dca6fd5d6167d92edb3687f41a2cf66dda27692b4a"
+            }
+          ]
+        },
+        {
+          "pass": 2,
+          "physicalLines": 99,
+          "slices": [
+            {
+              "path": "apps/server/test/be_02/write_boundary_database_test_helper.rb",
+              "a": 1,
+              "b": 99,
+              "sha256": "708bdd3a4e0a14f93686ebf71ea7a8f73e259207a8b1c01a9375d4a55935011e"
+            }
+          ]
+        },
+        {
+          "pass": 3,
+          "physicalLines": 117,
+          "slices": [
+            {
+              "path": "apps/server/test/be_02/collaboration_concurrency_test.rb",
+              "a": 1,
+              "b": 117,
+              "sha256": "0e4aa70031d8a82a4efeb9cb3ed229e64eabe9fa607ab6afe3bd3e5e805722aa"
+            }
+          ]
+        }
+      ],
+      "frozenManifests": [
+        {
+          "path": "docs/completion/be02-write-races-repair.md",
+          "sha256": "98d28cc581bcff2a46812a3fdb3f27f315c3b33145b3966db016452633cff0fc"
+        },
+        {
+          "path": "docs/completion/be02-collaboration-test-repair.md",
+          "sha256": "1f5941ebc9f86d376083632990755374bd2108f2cb9f8cf10d6f34fcac0ea58a"
+        }
+      ],
+      "spec": "You are an independent read-only Orca dedicated deep design-tradeoff reviewer for a completed BE02 repair. Target source root: C:/Users/Tanzeel/Code and projects/Elevateo Mail - BE02 Codex. Coordinator checkout: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion. You may write ONLY your unique report: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-design-write-collaboration.md. No source, tests, root docs/code-reviews, commits or fixes. No native subagents or extra agent/model calls. No host application tests, syntax execution, Docker, SSH, purchases, ultrareviews, Devin sessions, live activation or external posts. Report through live Orca preamble; one worker_done exactly once and idle. No further successive assignments permitted under this review allowance.\nRead applicable AGENTS.md, current README/state/documentation, .planning/STANDARDS.md and AGENT_ORCHESTRATION.md. Latest dispatch controls supersede historical routing. Read prose repair manifest(s) at BE02 docs/completion/be02-write-races-repair.md; docs/completion/be02-collaboration-test-repair.md and original coordinator reports docs/completion/review-be02-write-boundary-races.md; docs/completion/review-be02-collaboration-design.md; docs/completion/review-be02-collaboration-races.md, plus frozen be02-cd-contract.md/implementation briefs as needed for published interfaces. Documentation prose is context; do not expand source by reading code snippets outside the owned ranges.\nREQUIRED FULL REVIEW RUBRIC:\nDoes this code work? Verify that the code actually fulfills the purpose of the feature or bug fix. Check if the author considered null inputs, empty lists, and max limits. Ensure that changes to state or data structures don't inadvertently break other parts of the entire system. Ensure the developer isn't over-engineering or building things they might need in the future but don't actually know they need now. Check that new classes or functions aren't trying to do too much. Look out for duplicated logic that should be extracted into a shared utility or service. Ensure variable, function, and class names communicate their intent clearly. Check that comments explain why something exists, not just what the code does. Look for deeply nested loops or convoluted conditionals that could be simplified to help future developers read it easily. Confirm that unit and/or integration tests are included and directly cover the changed logic or new feature. Ensure the tests cover both the happy path and failure scenarios. Check if the author has updated relevant documentation. Make sure external inputs are sanitised and permission/authorisation checks are properly enforced. Watch out for unnecessary loops, repeated database queries in hot paths, or operations that could cause bottlenecks.\nOwnership/source allowance: each pass <=200 physical source lines INCLUDING blanks/comments/helper/context. Total <=400 unique source lines for this entire assignment; do not read transitive implementation or extra helpers. Metadata counts/hash may inspect whole files but source content only these ranges. Verify hashes BEFORE review and again before completion; any drift stops affected review and must be reported, not silently retargeted. Read source passes separately, report exact per-pass and unique coverage. Any unavailable interface: ask coordinator for a prose summary instead of exceeding allowance.\nPass 1 (119 physical lines):\napps/server/test/be_02/write_boundary_concurrency_test.rb:1-119; full-file SHA256 6013c99b6ae3808083c035dca6fd5d6167d92edb3687f41a2cf66dda27692b4a\nPass 2 (99 physical lines):\napps/server/test/be_02/write_boundary_database_test_helper.rb:1-99; full-file SHA256 708bdd3a4e0a14f93686ebf71ea7a8f73e259207a8b1c01a9375d4a55935011e\nPass 3 (117 physical lines):\napps/server/test/be_02/collaboration_concurrency_test.rb:1-117; full-file SHA256 0e4aa70031d8a82a4efeb9cb3ed229e64eabe9fa607ab6afe3bd3e5e805722aa\nTotal assignment 335 unique physical lines. Focus: Dedicated deep design tradeoffs. Analytical schedules for expiry-before-block, DB-time versus transaction-time mutation, exact blocker; distinct sessions for same actor absent read row; shutdown holder release before join, bounded cancellation and false-pass evidence. 335LOC total; collaboration helper is unreviewed interface, ask for summary. Obsidian unavailable; label every simulation analytical/runtimeNOT_RUN.\nAcceptance: durable report with actual terminal/task/dispatch and requested versus observed model if available, exact source hashes/physical ranges, conformance checklist covering purpose, boundary/null/empty/max, state/cross-module coupling, tests happy/failure and evidence limits, comments/docs, security/performance as relevant. Delegate formatting to lint; lint NOT_RUN here. For EACH old finding state statically addressed/not addressed/unknown and rationale. Confirmed new defects require severity, exact source/hash/location, violated invariant, concrete analytical reproduction/mutant, minimal repair and acceptance criterion; report high-confidence findings immediately via Orca to this coordinator. Do not invent defects from omitted context. Distinguish duplicate findings, evidence gaps and actual defects. Include observed defect count and defects/KLOC; zero only when actually observed in bounded review. All runtime acceptance remains NOT_RUN. Obsidian is unavailable; analytical schedules must not be described as execution. Report integration/behavior test gaps to root; no permission to edit. Read coordinator mail at natural checkpoints and immediately before worker_done."
+    },
+    {
+      "taskKey": "numeric-input",
+      "title": "BE02 repair review: numeric-input",
+      "agent": "codex",
+      "model": null,
+      "effort": null,
+      "outputPath": "C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-numeric-input.md",
+      "uniqueSourceLines": 289,
+      "passes": [
+        {
+          "pass": 1,
+          "physicalLines": 158,
+          "slices": [
+            {
+              "path": "apps/server/lib/elevateo/write_input.rb",
+              "a": 1,
+              "b": 133,
+              "sha256": "87aa266b2c9f54eb921e57581009970081b3dc82a0b6ec8d9049f27317985f76"
+            },
+            {
+              "path": "apps/server/sig/write_input.rbs",
+              "a": 1,
+              "b": 25,
+              "sha256": "1a84a2e6f5234bd25940e03f0cbec5ad5e62304838722b2a1d37db085193e407"
+            }
+          ]
+        },
+        {
+          "pass": 2,
+          "physicalLines": 131,
+          "slices": [
+            {
+              "path": "apps/server/test/be_02/write_boundary_input_test.rb",
+              "a": 1,
+              "b": 131,
+              "sha256": "2045b4ec9c18b6ac32bd4239ce1f44c258fe738b8c698329f0845ac47b26bf94"
+            }
+          ]
+        }
+      ],
+      "frozenManifests": [
+        {
+          "path": "docs/completion/be02-write-input-repair.md",
+          "sha256": "4bcbc54bedebb276cee9d43f6b05d9e9e9a06f7bcc3beb5b77dd6f98a5280d43"
+        }
+      ],
+      "spec": "You are an independent read-only Orca adversarial correctness reviewer for a completed BE02 repair. Target source root: C:/Users/Tanzeel/Code and projects/Elevateo Mail - BE02 Codex. Coordinator checkout: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion. You may write ONLY your unique report: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-numeric-input.md. No source, tests, root docs/code-reviews, commits or fixes. No native subagents or extra agent/model calls. No host application tests, syntax execution, Docker, SSH, purchases, ultrareviews, Devin sessions, live activation or external posts. Report through live Orca preamble; one worker_done exactly once and idle. No further successive assignments permitted under this review allowance.\nRead applicable AGENTS.md, current README/state/documentation, .planning/STANDARDS.md and AGENT_ORCHESTRATION.md. Latest dispatch controls supersede historical routing. Read prose BE02 docs/completion/be02-write-input-repair.md (SHA256 4bcbc54bedebb276cee9d43f6b05d9e9e9a06f7bcc3beb5b77dd6f98a5280d43), original coordinator reports docs/completion/review-be02-write-transport.md, review-be02-write-boundary-tests.md, review-be02-write-boundary-races.md, and frozen contract prose as needed. Documentation source snippets outside the assigned ranges also consume source budget, so skip them and ask for prose. Pinned JSON3.0.2 and BigDecimal4.1.3 API evidence is referenced in the manifest; use its explicit reported contracts with attribution, and ask coordinator for bounded primary excerpts if verification needs additional source. No unbounded upstream source read. Unfinished RLS/deadline source is excluded.\nREQUIRED FULL REVIEW RUBRIC:\nDoes this code work? Verify that the code actually fulfills the purpose of the feature or bug fix. Check if the author considered null inputs, empty lists, and max limits. Ensure that changes to state or data structures don't inadvertently break other parts of the entire system. Ensure the developer isn't over-engineering or building things they might need in the future but don't actually know they need now. Check that new classes or functions aren't trying to do too much. Look out for duplicated logic that should be extracted into a shared utility or service. Ensure variable, function, and class names communicate their intent clearly. Check that comments explain why something exists, not just what the code does. Look for deeply nested loops or convoluted conditionals that could be simplified to help future developers read it easily. Confirm that unit and/or integration tests are included and directly cover the changed logic or new feature. Ensure the tests cover both the happy path and failure scenarios. Check if the author has updated relevant documentation. Make sure external inputs are sanitised and permission/authorisation checks are properly enforced. Watch out for unnecessary loops, repeated database queries in hot paths, or operations that could cause bottlenecks.\nOwnership/source allowance: each pass <=200 physical source lines INCLUDING blanks/comments/helper/context. Total <=400 unique source lines for this entire assignment; do not read transitive implementation or extra helpers. Metadata counts/hash may inspect whole files but source content only these ranges. Verify hashes BEFORE review and again before completion; any drift stops affected review and must be reported, not silently retargeted. Read source passes separately, report exact per-pass and unique coverage. Any unavailable interface: ask coordinator for a prose summary instead of exceeding allowance.\nPass 1 (158 physical lines):\napps/server/lib/elevateo/write_input.rb:1-133; full-file SHA256 87aa266b2c9f54eb921e57581009970081b3dc82a0b6ec8d9049f27317985f76\napps/server/sig/write_input.rbs:1-25; full-file SHA256 1a84a2e6f5234bd25940e03f0cbec5ad5e62304838722b2a1d37db085193e407\nPass 2 (131 physical lines):\napps/server/test/be_02/write_boundary_input_test.rb:1-131; full-file SHA256 2045b4ec9c18b6ac32bd4239ce1f44c258fe738b8c698329f0845ac47b26bf94\nTotal assignment 289 unique physical lines. Focus: WT-01 and WB-T01: original JSON decimal/exponent tokens retain exact mathematical value; integral forms normalize, near-integer fractions and underflow reject; scoped underflow mode restores on success/failure; duplicates including escaped keys reject; UTF-8 split byte stream cap is faithful; signature availability remains an execution gate.\nAcceptance: durable report with actual terminal/task/dispatch and requested versus observed model if available, exact source hashes/physical ranges, conformance checklist covering purpose, boundary/null/empty/max, state/cross-module coupling, tests happy/failure and evidence limits, comments/docs, security/performance as relevant. Delegate formatting to lint; lint NOT_RUN here. For EACH old finding state statically addressed/not addressed/unknown and rationale. Confirmed new defects require severity, exact source/hash/location, violated invariant, concrete analytical reproduction/mutant, minimal repair and acceptance criterion; report high-confidence findings immediately via Orca to this coordinator. Do not invent defects from omitted context. Distinguish duplicate findings, evidence gaps and actual defects. Include observed defect count and defects/KLOC; zero only when actually observed in bounded review. All runtime acceptance remains NOT_RUN. Obsidian is unavailable; analytical schedules must not be described as execution. Report integration/behavior test gaps to root; no permission to edit. Read coordinator mail at natural checkpoints and immediately before worker_done."
+    },
+    {
+      "taskKey": "numeric-controller",
+      "title": "BE02 repair review: numeric-controller",
+      "agent": "codex",
+      "model": null,
+      "effort": null,
+      "outputPath": "C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-numeric-controller.md",
+      "uniqueSourceLines": 336,
+      "passes": [
+        {
+          "pass": 1,
+          "physicalLines": 108,
+          "slices": [
+            {
+              "path": "apps/server/test/be_02/write_boundary_test_helper.rb",
+              "a": 1,
+              "b": 108,
+              "sha256": "a1aa65f7b0b0f2fb35849f9a014136c1766ce6fa468470847944574112d57c31"
+            }
+          ]
+        },
+        {
+          "pass": 2,
+          "physicalLines": 114,
+          "slices": [
+            {
+              "path": "apps/server/test/be_02/write_boundary_controller_test.rb",
+              "a": 1,
+              "b": 114,
+              "sha256": "5fab279e90dee5d1f7abe14de953b2ac88f1ec555dbd8c7068efdcbf42b73f2d"
+            }
+          ]
+        },
+        {
+          "pass": 3,
+          "physicalLines": 114,
+          "slices": [
+            {
+              "path": "apps/server/test/be_02/write_boundary_controller_test.rb",
+              "a": 115,
+              "b": 228,
+              "sha256": "5fab279e90dee5d1f7abe14de953b2ac88f1ec555dbd8c7068efdcbf42b73f2d"
+            }
+          ]
+        }
+      ],
+      "frozenManifests": [
+        {
+          "path": "docs/completion/be02-write-input-repair.md",
+          "sha256": "4bcbc54bedebb276cee9d43f6b05d9e9e9a06f7bcc3beb5b77dd6f98a5280d43"
+        }
+      ],
+      "spec": "You are an independent read-only Orca adversarial correctness reviewer for a completed BE02 repair. Target source root: C:/Users/Tanzeel/Code and projects/Elevateo Mail - BE02 Codex. Coordinator checkout: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion. You may write ONLY your unique report: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-numeric-controller.md. No source, tests, root docs/code-reviews, commits or fixes. No native subagents or extra agent/model calls. No host application tests, syntax execution, Docker, SSH, purchases, ultrareviews, Devin sessions, live activation or external posts. Report through live Orca preamble; one worker_done exactly once and idle. No further successive assignments permitted under this review allowance.\nRead applicable AGENTS.md, current README/state/documentation, .planning/STANDARDS.md and AGENT_ORCHESTRATION.md. Latest dispatch controls supersede historical routing. Read prose BE02 docs/completion/be02-write-input-repair.md (SHA256 4bcbc54bedebb276cee9d43f6b05d9e9e9a06f7bcc3beb5b77dd6f98a5280d43), original coordinator reports docs/completion/review-be02-write-transport.md, review-be02-write-boundary-tests.md, review-be02-write-boundary-races.md, and frozen contract prose as needed. Documentation source snippets outside the assigned ranges also consume source budget, so skip them and ask for prose. Pinned JSON3.0.2 and BigDecimal4.1.3 API evidence is referenced in the manifest; use its explicit reported contracts with attribution, and ask coordinator for bounded primary excerpts if verification needs additional source. No unbounded upstream source read. Unfinished RLS/deadline source is excluded.\nREQUIRED FULL REVIEW RUBRIC:\nDoes this code work? Verify that the code actually fulfills the purpose of the feature or bug fix. Check if the author considered null inputs, empty lists, and max limits. Ensure that changes to state or data structures don't inadvertently break other parts of the entire system. Ensure the developer isn't over-engineering or building things they might need in the future but don't actually know they need now. Check that new classes or functions aren't trying to do too much. Look out for duplicated logic that should be extracted into a shared utility or service. Ensure variable, function, and class names communicate their intent clearly. Check that comments explain why something exists, not just what the code does. Look for deeply nested loops or convoluted conditionals that could be simplified to help future developers read it easily. Confirm that unit and/or integration tests are included and directly cover the changed logic or new feature. Ensure the tests cover both the happy path and failure scenarios. Check if the author has updated relevant documentation. Make sure external inputs are sanitised and permission/authorisation checks are properly enforced. Watch out for unnecessary loops, repeated database queries in hot paths, or operations that could cause bottlenecks.\nOwnership/source allowance: each pass <=200 physical source lines INCLUDING blanks/comments/helper/context. Total <=400 unique source lines for this entire assignment; do not read transitive implementation or extra helpers. Metadata counts/hash may inspect whole files but source content only these ranges. Verify hashes BEFORE review and again before completion; any drift stops affected review and must be reported, not silently retargeted. Read source passes separately, report exact per-pass and unique coverage. Any unavailable interface: ask coordinator for a prose summary instead of exceeding allowance.\nPass 1 (108 physical lines):\napps/server/test/be_02/write_boundary_test_helper.rb:1-108; full-file SHA256 a1aa65f7b0b0f2fb35849f9a014136c1766ce6fa468470847944574112d57c31\nPass 2 (114 physical lines):\napps/server/test/be_02/write_boundary_controller_test.rb:1-114; full-file SHA256 5fab279e90dee5d1f7abe14de953b2ac88f1ec555dbd8c7068efdcbf42b73f2d\nPass 3 (114 physical lines):\napps/server/test/be_02/write_boundary_controller_test.rb:115-228; full-file SHA256 5fab279e90dee5d1f7abe14de953b2ac88f1ec555dbd8c7068efdcbf42b73f2d\nTotal assignment 336 unique physical lines. Focus: WB-T02, F1 and WT-01 caller coverage: valid exact4096/4097 serialized JSON, multibyte/escaped bytes, commit/rollback and mutation exclusion; absent/zero/forged Content-Length; actual DELETE; nonidentity encoding; syntax-before-auth versus semantic-after-authority ordering. Distinguish mock caller observations from route/PostgreSQL execution.\nAcceptance: durable report with actual terminal/task/dispatch and requested versus observed model if available, exact source hashes/physical ranges, conformance checklist covering purpose, boundary/null/empty/max, state/cross-module coupling, tests happy/failure and evidence limits, comments/docs, security/performance as relevant. Delegate formatting to lint; lint NOT_RUN here. For EACH old finding state statically addressed/not addressed/unknown and rationale. Confirmed new defects require severity, exact source/hash/location, violated invariant, concrete analytical reproduction/mutant, minimal repair and acceptance criterion; report high-confidence findings immediately via Orca to this coordinator. Do not invent defects from omitted context. Distinguish duplicate findings, evidence gaps and actual defects. Include observed defect count and defects/KLOC; zero only when actually observed in bounded review. All runtime acceptance remains NOT_RUN. Obsidian is unavailable; analytical schedules must not be described as execution. Report integration/behavior test gaps to root; no permission to edit. Read coordinator mail at natural checkpoints and immediately before worker_done."
+    },
+    {
+      "taskKey": "numeric-signatures",
+      "title": "BE02 repair review: numeric-signatures",
+      "agent": "codex",
+      "model": null,
+      "effort": null,
+      "outputPath": "C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-numeric-signatures.md",
+      "uniqueSourceLines": 190,
+      "passes": [
+        {
+          "pass": 1,
+          "physicalLines": 190,
+          "slices": [
+            {
+              "path": "apps/server/sig/write_controller.rbs",
+              "a": 1,
+              "b": 14,
+              "sha256": "d5260ba349986a7f68130f6a922ef92d7633bf347da8d4fdfbaa34a153178c67"
+            },
+            {
+              "path": "apps/server/sig/drafts.rbs",
+              "a": 1,
+              "b": 51,
+              "sha256": "4724f723de1408e5e4b9d19042c16b7e1d20d35a91b2735948699b1f9fa28ff3"
+            },
+            {
+              "path": "apps/server/sig/mailbox_memberships.rbs",
+              "a": 1,
+              "b": 36,
+              "sha256": "b9dfd77f75cf6f8125dd8c26b7d321358e05bb7328eefd6cfa55b1f0833d8b63"
+            },
+            {
+              "path": "apps/server/sig/thread_collaboration.rbs",
+              "a": 1,
+              "b": 27,
+              "sha256": "370c3d368e11d3f3bc35a4683bec848e1f648886cceb3eb8e4e4c11eb17e5e39"
+            },
+            {
+              "path": "apps/server/sig/thread_assignment.rbs",
+              "a": 1,
+              "b": 21,
+              "sha256": "9c6acf27d2466b05373bb39d9269796051b425bea7a59edf9392309a387b273e"
+            },
+            {
+              "path": "apps/server/sig/thread_notes.rbs",
+              "a": 1,
+              "b": 27,
+              "sha256": "de00bdc099d6217ef980950a922f8a9c9e4e80110879f2be61aa4a640e158274"
+            },
+            {
+              "path": "apps/server/sig/thread_read_state.rbs",
+              "a": 1,
+              "b": 14,
+              "sha256": "a69490ae704238566c1e7b0dad5566d8327b3ac2216e78d4b608399c45edacfe"
+            }
+          ]
+        }
+      ],
+      "frozenManifests": [
+        {
+          "path": "docs/completion/be02-write-input-repair.md",
+          "sha256": "4bcbc54bedebb276cee9d43f6b05d9e9e9a06f7bcc3beb5b77dd6f98a5280d43"
+        }
+      ],
+      "spec": "You are an independent read-only Orca adversarial correctness reviewer for a completed BE02 repair. Target source root: C:/Users/Tanzeel/Code and projects/Elevateo Mail - BE02 Codex. Coordinator checkout: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion. You may write ONLY your unique report: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-numeric-signatures.md. No source, tests, root docs/code-reviews, commits or fixes. No native subagents or extra agent/model calls. No host application tests, syntax execution, Docker, SSH, purchases, ultrareviews, Devin sessions, live activation or external posts. Report through live Orca preamble; one worker_done exactly once and idle. No further successive assignments permitted under this review allowance.\nRead applicable AGENTS.md, current README/state/documentation, .planning/STANDARDS.md and AGENT_ORCHESTRATION.md. Latest dispatch controls supersede historical routing. Read prose BE02 docs/completion/be02-write-input-repair.md (SHA256 4bcbc54bedebb276cee9d43f6b05d9e9e9a06f7bcc3beb5b77dd6f98a5280d43), original coordinator reports docs/completion/review-be02-write-transport.md, review-be02-write-boundary-tests.md, review-be02-write-boundary-races.md, and frozen contract prose as needed. Documentation source snippets outside the assigned ranges also consume source budget, so skip them and ask for prose. Pinned JSON3.0.2 and BigDecimal4.1.3 API evidence is referenced in the manifest; use its explicit reported contracts with attribution, and ask coordinator for bounded primary excerpts if verification needs additional source. No unbounded upstream source read. Unfinished RLS/deadline source is excluded.\nREQUIRED FULL REVIEW RUBRIC:\nDoes this code work? Verify that the code actually fulfills the purpose of the feature or bug fix. Check if the author considered null inputs, empty lists, and max limits. Ensure that changes to state or data structures don't inadvertently break other parts of the entire system. Ensure the developer isn't over-engineering or building things they might need in the future but don't actually know they need now. Check that new classes or functions aren't trying to do too much. Look out for duplicated logic that should be extracted into a shared utility or service. Ensure variable, function, and class names communicate their intent clearly. Check that comments explain why something exists, not just what the code does. Look for deeply nested loops or convoluted conditionals that could be simplified to help future developers read it easily. Confirm that unit and/or integration tests are included and directly cover the changed logic or new feature. Ensure the tests cover both the happy path and failure scenarios. Check if the author has updated relevant documentation. Make sure external inputs are sanitised and permission/authorisation checks are properly enforced. Watch out for unnecessary loops, repeated database queries in hot paths, or operations that could cause bottlenecks.\nOwnership/source allowance: each pass <=200 physical source lines INCLUDING blanks/comments/helper/context. Total <=400 unique source lines for this entire assignment; do not read transitive implementation or extra helpers. Metadata counts/hash may inspect whole files but source content only these ranges. Verify hashes BEFORE review and again before completion; any drift stops affected review and must be reported, not silently retargeted. Read source passes separately, report exact per-pass and unique coverage. Any unavailable interface: ask coordinator for a prose summary instead of exceeding allowance.\nPass 1 (190 physical lines):\napps/server/sig/write_controller.rbs:1-14; full-file SHA256 d5260ba349986a7f68130f6a922ef92d7633bf347da8d4fdfbaa34a153178c67\napps/server/sig/drafts.rbs:1-51; full-file SHA256 4724f723de1408e5e4b9d19042c16b7e1d20d35a91b2735948699b1f9fa28ff3\napps/server/sig/mailbox_memberships.rbs:1-36; full-file SHA256 b9dfd77f75cf6f8125dd8c26b7d321358e05bb7328eefd6cfa55b1f0833d8b63\napps/server/sig/thread_collaboration.rbs:1-27; full-file SHA256 370c3d368e11d3f3bc35a4683bec848e1f648886cceb3eb8e4e4c11eb17e5e39\napps/server/sig/thread_assignment.rbs:1-21; full-file SHA256 9c6acf27d2466b05373bb39d9269796051b425bea7a59edf9392309a387b273e\napps/server/sig/thread_notes.rbs:1-27; full-file SHA256 de00bdc099d6217ef980950a922f8a9c9e4e80110879f2be61aa4a640e158274\napps/server/sig/thread_read_state.rbs:1-14; full-file SHA256 a69490ae704238566c1e7b0dad5566d8327b3ac2216e78d4b608399c45edacfe\nTotal assignment 190 unique physical lines. Focus: WriteInput exact numeric alias propagation remains limited to write inputs; callback and nested recipients/capabilities signatures match the published interfaces. Auth session/read/response aliases must not be widened just to silence type errors. Runtime consumer implementation is assigned elsewhere; identify precise type assumptions or request prose summaries rather than extra source.\nAcceptance: durable report with actual terminal/task/dispatch and requested versus observed model if available, exact source hashes/physical ranges, conformance checklist covering purpose, boundary/null/empty/max, state/cross-module coupling, tests happy/failure and evidence limits, comments/docs, security/performance as relevant. Delegate formatting to lint; lint NOT_RUN here. For EACH old finding state statically addressed/not addressed/unknown and rationale. Confirmed new defects require severity, exact source/hash/location, violated invariant, concrete analytical reproduction/mutant, minimal repair and acceptance criterion; report high-confidence findings immediately via Orca to this coordinator. Do not invent defects from omitted context. Distinguish duplicate findings, evidence gaps and actual defects. Include observed defect count and defects/KLOC; zero only when actually observed in bounded review. All runtime acceptance remains NOT_RUN. Obsidian is unavailable; analytical schedules must not be described as execution. Report integration/behavior test gaps to root; no permission to edit. Read coordinator mail at natural checkpoints and immediately before worker_done."
+    },
+    {
+      "taskKey": "numeric-draft-consumer",
+      "title": "BE02 repair review: numeric-draft-consumer",
+      "agent": "codex",
+      "model": null,
+      "effort": null,
+      "outputPath": "C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-numeric-draft-consumer.md",
+      "uniqueSourceLines": 138,
+      "passes": [
+        {
+          "pass": 1,
+          "physicalLines": 138,
+          "slices": [
+            {
+              "path": "apps/server/app/controllers/v1/write_controller.rb",
+              "a": 1,
+              "b": 48,
+              "sha256": "a8755e7dfe2c279209d2fb5f242bec628c604a62a78c0c2a489e47ea1e7b6d10"
+            },
+            {
+              "path": "apps/server/app/controllers/v1/drafts_controller.rb",
+              "a": 1,
+              "b": 42,
+              "sha256": "c73bd590b1c79939ca55a82e1aaea74ab1f20c81a7e24399f48840fb4edfecf0"
+            },
+            {
+              "path": "apps/server/lib/elevateo/drafts/payload.rb",
+              "a": 1,
+              "b": 48,
+              "sha256": "8aaf5b23dee01ba32e6f43aac299d366c7f62e8f2dbeec975a23994a9c5fc310"
+            }
+          ]
+        }
+      ],
+      "frozenManifests": [
+        {
+          "path": "docs/completion/be02-write-input-repair.md",
+          "sha256": "4bcbc54bedebb276cee9d43f6b05d9e9e9a06f7bcc3beb5b77dd6f98a5280d43"
+        }
+      ],
+      "spec": "You are an independent read-only Orca adversarial correctness reviewer for a completed BE02 repair. Target source root: C:/Users/Tanzeel/Code and projects/Elevateo Mail - BE02 Codex. Coordinator checkout: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion. You may write ONLY your unique report: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-numeric-draft-consumer.md. No source, tests, root docs/code-reviews, commits or fixes. No native subagents or extra agent/model calls. No host application tests, syntax execution, Docker, SSH, purchases, ultrareviews, Devin sessions, live activation or external posts. Report through live Orca preamble; one worker_done exactly once and idle. No further successive assignments permitted under this review allowance.\nRead applicable AGENTS.md, current README/state/documentation, .planning/STANDARDS.md and AGENT_ORCHESTRATION.md. Latest dispatch controls supersede historical routing. Read prose BE02 docs/completion/be02-write-input-repair.md (SHA256 4bcbc54bedebb276cee9d43f6b05d9e9e9a06f7bcc3beb5b77dd6f98a5280d43), original coordinator reports docs/completion/review-be02-write-transport.md, review-be02-write-boundary-tests.md, review-be02-write-boundary-races.md, and frozen contract prose as needed. Documentation source snippets outside the assigned ranges also consume source budget, so skip them and ask for prose. Pinned JSON3.0.2 and BigDecimal4.1.3 API evidence is referenced in the manifest; use its explicit reported contracts with attribution, and ask coordinator for bounded primary excerpts if verification needs additional source. No unbounded upstream source read. Unfinished RLS/deadline source is excluded.\nREQUIRED FULL REVIEW RUBRIC:\nDoes this code work? Verify that the code actually fulfills the purpose of the feature or bug fix. Check if the author considered null inputs, empty lists, and max limits. Ensure that changes to state or data structures don't inadvertently break other parts of the entire system. Ensure the developer isn't over-engineering or building things they might need in the future but don't actually know they need now. Check that new classes or functions aren't trying to do too much. Look out for duplicated logic that should be extracted into a shared utility or service. Ensure variable, function, and class names communicate their intent clearly. Check that comments explain why something exists, not just what the code does. Look for deeply nested loops or convoluted conditionals that could be simplified to help future developers read it easily. Confirm that unit and/or integration tests are included and directly cover the changed logic or new feature. Ensure the tests cover both the happy path and failure scenarios. Check if the author has updated relevant documentation. Make sure external inputs are sanitised and permission/authorisation checks are properly enforced. Watch out for unnecessary loops, repeated database queries in hot paths, or operations that could cause bottlenecks.\nOwnership/source allowance: each pass <=200 physical source lines INCLUDING blanks/comments/helper/context. Total <=400 unique source lines for this entire assignment; do not read transitive implementation or extra helpers. Metadata counts/hash may inspect whole files but source content only these ranges. Verify hashes BEFORE review and again before completion; any drift stops affected review and must be reported, not silently retargeted. Read source passes separately, report exact per-pass and unique coverage. Any unavailable interface: ask coordinator for a prose summary instead of exceeding allowance.\nPass 1 (138 physical lines):\napps/server/app/controllers/v1/write_controller.rb:1-48; full-file SHA256 a8755e7dfe2c279209d2fb5f242bec628c604a62a78c0c2a489e47ea1e7b6d10\napps/server/app/controllers/v1/drafts_controller.rb:1-42; full-file SHA256 c73bd590b1c79939ca55a82e1aaea74ab1f20c81a7e24399f48840fb4edfecf0\napps/server/lib/elevateo/drafts/payload.rb:1-48; full-file SHA256 8aaf5b23dee01ba32e6f43aac299d366c7f62e8f2dbeec975a23994a9c5fc310\nTotal assignment 138 unique physical lines. Focus: Bounded unchanged actual caller compatibility: decimal-bearing parsed body reaches real callback with correct authority-before-field semantics; draft payload and recipients are narrowed; exact expected_version normalization happens before persistence/serialization. Do not infer unavailable transaction internals. Numeric parser interface is prose in the manifest and reviewed separately.\nAcceptance: durable report with actual terminal/task/dispatch and requested versus observed model if available, exact source hashes/physical ranges, conformance checklist covering purpose, boundary/null/empty/max, state/cross-module coupling, tests happy/failure and evidence limits, comments/docs, security/performance as relevant. Delegate formatting to lint; lint NOT_RUN here. For EACH old finding state statically addressed/not addressed/unknown and rationale. Confirmed new defects require severity, exact source/hash/location, violated invariant, concrete analytical reproduction/mutant, minimal repair and acceptance criterion; report high-confidence findings immediately via Orca to this coordinator. Do not invent defects from omitted context. Distinguish duplicate findings, evidence gaps and actual defects. Include observed defect count and defects/KLOC; zero only when actually observed in bounded review. All runtime acceptance remains NOT_RUN. Obsidian is unavailable; analytical schedules must not be described as execution. Report integration/behavior test gaps to root; no permission to edit. Read coordinator mail at natural checkpoints and immediately before worker_done."
+    },
+    {
+      "taskKey": "numeric-membership-consumer",
+      "title": "BE02 repair review: numeric-membership-consumer",
+      "agent": "codex",
+      "model": null,
+      "effort": null,
+      "outputPath": "C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-numeric-membership-consumer.md",
+      "uniqueSourceLines": 179,
+      "passes": [
+        {
+          "pass": 1,
+          "physicalLines": 179,
+          "slices": [
+            {
+              "path": "apps/server/app/controllers/v1/mailbox_members_controller.rb",
+              "a": 1,
+              "b": 47,
+              "sha256": "00d878968c96197ddb8015f56c0385a740cea5798850e3166f4cba642851a51b"
+            },
+            {
+              "path": "apps/server/lib/elevateo/mailbox_membership_input.rb",
+              "a": 1,
+              "b": 35,
+              "sha256": "5840d6c8e7227db458c3e81c30a4f47e9d152ffb33a9ce211c37251686389a7c"
+            },
+            {
+              "path": "apps/server/lib/elevateo/mailbox_memberships.rb",
+              "a": 1,
+              "b": 97,
+              "sha256": "4e1f78b319c1cbeb713cb2e3d4d0b5dd79feec1f641ce037d0a2e504a4f54050"
+            }
+          ]
+        }
+      ],
+      "frozenManifests": [
+        {
+          "path": "docs/completion/be02-write-input-repair.md",
+          "sha256": "4bcbc54bedebb276cee9d43f6b05d9e9e9a06f7bcc3beb5b77dd6f98a5280d43"
+        }
+      ],
+      "spec": "You are an independent read-only Orca adversarial correctness reviewer for a completed BE02 repair. Target source root: C:/Users/Tanzeel/Code and projects/Elevateo Mail - BE02 Codex. Coordinator checkout: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion. You may write ONLY your unique report: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-numeric-membership-consumer.md. No source, tests, root docs/code-reviews, commits or fixes. No native subagents or extra agent/model calls. No host application tests, syntax execution, Docker, SSH, purchases, ultrareviews, Devin sessions, live activation or external posts. Report through live Orca preamble; one worker_done exactly once and idle. No further successive assignments permitted under this review allowance.\nRead applicable AGENTS.md, current README/state/documentation, .planning/STANDARDS.md and AGENT_ORCHESTRATION.md. Latest dispatch controls supersede historical routing. Read prose BE02 docs/completion/be02-write-input-repair.md (SHA256 4bcbc54bedebb276cee9d43f6b05d9e9e9a06f7bcc3beb5b77dd6f98a5280d43), original coordinator reports docs/completion/review-be02-write-transport.md, review-be02-write-boundary-tests.md, review-be02-write-boundary-races.md, and frozen contract prose as needed. Documentation source snippets outside the assigned ranges also consume source budget, so skip them and ask for prose. Pinned JSON3.0.2 and BigDecimal4.1.3 API evidence is referenced in the manifest; use its explicit reported contracts with attribution, and ask coordinator for bounded primary excerpts if verification needs additional source. No unbounded upstream source read. Unfinished RLS/deadline source is excluded.\nREQUIRED FULL REVIEW RUBRIC:\nDoes this code work? Verify that the code actually fulfills the purpose of the feature or bug fix. Check if the author considered null inputs, empty lists, and max limits. Ensure that changes to state or data structures don't inadvertently break other parts of the entire system. Ensure the developer isn't over-engineering or building things they might need in the future but don't actually know they need now. Check that new classes or functions aren't trying to do too much. Look out for duplicated logic that should be extracted into a shared utility or service. Ensure variable, function, and class names communicate their intent clearly. Check that comments explain why something exists, not just what the code does. Look for deeply nested loops or convoluted conditionals that could be simplified to help future developers read it easily. Confirm that unit and/or integration tests are included and directly cover the changed logic or new feature. Ensure the tests cover both the happy path and failure scenarios. Check if the author has updated relevant documentation. Make sure external inputs are sanitised and permission/authorisation checks are properly enforced. Watch out for unnecessary loops, repeated database queries in hot paths, or operations that could cause bottlenecks.\nOwnership/source allowance: each pass <=200 physical source lines INCLUDING blanks/comments/helper/context. Total <=400 unique source lines for this entire assignment; do not read transitive implementation or extra helpers. Metadata counts/hash may inspect whole files but source content only these ranges. Verify hashes BEFORE review and again before completion; any drift stops affected review and must be reported, not silently retargeted. Read source passes separately, report exact per-pass and unique coverage. Any unavailable interface: ask coordinator for a prose summary instead of exceeding allowance.\nPass 1 (179 physical lines):\napps/server/app/controllers/v1/mailbox_members_controller.rb:1-47; full-file SHA256 00d878968c96197ddb8015f56c0385a740cea5798850e3166f4cba642851a51b\napps/server/lib/elevateo/mailbox_membership_input.rb:1-35; full-file SHA256 5840d6c8e7227db458c3e81c30a4f47e9d152ffb33a9ce211c37251686389a7c\napps/server/lib/elevateo/mailbox_memberships.rb:1-97; full-file SHA256 4e1f78b319c1cbeb713cb2e3d4d0b5dd79feec1f641ce037d0a2e504a4f54050\nTotal assignment 179 unique physical lines. Focus: Bounded unchanged membership caller compatibility: guard callable, version integer normalization, capability booleans and UUID/list narrowing, auth precedence and safe persistence/response types. No independent review of unfinished RLS/deadline machinery.\nAcceptance: durable report with actual terminal/task/dispatch and requested versus observed model if available, exact source hashes/physical ranges, conformance checklist covering purpose, boundary/null/empty/max, state/cross-module coupling, tests happy/failure and evidence limits, comments/docs, security/performance as relevant. Delegate formatting to lint; lint NOT_RUN here. For EACH old finding state statically addressed/not addressed/unknown and rationale. Confirmed new defects require severity, exact source/hash/location, violated invariant, concrete analytical reproduction/mutant, minimal repair and acceptance criterion; report high-confidence findings immediately via Orca to this coordinator. Do not invent defects from omitted context. Distinguish duplicate findings, evidence gaps and actual defects. Include observed defect count and defects/KLOC; zero only when actually observed in bounded review. All runtime acceptance remains NOT_RUN. Obsidian is unavailable; analytical schedules must not be described as execution. Report integration/behavior test gaps to root; no permission to edit. Read coordinator mail at natural checkpoints and immediately before worker_done."
+    },
+    {
+      "taskKey": "numeric-thread-consumer",
+      "title": "BE02 repair review: numeric-thread-consumer",
+      "agent": "codex",
+      "model": null,
+      "effort": null,
+      "outputPath": "C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-numeric-thread-consumer.md",
+      "uniqueSourceLines": 337,
+      "passes": [
+        {
+          "pass": 1,
+          "physicalLines": 183,
+          "slices": [
+            {
+              "path": "apps/server/app/controllers/v1/thread_assignments_controller.rb",
+              "a": 1,
+              "b": 32,
+              "sha256": "436ea2f9db5aa639a6a2f985692aca571ca7b2f35e07ffbd26815b93b5319940"
+            },
+            {
+              "path": "apps/server/lib/elevateo/thread_assignment.rb",
+              "a": 1,
+              "b": 80,
+              "sha256": "9a99d0d2f11ddf7b26a9c530a2cc11294b325e133aea4e843573ab09202ab9c8"
+            },
+            {
+              "path": "apps/server/lib/elevateo/thread_collaboration.rb",
+              "a": 1,
+              "b": 71,
+              "sha256": "c4abf9d245c4b1d82183166bad67ac0e6859d133f02ce23690f79282184283b0"
+            }
+          ]
+        },
+        {
+          "pass": 2,
+          "physicalLines": 154,
+          "slices": [
+            {
+              "path": "apps/server/app/controllers/v1/thread_notes_controller.rb",
+              "a": 1,
+              "b": 34,
+              "sha256": "96b56c8305a2393d31749d8e755f752803173580db98a7a748f3399765d0dca3"
+            },
+            {
+              "path": "apps/server/lib/elevateo/thread_notes.rb",
+              "a": 1,
+              "b": 100,
+              "sha256": "161024d2d079bace051db792a30eb6a7b13f117238a72a302d478087432b3437"
+            },
+            {
+              "path": "apps/server/app/controllers/v1/thread_read_states_controller.rb",
+              "a": 1,
+              "b": 20,
+              "sha256": "00a915d7c7029bdc59a6cac079485707c7f82f9cb39de14f729e3c81493f4cb6"
+            }
+          ]
+        }
+      ],
+      "frozenManifests": [
+        {
+          "path": "docs/completion/be02-write-input-repair.md",
+          "sha256": "4bcbc54bedebb276cee9d43f6b05d9e9e9a06f7bcc3beb5b77dd6f98a5280d43"
+        }
+      ],
+      "spec": "You are an independent read-only Orca adversarial correctness reviewer for a completed BE02 repair. Target source root: C:/Users/Tanzeel/Code and projects/Elevateo Mail - BE02 Codex. Coordinator checkout: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion. You may write ONLY your unique report: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-numeric-thread-consumer.md. No source, tests, root docs/code-reviews, commits or fixes. No native subagents or extra agent/model calls. No host application tests, syntax execution, Docker, SSH, purchases, ultrareviews, Devin sessions, live activation or external posts. Report through live Orca preamble; one worker_done exactly once and idle. No further successive assignments permitted under this review allowance.\nRead applicable AGENTS.md, current README/state/documentation, .planning/STANDARDS.md and AGENT_ORCHESTRATION.md. Latest dispatch controls supersede historical routing. Read prose BE02 docs/completion/be02-write-input-repair.md (SHA256 4bcbc54bedebb276cee9d43f6b05d9e9e9a06f7bcc3beb5b77dd6f98a5280d43), original coordinator reports docs/completion/review-be02-write-transport.md, review-be02-write-boundary-tests.md, review-be02-write-boundary-races.md, and frozen contract prose as needed. Documentation source snippets outside the assigned ranges also consume source budget, so skip them and ask for prose. Pinned JSON3.0.2 and BigDecimal4.1.3 API evidence is referenced in the manifest; use its explicit reported contracts with attribution, and ask coordinator for bounded primary excerpts if verification needs additional source. No unbounded upstream source read. Unfinished RLS/deadline source is excluded.\nREQUIRED FULL REVIEW RUBRIC:\nDoes this code work? Verify that the code actually fulfills the purpose of the feature or bug fix. Check if the author considered null inputs, empty lists, and max limits. Ensure that changes to state or data structures don't inadvertently break other parts of the entire system. Ensure the developer isn't over-engineering or building things they might need in the future but don't actually know they need now. Check that new classes or functions aren't trying to do too much. Look out for duplicated logic that should be extracted into a shared utility or service. Ensure variable, function, and class names communicate their intent clearly. Check that comments explain why something exists, not just what the code does. Look for deeply nested loops or convoluted conditionals that could be simplified to help future developers read it easily. Confirm that unit and/or integration tests are included and directly cover the changed logic or new feature. Ensure the tests cover both the happy path and failure scenarios. Check if the author has updated relevant documentation. Make sure external inputs are sanitised and permission/authorisation checks are properly enforced. Watch out for unnecessary loops, repeated database queries in hot paths, or operations that could cause bottlenecks.\nOwnership/source allowance: each pass <=200 physical source lines INCLUDING blanks/comments/helper/context. Total <=400 unique source lines for this entire assignment; do not read transitive implementation or extra helpers. Metadata counts/hash may inspect whole files but source content only these ranges. Verify hashes BEFORE review and again before completion; any drift stops affected review and must be reported, not silently retargeted. Read source passes separately, report exact per-pass and unique coverage. Any unavailable interface: ask coordinator for a prose summary instead of exceeding allowance.\nPass 1 (183 physical lines):\napps/server/app/controllers/v1/thread_assignments_controller.rb:1-32; full-file SHA256 436ea2f9db5aa639a6a2f985692aca571ca7b2f35e07ffbd26815b93b5319940\napps/server/lib/elevateo/thread_assignment.rb:1-80; full-file SHA256 9a99d0d2f11ddf7b26a9c530a2cc11294b325e133aea4e843573ab09202ab9c8\napps/server/lib/elevateo/thread_collaboration.rb:1-71; full-file SHA256 c4abf9d245c4b1d82183166bad67ac0e6859d133f02ce23690f79282184283b0\nPass 2 (154 physical lines):\napps/server/app/controllers/v1/thread_notes_controller.rb:1-34; full-file SHA256 96b56c8305a2393d31749d8e755f752803173580db98a7a748f3399765d0dca3\napps/server/lib/elevateo/thread_notes.rb:1-100; full-file SHA256 161024d2d079bace051db792a30eb6a7b13f117238a72a302d478087432b3437\napps/server/app/controllers/v1/thread_read_states_controller.rb:1-20; full-file SHA256 00a915d7c7029bdc59a6cac079485707c7f82f9cb39de14f729e3c81493f4cb6\nTotal assignment 337 unique physical lines. Focus: Bounded unchanged thread callers: write alias reaches assignment/notes/read-state contracts; shared keys validation preserves string query callers; number normalization before version persistence/response; read values remain unchanged. thread_notes.rb is also in cursor review, count overlap transparently, no duplicate defect counts.\nAcceptance: durable report with actual terminal/task/dispatch and requested versus observed model if available, exact source hashes/physical ranges, conformance checklist covering purpose, boundary/null/empty/max, state/cross-module coupling, tests happy/failure and evidence limits, comments/docs, security/performance as relevant. Delegate formatting to lint; lint NOT_RUN here. For EACH old finding state statically addressed/not addressed/unknown and rationale. Confirmed new defects require severity, exact source/hash/location, violated invariant, concrete analytical reproduction/mutant, minimal repair and acceptance criterion; report high-confidence findings immediately via Orca to this coordinator. Do not invent defects from omitted context. Distinguish duplicate findings, evidence gaps and actual defects. Include observed defect count and defects/KLOC; zero only when actually observed in bounded review. All runtime acceptance remains NOT_RUN. Obsidian is unavailable; analytical schedules must not be described as execution. Report integration/behavior test gaps to root; no permission to edit. Read coordinator mail at natural checkpoints and immediately before worker_done."
+    },
+    {
+      "taskKey": "numeric-read-state-consumer",
+      "title": "BE02 repair review: numeric-read-state-consumer",
+      "agent": "codex",
+      "model": null,
+      "effort": null,
+      "outputPath": "C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-numeric-read-state-consumer.md",
+      "uniqueSourceLines": 50,
+      "passes": [
+        {
+          "pass": 1,
+          "physicalLines": 50,
+          "slices": [
+            {
+              "path": "apps/server/lib/elevateo/thread_read_state.rb",
+              "a": 1,
+              "b": 50,
+              "sha256": "a05f3af1b6a163b2df8b11cf7b2b63758fa532543acc3c7543cd16d030f9e6c0"
+            }
+          ]
+        }
+      ],
+      "frozenManifests": [
+        {
+          "path": "docs/completion/be02-write-input-repair.md",
+          "sha256": "4bcbc54bedebb276cee9d43f6b05d9e9e9a06f7bcc3beb5b77dd6f98a5280d43"
+        }
+      ],
+      "spec": "You are an independent read-only Orca adversarial correctness reviewer for a completed BE02 repair. Target source root: C:/Users/Tanzeel/Code and projects/Elevateo Mail - BE02 Codex. Coordinator checkout: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion. You may write ONLY your unique report: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-numeric-read-state-consumer.md. No source, tests, root docs/code-reviews, commits or fixes. No native subagents or extra agent/model calls. No host application tests, syntax execution, Docker, SSH, purchases, ultrareviews, Devin sessions, live activation or external posts. Report through live Orca preamble; one worker_done exactly once and idle. No further successive assignments permitted under this review allowance.\nRead applicable AGENTS.md, current README/state/documentation, .planning/STANDARDS.md and AGENT_ORCHESTRATION.md. Latest dispatch controls supersede historical routing. Read prose BE02 docs/completion/be02-write-input-repair.md (SHA256 4bcbc54bedebb276cee9d43f6b05d9e9e9a06f7bcc3beb5b77dd6f98a5280d43), original coordinator reports docs/completion/review-be02-write-transport.md, review-be02-write-boundary-tests.md, review-be02-write-boundary-races.md, and frozen contract prose as needed. Documentation source snippets outside the assigned ranges also consume source budget, so skip them and ask for prose. Pinned JSON3.0.2 and BigDecimal4.1.3 API evidence is referenced in the manifest; use its explicit reported contracts with attribution, and ask coordinator for bounded primary excerpts if verification needs additional source. No unbounded upstream source read. Unfinished RLS/deadline source is excluded.\nREQUIRED FULL REVIEW RUBRIC:\nDoes this code work? Verify that the code actually fulfills the purpose of the feature or bug fix. Check if the author considered null inputs, empty lists, and max limits. Ensure that changes to state or data structures don't inadvertently break other parts of the entire system. Ensure the developer isn't over-engineering or building things they might need in the future but don't actually know they need now. Check that new classes or functions aren't trying to do too much. Look out for duplicated logic that should be extracted into a shared utility or service. Ensure variable, function, and class names communicate their intent clearly. Check that comments explain why something exists, not just what the code does. Look for deeply nested loops or convoluted conditionals that could be simplified to help future developers read it easily. Confirm that unit and/or integration tests are included and directly cover the changed logic or new feature. Ensure the tests cover both the happy path and failure scenarios. Check if the author has updated relevant documentation. Make sure external inputs are sanitised and permission/authorisation checks are properly enforced. Watch out for unnecessary loops, repeated database queries in hot paths, or operations that could cause bottlenecks.\nOwnership/source allowance: each pass <=200 physical source lines INCLUDING blanks/comments/helper/context. Total <=400 unique source lines for this entire assignment; do not read transitive implementation or extra helpers. Metadata counts/hash may inspect whole files but source content only these ranges. Verify hashes BEFORE review and again before completion; any drift stops affected review and must be reported, not silently retargeted. Read source passes separately, report exact per-pass and unique coverage. Any unavailable interface: ask coordinator for a prose summary instead of exceeding allowance.\nPass 1 (50 physical lines):\napps/server/lib/elevateo/thread_read_state.rb:1-50; full-file SHA256 a05f3af1b6a163b2df8b11cf7b2b63758fa532543acc3c7543cd16d030f9e6c0\nTotal assignment 50 unique physical lines. Focus: Bounded actual read-state consumer compatibility with new write-input alias: boolean validation narrows before persistence, no decimal or unvalidated external value enters SQL/response; shared keys/UUID and transaction interfaces are separately reviewed dependencies. Scope50 lines only; no transitive source read.\nAcceptance: durable report with actual terminal/task/dispatch and requested versus observed model if available, exact source hashes/physical ranges, conformance checklist covering purpose, boundary/null/empty/max, state/cross-module coupling, tests happy/failure and evidence limits, comments/docs, security/performance as relevant. Delegate formatting to lint; lint NOT_RUN here. For EACH old finding state statically addressed/not addressed/unknown and rationale. Confirmed new defects require severity, exact source/hash/location, violated invariant, concrete analytical reproduction/mutant, minimal repair and acceptance criterion; report high-confidence findings immediately via Orca to this coordinator. Do not invent defects from omitted context. Distinguish duplicate findings, evidence gaps and actual defects. Include observed defect count and defects/KLOC; zero only when actually observed in bounded review. All runtime acceptance remains NOT_RUN. Obsidian is unavailable; analytical schedules must not be described as execution. Report integration/behavior test gaps to root; no permission to edit. Read coordinator mail at natural checkpoints and immediately before worker_done."
+    },
+    {
+      "taskKey": "design-numeric",
+      "title": "BE02 repair review: design-numeric",
+      "agent": "codex",
+      "model": "gpt-6-astra",
+      "effort": "max",
+      "outputPath": "C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-design-numeric.md",
+      "uniqueSourceLines": 339,
+      "passes": [
+        {
+          "pass": 1,
+          "physicalLines": 158,
+          "slices": [
+            {
+              "path": "apps/server/lib/elevateo/write_input.rb",
+              "a": 1,
+              "b": 133,
+              "sha256": "87aa266b2c9f54eb921e57581009970081b3dc82a0b6ec8d9049f27317985f76"
+            },
+            {
+              "path": "apps/server/sig/write_input.rbs",
+              "a": 1,
+              "b": 25,
+              "sha256": "1a84a2e6f5234bd25940e03f0cbec5ad5e62304838722b2a1d37db085193e407"
+            }
+          ]
+        },
+        {
+          "pass": 2,
+          "physicalLines": 131,
+          "slices": [
+            {
+              "path": "apps/server/app/controllers/v1/write_controller.rb",
+              "a": 1,
+              "b": 48,
+              "sha256": "a8755e7dfe2c279209d2fb5f242bec628c604a62a78c0c2a489e47ea1e7b6d10"
+            },
+            {
+              "path": "apps/server/lib/elevateo/drafts/payload.rb",
+              "a": 1,
+              "b": 48,
+              "sha256": "8aaf5b23dee01ba32e6f43aac299d366c7f62e8f2dbeec975a23994a9c5fc310"
+            },
+            {
+              "path": "apps/server/lib/elevateo/mailbox_membership_input.rb",
+              "a": 1,
+              "b": 35,
+              "sha256": "5840d6c8e7227db458c3e81c30a4f47e9d152ffb33a9ce211c37251686389a7c"
+            }
+          ]
+        },
+        {
+          "pass": 3,
+          "physicalLines": 50,
+          "slices": [
+            {
+              "path": "apps/server/lib/elevateo/thread_read_state.rb",
+              "a": 1,
+              "b": 50,
+              "sha256": "a05f3af1b6a163b2df8b11cf7b2b63758fa532543acc3c7543cd16d030f9e6c0"
+            }
+          ]
+        }
+      ],
+      "frozenManifests": [
+        {
+          "path": "docs/completion/be02-write-input-repair.md",
+          "sha256": "4bcbc54bedebb276cee9d43f6b05d9e9e9a06f7bcc3beb5b77dd6f98a5280d43"
+        }
+      ],
+      "spec": "You are an independent read-only Orca adversarial correctness reviewer for a completed BE02 repair. Target source root: C:/Users/Tanzeel/Code and projects/Elevateo Mail - BE02 Codex. Coordinator checkout: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion. You may write ONLY your unique report: C:/Users/Tanzeel/Code and projects/Elevateo Mail - Local Completion/docs/completion/review-be02-repair-design-numeric.md. No source, tests, root docs/code-reviews, commits or fixes. No native subagents or extra agent/model calls. No host application tests, syntax execution, Docker, SSH, purchases, ultrareviews, Devin sessions, live activation or external posts. Report through live Orca preamble; one worker_done exactly once and idle. No further successive assignments permitted under this review allowance.\nRead applicable AGENTS.md, current README/state/documentation, .planning/STANDARDS.md and AGENT_ORCHESTRATION.md. Latest dispatch controls supersede historical routing. Read prose BE02 docs/completion/be02-write-input-repair.md (SHA256 4bcbc54bedebb276cee9d43f6b05d9e9e9a06f7bcc3beb5b77dd6f98a5280d43), original coordinator reports docs/completion/review-be02-write-transport.md, review-be02-write-boundary-tests.md, review-be02-write-boundary-races.md, and frozen contract prose as needed. Documentation source snippets outside the assigned ranges also consume source budget, so skip them and ask for prose. Pinned JSON3.0.2 and BigDecimal4.1.3 API evidence is referenced in the manifest; use its explicit reported contracts with attribution, and ask coordinator for bounded primary excerpts if verification needs additional source. No unbounded upstream source read. Unfinished RLS/deadline source is excluded.\nREQUIRED FULL REVIEW RUBRIC:\nDoes this code work? Verify that the code actually fulfills the purpose of the feature or bug fix. Check if the author considered null inputs, empty lists, and max limits. Ensure that changes to state or data structures don't inadvertently break other parts of the entire system. Ensure the developer isn't over-engineering or building things they might need in the future but don't actually know they need now. Check that new classes or functions aren't trying to do too much. Look out for duplicated logic that should be extracted into a shared utility or service. Ensure variable, function, and class names communicate their intent clearly. Check that comments explain why something exists, not just what the code does. Look for deeply nested loops or convoluted conditionals that could be simplified to help future developers read it easily. Confirm that unit and/or integration tests are included and directly cover the changed logic or new feature. Ensure the tests cover both the happy path and failure scenarios. Check if the author has updated relevant documentation. Make sure external inputs are sanitised and permission/authorisation checks are properly enforced. Watch out for unnecessary loops, repeated database queries in hot paths, or operations that could cause bottlenecks.\nOwnership/source allowance: each pass <=200 physical source lines INCLUDING blanks/comments/helper/context. Total <=400 unique source lines for this entire assignment; do not read transitive implementation or extra helpers. Metadata counts/hash may inspect whole files but source content only these ranges. Verify hashes BEFORE review and again before completion; any drift stops affected review and must be reported, not silently retargeted. Read source passes separately, report exact per-pass and unique coverage. Any unavailable interface: ask coordinator for a prose summary instead of exceeding allowance.\nPass 1 (158 physical lines):\napps/server/lib/elevateo/write_input.rb:1-133; full-file SHA256 87aa266b2c9f54eb921e57581009970081b3dc82a0b6ec8d9049f27317985f76\napps/server/sig/write_input.rbs:1-25; full-file SHA256 1a84a2e6f5234bd25940e03f0cbec5ad5e62304838722b2a1d37db085193e407\nPass 2 (131 physical lines):\napps/server/app/controllers/v1/write_controller.rb:1-48; full-file SHA256 a8755e7dfe2c279209d2fb5f242bec628c604a62a78c0c2a489e47ea1e7b6d10\napps/server/lib/elevateo/drafts/payload.rb:1-48; full-file SHA256 8aaf5b23dee01ba32e6f43aac299d366c7f62e8f2dbeec975a23994a9c5fc310\napps/server/lib/elevateo/mailbox_membership_input.rb:1-35; full-file SHA256 5840d6c8e7227db458c3e81c30a4f47e9d152ffb33a9ce211c37251686389a7c\nPass 3 (50 physical lines):\napps/server/lib/elevateo/thread_read_state.rb:1-50; full-file SHA256 a05f3af1b6a163b2df8b11cf7b2b63758fa532543acc3c7543cd16d030f9e6c0\nTotal assignment 339 unique physical lines. Focus: Dedicated Astra MAX design tradeoffs with analytical scenarios: compare original-token exact decimal vs Float-rounding mutants; extreme exponent underflow and exception-mode restoration on successful and raising parses; duplicate keys including escaped equivalence; malformed syntax versus semantically fractional values with invalid/valid authority; exact integer normalization before persistence and response. Model resource/precision limits as risks only when concrete in bounded source; no executed proof and no Obsidian available. Analyze coupling across selected consumer boundaries without reading transaction internals.\nAcceptance: durable report with actual terminal/task/dispatch and requested versus observed model if available, exact source hashes/physical ranges, conformance checklist covering purpose, boundary/null/empty/max, state/cross-module coupling, tests happy/failure and evidence limits, comments/docs, security/performance as relevant. Delegate formatting to lint; lint NOT_RUN here. For EACH old finding state statically addressed/not addressed/unknown and rationale. Confirmed new defects require severity, exact source/hash/location, violated invariant, concrete analytical reproduction/mutant, minimal repair and acceptance criterion; report high-confidence findings immediately via Orca to this coordinator. Do not invent defects from omitted context. Distinguish duplicate findings, evidence gaps and actual defects. Include observed defect count and defects/KLOC; zero only when actually observed in bounded review. All runtime acceptance remains NOT_RUN. Obsidian is unavailable; analytical schedules must not be described as execution. Report integration/behavior test gaps to root; no permission to edit. Read coordinator mail at natural checkpoints and immediately before worker_done.\nYou are the dedicated design reviewer requested as gpt-6-astra with max effort. State requested versus observed identity honestly. This is one fresh bounded assignment, never a continuation of another design reviewer."
+    }
+  ]
+}

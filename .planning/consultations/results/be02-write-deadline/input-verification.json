@@ -1,0 +1,50 @@
+{
+  "checked_at_utc": "2026-10-12T23:37:02.820096+00:00",
+  "frozen_packet_verified": true,
+  "input_count": 53,
+  "source_drift": [
+    {
+      "origin": "coordinator",
+      "path": "README.md",
+      "frozen_sha256": "bc87c9d58f31192faec4185d21e50c01b2222807fee166ed9107927235bf732c",
+      "current_sha256": "8cbf984db9f2f5c86c1ba5a51487e3daa0787a140f146396daadcc32c23fc100"
+    },
+    {
+      "origin": "coordinator",
+      "path": "state.md",
+      "frozen_sha256": "cfcc1a060994e8233e42ecd1e8d4bccc3b06101801f3a6596d9f957be003285a",
+      "current_sha256": "13622e0d96b59c8c4b115a8bcef1847fff070463cb49cb959b69f714a89836d8"
+    },
+    {
+      "origin": "coordinator",
+      "path": "documentation.md",
+      "frozen_sha256": "00ea3934c1b8b71cb53c7f41d55bffde6e3e929f5eb44483e5af3c83ebe608d8",
+      "current_sha256": "cca95a42573d6265ad035430f8eed5fe273ed229afbfa9167deb279719a66bef"
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/lib/elevateo/write_input.rb",
+      "frozen_sha256": "6536c922f1f64836720ca5acd193e390036ae092c5e932f9d86321854591f24d",
+      "current_sha256": "87aa266b2c9f54eb921e57581009970081b3dc82a0b6ec8d9049f27317985f76"
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/sig/write_controller.rbs",
+      "frozen_sha256": "37d2d3f8f8b5f90dd7fbc87eae2b9fc8b25dfc235eb7d549261466d64dcf968d",
+      "current_sha256": "d5260ba349986a7f68130f6a922ef92d7633bf347da8d4fdfbaa34a153178c67"
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/test/be_02/write_boundary_test_helper.rb",
+      "frozen_sha256": "c610f8082452659c1feaeccea15a984b6853705ea42c943eecac6c5206e89cd0",
+      "current_sha256": "a1aa65f7b0b0f2fb35849f9a014136c1766ce6fa468470847944574112d57c31"
+    },
+    {
+      "origin": "backend",
+      "path": "apps/server/test/be_02/write_boundary_database_test_helper.rb",
+      "frozen_sha256": "18ab547dbae75fe148dd483e3cf5e54efdbbb8b48d23c9c207cce647227c0124",
+      "current_sha256": "708bdd3a4e0a14f93686ebf71ea7a8f73e259207a8b1c01a9375d4a55935011e"
+    }
+  ],
+  "verification_scope": "Artifact/hash inspection only; all application tests NOT_RUN"
+}

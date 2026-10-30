@@ -1,0 +1,47 @@
+{
+  "name": "@elevateo/web",
+  "private": true,
+  "version": "0.1.0-read.1",
+  "type": "module",
+  "description": "Elevateo Mail web client \u00e2\u20ac\u201d FE-01 read checkpoint. Session, mailboxes, thread list and plaintext reader only.",
+  "scripts": {
+    "dev": "vite",
+    "dev:fixtures": "vite --mode fixtures",
+    "build": "tsc -p tsconfig.json --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint . --max-warnings 0",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "generate:api": "openapi-typescript ../../contracts/v1/openapi.json --output src/data/generated/api.d.ts",
+    "check:api": "openapi-typescript ../../contracts/v1/openapi.json --output src/data/generated/api.d.ts --check"
+  },
+  "dependencies": {
+    "@radix-ui/react-dialog": "1.2.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-router": "7.18.4",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@playwright/test": "1.64.0",
+    "@tailwindcss/vite": "4.3.3",
+    "@testing-library/react": "16.3.3",
+    "@types/node": "24.19.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "5.2.0",
+    "@vitest/coverage-v8": "4.1.11",
+    "eslint": "10.12.0",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "jsdom": "26.1.0",
+    "openapi-typescript": "7.13.0",
+    "tailwindcss": "4.3.3",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.71.1",
+    "vite": "7.3.6",
+    "vitest": "4.1.11"
+  }
+}

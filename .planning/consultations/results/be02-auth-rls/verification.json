@@ -1,0 +1,533 @@
+{
+  "task_id": "task_c52cc4cbb85c",
+  "dispatch_id": "ctx_8d307b627ccb",
+  "verified_at_utc": "2026-10-12T23:05:26.020738+00:00",
+  "outcome": "consultation_artifact_integrity_passed",
+  "checks": {
+    "three_exact_models": true,
+    "three_distinct_sessions": true,
+    "all_exit_zero_success": true,
+    "safe_mode_tools_disabled_no_persistence": true,
+    "common_packet_present_in_every_input": true,
+    "input_and_raw_output_hashes_match": true,
+    "published_opinions_match_returned_text": true,
+    "astra_identity_evidence_hash_matches": true,
+    "all_raw_files_git_ignored": true,
+    "local_artifact_links_exist": 17,
+    "own_aidev_anchors_within_120_characters": true,
+    "durable_json_files_parse": true
+  },
+  "source_freshness": [
+    {
+      "root": "coordinator",
+      "path": ".planning/consultations/shared-brief.md",
+      "frozen_sha256": "3895880fe89c255d3f00429fcd875e37bca64e55ac7e5b057bf1018b3c405bdd",
+      "current_sha256": "3895880fe89c255d3f00429fcd875e37bca64e55ac7e5b057bf1018b3c405bdd",
+      "unchanged": true
+    },
+    {
+      "root": "coordinator",
+      "path": "documentation.md",
+      "frozen_sha256": "a42faf56e5b0f5e472d398028e3fce559bfbceec66152f2342e523c71c81bab0",
+      "current_sha256": "00ea3934c1b8b71cb53c7f41d55bffde6e3e929f5eb44483e5af3c83ebe608d8",
+      "unchanged": false,
+      "disposition": "Reviewed supplied portions: progress reconciliation only; no changed Auth contract or approval.",
+      "inspected_lines": [
+        1,
+        399
+      ],
+      "entire_file_supplied": true,
+      "changed_hunks": [
+        "@@ -3 +3 @@"
+      ]
+    },
+    {
+      "root": "coordinator",
+      "path": ".planning/POLYGLOT_ARCHITECTURE.md",
+      "frozen_sha256": "c8d3656cf7c8acc4a898c9a1603241b84ba9da254725856595c25be85ece2cea",
+      "current_sha256": "c8d3656cf7c8acc4a898c9a1603241b84ba9da254725856595c25be85ece2cea",
+      "unchanged": true
+    },
+    {
+      "root": "coordinator",
+      "path": ".planning/CLIENTS_AND_CLI_CONNECTORS.md",
+      "frozen_sha256": "82c92e8c007de491709e5149df7031651028ad5b6272d5fc3713f9d6d0d55801",
+      "current_sha256": "82c92e8c007de491709e5149df7031651028ad5b6272d5fc3713f9d6d0d55801",
+      "unchanged": true
+    },
+    {
+      "root": "coordinator",
+      "path": ".planning/AGENT_ORCHESTRATION.md",
+      "frozen_sha256": "84562b8099de369f2498dd41f6d579323abbf741d70757c51486619082cfa21f",
+      "current_sha256": "84562b8099de369f2498dd41f6d579323abbf741d70757c51486619082cfa21f",
+      "unchanged": true
+    },
+    {
+      "root": "coordinator",
+      "path": ".planning/MAIL_ACCOUNTS_AND_ACTIVATION.md",
+      "frozen_sha256": "9d759caa3ffb1430af0cf3b81a062a584122895fef659246d0c1f37d5028e9e9",
+      "current_sha256": "9d759caa3ffb1430af0cf3b81a062a584122895fef659246d0c1f37d5028e9e9",
+      "unchanged": true
+    },
+    {
+      "root": "coordinator",
+      "path": ".planning/TASK_BACKLOG.md",
+      "frozen_sha256": "aba7e19ad1640015e30210d9d37fbfc55410bc5819f0747d4e2ba075dbb7487e",
+      "current_sha256": "aba7e19ad1640015e30210d9d37fbfc55410bc5819f0747d4e2ba075dbb7487e",
+      "unchanged": true
+    },
+    {
+      "root": "coordinator",
+      "path": ".planning/research/reuse-market-scan.md",
+      "frozen_sha256": "6f798e4dfd837498cdc52aa1badd117c8c66d9298feb982d02f029bd6af83723",
+      "current_sha256": "6f798e4dfd837498cdc52aa1badd117c8c66d9298feb982d02f029bd6af83723",
+      "unchanged": true
+    },
+    {
+      "root": "coordinator",
+      "path": "docs/component-adoption.md",
+      "frozen_sha256": "99cdcc56128a4c4ae0864d17c5f95fdf063c72b5f2112336ec9118810936f7e3",
+      "current_sha256": "99cdcc56128a4c4ae0864d17c5f95fdf063c72b5f2112336ec9118810936f7e3",
+      "unchanged": true
+    },
+    {
+      "root": "coordinator",
+      "path": "docs/contracts-and-reliability.md",
+      "frozen_sha256": "6834eee80f7bdfb9dd9437a3417e4a621554ec6f367530ed64fdd5b024a2a6d2",
+      "current_sha256": "6834eee80f7bdfb9dd9437a3417e4a621554ec6f367530ed64fdd5b024a2a6d2",
+      "unchanged": true
+    },
+    {
+      "root": "coordinator",
+      "path": "docs/local-completion-plan.md",
+      "frozen_sha256": "7e7355a889fd0a24bb62d80dbef752d67b761b7bd97ad4b2c5b8f699b9f5adfa",
+      "current_sha256": "7e7355a889fd0a24bb62d80dbef752d67b761b7bd97ad4b2c5b8f699b9f5adfa",
+      "unchanged": true
+    },
+    {
+      "root": "coordinator",
+      "path": ".planning/STANDARDS.md",
+      "frozen_sha256": "7c01430086ed2dc263c8edcb1b2a9f41b572a23a11b36c1179be802e2874bd10",
+      "current_sha256": "7c01430086ed2dc263c8edcb1b2a9f41b572a23a11b36c1179be802e2874bd10",
+      "unchanged": true
+    },
+    {
+      "root": "coordinator",
+      "path": "AGENTS.md",
+      "frozen_sha256": "33415df7f7cc5a595c45f5ef526744dd52a1d72d9d0a462fea8a9d9674d88971",
+      "current_sha256": "33415df7f7cc5a595c45f5ef526744dd52a1d72d9d0a462fea8a9d9674d88971",
+      "unchanged": true
+    },
+    {
+      "root": "coordinator",
+      "path": "LOCAL_BUILD_PROMPT.md",
+      "frozen_sha256": "7bc9ffe8a3e8556fbba5b78f123941827a9f4bcd5043af35ecd39736eb5041d7",
+      "current_sha256": "7bc9ffe8a3e8556fbba5b78f123941827a9f4bcd5043af35ecd39736eb5041d7",
+      "unchanged": true
+    },
+    {
+      "root": "coordinator",
+      "path": "docs/decisions/0002-local-architecture.md",
+      "frozen_sha256": "5a9c7bd24bb35f8a19f78925ea25786ec77e632622535ea3da184da03eef223b",
+      "current_sha256": "5a9c7bd24bb35f8a19f78925ea25786ec77e632622535ea3da184da03eef223b",
+      "unchanged": true
+    },
+    {
+      "root": "coordinator",
+      "path": ".planning/consultations/results/be-02/decisions.md",
+      "frozen_sha256": "173f9088cb548076a5a8d04ce87573f000338789744e92567bd7fa915de680f9",
+      "current_sha256": "173f9088cb548076a5a8d04ce87573f000338789744e92567bd7fa915de680f9",
+      "unchanged": true
+    },
+    {
+      "root": "coordinator",
+      "path": "docs/completion/review-be02-private-parameter.md",
+      "frozen_sha256": "e68030081f8b1e289c439375ae43ed1004545149206fb3f31c498d298b1c2c53",
+      "current_sha256": "e68030081f8b1e289c439375ae43ed1004545149206fb3f31c498d298b1c2c53",
+      "unchanged": true
+    },
+    {
+      "root": "coordinator",
+      "path": "README.md",
+      "frozen_sha256": "584cd88c1fd838cd2a609b3e837100c1e6582599d8b9348be93f7fd72d0d1ed7",
+      "current_sha256": "bc87c9d58f31192faec4185d21e50c01b2222807fee166ed9107927235bf732c",
+      "unchanged": false,
+      "disposition": "Reviewed supplied portions: progress reconciliation only; no changed Auth contract or approval.",
+      "inspected_lines": [
+        1,
+        36
+      ],
+      "entire_file_supplied": false,
+      "changed_hunks": [
+        "@@ -3 +3 @@",
+        "@@ -17 +17 @@"
+      ]
+    },
+    {
+      "root": "coordinator",
+      "path": "state.md",
+      "frozen_sha256": "950562e3843159a41815a297f8ffdbb682130320dbbb662452f93745c632dcca",
+      "current_sha256": "cfcc1a060994e8233e42ecd1e8d4bccc3b06101801f3a6596d9f957be003285a",
+      "unchanged": false,
+      "disposition": "Reviewed supplied portions: progress reconciliation only; no changed Auth contract or approval.",
+      "inspected_lines": [
+        1,
+        36
+      ],
+      "entire_file_supplied": false,
+      "changed_hunks": [
+        "@@ -3 +3 @@"
+      ]
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "ops/db/bootstrap.sql",
+      "frozen_sha256": "5a665cf865cf84246f38ec8819f6e64e6a49e14105768a46ba8b3ba1df15a225",
+      "current_sha256": "5a665cf865cf84246f38ec8819f6e64e6a49e14105768a46ba8b3ba1df15a225",
+      "unchanged": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "ops/db/bootstrap-auth-grants.sql",
+      "frozen_sha256": "4c4dd33830d110a251985073c70f757f5b45d1ba8768752a5145ba02f9ffec8e",
+      "current_sha256": "4c4dd33830d110a251985073c70f757f5b45d1ba8768752a5145ba02f9ffec8e",
+      "unchanged": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "apps/server/db/migrate/20261013000001_create_private_sessions.rb",
+      "frozen_sha256": "14c480c927b70749e4f002fcdb1f133c29e0cd3832d6934d1b83f7ef25bdf3bd",
+      "current_sha256": "14c480c927b70749e4f002fcdb1f133c29e0cd3832d6934d1b83f7ef25bdf3bd",
+      "unchanged": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "apps/server/db/be02/helpers.sql",
+      "frozen_sha256": "e0e0d76c503c9739b4e8b5194ff6faa53ee2eacc8424d70469fcca39013a2f9f",
+      "current_sha256": "e0e0d76c503c9739b4e8b5194ff6faa53ee2eacc8424d70469fcca39013a2f9f",
+      "unchanged": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "apps/server/db/be02/entry.sql",
+      "frozen_sha256": "22474c1b1a59c0997a172c90668b6d283df8da4f48dc156d295ea500b85de8af",
+      "current_sha256": "22474c1b1a59c0997a172c90668b6d283df8da4f48dc156d295ea500b85de8af",
+      "unchanged": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "apps/server/db/be02/read.sql",
+      "frozen_sha256": "e81e13c42ae10c352486411547e6f392acd8db6fa40c5d6c8a30f9e4827d57d0",
+      "current_sha256": "e81e13c42ae10c352486411547e6f392acd8db6fa40c5d6c8a30f9e4827d57d0",
+      "unchanged": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "apps/server/db/be02/refresh.sql",
+      "frozen_sha256": "74355cb47301123afef7b9d9e3981c4a71d1d983fdb7848e9db3dcaafea60ff0",
+      "current_sha256": "74355cb47301123afef7b9d9e3981c4a71d1d983fdb7848e9db3dcaafea60ff0",
+      "unchanged": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "apps/server/db/be02/grants.sql",
+      "frozen_sha256": "840f1e348288540b0b7121c9680ff2aa89ae3df73409831c4e4fa7aeb79e7ee1",
+      "current_sha256": "840f1e348288540b0b7121c9680ff2aa89ae3df73409831c4e4fa7aeb79e7ee1",
+      "unchanged": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "apps/server/db/be02/pending.sql",
+      "frozen_sha256": "71d074f7a5c799755c604892756d6101d0c52938367e54d4551c5102a71b7a2f",
+      "current_sha256": "71d074f7a5c799755c604892756d6101d0c52938367e54d4551c5102a71b7a2f",
+      "unchanged": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "apps/server/db/be02/tables.sql",
+      "frozen_sha256": "9e6c0ce57fb67d285228e221a49463df86e0e5bbc6378cffe92c426f8b40dc19",
+      "current_sha256": "9e6c0ce57fb67d285228e221a49463df86e0e5bbc6378cffe92c426f8b40dc19",
+      "unchanged": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "apps/server/db/be02/down.sql",
+      "frozen_sha256": "9b8caf4c61a37481b15b58913c93f3385629e2a8c9b64084d60bdf149c315f20",
+      "current_sha256": "9b8caf4c61a37481b15b58913c93f3385629e2a8c9b64084d60bdf149c315f20",
+      "unchanged": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "ops/tests/be02-guards/auth.sh",
+      "frozen_sha256": "adeca4d4b4d6dbb64ccdbc7dbc832488483fceb0a3bbe020d5e3976ff90a4885",
+      "current_sha256": "adeca4d4b4d6dbb64ccdbc7dbc832488483fceb0a3bbe020d5e3976ff90a4885",
+      "unchanged": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "ops/tests/be02-guards/fixture.sql",
+      "frozen_sha256": "48f1b6cbf9d6c31989d0204d92fd7e1cb7bfcfa253317b02df111d5dbe5181d9",
+      "current_sha256": "48f1b6cbf9d6c31989d0204d92fd7e1cb7bfcfa253317b02df111d5dbe5181d9",
+      "unchanged": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "ops/tests/be02-guards/private-grants.sql",
+      "frozen_sha256": "37480c9b5c2dd2d1f442d556f0e09c6e9f0cef4de9e0331f9bf761932c226c02",
+      "current_sha256": "37480c9b5c2dd2d1f442d556f0e09c6e9f0cef4de9e0331f9bf761932c226c02",
+      "unchanged": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "ops/tests/be02-guards/run.sh",
+      "frozen_sha256": "688baa0a42271a0d8766ff06767257eeed6e9fb65f268c4b596db02b2692e1cb",
+      "current_sha256": "688baa0a42271a0d8766ff06767257eeed6e9fb65f268c4b596db02b2692e1cb",
+      "unchanged": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "ops/tests/be02-guards/membership.sh",
+      "frozen_sha256": "4b507c8a0b7b79284c7a2135c13c2b651e48b06f2dfd64ba87e8a050f15f1675",
+      "current_sha256": "4b507c8a0b7b79284c7a2135c13c2b651e48b06f2dfd64ba87e8a050f15f1675",
+      "unchanged": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "apps/server/test/be_02/database_test_helper.rb",
+      "frozen_sha256": "c614ed0098555a7404d166f224949a591a4f74d64b0a54cb00b2bb085f140a2e",
+      "current_sha256": "c614ed0098555a7404d166f224949a591a4f74d64b0a54cb00b2bb085f140a2e",
+      "unchanged": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "apps/server/test/be_02/session_database_test.rb",
+      "frozen_sha256": "50496a45ab1c564536792e739bed61f78cada9eef10f74de48b0e5d96ea16a3e",
+      "current_sha256": "50496a45ab1c564536792e739bed61f78cada9eef10f74de48b0e5d96ea16a3e",
+      "unchanged": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "apps/server/test/be_02/session_expiry_race_test.rb",
+      "frozen_sha256": "8666614868adc23c6d635e0f79bab4bb0ea09314c4aae79fc2d43ea9eecb450e",
+      "current_sha256": "8666614868adc23c6d635e0f79bab4bb0ea09314c4aae79fc2d43ea9eecb450e",
+      "unchanged": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "apps/server/test/be_02/refresh_publication_test.rb",
+      "frozen_sha256": "229c6a1e398e64af64bce4e1aab7d220cd72e5203b4e6988812db5d2e5d366d3",
+      "current_sha256": "229c6a1e398e64af64bce4e1aab7d220cd72e5203b4e6988812db5d2e5d366d3",
+      "unchanged": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "ops/compose.be02-test.yaml",
+      "frozen_sha256": "0489257e5600f16db380e9d5241686e76563cb92b29b8f91768b8e6802284f5c",
+      "current_sha256": "0489257e5600f16db380e9d5241686e76563cb92b29b8f91768b8e6802284f5c",
+      "unchanged": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "ops/local/be02-runtime-stage-f1fd9202222a4454843f5e657356c7aa/evidence/014-privilege-guards.log",
+      "frozen_sha256": "a8679fc1b14d814b85e01cbd940fa6eb87cde6da218fca12485e4bc03a84dcd6",
+      "current_sha256": "a8679fc1b14d814b85e01cbd940fa6eb87cde6da218fca12485e4bc03a84dcd6",
+      "unchanged": true
+    },
+    {
+      "root": "BE02 Codex",
+      "path": "ops/local/be02-runtime-stage-f1fd9202222a4454843f5e657356c7aa/evidence/017-auth-grants.log",
+      "frozen_sha256": "9f072ca2aa0eed48e713893a6b402bbfb0cec08d57990fc2255b1136ad17a988",
+      "current_sha256": "9f072ca2aa0eed48e713893a6b402bbfb0cec08d57990fc2255b1136ad17a988",
+      "unchanged": true
+    }
+  ],
+  "source_change_disposition": "Three coordinator documents reconciled run-3/independent frontend status; task already supplied run-3 failure. No supplied application source, standards, or accepted boundary changed. README/state history beyond supplied lines 1-36 was not reconsulted.",
+  "retained_raw_evidence": [
+    {
+      "path": "ops/local/be02-auth-rls-ctx_8d307b627ccb/astra-runtime.json.log",
+      "bytes": 1489,
+      "sha256": "77aea40be9c240ad3cd0defb49e0c10098a36958cd8cf57e115b14ea9f49e132",
+      "git_ignored": true
+    },
+    {
+      "path": "ops/local/be02-auth-rls-ctx_8d307b627ccb/cli-help.log",
+      "bytes": 22116,
+      "sha256": "550db4f88ae1d97bf7244ca96dc89554aabd3978241ceb69f79001e816c35f09",
+      "git_ignored": true
+    },
+    {
+      "path": "ops/local/be02-auth-rls-ctx_8d307b627ccb/cli-version.log",
+      "bytes": 22,
+      "sha256": "ced06c95bb4c0780504b700880ceea37cd764283d2be9d3ea2555683183207ea",
+      "git_ignored": true
+    },
+    {
+      "path": "ops/local/be02-auth-rls-ctx_8d307b627ccb/common-packet.txt.log",
+      "bytes": 555886,
+      "sha256": "0f05e36cd730420a9d93cc10be75f0bb407fa34041d960b6fda455e17f5b11b3",
+      "git_ignored": true
+    },
+    {
+      "path": "ops/local/be02-auth-rls-ctx_8d307b627ccb/export.py.log",
+      "bytes": 9253,
+      "sha256": "13b8abc2211e25425a0a3ef2d1d71de1b5318644e3c5c65bfec4f9bbb3ccf7ef",
+      "git_ignored": true
+    },
+    {
+      "path": "ops/local/be02-auth-rls-ctx_8d307b627ccb/fable-5-1.input.txt.log",
+      "bytes": 557136,
+      "sha256": "f285f86ff4a513e53f11fc3ef3deb3b4749429814a43730e5d4c885f3382a854",
+      "git_ignored": true
+    },
+    {
+      "path": "ops/local/be02-auth-rls-ctx_8d307b627ccb/fable-5-1.opinion.md.log",
+      "bytes": 15740,
+      "sha256": "6849b207dfe9ef075185679511b8afa71a2d4bf8b4b463790abbc111f59f717b",
+      "git_ignored": true
+    },
+    {
+      "path": "ops/local/be02-auth-rls-ctx_8d307b627ccb/fable-5-1.result.json.log",
+      "bytes": 17589,
+      "sha256": "eed0d8c08bb9c8baf529c283fa49bade3b125e08062f5659a2582a086a204dbc",
+      "git_ignored": true
+    },
+    {
+      "path": "ops/local/be02-auth-rls-ctx_8d307b627ccb/fable-5-1.status.json.log",
+      "bytes": 2197,
+      "sha256": "8eff39c066be52be2f21a6a53974cf1c6a74e097f61598f2fb043b68ddda9aae",
+      "git_ignored": true
+    },
+    {
+      "path": "ops/local/be02-auth-rls-ctx_8d307b627ccb/fable-5-1.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "git_ignored": true
+    },
+    {
+      "path": "ops/local/be02-auth-rls-ctx_8d307b627ccb/fable-5.input.txt.log",
+      "bytes": 557076,
+      "sha256": "dc5f4575a126172f3fdb6271f768a2c5af07d770958fc75c2446f480d1019b68",
+      "git_ignored": true
+    },
+    {
+      "path": "ops/local/be02-auth-rls-ctx_8d307b627ccb/fable-5.opinion.md.log",
+      "bytes": 16567,
+      "sha256": "5dbd798d10d148ebb017656425ff402299d3ac635cd0a8525d075fc5aaa8887e",
+      "git_ignored": true
+    },
+    {
+      "path": "ops/local/be02-auth-rls-ctx_8d307b627ccb/fable-5.result.json.log",
+      "bytes": 18395,
+      "sha256": "c5806a54b9270a27ba206d2fcc9fb9c67982be65ca0d3d581be3c1cea999e964",
+      "git_ignored": true
+    },
+    {
+      "path": "ops/local/be02-auth-rls-ctx_8d307b627ccb/fable-5.status.json.log",
+      "bytes": 2169,
+      "sha256": "3a10d56c5b825adaca1c55790a7618b3720d33198006d7e1848a380985867b6e",
+      "git_ignored": true
+    },
+    {
+      "path": "ops/local/be02-auth-rls-ctx_8d307b627ccb/fable-5.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "git_ignored": true
+    },
+    {
+      "path": "ops/local/be02-auth-rls-ctx_8d307b627ccb/launch.py.log",
+      "bytes": 3929,
+      "sha256": "a107a0c90156c1c08e2f75a2fb18e58edd8e689e56944b760b5e0a2f671183b6",
+      "git_ignored": true
+    },
+    {
+      "path": "ops/local/be02-auth-rls-ctx_8d307b627ccb/manifest.json.log",
+      "bytes": 14765,
+      "sha256": "d45a5be7c21baa4eec39fdedc6a9c6547c23040ca57bc5b618b596e31e2bad58",
+      "git_ignored": true
+    },
+    {
+      "path": "ops/local/be02-auth-rls-ctx_8d307b627ccb/opus-5-5.input.txt.log",
+      "bytes": 557130,
+      "sha256": "6bd67c51b0d40bb468021bcc7ab1cf567e60c62d17eba39692f80635d0bd94b4",
+      "git_ignored": true
+    },
+    {
+      "path": "ops/local/be02-auth-rls-ctx_8d307b627ccb/opus-5-5.opinion.md.log",
+      "bytes": 15601,
+      "sha256": "a9c91e4556e401de7d988cb34579fb7032647fec473d4f043e9975e248f9e462",
+      "git_ignored": true
+    },
+    {
+      "path": "ops/local/be02-auth-rls-ctx_8d307b627ccb/opus-5-5.result.json.log",
+      "bytes": 17447,
+      "sha256": "f06d7db3a1eb24810418c5dc7931f401d56bc9ad8673fde7e4e068c801d7ced3",
+      "git_ignored": true
+    },
+    {
+      "path": "ops/local/be02-auth-rls-ctx_8d307b627ccb/opus-5-5.status.json.log",
+      "bytes": 2192,
+      "sha256": "2e57a40a15b1674adfad8bd1eefdfde46c12d4d21be85fd048bd76cd5af535ae",
+      "git_ignored": true
+    },
+    {
+      "path": "ops/local/be02-auth-rls-ctx_8d307b627ccb/opus-5-5.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "git_ignored": true
+    },
+    {
+      "path": "ops/local/be02-auth-rls-ctx_8d307b627ccb/prepare.py.log",
+      "bytes": 14335,
+      "sha256": "eba3ccb9b092b12ede410b3eb9c092ef9c9d4f17e44898998ef2e5cc1bdaa964",
+      "git_ignored": true
+    },
+    {
+      "path": "ops/local/be02-auth-rls-ctx_8d307b627ccb/source-freshness.diff.log",
+      "bytes": 7930,
+      "sha256": "0123e7201e0b88f8e6639e7ce54c0eaccbb2c0225bc39f7bc2c54931a423f6db",
+      "git_ignored": true
+    }
+  ],
+  "durable_artifacts": [
+    {
+      "path": ".planning/consultations/results/be02-auth-rls/fable-5-1.opinion.md",
+      "bytes": 17550,
+      "sha256": "571515471e5dc8b519f77fb8e8f5060546f1559c5e145d3379da4c304d07b6db"
+    },
+    {
+      "path": ".planning/consultations/results/be02-auth-rls/fable-5.opinion.md",
+      "bytes": 18373,
+      "sha256": "acfd0bad81349d2cfaee5d8124d59b8c4a1c6b25204addd96b156dec39228437"
+    },
+    {
+      "path": ".planning/consultations/results/be02-auth-rls/metadata.json",
+      "bytes": 8147,
+      "sha256": "e3b4f5ddf38a3ccd52fe818177771b2b7fc73dc70f0f48cfa733e81701fe853f"
+    },
+    {
+      "path": ".planning/consultations/results/be02-auth-rls/opus-5-5.opinion.md",
+      "bytes": 17409,
+      "sha256": "5942c2233bc43b649ae91fc4c8345af241fe8d65bff8416629b67956e67fb7a6"
+    },
+    {
+      "path": ".planning/consultations/results/be02-auth-rls/README.md",
+      "bytes": 2334,
+      "sha256": "0c0c96d4bdebfd507976bcd5bbbf1bdba45a7de3e6a07c88463643abcdd46f83"
+    },
+    {
+      "path": ".planning/consultations/results/be02-auth-rls/source-manifest.json",
+      "bytes": 14767,
+      "sha256": "c5f73d08e1fcd31fc41730bafe6ff0525eb6877e5378f27257561ec981b41298"
+    },
+    {
+      "path": "docs/completion/be02-auth-rls-decision.md",
+      "bytes": 31138,
+      "sha256": "dc55258802eaaadb1ab4e2cf8107d3bb76baf74658fe3344e46101d8fda74570"
+    }
+  ],
+  "application_tests": "NOT_RUN",
+  "application_files_modified": [],
+  "docker_ssh_ultrareview_used": false,
+  "obsidian": "Unavailable; analytical source-based scenarios only.",
+  "implementation_gate": "Only root may open ctx_d9f45a4d471f; this verification does not open it."
+}

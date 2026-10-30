@@ -1,0 +1,1566 @@
+{
+  "url": "https://storage.googleapis.com/chrome-for-testing-public/155.0.8059.39/linux64/chrome-linux64.zip",
+  "archive_bytes": 198195769,
+  "entry_count": 309,
+  "range_bytes_read": 98595,
+  "notice_candidates": [
+    {
+      "name": "chrome-linux64/ABOUT",
+      "bytes": 248,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/WidevineCdm/LICENSE",
+      "bytes": 473,
+      "mode": "0o100644"
+    }
+  ],
+  "members": [
+    {
+      "name": "chrome-linux64/ABOUT",
+      "bytes": 248,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/MEIPreload/manifest.json",
+      "bytes": 238,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/MEIPreload/preloaded_data.pb",
+      "bytes": 8254,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/chrome",
+      "bytes": 297680200,
+      "mode": "0o100755"
+    },
+    {
+      "name": "chrome-linux64/chrome-wrapper",
+      "bytes": 4510,
+      "mode": "0o100755"
+    },
+    {
+      "name": "chrome-linux64/chrome_100_percent.pak",
+      "bytes": 595580,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/chrome_200_percent.pak",
+      "bytes": 965872,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/chrome_crashpad_handler",
+      "bytes": 1957824,
+      "mode": "0o100755"
+    },
+    {
+      "name": "chrome-linux64/chrome_sandbox",
+      "bytes": 15216,
+      "mode": "0o100755"
+    },
+    {
+      "name": "chrome-linux64/deb.deps",
+      "bytes": 660,
+      "mode": "0o100600"
+    },
+    {
+      "name": "chrome-linux64/icudtl.dat",
+      "bytes": 10819840,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/libEGL.so",
+      "bytes": 229448,
+      "mode": "0o100755"
+    },
+    {
+      "name": "chrome-linux64/libGLESv2.so",
+      "bytes": 229448,
+      "mode": "0o100755"
+    },
+    {
+      "name": "chrome-linux64/libvk_swiftshader.so",
+      "bytes": 3980232,
+      "mode": "0o100755"
+    },
+    {
+      "name": "chrome-linux64/libvulkan.so.1",
+      "bytes": 687360,
+      "mode": "0o100755"
+    },
+    {
+      "name": "chrome-linux64/locales/af.pak",
+      "bytes": 629047,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/af_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/af_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/af_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/am.pak",
+      "bytes": 1018680,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/am_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/am_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/am_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ar.pak",
+      "bytes": 1133581,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ar_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ar_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ar_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/bg.pak",
+      "bytes": 1168925,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/bg_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/bg_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/bg_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/bn.pak",
+      "bytes": 1495133,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/bn_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/bn_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/bn_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ca.pak",
+      "bytes": 721064,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ca_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ca_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ca_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/cs.pak",
+      "bytes": 741385,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/cs_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/cs_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/cs_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/da.pak",
+      "bytes": 666491,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/da_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/da_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/da_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/de.pak",
+      "bytes": 723149,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/de_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/de_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/de_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/el.pak",
+      "bytes": 1284369,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/el_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/el_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/el_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/en-GB.pak",
+      "bytes": 576369,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/en-GB_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/en-GB_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/en-GB_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/en-US.pak",
+      "bytes": 583823,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/en-US_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/en-US_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/en-US_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/es-419.pak",
+      "bytes": 706236,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/es-419_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/es-419_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/es-419_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/es.pak",
+      "bytes": 700598,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/es_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/es_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/es_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/et.pak",
+      "bytes": 641992,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/et_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/et_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/et_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/fa.pak",
+      "bytes": 1056554,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/fa_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/fa_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/fa_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/fi.pak",
+      "bytes": 653036,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/fi_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/fi_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/fi_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/fil.pak",
+      "bytes": 737499,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/fil_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/fil_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/fil_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/fr.pak",
+      "bytes": 766507,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/fr_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/fr_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/fr_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/gu.pak",
+      "bytes": 1482507,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/gu_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/gu_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/gu_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/he.pak",
+      "bytes": 928663,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/he_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/he_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/he_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/hi.pak",
+      "bytes": 1580515,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/hi_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/hi_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/hi_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/hr.pak",
+      "bytes": 712964,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/hr_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/hr_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/hr_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/hu.pak",
+      "bytes": 762878,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/hu_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/hu_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/hu_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/id.pak",
+      "bytes": 632808,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/id_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/id_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/id_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/it.pak",
+      "bytes": 697412,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/it_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/it_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/it_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ja.pak",
+      "bytes": 843742,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ja_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ja_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ja_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/kn.pak",
+      "bytes": 1699932,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/kn_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/kn_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/kn_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ko.pak",
+      "bytes": 718549,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ko_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ko_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ko_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/lt.pak",
+      "bytes": 776403,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/lt_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/lt_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/lt_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/lv.pak",
+      "bytes": 772521,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/lv_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/lv_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/lv_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ml.pak",
+      "bytes": 1745671,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ml_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ml_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ml_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/mr.pak",
+      "bytes": 1449261,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/mr_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/mr_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/mr_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ms.pak",
+      "bytes": 663654,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ms_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ms_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ms_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/nb.pak",
+      "bytes": 634412,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/nb_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/nb_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/nb_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/nl.pak",
+      "bytes": 661753,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/nl_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/nl_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/nl_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/pl.pak",
+      "bytes": 740938,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/pl_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/pl_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/pl_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/pt-BR.pak",
+      "bytes": 694133,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/pt-BR_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/pt-BR_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/pt-BR_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/pt-PT.pak",
+      "bytes": 698350,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/pt-PT_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/pt-PT_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/pt-PT_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ro.pak",
+      "bytes": 723499,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ro_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ro_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ro_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ru.pak",
+      "bytes": 1195548,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ru_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ru_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ru_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/sk.pak",
+      "bytes": 753657,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/sk_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/sk_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/sk_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/sl.pak",
+      "bytes": 719127,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/sl_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/sl_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/sl_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/sr.pak",
+      "bytes": 1104102,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/sr_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/sr_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/sr_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/sv.pak",
+      "bytes": 644774,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/sv_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/sv_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/sv_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/sw.pak",
+      "bytes": 681493,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/sw_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/sw_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/sw_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ta.pak",
+      "bytes": 1739131,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ta_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ta_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ta_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/te.pak",
+      "bytes": 1610795,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/te_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/te_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/te_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/th.pak",
+      "bytes": 1348961,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/th_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/th_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/th_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/tr.pak",
+      "bytes": 695081,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/tr_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/tr_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/tr_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/uk.pak",
+      "bytes": 1203948,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/uk_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/uk_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/uk_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ur.pak",
+      "bytes": 1033366,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ur_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ur_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/ur_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/vi.pak",
+      "bytes": 824703,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/vi_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/vi_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/vi_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/zh-CN.pak",
+      "bytes": 592387,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/zh-CN_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/zh-CN_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/zh-CN_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/zh-TW.pak",
+      "bytes": 585921,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/zh-TW_FEMININE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/zh-TW_MASCULINE.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/locales/zh-TW_NEUTER.pak",
+      "bytes": 18,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/product_logo_48.png",
+      "bytes": 2772,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/resources.pak",
+      "bytes": 24389927,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/rpm.deps",
+      "bytes": 2760,
+      "mode": "0o100600"
+    },
+    {
+      "name": "chrome-linux64/v8_context_snapshot.bin",
+      "bytes": 753696,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/vk_swiftshader_icd.json",
+      "bytes": 107,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/resources/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "name": "chrome-linux64/resources/accessibility/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "name": "chrome-linux64/resources/accessibility/reading_mode_gdocs_helper/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "name": "chrome-linux64/resources/accessibility/reading_mode_gdocs_helper/content.js",
+      "bytes": 439,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/resources/accessibility/reading_mode_gdocs_helper/gdocs_script.js",
+      "bytes": 1425,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/resources/accessibility/reading_mode_gdocs_helper_manifest.json",
+      "bytes": 2375,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/resources/inspector_overlay/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "name": "chrome-linux64/resources/inspector_overlay/inspector_overlay_resources.grd",
+      "bytes": 496,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/resources/inspector_overlay/main.js",
+      "bytes": 83649,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-la.hyb",
+      "bytes": 1839,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-hi.hyb",
+      "bytes": 687,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-da.hyb",
+      "bytes": 6967,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-ru.hyb",
+      "bytes": 19886,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-sk.hyb",
+      "bytes": 64103,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-gl.hyb",
+      "bytes": 9289,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-lt.hyb",
+      "bytes": 7774,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-be.hyb",
+      "bytes": 6098,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-af.hyb",
+      "bytes": 72640,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-pt.hyb",
+      "bytes": 1414,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-tk.hyb",
+      "bytes": 2712,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-eu.hyb",
+      "bytes": 665,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-cy.hyb",
+      "bytes": 35913,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-de-ch-1901.hyb",
+      "bytes": 120218,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-ml.hyb",
+      "bytes": 776,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-mr.hyb",
+      "bytes": 687,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-lv.hyb",
+      "bytes": 38602,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-nb.hyb",
+      "bytes": 145263,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-uk.hyb",
+      "bytes": 19417,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-de-1901.hyb",
+      "bytes": 121393,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-en-us.hyb",
+      "bytes": 59802,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-te.hyb",
+      "bytes": 703,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-mul-ethi.hyb",
+      "bytes": 3740,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-or.hyb",
+      "bytes": 647,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-hr.hyb",
+      "bytes": 3031,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-cu.hyb",
+      "bytes": 52842,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-cs.hyb",
+      "bytes": 64245,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-de-1996.hyb",
+      "bytes": 120412,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-as.hyb",
+      "bytes": 703,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-kn.hyb",
+      "bytes": 711,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-sv.hyb",
+      "bytes": 72119,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-bn.hyb",
+      "bytes": 703,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-en-gb.hyb",
+      "bytes": 46607,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-sq.hyb",
+      "bytes": 2013,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-it.hyb",
+      "bytes": 2512,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-hy.hyb",
+      "bytes": 605,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-gu.hyb",
+      "bytes": 655,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-fr.hyb",
+      "bytes": 8165,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-pa.hyb",
+      "bytes": 607,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-es.hyb",
+      "bytes": 14995,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-sl.hyb",
+      "bytes": 6631,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-nn.hyb",
+      "bytes": 145263,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-ka.hyb",
+      "bytes": 9996,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-et.hyb",
+      "bytes": 21421,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-mn-cyrl.hyb",
+      "bytes": 5142,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-ga.hyb",
+      "bytes": 35824,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/manifest.json",
+      "bytes": 77,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-nl.hyb",
+      "bytes": 77080,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-el.hyb",
+      "bytes": 4219,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-hu.hyb",
+      "bytes": 317251,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-bg.hyb",
+      "bytes": 3467,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-und-ethi.hyb",
+      "bytes": 3484,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/hyphen-data/hyph-ta.hyb",
+      "bytes": 554,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/WidevineCdm/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "name": "chrome-linux64/WidevineCdm/LICENSE",
+      "bytes": 473,
+      "mode": "0o100644"
+    },
+    {
+      "name": "chrome-linux64/WidevineCdm/_platform_specific/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "name": "chrome-linux64/WidevineCdm/_platform_specific/linux_x64/",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "name": "chrome-linux64/WidevineCdm/_platform_specific/linux_x64/libwidevinecdm.so",
+      "bytes": 21965296,
+      "mode": "0o100755"
+    },
+    {
+      "name": "chrome-linux64/WidevineCdm/manifest.json",
+      "bytes": 841,
+      "mode": "0o100644"
+    }
+  ],
+  "scope": "ZIP metadata only; full archive SHA-256 separately verified in Docker"
+}

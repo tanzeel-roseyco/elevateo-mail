@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "target": "ES2023", "module": "NodeNext", "moduleResolution": "NodeNext",
+    "strict": true, "noUncheckedIndexedAccess": true, "exactOptionalPropertyTypes": true,
+    "noImplicitOverride": true, "noFallthroughCasesInSwitch": true,
+    "useUnknownInCatchVariables": true, "verbatimModuleSyntax": true,
+    "rootDir": ".", "outDir": "dist", "types": ["node"], "skipLibCheck": false
+  },
+  "include": ["shared/**/*.ts", "contracts/**/*.ts", "playwright/**/*.ts", "puppeteer/**/*.ts", "selenium/**/*.ts", "proxy/**/*.ts"]
+}

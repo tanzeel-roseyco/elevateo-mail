@@ -1,23 +1,28 @@
 {
-  "session_id": "44db3665-c21c-45f2-872b-e62917d7fb1f",
-  "model": "claude-fable-5",
-  "cli_version": "2.1.296",
-  "tools": [
-    "Edit",
-    "Glob",
-    "Grep",
-    "Read",
-    "Write"
-  ],
-  "mcp_servers": [],
-  "status": "completed source authoring; unaccepted pending defect repairs and Docker/visual gates",
-  "previous_session": "b878fb94-6e40-482d-9b26-1e39f8e98920",
-  "previous_outcome": "stopped near CLI session budget after session.tsx and readPage.ts only",
-  "previous_estimated_cost_usd": 9.849013,
-  "billing_note": "CLI estimate is separate from Devin credit; no billing changes",
-  "prompt_sha256": "adf896b079e6e718adb9b1c84fa09424bc7bcd3feae24276945c105e126dbd87",
-  "estimated_cost_usd": 8.548654,
-  "turns": 51,
-  "review_repair_session": "f85838f4-99dd-42dc-93bc-7dad6b950aab",
-  "review_repair_status": "running; exact claude-fable-5 init verified; file tools only"
+    "session_id":  "44db3665-c21c-45f2-872b-e62917d7fb1f",
+    "model":  "claude-fable-5",
+    "cli_version":  "2.1.296",
+    "tools":  [
+                  "Edit",
+                  "Glob",
+                  "Grep",
+                  "Read",
+                  "Write"
+              ],
+    "mcp_servers":  [
+
+                    ],
+    "status":  "completed source authoring; unaccepted pending defect repairs and Docker/visual gates",
+    "previous_session":  "b878fb94-6e40-482d-9b26-1e39f8e98920",
+    "previous_outcome":  "stopped near CLI session budget after session.tsx and readPage.ts only",
+    "previous_estimated_cost_usd":  9.849013,
+    "billing_note":  "CLI estimate is separate from Devin credit; no billing changes",
+    "prompt_sha256":  "adf896b079e6e718adb9b1c84fa09424bc7bcd3feae24276945c105e126dbd87",
+    "estimated_cost_usd":  8.548654,
+    "turns":  51,
+    "review_repair_session":  "f85838f4-99dd-42dc-93bc-7dad6b950aab",
+    "review_repair_status":  "completed source repair; independent review found additional D3 resource ownership issue; no runtime acceptance",
+    "review_repair_estimated_cost_usd":  4.433822,
+    "test_repair_session":  "d8b6c867-0e81-4a5d-866d-05ed66a3140f",
+    "test_repair_status":  "active exact claude-fable-5 file-tools-only run"
 }

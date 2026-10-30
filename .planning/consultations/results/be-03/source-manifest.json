@@ -1,0 +1,649 @@
+{
+  "created_at_utc": "2026-10-12T23:09:07.677140+00:00",
+  "base_revisions": {
+    "root": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+    "be02": "5785eba47f3709debb2815c8d86608f7e62d02f3"
+  },
+  "common_packet_sha256": "e73bb1beeda205a2a952324f8b0a2a54c384e743de56bc7933e1609fd6044444",
+  "common_packet_bytes": 297084,
+  "sources": [
+    {
+      "repository": "root",
+      "path": "docs/completion/be03-consultation-brief.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "e5b5f2e926602fbcb6dcf2c4bbf96620a8ca5fd0dd3ee5ae9b7419a9044d6bbe",
+      "bytes": 7676,
+      "supplied_ranges": [
+        [
+          1,
+          45
+        ]
+      ],
+      "excerpt_sha256": "60dd5941ff58c869026a28bbe1d66b40adb6df5d68607769c7cfcac2a49a6f9a",
+      "raw_snapshot": "source-00-be03-consultation-brief.md.log"
+    },
+    {
+      "repository": "root",
+      "path": "AGENTS.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "33415df7f7cc5a595c45f5ef526744dd52a1d72d9d0a462fea8a9d9674d88971",
+      "bytes": 4279,
+      "supplied_ranges": [
+        [
+          1,
+          21
+        ]
+      ],
+      "excerpt_sha256": "886d4663b99b5f8f4b0a2b8aa6d7183d7e19d01e6a849b2a499657a9558fe859",
+      "raw_snapshot": "source-01-AGENTS.md.log"
+    },
+    {
+      "repository": "root",
+      "path": ".planning/STANDARDS.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "7c01430086ed2dc263c8edcb1b2a9f41b572a23a11b36c1179be802e2874bd10",
+      "bytes": 7218,
+      "supplied_ranges": [
+        [
+          1,
+          49
+        ]
+      ],
+      "excerpt_sha256": "5cac452f93ff1a3426a29c8cd5ee481f28c2edb1053e84aeffcf8ecf1645895b",
+      "raw_snapshot": "source-02-STANDARDS.md.log"
+    },
+    {
+      "repository": "root",
+      "path": ".planning/AGENT_ORCHESTRATION.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "84562b8099de369f2498dd41f6d579323abbf741d70757c51486619082cfa21f",
+      "bytes": 12636,
+      "supplied_ranges": [
+        [
+          1,
+          78
+        ]
+      ],
+      "excerpt_sha256": "8ce9aadeacaee8763e5cfc8136c73403cf9420c530c9577e29a61496ee9db319",
+      "raw_snapshot": "source-03-AGENT_ORCHESTRATION.md.log"
+    },
+    {
+      "repository": "root",
+      "path": ".planning/consultations/README.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "26c1665ea5220654ef84d7393272edf2ff66efae3e8534f3cd8851ad3c2e4338",
+      "bytes": 6500,
+      "supplied_ranges": [
+        [
+          1,
+          41
+        ]
+      ],
+      "excerpt_sha256": "d05c0e0f86b00d7018ad5791297fa1e7f59d48bfc95d26ba1071e41d4d38c8be",
+      "raw_snapshot": "source-04-README.md.log"
+    },
+    {
+      "repository": "root",
+      "path": "docs/decisions/0002-local-architecture.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "5a9c7bd24bb35f8a19f78925ea25786ec77e632622535ea3da184da03eef223b",
+      "bytes": 2977,
+      "supplied_ranges": [
+        [
+          1,
+          17
+        ]
+      ],
+      "excerpt_sha256": "3b5cb8de69121c38e06a3ada9924201dd528ed271791aa0f18e4bc732a02283e",
+      "raw_snapshot": "source-05-0002-local-architecture.md.log"
+    },
+    {
+      "repository": "root",
+      "path": "docs/completion/be02-cd-contract.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "2f37e8ecb60f40a17ab2e1f6edbbda64bf5f0312c38c55161f20f6abde87426e",
+      "bytes": 25476,
+      "supplied_ranges": [
+        [
+          1,
+          161
+        ]
+      ],
+      "excerpt_sha256": "ea60a5052f8005546d82afd725370de14739d0486b45be6d581725b88516a097",
+      "raw_snapshot": "source-06-be02-cd-contract.md.log"
+    },
+    {
+      "repository": "root",
+      "path": ".planning/consultations/results/be-02/decisions.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "173f9088cb548076a5a8d04ce87573f000338789744e92567bd7fa915de680f9",
+      "bytes": 31950,
+      "supplied_ranges": [
+        [
+          1,
+          92
+        ]
+      ],
+      "excerpt_sha256": "b0520aa545448dec0a3fd2b2d2e8cd957504baa86575afa794f0a39de0547761",
+      "raw_snapshot": "source-07-decisions.md.log"
+    },
+    {
+      "repository": "root",
+      "path": "docs/completion/be02-auth-rls-decision.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "dc55258802eaaadb1ab4e2cf8107d3bb76baf74658fe3344e46101d8fda74570",
+      "bytes": 31138,
+      "supplied_ranges": [
+        [
+          1,
+          191
+        ]
+      ],
+      "excerpt_sha256": "2a790248277007b7516a2c2fabed95ab90bd7310528b1a14bf6144de7a53903f",
+      "raw_snapshot": "source-08-be02-auth-rls-decision.md.log"
+    },
+    {
+      "repository": "root",
+      "path": "docs/contracts-and-reliability.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "6834eee80f7bdfb9dd9437a3417e4a621554ec6f367530ed64fdd5b024a2a6d2",
+      "bytes": 11887,
+      "supplied_ranges": [
+        [
+          1,
+          105
+        ]
+      ],
+      "excerpt_sha256": "2c74c34e89534e8820996a8c6a36d5eb5efb5e0a2b39a33439c2b4a1aa0f5df5",
+      "raw_snapshot": "source-09-contracts-and-reliability.md.log"
+    },
+    {
+      "repository": "root",
+      "path": "docs/architecture.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "2fabdabb345ce62a0dc3607c0b6864d61865bbec1da158c8e370a47e11ce19e0",
+      "bytes": 12761,
+      "supplied_ranges": [
+        [
+          1,
+          109
+        ]
+      ],
+      "excerpt_sha256": "9ec9d7da8b880c58ad4abcf510db5327d802dcbcf4302f635d8c74e926f611fc",
+      "raw_snapshot": "source-10-architecture.md.log"
+    },
+    {
+      "repository": "root",
+      "path": "docs/end-goal.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "cecec916cea09ae25736f83915094e87f536e7cab338b817ae4eb888e68fa65f",
+      "bytes": 12919,
+      "supplied_ranges": [
+        [
+          1,
+          85
+        ]
+      ],
+      "excerpt_sha256": "deb645a5fbb5e7406efd6cabc9fe6803f723c8ec812a0baa5cb3e945d52bdcc3",
+      "raw_snapshot": "source-11-end-goal.md.log"
+    },
+    {
+      "repository": "root",
+      "path": "docs/local-completion-plan.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "7e7355a889fd0a24bb62d80dbef752d67b761b7bd97ad4b2c5b8f699b9f5adfa",
+      "bytes": 25230,
+      "supplied_ranges": [
+        [
+          1,
+          83
+        ],
+        [
+          97,
+          120
+        ]
+      ],
+      "excerpt_sha256": "aed0c38e8f59a98157965f4269955fe435f7674f7c898c960b8717208e43fec1",
+      "raw_snapshot": "source-12-local-completion-plan.md.log"
+    },
+    {
+      "repository": "root",
+      "path": "documentation.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "00ea3934c1b8b71cb53c7f41d55bffde6e3e929f5eb44483e5af3c83ebe608d8",
+      "bytes": 118001,
+      "supplied_ranges": [
+        [
+          50,
+          109
+        ]
+      ],
+      "excerpt_sha256": "82b003a67806057fe5f131394f129fee6beccbd01442539131e282c6a82c0df6",
+      "raw_snapshot": "source-13-documentation.md.log"
+    },
+    {
+      "repository": "root",
+      "path": "README.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "bc87c9d58f31192faec4185d21e50c01b2222807fee166ed9107927235bf732c",
+      "bytes": 108269,
+      "supplied_ranges": [
+        [
+          1,
+          16
+        ]
+      ],
+      "excerpt_sha256": "50e8ebf6e7ad5fbc57490ede06e7771b0c4a8df0ed6273753e370dcc39200ca7",
+      "raw_snapshot": "source-14-README.md.log"
+    },
+    {
+      "repository": "root",
+      "path": "state.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "cfcc1a060994e8233e42ecd1e8d4bccc3b06101801f3a6596d9f957be003285a",
+      "bytes": 123971,
+      "supplied_ranges": [
+        [
+          1,
+          16
+        ]
+      ],
+      "excerpt_sha256": "36ef5b7c0a50a60bf8ef08e5f85edc2ca68c9449bfdf6f21e9b502b36a0fc4a8",
+      "raw_snapshot": "source-15-state.md.log"
+    },
+    {
+      "repository": "root",
+      "path": ".planning/README.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "c66ed014226854477394b03659cbc23050ecdd3900de1532f87f27bd7039bb87",
+      "bytes": 3697,
+      "supplied_ranges": [
+        [
+          1,
+          45
+        ]
+      ],
+      "excerpt_sha256": "78b7b780770a124d74b8364eb8a75a7bd0fdcb017a23da530e845ff0b22ebc07",
+      "raw_snapshot": "source-16-README.md.log"
+    },
+    {
+      "repository": "root",
+      "path": ".planning/POLYGLOT_ARCHITECTURE.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "c8d3656cf7c8acc4a898c9a1603241b84ba9da254725856595c25be85ece2cea",
+      "bytes": 21799,
+      "supplied_ranges": [
+        [
+          1,
+          32
+        ],
+        [
+          74,
+          97
+        ]
+      ],
+      "excerpt_sha256": "d417b8590a78c5fc27604d25132afd0184e2691b1f5ea3c67d601fbd96213b9f",
+      "raw_snapshot": "source-17-POLYGLOT_ARCHITECTURE.md.log"
+    },
+    {
+      "repository": "root",
+      "path": ".planning/CLIENTS_AND_CLI_CONNECTORS.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "82c92e8c007de491709e5149df7031651028ad5b6272d5fc3713f9d6d0d55801",
+      "bytes": 18610,
+      "supplied_ranges": [
+        [
+          56,
+          69
+        ]
+      ],
+      "excerpt_sha256": "7e52a29d5a3363eb61f89a3c91869b87a0877edda105c76320af3f8105f6045e",
+      "raw_snapshot": "source-18-CLIENTS_AND_CLI_CONNECTORS.md.log"
+    },
+    {
+      "repository": "root",
+      "path": ".planning/MAIL_ACCOUNTS_AND_ACTIVATION.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "9d759caa3ffb1430af0cf3b81a062a584122895fef659246d0c1f37d5028e9e9",
+      "bytes": 8034,
+      "supplied_ranges": [
+        [
+          1,
+          51
+        ]
+      ],
+      "excerpt_sha256": "4aaff9a27c43cb51743c82d11be9425c35ace44b2f3effec87157c1827bd3c1f",
+      "raw_snapshot": "source-19-MAIL_ACCOUNTS_AND_ACTIVATION.md.log"
+    },
+    {
+      "repository": "root",
+      "path": ".planning/TASK_BACKLOG.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "aba7e19ad1640015e30210d9d37fbfc55410bc5819f0747d4e2ba075dbb7487e",
+      "bytes": 6095,
+      "supplied_ranges": [
+        [
+          1,
+          35
+        ]
+      ],
+      "excerpt_sha256": "2c51d7d55ef5206c9d1a62b2eeaa00fac38c86c3ded85d386e28b4be2e98d500",
+      "raw_snapshot": "source-20-TASK_BACKLOG.md.log"
+    },
+    {
+      "repository": "root",
+      "path": ".planning/research/reuse-market-scan.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "6f798e4dfd837498cdc52aa1badd117c8c66d9298feb982d02f029bd6af83723",
+      "bytes": 28477,
+      "supplied_ranges": [
+        [
+          1,
+          26
+        ],
+        [
+          65,
+          81
+        ],
+        [
+          100,
+          109
+        ]
+      ],
+      "excerpt_sha256": "778ba2296c43814aaa8e0720dbb316a05d71464d77ffd8b9b96d887a71389e7a",
+      "raw_snapshot": "source-21-reuse-market-scan.md.log"
+    },
+    {
+      "repository": "root",
+      "path": "docs/component-adoption.md",
+      "base_revision": "d2de43b438ad9fb5f003d3e808a6181dbd827632",
+      "sha256": "99cdcc56128a4c4ae0864d17c5f95fdf063c72b5f2112336ec9118810936f7e3",
+      "bytes": 10322,
+      "supplied_ranges": [
+        [
+          1,
+          45
+        ]
+      ],
+      "excerpt_sha256": "3266c4078c7ba81f9316654b7c1eddb76f6661dd4d2971b2663adeea6f13baf7",
+      "raw_snapshot": "source-22-component-adoption.md.log"
+    },
+    {
+      "repository": "be02",
+      "path": "apps/server/db/be02_drafts/tables.sql",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "c2c507d3d301703eca1091b7e5243242bbdb76b3ffe6e1f592fad362f4947cf1",
+      "bytes": 2535,
+      "supplied_ranges": [
+        [
+          1,
+          45
+        ]
+      ],
+      "excerpt_sha256": "5c13182dcb5d75a63ede1ded249c345177b2e32b27a5d27d646221b0c0735874",
+      "raw_snapshot": "source-23-tables.sql.log"
+    },
+    {
+      "repository": "be02",
+      "path": "apps/server/db/be02_drafts/save.sql",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "9709c44e1fb4fa981ac2dc96c199869c11de00a7d5a4f2facd715b105bc4a815",
+      "bytes": 5102,
+      "supplied_ranges": [
+        [
+          1,
+          87
+        ]
+      ],
+      "excerpt_sha256": "5f3a7560a1a92e2137f111254c90785970ea06c14ec7d53b8bd75b3bd7653679",
+      "raw_snapshot": "source-24-save.sql.log"
+    },
+    {
+      "repository": "be02",
+      "path": "apps/server/db/be02_drafts/scope.sql",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "0412b8a8f12ba7cfe5fc05d8b3208e5801e1c731ca3987e3f25c36b5250d22e2",
+      "bytes": 989,
+      "supplied_ranges": [
+        [
+          1,
+          12
+        ]
+      ],
+      "excerpt_sha256": "8985a1e2a49cecb517936fe693b0c7223f38d56e4544134d52e2baa4ec5435e9",
+      "raw_snapshot": "source-25-scope.sql.log"
+    },
+    {
+      "repository": "be02",
+      "path": "apps/server/db/be02_drafts/operations.sql",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "9b2999a43136a27432a12d72d60793e29ac4a7693fc2f7114ab9dfe43b11d4a1",
+      "bytes": 2697,
+      "supplied_ranges": [
+        [
+          1,
+          50
+        ]
+      ],
+      "excerpt_sha256": "15413ea9c25bc43e84d600386b4be60708c9bf00d2ff14c3fc57dcc3463c1ea8",
+      "raw_snapshot": "source-26-operations.sql.log"
+    },
+    {
+      "repository": "be02",
+      "path": "apps/server/db/be02_drafts/grants.sql",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "5bef9b13237e5dfb7d0ea53d6ad87988370847a58136079cdc5da7087d642058",
+      "bytes": 900,
+      "supplied_ranges": [
+        [
+          1,
+          10
+        ]
+      ],
+      "excerpt_sha256": "e1ed613c35bc87ebc3ed296c632beeb403ab30c0520b4d59da04bfa289c5e7eb",
+      "raw_snapshot": "source-27-grants.sql.log"
+    },
+    {
+      "repository": "be02",
+      "path": "apps/server/db/be02_drafts/policies.sql",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "059696491b0bee3f60d6e7db665e10eeaec2cefed85cb02d4bc02df9a35a38c7",
+      "bytes": 2271,
+      "supplied_ranges": [
+        [
+          1,
+          30
+        ]
+      ],
+      "excerpt_sha256": "7f8bb632a2c45efe0cbda5a9e0a9fef53754537e86d483c5bf0f74b11fcd87d6",
+      "raw_snapshot": "source-28-policies.sql.log"
+    },
+    {
+      "repository": "be02",
+      "path": "apps/server/db/be02_writes/guard.sql",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "a28b91e0b23016bc28ab6974da45ccf0af9efbceebe757a1948c2d9cea7d2fb4",
+      "bytes": 3338,
+      "supplied_ranges": [
+        [
+          1,
+          53
+        ]
+      ],
+      "excerpt_sha256": "d2878c4fde8b16220e16b7ab24dd7858d6aef2432dff2918578f22e49c828171",
+      "raw_snapshot": "source-29-guard.sql.log"
+    },
+    {
+      "repository": "be02",
+      "path": "apps/server/db/be02_writes/assertions.sql",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "9b4dee564c225213135e7d16b421436d3262126e6b9f98975b4694efeb29ba8b",
+      "bytes": 1207,
+      "supplied_ranges": [
+        [
+          1,
+          18
+        ]
+      ],
+      "excerpt_sha256": "b3160e642d82ef8d5e7e629d5a605bbbe0024d7dafe7e358b2481a119cfaeff7",
+      "raw_snapshot": "source-30-assertions.sql.log"
+    },
+    {
+      "repository": "be02",
+      "path": "apps/server/db/be02/generations.sql",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "c3155d5d3f334fde296adfb88825a3f6459dda3dbd606122b320712494499498",
+      "bytes": 2491,
+      "supplied_ranges": [
+        [
+          1,
+          43
+        ]
+      ],
+      "excerpt_sha256": "9e3ef3dbd3ae10de40e52a675462bfa62fbc10b7c316ab3cf87c531fd878bb86",
+      "raw_snapshot": "source-31-generations.sql.log"
+    },
+    {
+      "repository": "be02",
+      "path": "apps/server/db/be02/helpers.sql",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "e0e0d76c503c9739b4e8b5194ff6faa53ee2eacc8424d70469fcca39013a2f9f",
+      "bytes": 4566,
+      "supplied_ranges": [
+        [
+          1,
+          80
+        ]
+      ],
+      "excerpt_sha256": "c78461e7e8e8230a3b42a92e2d5bb4682b7b4914082fe02b002cfb60f1881034",
+      "raw_snapshot": "source-32-helpers.sql.log"
+    },
+    {
+      "repository": "be02",
+      "path": "apps/server/db/be02_memberships/mutation.sql",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "3ae401e7954a8a7f3f41623ab80304a897de2aaf135adbf27bc2b0c4d169d7f1",
+      "bytes": 4099,
+      "supplied_ranges": [
+        [
+          1,
+          56
+        ]
+      ],
+      "excerpt_sha256": "53de201af045dd252cf067c2c73ecb5c900e1b3fa705e7ae91b5a3d05c52b056",
+      "raw_snapshot": "source-33-mutation.sql.log"
+    },
+    {
+      "repository": "be02",
+      "path": "apps/server/lib/elevateo/session_writes.rb",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "7d7ddb8c1a2e8167da2faab5e8e10682965ad40333408387c1018cda9815e0dc",
+      "bytes": 5055,
+      "supplied_ranges": [
+        [
+          1,
+          100
+        ]
+      ],
+      "excerpt_sha256": "002c975238d51a105e172ff03c26da7233f2ddfab68cf7e92a1050ee08f43eb0",
+      "raw_snapshot": "source-34-session_writes.rb.log"
+    },
+    {
+      "repository": "be02",
+      "path": "apps/server/lib/elevateo/drafts/payload.rb",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "8aaf5b23dee01ba32e6f43aac299d366c7f62e8f2dbeec975a23994a9c5fc310",
+      "bytes": 2073,
+      "supplied_ranges": [
+        [
+          1,
+          48
+        ]
+      ],
+      "excerpt_sha256": "0224e768ced95f2996c9cf36de6f450d4eb59b75b9d099fab57a58ed733387fe",
+      "raw_snapshot": "source-35-payload.rb.log"
+    },
+    {
+      "repository": "be02",
+      "path": "apps/server/app/controllers/v1/write_controller.rb",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "a8755e7dfe2c279209d2fb5f242bec628c604a62a78c0c2a489e47ea1e7b6d10",
+      "bytes": 2602,
+      "supplied_ranges": [
+        [
+          1,
+          48
+        ]
+      ],
+      "excerpt_sha256": "07e33aa9b7279206c73bea9cb5711afe272ba88fb1bdc7fa7734c5b788ffd98e",
+      "raw_snapshot": "source-36-write_controller.rb.log"
+    },
+    {
+      "repository": "be02",
+      "path": "apps/server/app/controllers/v1/drafts_controller.rb",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "c73bd590b1c79939ca55a82e1aaea74ab1f20c81a7e24399f48840fb4edfecf0",
+      "bytes": 1545,
+      "supplied_ranges": [
+        [
+          1,
+          42
+        ]
+      ],
+      "excerpt_sha256": "e1850e4f61ce8362e92d97ea84ea9362e140f746c04b8bcacc4a73df92b63d83",
+      "raw_snapshot": "source-37-drafts_controller.rb.log"
+    },
+    {
+      "repository": "be02",
+      "path": "apps/server/db/migrate/20261013000004_create_app_drafts_operations.rb",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "ef47e2bbc9ecd2fee1fbad78d0249bedbd4384517c3fe1ab06c8e4686259d8f8",
+      "bytes": 460,
+      "supplied_ranges": [
+        [
+          1,
+          18
+        ]
+      ],
+      "excerpt_sha256": "4ee3988addf0975e6e74575f5089222300b754e8f635d4419987f7f60bb4715e",
+      "raw_snapshot": "source-38-20261013000004_create_app_drafts_operations.rb.log"
+    },
+    {
+      "repository": "be02",
+      "path": "apps/server/db/migrate/20261013000006_create_mailbox_membership_writes.rb",
+      "base_revision": "5785eba47f3709debb2815c8d86608f7e62d02f3",
+      "sha256": "27ecff0cc7d24929403a8b9f0d5258cf0f9c38ed0e33efcbc2c28c664c886a62",
+      "bytes": 483,
+      "supplied_ranges": [
+        [
+          1,
+          14
+        ]
+      ],
+      "excerpt_sha256": "e7a57cac42ab26e677e9f789d4bec61633c6354f33510145717ec3614b48be9a",
+      "raw_snapshot": "source-39-20261013000006_create_mailbox_membership_writes.rb.log"
+    }
+  ],
+  "additional_contract_hashes": {
+    "contracts/v1/openapi.json": {
+      "sha256": "859041382484a3a001ae087ca88e02eeb23540f2cf46aec795b064aa8ea66073",
+      "bytes": 217402,
+      "supplied": false,
+      "omission": "C/D prose supplied; full machine contract frozen for later drift checking, not in opinion context"
+    },
+    "contracts/v1/fixtures.json": {
+      "sha256": "182d8dfad62c49d3a5b9eba836716808709255c66320e3a8a09fc4e7ddae2833",
+      "bytes": 57553,
+      "supplied": false,
+      "omission": "C/D prose supplied; full machine contract frozen for later drift checking, not in opinion context"
+    },
+    "contracts/v1/contract-lock.json": {
+      "sha256": "98b7379b024b639b22ef757552da859a5e7151d41b039ef17a3d5d7ccf9f2a07",
+      "bytes": 1011,
+      "supplied": false,
+      "omission": "C/D prose supplied; full machine contract frozen for later drift checking, not in opinion context"
+    }
+  },
+  "raw_files_ignored_by": ".gitignore *.log",
+  "source_status": "mutable worktrees frozen before opinions; no BE02 acceptance inferred"
+}

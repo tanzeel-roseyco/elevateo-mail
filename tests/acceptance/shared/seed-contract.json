@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "kind": "example",
+  "actors": {
+    "manager_primary": { "user_id": "00000000-0000-4000-8000-000000000001", "email": "manager_primary@acceptance.test", "organization": "primary", "mailbox": "primary", "state": "active", "capabilities": ["manage", "read", "compose", "approve_send"], "authorization_version": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "membership_generation": null },
+    "manager_backup": { "user_id": "00000000-0000-4000-8000-000000000002", "email": "manager_backup@acceptance.test", "organization": "primary", "mailbox": "primary", "state": "active", "capabilities": ["manage", "read", "compose", "approve_send"], "authorization_version": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "membership_generation": null },
+    "reader": { "user_id": "00000000-0000-4000-8000-000000000003", "email": "reader@acceptance.test", "organization": "primary", "mailbox": "primary", "state": "active", "capabilities": ["read"], "authorization_version": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "membership_generation": null },
+    "composer": { "user_id": "00000000-0000-4000-8000-000000000004", "email": "composer@acceptance.test", "organization": "primary", "mailbox": "primary", "state": "active", "capabilities": ["read", "compose"], "authorization_version": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "membership_generation": null },
+    "approver": { "user_id": "00000000-0000-4000-8000-000000000005", "email": "approver@acceptance.test", "organization": "primary", "mailbox": "primary", "state": "active", "capabilities": ["read", "compose", "approve_send"], "authorization_version": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "membership_generation": null },
+    "disabled": { "user_id": "00000000-0000-4000-8000-000000000006", "email": "disabled@acceptance.test", "organization": "primary", "mailbox": "primary", "state": "disabled", "capabilities": [], "authorization_version": null, "membership_generation": null },
+    "revoked": { "user_id": "00000000-0000-4000-8000-000000000007", "email": "revoked@acceptance.test", "organization": "primary", "mailbox": "primary", "state": "revoked", "capabilities": [], "authorization_version": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "membership_generation": null },
+    "no_membership": { "user_id": "00000000-0000-4000-8000-000000000008", "email": "no_membership@acceptance.test", "organization": null, "mailbox": null, "state": "no_membership", "capabilities": [], "authorization_version": null, "membership_generation": null },
+    "other_org": { "user_id": "00000000-0000-4000-8000-000000000009", "email": "other_org@acceptance.test", "organization": "other", "mailbox": "other", "state": "active", "capabilities": ["read"], "authorization_version": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "membership_generation": null }
+  },
+  "organizations": { "primary": "00000000-0000-4000-8000-000000000101", "other": "00000000-0000-4000-8000-000000000102" },
+  "mailboxes": { "primary": "00000000-0000-4000-8000-000000000201", "other": "00000000-0000-4000-8000-000000000202" },
+  "data": {
+    "thread_primary": "00000000-0000-4000-8000-000000000301", "thread_other": "00000000-0000-4000-8000-000000000302",
+    "draft_primary": "00000000-0000-4000-8000-000000000401", "draft_other": "00000000-0000-4000-8000-000000000402",
+    "draft_version": 1, "ordered_at": "2026-01-01T00:00:00.000Z", "marker": "ACCEPTANCE_T0_SYNTHETIC"
+  }
+}
