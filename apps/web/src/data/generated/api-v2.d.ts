@@ -534,6 +534,7 @@ export interface components {
             sent_at: components["schemas"]["UtcTimestamp"] | null;
             body_text: string;
             body_truncated: boolean;
+            /** @description Maximum of provider-reported attachment metadata and currently materialized local attachment rows. */
             attachment_count: number;
         };
         DirectMessagePage: {
