@@ -1,0 +1,27 @@
+Run options: --seed 56359
+
+# Running:
+
+..EE
+
+Finished in 3.391522s, 1.1794 runs/s, 1.7691 assertions/s.
+
+  1) Error:
+ProductionMoxProtocolTest#test_real_reply_uses_original_recipient_mailbox_and_rfc_identity:
+Elevateo::SendWorker::SmtpTransport::Held: production SMTP unavailable before submission
+    lib/elevateo/send_worker/production_mox_transport.rb:66:in 'Elevateo::SendWorker::ProductionMoxTransport#deliver'
+    lib/elevateo/send_worker/production_mox_transport.rb:35:in 'Elevateo::SendWorker::ProductionMoxTransport#submit'
+    test/send_worker/production_mox_protocol_test.rb:58:in 'ProductionMoxProtocolTest#submit'
+    test/send_worker/production_mox_protocol_test.rb:103:in 'ProductionMoxProtocolTest#test_real_reply_uses_original_recipient_mailbox_and_rfc_identity'
+
+  2) Error:
+ProductionMoxProtocolTest#test_real_ruby_submission_and_verified_imap_delivery:
+Elevateo::SendWorker::SmtpTransport::Held: production SMTP unavailable before submission
+    lib/elevateo/send_worker/production_mox_transport.rb:66:in 'Elevateo::SendWorker::ProductionMoxTransport#deliver'
+    lib/elevateo/send_worker/production_mox_transport.rb:35:in 'Elevateo::SendWorker::ProductionMoxTransport#submit'
+    test/send_worker/production_mox_protocol_test.rb:58:in 'ProductionMoxProtocolTest#submit'
+    test/send_worker/production_mox_protocol_test.rb:72:in 'ProductionMoxProtocolTest#test_real_ruby_submission_and_verified_imap_delivery'
+
+4 runs, 6 assertions, 0 failures, 2 errors, 0 skips
+
+exit=1

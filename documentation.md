@@ -21,6 +21,11 @@ drafts, send approval and delivery state. Every other component is an adapter:
 
 Design detail: [docs/architecture.md](docs/architecture.md) and [docs/backend-completion-design.md](docs/backend-completion-design.md).
 
+Backend ownership, explicit Ruby APIs, tables, routine contracts and safety exceptions are defined in
+[the modular architecture](docs/modular-architecture.md). `apps/server/architecture.json` is enforced
+by stdlib architecture tests in the standard backend gate. Connector snapshots share the caller's
+guarded connection; draft validation and send authority retain their existing transactions.
+
 ## 2. Sign-in
 
 Clients redirect to Authentik through the private Supabase Auth proxy, registered as `custom:authentik`.

@@ -1,0 +1,10 @@
+{
+  "status": "FAILED",
+  "failure": "mailpit-entry failed; see 070-mailpit-entry.log",
+  "separate_gates": [
+    "historical BE01 R1 fixture",
+    "MCP",
+    "native bridge",
+    "restore drill"
+  ]
+}

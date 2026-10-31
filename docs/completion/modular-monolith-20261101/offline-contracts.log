@@ -1,0 +1,42 @@
+RUN /workspace/contracts/v1/tests/send_contract_test.rb
+Run options: --seed 35991
+
+# Running:
+
+...........
+
+Finished in 0.042701s, 257.6081 runs/s, 2693.1759 assertions/s.
+
+11 runs, 115 assertions, 0 failures, 0 errors, 0 skips
+RUN /workspace/contracts/v2/contract_test.rb
+Run options: --seed 44349
+
+# Running:
+
+....
+
+Finished in 0.029845s, 134.0261 runs/s, 971.6895 assertions/s.
+
+4 runs, 29 assertions, 0 failures, 0 errors, 0 skips
+RUN /workspace/contracts/v2/completion_contract_test.rb
+Run options: --seed 64080
+
+# Running:
+
+....
+
+Finished in 0.168117s, 23.7930 runs/s, 713.7903 assertions/s.
+
+4 runs, 120 assertions, 0 failures, 0 errors, 0 skips
+RUN test/send_worker/resend_wire_test.rb
+Run options: --seed 45235
+
+# Running:
+
+...
+
+Finished in 0.026954s, 111.3014 runs/s, 964.6121 assertions/s.
+
+3 runs, 26 assertions, 0 failures, 0 errors, 0 skips
+
+exit=0

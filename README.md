@@ -100,10 +100,11 @@ Fill values in the order of [docs/credentials-last.md](docs/credentials-last.md)
 Before deploying, give the email-finder worker (`ELEVATEO_FINDER_PUBLIC_IP`) a different public IP from Mox.
 Its port-25 checks can get an IP blocklisted.
 
-## Current state (2026-10-30)
+## Current state (2026-11-01)
 
 | Area | State |
 | --- | --- |
+| Backend module boundaries | Explicit capability/API/table contracts and Docker architecture regressions added on this branch. Safety exceptions and verification limits: [modular architecture](docs/modular-architecture.md), [receipt](docs/completion/modular-monolith-20261101/receipt.md) |
 | Backend, contracts, Mox, MCP, native bridge | Implemented. Full local Docker gate passed on `feature/backend-completion`: 1,285 tests / 14,595 assertions, 412-assertion Mox protocol suite, real SMTP→IMAP application chain, encrypted restore, deploy dry run |
 | Email finder | Implemented. Module gates passed (53 backend tests, 12 browser cases) |
 | Web, macOS, Windows, Android, iOS clients | Implemented, and all 71 review defects fixed. **Not yet built or tested:** lint, typecheck, tests, packaging and visual QA run in one final Docker pass. `apps/native/src-tauri/Cargo.lock` must be regenerated first. Review packets P24–P34 have not run |

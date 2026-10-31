@@ -1,0 +1,37 @@
+Run options: --seed 41479
+
+# Running:
+
+EF
+
+Finished in 43.512164s, 0.0460 runs/s, 0.7584 assertions/s.
+
+  1) Error:
+[credential-bearing line redacted]
+Net::ReadTimeout: Net::ReadTimeout with "Net::ReadTimeout with #<TCPSocket:(closed)>"
+    /usr/local/bundle/ruby/3.4.0/gems/net-protocol-0.4.0/lib/net/protocol.rb:283:in 'Net::BufferedIO#rbuf_fill'
+    /usr/local/bundle/ruby/3.4.0/gems/net-protocol-0.4.0/lib/net/protocol.rb:249:in 'Net::BufferedIO#readuntil'
+    /usr/local/bundle/ruby/3.4.0/gems/net-protocol-0.4.0/lib/net/protocol.rb:263:in 'Net::BufferedIO#readline'
+    /usr/local/lib/ruby/3.4.0/net/http/response.rb:158:in 'Net::HTTPResponse.read_status_line'
+    /usr/local/lib/ruby/3.4.0/net/http/response.rb:147:in 'Net::HTTPResponse.read_new'
+    /usr/local/lib/ruby/3.4.0/net/http.rb:2414:in 'block in Net::HTTP#transport_request'
+    /usr/local/lib/ruby/3.4.0/net/http.rb:2405:in 'Kernel#catch'
+    /usr/local/lib/ruby/3.4.0/net/http.rb:2405:in 'Net::HTTP#transport_request'
+    /usr/local/lib/ruby/3.4.0/net/http.rb:2378:in 'Net::HTTP#request'
+    [opaque value redacted]:30:in 'block in Be02Http#request'
+    /usr/local/lib/ruby/3.4.0/net/http.rb:1626:in 'Net::HTTP#start'
+    /usr/local/lib/ruby/3.4.0/net/http.rb:1064:in 'Net::HTTP.start'
+    [opaque value redacted]:30:in 'Be02Http#request'
+    [opaque value redacted]:28:in 'Adv806MailpitEntryTest#accept'
+[credential-bearing line redacted]
+
+  2) Failure:
+[credential-bearing line redacted]
+unexpected HTTP status; response omitted
+
+2 runs, 33 assertions, 1 failures, 1 errors, 0 skips
+ Container [opaque value redacted] Creating
+ Container [opaque value redacted] Created
+
+
+exit=1 seconds=47.86

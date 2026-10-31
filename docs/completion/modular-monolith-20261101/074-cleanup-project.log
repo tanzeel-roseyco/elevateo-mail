@@ -1,0 +1,24 @@
+ Container [opaque value redacted] Stopping
+ Container [opaque value redacted] Stopping
+ Container [opaque value redacted] Stopping
+ Container [opaque value redacted] Stopping
+ Container [opaque value redacted] Stopping
+ Container [opaque value redacted] Stopped
+ Container [opaque value redacted] Removing
+ Container [opaque value redacted] Removed
+ Container [opaque value redacted] Stopped
+ Container [opaque value redacted] Removing
+ Container [opaque value redacted] Stopped
+ Container [opaque value redacted] Removing
+ Container [opaque value redacted] Removed
+ Container [opaque value redacted] Removed
+ Container [opaque value redacted] Stopped
+ Container [opaque value redacted] Removing
+ Container [opaque value redacted] Removed
+ Container [opaque value redacted] Stopped
+ Container [opaque value redacted] Removing
+ Container [opaque value redacted] Removed
+ Network [opaque value redacted] Removing
+ Network [opaque value redacted] Removed
+
+exit=0 seconds=3.34

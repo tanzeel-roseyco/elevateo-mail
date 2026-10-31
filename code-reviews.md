@@ -2684,3 +2684,29 @@ Final application-chain repair review covered115 primary LOC (wrapper99, HTTP us
 Further correction to the historical SMTP fixture review: the coherent run exposed a second missed defect in the original33-LOC repair packet: committing historical DDL restored obsolete SMTP credential constraints and authority functions. Together with the previously recorded role defect, that packet had2 execution-discovered defects (60.61/KLOC). The replacement uses transaction rollback for the entire historical experiment, asserts exact current credential constraint restoration, then runs the separate worker against current schema. Independent final review covered28 method LOC, zero residual defects (0/KLOC). It supersedes the earlier ad hoc function replay repair.
 
 Final coherent local acceptance: standard1285/14595 (four protocol skips covered by separate Mox4/412), dedicated28/202, boot2/12, app-chain1/88, HTTP1/33, Mailpit2/107, Ruby contracts19/264, Resend stub3/26 and worker revocation drain all passed; Steep and RuboCop506files clean. Independent MCP11, Node contracts50, operations62, native8Rust/15Python/1Docker lifecycle, historical31/1531, encrypted restore and deployment dry-run also passed. Evidence: docs/completion/backend-20261030-receipt.md. Historical pending statements above describe earlier checkpoints and are superseded only within this final tested scope.
+
+
+## Modular monolith - 2026-11-01
+
+Adversarial agents used the repository review prompt. Formatting was left to RuboCop.
+Each packet covered at most 200 lines. Density = defects / reviewed LOC * 1,000.
+
+| Packet | LOC | Defects | Density / KLOC | Disposition |
+| --- | ---: | ---: | ---: | --- |
+| Connector + drafts adapter design | 128 | 2 | 15.63 | Foreign SQL and adapter reuse extracted into mailbox API |
+| Initial scanner + tests | 184 | 3 | 16.30 | Spaced/unqualified SQL, dynamic relations, foreign reopening rejected |
+| Scanner second pass | 128 | 3 | 23.44 | Projection bypass, schema-fragment concatenation, foreign child namespace rejected |
+| Snapshot, RBS, suite wiring | 139 | 2 | 14.39 | Shell LF restored; SELECT private |
+| Public exports + context | 199 | 2 | 10.05 | Arbitrary-query repositories removed from exports; exact entrypoint exceptions |
+| Dedicated design/exception packet | 164 | 0 | 0 | Safety paths preserved; exact SQL caller contracts |
+| Final scanner dispositions | 135 | 1 | 7.41 | INSERT column list bypass fixed with regression |
+| Final snapshot/tests/inventory | 183 | 0 | 0 | Privacy and rejection fixtures reviewed |
+| Exact SQL caller contracts | 71 | 0 | 0 | Dedicated design review confirmed private routine caller boundaries |
+| File ownership manifest | 196 | 0 | 0 | Capability classification reviewed |
+| Architecture documentation/design | 190 | 1 | 5.26 | Ambiguous empty matrix cells replaced with zero and defined |
+
+Findings are discovery counts, not unresolved defect counts. Scanner findings have regression coverage.
+The design review simulated revocation, concurrent edits, ingest replay and new illegal dependencies
+analytically. No Obsidian connector was available; no external simulation is claimed.
+Accepted safety exceptions and guard limits are in docs/modular-architecture.md; Docker verification
+and the unrelated schema rollback follow-up are in docs/completion/modular-monolith-20261101/receipt.md.
