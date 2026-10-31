@@ -1,47 +1,22 @@
 # Runbook: lost or stolen laptop
 
-Applies to any device that has held repository checkouts, SSH keys, `.env.*` stack credentials, provider API keys, signing material or a signed-in browser session. Assume the disk will be read even if the device was encrypted; encryption buys time, not immunity.
+Use this for devices containing source, credentials, signing material or active sessions. Jeison and Tanzeel investigate together; Callum approves resulting production changes and public releases. This procedure grants no access to fleet hosts. Fleet-01 is read-only and off limits.
 
-## First hour
+## Immediate response
 
-1. Tell the pilot owner and the second operator. Record the time the device was last seen and what it held (use the inventory below).
-2. Revoke the device's sessions: trigger a global logout for the user in Elevateo (`POST /v1/auth/logout` with `scope: global`), sign the Google account out of all devices, and revoke GitHub, Cloudflare, Hetzner, Resend, Apple, Google Play and Azure sessions from each provider's security page.
-3. Remove the device's SSH public key from fleet-02 `~/.ssh/authorized_keys`, from the Hetzner project and from GitHub. Rotate the fleet SSH key pair for the affected user.
-4. Rotate every secret the device could read: stack credential files (`ops/supabase/stack.sh <stack> init` regenerates them; coordinate downtime), provider API keys (Resend, Hunter, AnymailFinder), Cloudflare API tokens, GitHub personal access tokens, Docker context credentials, Telegram and Slack bot tokens.
-5. Revoke code-signing material: the Apple Developer certificate and any Azure Artifact Signing certificate profile the device could use; re-issue and re-sign the next build.
-6. Attempt a remote wipe (Find My, Intune or the vendor tool) and report the loss to the police and the insurer; keep the report number.
+1. Notify Callum and the second maintainer. Record when the device was last seen and inventory the accounts, files and signing material it could access. Keep sensitive details in the approved private incident store.
+2. Ask the relevant account administrators to revoke the device's sessions and credentials. Current application identity is Authentik; Google Cloud is not a prerequisite. Revoke other provider access only when that account was actually present.
+3. If the affected user retains a valid application session, global logout is available at `POST /v1/auth/logout` with `scope: global`, the cookie, CSRF proof and allowed Origin. It revokes that session's user, not an arbitrary target user. Check pending upstream revocation. Otherwise use the approved administrator recovery path; see [incident response](incident-response.md).
+4. Remove the lost device's authorized access from the actual company infrastructure and source accounts through their administrators. Confirm the inventory first; do not assume fleet-02, Cloudflare or any named provider is the production destination.
+5. Rotate exposed secrets using a reviewed plan. Environment changes alone do not rotate SQL passwords. `ops/supabase/stack.sh init` refuses an existing credential file; it is not a rotation tool. Use [credentials-last](../credentials-last.md) to identify application, Authentik, database, storage, mail and backup authority.
+6. If signing keys were exposed, ask the signing-account administrator to revoke/replace them. Callum must approve any replacement public release. Coordinate device recovery or remote wipe through the company's approved process.
 
-## Same day
+## Verification and recovery
 
-- Bump `credential_version` for any mailbox whose SMTP or IMAP credentials were present on the device so in-flight work is fenced (`apps/server/lib/elevateo/mail_credentials/binding.rb`); re-enrol those mailboxes with new app passwords.
-- Review `app.organization_role_audit` and `app_send_private.audit_events` for activity after the loss time.
-- Check the Resend dashboard and the Gmail mailboxes for unexpected sends.
-- Open an incident record using `docs/runbooks/incident-response.md` and decide whether notification duties apply (Privacy Act notifiable data breach if contact data was likely accessed).
+Review restricted audit records and transport evidence for unauthorized activity. Confirm the revoked principal and connector grants cannot read mail or attachments. Do not automatically resend ambiguous attempts. Follow [disaster recovery](disaster-recovery.md) if data restoration is needed; a recovered old session must not become usable again.
 
-## Before go-live: device and account baseline
+## Baseline to approve before go-live
 
-| Control | Requirement |
-| --- | --- |
-| Full-disk encryption | BitLocker or FileVault on every device with repository or credential access; verified, recovery key in the password manager |
-| Screen lock | 5 minutes, password or biometric |
-| Password manager | Company vault for all provider logins; no credentials in notes, chats or text files |
-| MFA | On GitHub, Hetzner, Cloudflare, Resend, Google, Apple, Azure and the password manager |
-| Local checkouts | No `.env.*`, backups or exported mail on laptops; those live on fleet-02 or the production host only |
+Record company policy and evidence for full-disk encryption, screen lock, password-manager use, MFA, recovery-key custody, secret retention and two-person account administration. Exact intervals and provider owners are TO CONFIRM with Callum and the company account administrators; the repository does not establish a deployed device-management policy.
 
-## Company-owned account inventory
-
-Each account must be owned by a company identity with two administrators. Fill in the administrators column before go-live and keep it current.
-
-| Account | Purpose | Administrators |
-| --- | --- | --- |
-| GitHub organization or repository | Source, CI, Dependabot | |
-| Hetzner project | Production VPS, backups, fleet-02 | |
-| Cloudflare | Registrar, DNS | |
-| Resend | Transactional mail, webhooks | |
-| Google Cloud project | OAuth consent screen if Gmail OAuth is used | |
-| Google Play Console | Android distribution | |
-| Apple Developer | macOS signing and notarisation | |
-| Azure | Artifact Signing for Windows | |
-| Hunter, AnymailFinder | Enrichment (optional) | |
-| UptimeRobot, Sentry or GlitchTip | Monitoring | |
-| Backblaze B2 or Hetzner Storage Box | Off-host backups | |
+Keep secret values, backup archives and exported mail out of source control. Confirm whether laptops may hold any recovery material and how it is protected. Use the [handoff prerequisites and confirmation register](../handoff/README.md) for the actual account inventory; previous lists of Google Cloud, enrichment providers and fleet hosts were proposals, not proof those services are required.

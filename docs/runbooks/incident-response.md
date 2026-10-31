@@ -1,64 +1,33 @@
 # Runbook: incident response
 
-For security incidents, data exposure, provider abuse warnings and outages during the private pilot. One named owner (business hours, Australia/Sydney) and one second operator must both be able to run every step.
+Jeison and Tanzeel handle upkeep and incident investigation together. Callum decides updates and approves production changes, external notifications and recovery cutover. Record an incident owner and second operator before go-live; business-hours and on-call coverage remain to be confirmed. See [the handoff](../handoff/README.md).
 
-## Severity
+## Triage
 
-| Level | Definition | Examples |
-| --- | --- | --- |
-| SEV1 | Data exposure, credential compromise, or sends leaving without approval | Cross-tenant read, leaked mailbox credential, Resend account shut down for complaints |
-| SEV2 | Service down or sends stalled for more than an hour | VPS down, PostgreSQL out of disk, worker crash loop |
-| SEV3 | Degraded, no data risk | Slow search, one mailbox failing IMAP |
+| Severity | Examples |
+| --- | --- |
+| SEV1 | Cross-tenant access, credential compromise, mail leaving without approval |
+| SEV2 | Service outage, database disk exhaustion, stalled workers |
+| SEV3 | Degraded search or one mailbox failing synchronization |
 
-## First 15 minutes
+Record UTC time, reporter, affected services and evidence before changing state. Keep logs, private audit exports and mail data in a restricted company incident location, never Git or chat. The location and retention need company approval; do not use a fleet host by default. Fleet-01 is read-only and off limits.
 
-1. Start an incident note: time, reporter, what is known, who is on it.
-2. Contain before diagnosing:
-   - Stop outbound mail: set `ELEVATEO_OUTBOUND_HOLD=true` and restart the API and worker (the worker respects the hold before provider I/O).
-   - Suspected account compromise: global logout for the user (`POST /v1/auth/logout`, `scope: global`) and bump the affected mailbox `credential_version` so in-flight attempts are fenced.
-   - Suspected host compromise: snapshot the server in the Hetzner console for evidence, then rotate secrets per the schedule below.
-3. Preserve evidence: copy API and worker logs, `app_send_private.audit_events`, `app.organization_role_audit` and relevant receipt rows to the incident folder on fleet-02 (never into Git or chat).
-4. Tell the pilot users what is affected and what they must not do (for example, do not re-send).
+## Containment
 
-## Provider abuse warnings
+The checked-in [production Compose](../../ops/production/compose.yaml) forces outbound hold and [deployment admission](../../ops/production/deployment_settings.py) rejects releasing it. If a future authorized live deployment exists, use its reviewed containment procedure; do not assume editing a shell variable changes running containers. Pause affected workers through the approved operator path and verify effective hold before resuming them.
 
-Resend shuts accounts without warning above a 0.08% complaint rate or 4% bounce rate (`https://resend.com/legal/acceptable-use`). On any Resend warning: hold outbound, export the bounce and complaint list, suppress those recipients, confirm every remaining recipient has recorded consent (`app.campaign_consent_events`), then resume at reduced volume. Gmail mailbox sends are capped by Google per account; a blocked mailbox stays disabled until Google lifts it, so do not route its queue through another mailbox.
+For a user who still controls a valid session, `POST /v1/auth/logout` accepts `scope: global`, with the required session cookie, CSRF proof and allowed Origin. This is not an administrator endpoint accepting another user's UUID. Inspect `local_revoked` and `upstream_status`; upstream revocation can remain pending. These semantics are implemented in [AuthController](../../apps/server/app/controllers/v1/auth_controller.rb) and [Sessions](../../apps/server/lib/elevateo/sessions.rb).
 
-## Key-rotation schedule
+For compromised access without a usable session, involve the Authentik and application administrators. Do not invent direct SQL revocation or credential-version updates: use a reviewed operation and verify the compromised principal is denied. Mail credential binding includes account, organization, mailbox, version, reference and protocol; changing only one field is not a documented rotation procedure ([binding](../../apps/server/lib/elevateo/mail_credentials/binding.rb)).
 
-| Secret | Where | Cadence | Trigger-based |
-| --- | --- | --- | --- |
-| PostgreSQL role passwords (migrator, API, worker, gateway) | `ops/supabase/stack.sh <stack> init`, `ops/db/bootstrap*.sql` | Yearly | Any operator departure or device loss |
-| Supabase Auth JWT secret and service keys | stack `.env.<stack>` | Yearly | Compromise suspected (invalidates all sessions) |
-| Mailbox SMTP and IMAP credentials | `credential_version` bump plus re-enrolment | When Google requires it | Device loss, mailbox owner change |
-| Resend API key and webhook signing secret | Resend dashboard, stack env | Yearly | Any leak |
-| Hunter, AnymailFinder keys | Provider dashboards | Yearly | Any leak |
-| SSH keys for fleet-02 and production | `authorized_keys`, Hetzner project | Yearly | Operator departure, device loss |
-| Cloudflare API tokens, GitHub tokens | Provider dashboards | Yearly | Any leak |
-| Code-signing certificates (Apple, Azure) | Provider portals | At expiry | Device loss |
+## Credentials and provider incidents
 
-Each rotation is recorded in the incident folder with date, operator and what was restarted.
+Inventory the credentials actually exposed using [credentials-last](../credentials-last.md). Coordinate revocation/replacement with each account administrator. Changing database passwords in the environment does not rotate existing SQL role passwords. The historical `stack.sh init` refuses existing credentials and is not a rotation command. Preserve access for the second operator before rotating shared keys.
 
-## Data-subject requests (access and erasure)
+For transport abuse warnings, keep sending held, preserve provider evidence, review suppressions and consent, and ask Callum to approve any resumption. Resend is optional; no Gmail, Hunter or AnymailFinder account is implied by the current production assembly. Do not reroute a rejected queue to evade a provider restriction. Treat `unknown` sends as unresolved until reconciliation proves the outcome.
 
-Until the erasure endpoint (backend task B7) exists, the operator procedure is:
+## Recovery and follow-up
 
-1. Verify the requester controls the address (reply to it).
-2. In a read-only session, find the lead rows by email and export the fields held (`app` lead, consent and suppression records) for an access request.
-3. For erasure: record consent withdrawal and suppression first (`POST /v2/outreach/leads/:id/withdraw-consent`, `.../suppress`), then delete personal fields from the lead row in a migrator session inside one transaction, keeping only the hashed suppression entry so the address is never contacted again, and write an `audit_events` row describing the erasure.
-4. Reply within 30 days with what was removed and what is retained (suppression hash, legal-hold items).
+Use [disaster recovery](disaster-recovery.md) for an isolated restore. No automatic production cutover or data rollback is authorized. Data access/erasure requests need a verified requester and a reviewed retention/legal process; the repository does not establish that a manual deletion of lead columns preserves all required references and suppression history.
 
-## Postmortem template
-
-Write within five working days of SEV1 or SEV2 resolution; blameless; stored under `docs/operations/postmortems/YYYY-MM-DD-<slug>.md`.
-
-```
-# <Title>
-Date, duration, severity, author
-## Summary (three sentences)
-## Impact (users, sends, data)
-## Timeline (UTC, from first signal to resolution)
-## Root cause
-## What went well / what went badly
-## Actions (owner, due date, link to issue)
-```
+After resolution, record impact, UTC timeline, cause, evidence, containment, recovery and follow-up owners. Jeison and Tanzeel propose the fixes and tests; Callum decides which updates proceed and signs off on the result.

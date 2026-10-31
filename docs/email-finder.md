@@ -54,22 +54,26 @@ the network call. Capacity-limited jobs wait for their next persisted retry time
 shows worker activity, SMTP availability and reason, EHLO hostname, remaining probes
 and any global halt. No Redis, external scheduler or paid service is required.
 
-## Hetzner setup
+## Outbound network setup
 
-Set `ELEVATEO_FINDER_PUBLIC_IP` in the existing worker environment file to the server's
+TO CONFIRM: Jeison and Tanzeel must choose a finder egress IP separate from Mox's mail
+IP and show Callum the routing and isolation evidence before live probes or DNS changes.
+The existing Compose worker shares the application network; setting an environment
+variable does not configure SNAT, bind an interface or provide a separate public IP.
+Set `ELEVATEO_FINDER_PUBLIC_IP` in the worker environment file to its actual approved
 public outbound IP. The worker obtains the EHLO hostname from that IP's PTR record,
 logs the hostname, and tests a TCP connection to an MX on port 25 at startup. A failure
 is recorded in health with its reason; the rest of the feature continues. Restart the
 worker after fixing network/PTR configuration to repeat the startup check.
 
-Hetzner Cloud blocks outgoing ports 25 and 465 by default; eligible accounts can request
-unblocking. Dedicated Robot servers are not subject to that Cloud restriction. See
+The repository includes Hetzner-specific port-25 and reverse-DNS setup references;
+the company provider and account eligibility still need confirmation. Check the current provider policy in
 [Hetzner's server FAQ](https://docs.hetzner.com/cloud/servers/faq/).
 In the Hetzner Cloud Console, open the server's Networking settings and edit its reverse
 DNS entry to your chosen hostname. Configure its forward DNS consistently before use;
 the worker uses the PTR value, rather than an independently configured EHLO name.
 See [Hetzner's reverse DNS instructions](https://docs.hetzner.com/cloud/servers/cloud-server-rdns/).
-This change makes no DNS edits, unblocking requests, live probes or deployment.
+These instructions do not authorize DNS edits, unblocking requests, live probes or deployment.
 
 ## Privacy
 
@@ -81,9 +85,16 @@ rules and honour objections through the suppression list. See the
 
 ## Local verification
 
-From this worktree run `powershell -File ops/tests/email-finder/check.ps1` for the local
-Docker Desktop verification pass. It uses an isolated RAM-backed PostgreSQL fixture,
-fake SMTP and recorded HTML; tests make no live discovery or SMTP calls. Backend tests,
-Steep, RuboCop, contracts, browser lint/types/unit tests, Playwright and deployment config
-parsing run in containers. Evidence is written under ignored `.local-jobs/`. The harness
-removes its containers and tagged images without deleting persistent volumes.
+The intended harness is `powershell -File ops/tests/email-finder/check.ps1`, using
+`DOCKER_CONTEXT=desktop-linux`. It runs Docker fixtures rather than live discovery or
+SMTP. It also copies generated `api-v2.d.ts` back into the checkout, so use a disposable
+checkout and review the resulting diff.
+
+The current harness is not a verified all-green release command. Its deployment check
+still calls `sh /production/deploy.sh config --quiet` with legacy environment inputs;
+`ops/production/deployment.py` accepts only no arguments or `--dry-run` and validates
+the current production environment. Reconcile the harness before relying on that stage.
+The [finder receipt](completion/email-finder-20261029.md) records the passing finder
+coverage and unrelated browser/contract failures; it does not prove the merged tree or
+live PTR/port-25 behavior. See the [handoff](handoff/README.md) for the verified command
+inventory and approval gates. No tests or live probes were rerun for this documentation audit.

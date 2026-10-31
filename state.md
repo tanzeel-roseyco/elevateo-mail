@@ -1,6 +1,13 @@
 # Project state
 
-Updated 2026-10-30. Earlier entries are preserved verbatim in [docs/history/logs/state-log.md](docs/history/logs/state-log.md).
+Updated 2026-11-01. Earlier entries are preserved verbatim in [docs/history/logs/state-log.md](docs/history/logs/state-log.md).
+
+Documentation-only handoff: [Jeison guide](docs/handoff/README.md), [mail-server development](docs/handoff/mail-server-development.md)
+and [per-document audit](docs/completion/handoff-20261101/audit.md). No application suites or infrastructure actions ran.
+Tanzeel did the bulk of development; Jeison implements company setup; both maintain it. Callum decides updates,
+reviews and approves. The guide records fresh-host enrollment, Mox activation/update wiring, isolated full-production
+restore configuration, finder routing, native exchange and client release blockers. Other worktrees retain uncommitted
+Windows work (`feature/final-readiness`); schema-integrity and modular-boundary branches remain in progress.
 
 ## Summary
 
@@ -28,7 +35,7 @@ been built or tested yet.
 | Contracts | 50 Node + 19 Ruby tests | same |
 | MCP / operations / native bridge | 11 / 62 tests; 8 Rust + 15 Python tests | same |
 | Restore and deployment | Encrypted six-volume restore drill; deploy dry run accepts valid and rejects missing configuration | same |
-| Email finder (on `feature/email-finder`) | 53 backend tests, 12 browser cases, 1,131 web unit tests, build, `deploy.sh config` | [finder receipt](docs/completion/email-finder-20261029.md) |
+| Email finder (on `feature/email-finder`) | 53 backend tests, 12 browser cases, 1,131 web unit tests and build; recorded deploy-config result is historical, since current deploy accepts only `--dry-run` or no arguments | [finder receipt](docs/completion/email-finder-20261029.md) |
 
 ## Open
 

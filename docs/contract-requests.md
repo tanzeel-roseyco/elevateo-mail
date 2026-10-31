@@ -4,6 +4,26 @@ The clients below were built against these proposed contracts through typed clie
 
 Each request lists the client code that depends on it (search for `AIDEV-NOTE: contract-request`).
 
+## Current source reconciliation
+
+The requests below are client proposals, not descriptions of the available server API.
+`apps/server/config/routes.rb` serves SSO status/start, but the v1 contract still needs
+reconciliation. It has no `/v1/native/sessions` exchange, refresh or revocation routes.
+
+The implemented connector API uses `/v2/connector-grants` and
+`POST /v2/connector-grants/:grant_id/revoke`, with one mailbox per grant and
+`search`/`read`/`draft` scopes (`contracts/v2/completion.openapi.json`). Its 24-hour
+lifetime and 100-active-grants limit differ from the multi-mailbox proposal below.
+It is not a drop-in implementation of `/v2/me/connector-grants`.
+
+The proposed bounce and organization suppression routes below are absent from
+`apps/server/config/routes.rb` and `apps/server/config/v2_route_registry.rb`.
+Email finder suppression routes are a different feature. The native runtime boundary
+exists in `apps/native/src-tauri/src/agents`, but `host.rs` still identifies assistant
+command registration as pending. Do not treat the proposed UI command/event protocol
+as integrated. Resolve these contracts before enabling the corresponding client ports;
+see the [handoff](handoff/README.md) for release gates.
+
 ## 1. SSO status and start (web, Android shell, Mac shell)
 
 `GET /v1/auth/sso/status` and `GET /v1/auth/sso/start` are used by the web client (`apps/web/src/data/ssoContract.ts`) as confirmed by the 2026-10-23 coordinator, but they are not in `contracts/v1/openapi.json`.

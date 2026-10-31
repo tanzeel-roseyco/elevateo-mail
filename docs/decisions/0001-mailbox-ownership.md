@@ -1,5 +1,7 @@
 # ADR 0001: own the mailbox state, delegate internet email transport
 
+> Historical decision record. Its TypeScript backend, Resend-only transport and lack of SMTP/IMAP describe an earlier design. The current server is Rails and production assembly includes Mox SMTP/IMAP with optional Resend (`apps/server`, `ops/production/compose.yaml`). Retained for decision history; use the [handoff](../handoff/README.md) for current setup.
+
 Date: 2026-10-11. Status: **proposed**, with Resend and self-hosted Supabase already user-selected.
 
 ## Context

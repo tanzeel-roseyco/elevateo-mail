@@ -1,5 +1,7 @@
 # API contracts and failure recovery
 
+> Historical contract proposal. The unimplemented-endpoint statements, route examples and Resend retry proposal below describe an earlier design. Current API definitions are in `contracts/v1`, `contracts/v2` and `apps/server/config/routes.rb`; unresolved client contracts are tracked in [contract requests](contract-requests.md). Use the [handoff](handoff/README.md) for current operations. Do not implement clients from this proposed route table.
+
 Status: design specification; none of these endpoints or jobs are implemented. Reconciled with accepted initial ADR 0002 on 2026-10-12.
 
 ## API conventions

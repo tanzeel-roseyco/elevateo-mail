@@ -1,5 +1,7 @@
 # System architecture
 
+> Historical architecture proposal. The component layout, Resend-only transport and statements that implementation has not started below are superseded. Current source uses a Rails server, web and native clients, Mox SMTP/IMAP and an optional Resend adapter. Use the [handoff](handoff/README.md), [backend completion design](backend-completion-design.md), `apps/server/config/routes.rb` and `ops/production/compose.yaml` for the current system. This proposal is not a deployment guide or completion receipt.
+
 Status: **expanded provisional design, not implementation**. The [polyglot proposal](../.planning/POLYGLOT_ARCHITECTURE.md) recommends one Rails domain application with separate API and worker processes from the same codebase. Required independent Fable 5, Opus 5.5 and Fable 5.1 opinions remain pending: all three attempts failed authentication before inference. This document aligns the proposed architecture; it does not claim an accepted final synthesis or a built application.
 
 ## Context: what each system owns

@@ -38,8 +38,9 @@ the full history is in `archive/` branches (see [docs/history](docs/history/READ
                                            └─ Mailbox MCP server ◄── Claude / Codex (search · read · draft)
 ```
 
-Production is one Docker Compose project (`ops/production/compose.yaml`) on the Hetzner host. Details:
-[docs/architecture.md](docs/architecture.md) and [docs/backend-completion-design.md](docs/backend-completion-design.md).
+The production assembly is one Docker Compose project (`ops/production/compose.yaml`); the company deployment
+host and public edge still need approval. Start with the [engineering handoff](docs/handoff/README.md)
+and [backend design](docs/backend-completion-design.md). Earlier architecture documents are historical.
 
 ## Repository layout
 
@@ -84,23 +85,30 @@ All tests run in Docker, never on the host.
 | --- | --- |
 | Web | `docker build -f apps/web/docker/test.Dockerfile -t elevateo-web-check . && docker run --rm elevateo-web-check` from the repository root (contract check, lint, typecheck, unit with coverage, build, bundle budget) |
 | Web browser | `cd apps/web && npm run test:e2e` inside the Playwright container (see `apps/web/playwright.config.ts`) |
-| Backend | `python ops/tests/completion/local_backend.py --execute-final-gate --mox-image <id>` (full gate: tests, Steep, RuboCop, migrations). Image build steps are in [the backend receipt](docs/completion/backend-20261030-receipt.md) |
-| Mail chain | `python ops/tests/completion/local_app_chain.py` and `ops/tests/completion/mox_protocol.py` (real SMTP/IMAP) |
-| Restore drill | `python ops/tests/completion/local_restore.py` |
-| Email finder | `powershell -File ops/tests/email-finder/check.ps1` |
+| Backend | Follow [verified command definitions](docs/handoff/verification.md#backend-database-protocol-and-recovery), including both server and Mox image arguments |
+| Mail chain | Included in `local_backend.py`; `local_app_chain.py` is an imported helper. Standalone protocol command is in the handoff |
+| Restore drill | `local_restore.py` requires explicit gate, images and revision; full command is in the handoff |
+| Email finder | Use the backend/web/browser gates in the handoff. `ops/tests/email-finder/check.ps1` has a stale `deploy.sh config --quiet` call and needs repair before reuse |
 | Android | `apps/android/build/build-apk.sh`, then `apps/android/build/emulator-acceptance.sh` (needs `/dev/kvm`) |
 
 ## Deployment
 
-Deployment is one command once credentials exist: `sh ops/production/deploy.sh --dry-run`, then without the flag.
-It reads the environment only and refuses to start while any required value is missing.
+Held bootstrap starts with `sh ops/production/deploy.sh --dry-run`, then without the flag only after Callum's approval.
+It reads the environment only and refuses to start while any required value is missing. It does not supply public
+web hosting, production Mox activation or a safe post-activation update procedure. Follow the [ordered setup](docs/handoff/production.md).
 Fill values in the order of [docs/credentials-last.md](docs/credentials-last.md). Every variable is listed in
 [.env.production.example](.env.production.example). Never commit a populated copy.
 
-Before deploying, give the email-finder worker (`ELEVATEO_FINDER_PUBLIC_IP`) a different public IP from Mox.
-Its port-25 checks can get an IP blocklisted.
+Before enabling probes, give the finder a different public IP from Mox and verify actual routing/SNAT.
+`ELEVATEO_FINDER_PUBLIC_IP` does not configure that routing. Its port-25 checks can get an IP blocklisted.
 
-## Current state (2026-10-30)
+## Current state (2026-11-01)
+
+The [Jeison handoff](docs/handoff/README.md) and [documentation audit](docs/completion/handoff-20261101/audit.md)
+record setup procedures, approval gates and unresolved rollout blockers. Tanzeel built most of the product;
+Jeison implements company setup, Jeison and Tanzeel maintain it, and Callum decides updates and approves releases.
+This documentation change did not rerun application suites or activate infrastructure. Uncommitted Windows work
+on `feature/final-readiness` and schema-integrity/modular-boundary branches still need release reconciliation.
 
 | Area | State |
 | --- | --- |

@@ -1,5 +1,7 @@
 # What the finished Elevateo Mail looks like
 
+> Historical product target and acceptance criteria. The unbuilt-product and selected-Resend statements below are superseded by the source in `apps/` and the Mox-based production assembly in `ops/production/compose.yaml`. The current client renders message content as text, not the proposed sanitized HTML. These goals are not evidence of completion. Use the [handoff](handoff/README.md) for current verified state and the [product guide](product/README.md) for user documentation.
+
 **Elevateo Mail becomes the company's everyday email workspace: one place where approximately ten people can receive, organize, discuss and respond to company correspondence, with clear ownership, controlled AI assistance and a recovery process the company understands.**
 
 This is the target outcome, not a description of working software today. The source collection and design documents exist; the integrated application remains to be built. Resend and self-hosted Supabase are selected by the user. The expanded [polyglot architecture](../.planning/POLYGLOT_ARCHITECTURE.md), [agent workflow](../.planning/AGENT_ORCHESTRATION.md) and [client/CLI plan](../.planning/CLIENTS_AND_CLI_CONNECTORS.md) are proposals pending research acceptance and named independent opinions. The current planning workload is nine addresses across one or two domains; the real addresses, aliases and existing provider still need verification.

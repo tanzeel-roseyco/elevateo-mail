@@ -1,3 +1,5 @@
+> **Historical coordination roster.** These named research lanes and NOT_RUN checkpoints describe the earlier mailserver investigation. They do not assign current ownership or describe current readiness. Tanzeel did the bulk of development; Jeison and Tanzeel maintain the product together; Callum decides updates, reviews and approves them. See the [handoff](handoff/README.md) and [mail development account](handoff/mail-server-development.md).
+
 # Secondary mailserver R&D reference
 
 Factual roster at coordination d4bfa21; separate ownership, no app implementation imported.

@@ -1,3 +1,5 @@
+> **Historical implementation and evidence snapshot.** This page records source-specific October research and test gates, not current deployment instructions or completion status. Later work supersedes its open-item lists, Resend-first decisions and fleet execution instructions. Use the [current handoff](../handoff/README.md), [mail development account](../handoff/mail-server-development.md) and [backend receipt](../completion/backend-20261030-receipt.md). Do not execute historical fleet commands; fleet-01 is off limits.
+
 # Held private attachment scanner
 
 Run `bundle exec ruby bin/attachment-scanner --once` or `--run` in the private test profile. It requires worker DB role, outbound hold, `ELEVATEO_SCAN_PROFILE=private-storage-test-v1`, and both `ELEVATEO_SCAN_STORAGE_TOKEN_PATH` and `ELEVATEO_SCAN_STORAGE_BUCKET`. The token is read once through the existing private-file boundary. Do not use live credentials; public endpoints and production supervision are not implemented by this change.

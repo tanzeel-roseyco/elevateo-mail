@@ -2,8 +2,10 @@
 
 This operator utility does nothing to a database by default. It is not a test runner,
 deployment controller, signup endpoint, restore tool or authority to release outbound mail.
-Keep `--apply` disabled until root accepts the exact isolated restore and independent reviews.
+Keep `--apply` disabled until Callum accepts the exact isolated restore and independent reviews. Historical references to root below mean the approving coordinator, not automatic authorization.
 Do not run `fleet-test.sh` on a production network or against a live DSN.
+
+The gate target string remains `elevateo-mail-live/postgres` in `admission.py`; it is not the current Compose project name and does not identify a live host. Jeison must reconcile that legacy operator convention with the reviewed target before any apply. Fleet harnesses below are historical evidence, not current execution instructions. Use [the handoff](../../../docs/handoff/README.md).
 
 ## Runtime and commands
 
@@ -20,7 +22,7 @@ No database ports or public network access are needed.
 
 ```sh
 python3 ops/production/initialize/initialize.py schema
-# Tenant plan additionally requires --organization-id, --user-id, --name, --role, --receipt.
+# Tenant plan additionally requires --organization-id, --user-id, --name, --role, --receipt and --subject.
 # For either phase, append --apply --gate /absolute/protected/accepted-gate.json only after acceptance.
 ```
 
@@ -29,7 +31,7 @@ or opening a connection. Tenant plans validate canonical nonzero UUIDs, a trimme
 1..200-character name, an existing role enum and a nonsecret 16..200-character receipt ref.
 Organization/user UUIDs and name are operator-supplied reviewed values, never email lookups.
 The Auth UUID must already exist, be email-confirmed, unbanned and undeleted, and have a
-Google identity. The initializer never creates Auth users, identities or passwords.
+verified `custom:authentik` identity whose subject matches the approved UUID and whose email matches the Auth user and the company domain enforced by `tenant.sql` (`elevateoco.com`). The initializer never creates Auth users, identities or passwords.
 
 Protected environment: `PGPASSWORD` is the existing Supabase administrator password.
 Schema also requires `MIGRATOR_DB_PASSWORD`, `API_DB_PASSWORD`, `WORKER_DB_PASSWORD`,
@@ -63,7 +65,7 @@ It constructs an allowlisted environment and discards caller PGOPTIONS/RUBYOPT a
    `restore_instructions_verified`. Each of `database_backup`, `globals_backup`,
    `storage_manifest`, `restore_report` is an object with absolute `path` and matching
    lowercase hex `sha256`. `tenant` is null for schema; for tenant it is an object with
-   exact `organization_id`, `user_id`, `name`, `role`, `receipt` strings.
+   exact `organization_id`, `user_id`, `name`, `role`, `receipt`, `subject` strings.
 6. Apply only the requested phase. Root compares pre/post protected data and grants before
    restarting anything. A successful exit is initialization evidence, not runtime or UI acceptance.
 

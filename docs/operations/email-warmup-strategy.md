@@ -1,3 +1,5 @@
+> **Historical strategy proposal, not an implemented or approved sending policy.** Vendor claims and suggested volume ramps below have not been revalidated in this documentation audit. They do not override held outbound, configured mailbox/user limits, consent requirements or Callum's approval gates. The current defaults are 30 recipients per mailbox and 300 per user per UTC day; increasing them needs review and approval. See the [handoff](../handoff/README.md), [production environment template](../../.env.production.example) and [mail development account](../handoff/mail-server-development.md).
+
 # Email warm-up strategy (Resend + Instantly)
 
 Status: proposal, 2026-10-21. Sources are Resend's and Instantly's own documentation, cited at the
