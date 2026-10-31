@@ -56,7 +56,7 @@ function FixtureNotice() {
   const ref = useBottomNotice('--fixture-inset')
   return (
     // AIDEV-NOTE: The lowest notice owns safe-area padding; the simulation strip owns it when present.
-    <div ref={ref} role="note" className="pointer-events-none fixed inset-x-0 bottom-[var(--simulation-inset,0px)] z-30 border-t border-zinc-200 bg-zinc-50 px-3 pt-2 pb-[max(0.5rem,calc(env(safe-area-inset-bottom,0px)-var(--simulation-inset,0px)))] text-center text-xs text-zinc-600 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
+    <div ref={ref} role="note" className="pointer-events-none fixed inset-x-0 bottom-[var(--simulation-inset,0px)] z-30 border-t border-line bg-surface-2 px-3 pt-2 pb-[max(0.5rem,calc(env(safe-area-inset-bottom,0px)-var(--simulation-inset,0px)))] text-center text-xs text-muted   ">
       Development fixtures — synthetic data only. Nothing is sent, received or saved.
     </div>
   )

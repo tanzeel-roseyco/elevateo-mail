@@ -57,7 +57,7 @@ export function FinderForms({ kind, busy, submit, fail }: {
     </Card>
     {kind !== 'company' && <Card>
       <h2 className="mb-2 text-base font-medium">Bulk CSV lookup</h2>
-      <p className="mb-5 text-sm text-zinc-500">Up to 5,000 rows and 2 MB. Jobs resume automatically after a worker restart.</p>
+      <p className="mb-5 text-sm text-muted">Up to 5,000 rows and 2 MB. Jobs resume automatically after a worker restart.</p>
       <form onSubmit={(event) => { void bulk(event) }} className="space-y-5">
         <Field id="finder-csv" label="CSV file" hint={`Headers: ${kind === 'verify' ? 'email' : kind === 'person' ? 'name,domain (or company)' : 'role,domain (or company)'}. UTF-8 with a header row.`}>
           <TextInput id="finder-csv" type="file" accept=".csv,text/csv" required aria-describedby="finder-csv-hint"

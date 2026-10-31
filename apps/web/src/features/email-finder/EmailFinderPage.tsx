@@ -107,19 +107,19 @@ function FinderWorkspace({ gateway }: { gateway: EmailFinderGateway }) {
     else if (result.kind === 'failed') setError('Suppression could not be removed. Try again.')
   }
 
-  return <div className="space-y-6 text-zinc-800 dark:text-zinc-100">
+  return <div className="space-y-6 text-fg ">
     <nav aria-label="Email finder tools" className="flex flex-wrap gap-2">
       {[...Object.entries(FINDER_LABELS), ['jobs', 'Bulk jobs'], ['suppressions', 'Suppressions']].map(([value, label]) =>
         <Link key={value} to={`?mode=${value}`} aria-current={mode === value ? 'page' : undefined}
-          className={`rounded-lg border px-3 py-2 text-sm ${mode === value ? 'border-zinc-400 bg-zinc-100 dark:bg-zinc-800' : 'border-zinc-200 dark:border-zinc-700'}`}>{label}</Link>)}
+          className={`rounded-lg border px-3 py-2 text-sm ${mode === value ? 'border-line border-b-2 bg-surface-2 font-semibold' : 'border-line '}`}>{label}</Link>)}
     </nav>
     {(error || loadError) && <Callout variant="danger" role="alert" actions={<Button onClick={() => { setError(null); refresh((value) => value + 1) }}>Refresh</Button>}>{error ?? loadError}</Callout>}
     <FinderHealthPanel health={health} />
     {mode === 'suppressions' ? <Card className="space-y-6">
       <h2 className="font-medium">Suppression list</h2>
-      <p className="text-sm text-zinc-500">Opt-outs apply to every lookup in this workspace, including cached results and bulk jobs. A person entry matches their normalized full name.</p>
+      <p className="text-sm text-muted">Opt-outs apply to every lookup in this workspace, including cached results and bulk jobs. A person entry matches their normalized full name.</p>
       <SuppressionForm busy={busy} add={(entryKind, value) => { void suppress(entryKind, value) }} />
-      {suppressions === null ? <p role="status">Loading suppressions…</p> : suppressions.length === 0 ? <p className="text-sm">No suppressions recorded.</p> : <ul className="divide-y divide-zinc-200">
+      {suppressions === null ? <p role="status">Loading suppressions…</p> : suppressions.length === 0 ? <p className="text-sm">No suppressions recorded.</p> : <ul className="divide-y divide-line">
         {suppressions.map((entry) => <li key={entry.id} className="flex flex-wrap items-center justify-between gap-3 py-3 text-sm">
           <span className="wrap-anywhere">{entry.kind}: {entry.value}</span>
           <Button disabled={busy} onClick={() => { void unsuppress(entry.id) }} aria-label={`Remove suppression for ${entry.value}`}>Remove</Button>
@@ -129,6 +129,6 @@ function FinderWorkspace({ gateway }: { gateway: EmailFinderGateway }) {
       {jobId !== null && (selected?.id === jobId ? <FinderJobView key={selected.id} job={selected} busy={busy} download={() => { void download() }} /> : <p role="status">Loading selected job…</p>)}
       {jobs === null ? <p role="status">Loading jobs…</p> : <FinderJobList jobs={jobs} />}
     </> : <FinderForms key={kind} kind={kind} busy={busy} submit={submit} fail={setError} />}
-    <p className="text-xs text-zinc-500">Verification describes observed mail-server responses, not permission to contact someone. Honour opt-outs and your lawful basis for processing business contact data.</p>
+    <p className="text-xs text-muted">Verification describes observed mail-server responses, not permission to contact someone. Honour opt-outs and your lawful basis for processing business contact data.</p>
   </div>
 }

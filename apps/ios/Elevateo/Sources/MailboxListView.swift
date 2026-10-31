@@ -32,7 +32,7 @@ struct MailboxListView: View {
                                 if let address = mailbox.displayAddress {
                                     Text(address)
                                         .font(.subheadline)
-                                        .foregroundStyle(.secondary)
+                                        .foregroundStyle(CorporateTheme.muted)
                                 }
                             }
                             .accessibilityElement(children: .combine)

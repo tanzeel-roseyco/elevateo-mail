@@ -8,11 +8,11 @@ import { CheckCircleIcon, ExclamationTriangleIcon, InformationCircleIcon, XCircl
 export type CalloutVariant = 'accent' | 'neutral' | 'danger' | 'warning' | 'success'
 
 const VARIANTS: Record<CalloutVariant, { panel: string; icon: ReactNode }> = {
-  accent: { panel: 'border-gold-200 bg-gold-50 text-gold-800 dark:border-gold-400/30 dark:bg-gold-400/10 dark:text-gold-100', icon: <InformationCircleIcon className="size-5" /> },
-  neutral: { panel: 'border-zinc-200 bg-zinc-50 text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300', icon: <InformationCircleIcon className="size-5" /> },
-  danger: { panel: 'border-red-200 bg-red-50 text-red-800 dark:border-red-400/30 dark:bg-red-400/10 dark:text-red-100', icon: <XCircleIcon className="size-5" /> },
-  warning: { panel: 'border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-400/30 dark:bg-amber-400/10 dark:text-amber-100', icon: <ExclamationTriangleIcon className="size-5" /> },
-  success: { panel: 'border-green-200 bg-green-50 text-green-800 dark:border-green-400/30 dark:bg-green-400/10 dark:text-green-100', icon: <CheckCircleIcon className="size-5" /> },
+  accent: { panel: 'border-line bg-surface text-fg   ', icon: <InformationCircleIcon className="size-5" /> },
+  neutral: { panel: 'border-line bg-surface-2 text-fg   ', icon: <InformationCircleIcon className="size-5" /> },
+  danger: { panel: 'border-danger bg-danger-soft text-danger   ', icon: <XCircleIcon className="size-5" /> },
+  warning: { panel: 'border-warn bg-warn-soft text-warn   ', icon: <ExclamationTriangleIcon className="size-5" /> },
+  success: { panel: 'border-success bg-success-soft text-success   ', icon: <CheckCircleIcon className="size-5" /> },
 }
 
 interface CalloutProps {

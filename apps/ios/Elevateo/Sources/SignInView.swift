@@ -7,20 +7,21 @@ import ElevateoCore
 
 struct SignInView: View {
     @Environment(AppModel.self) private var model
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var signingIn = false
 
     var body: some View {
         VStack(spacing: 24) {
             if model.offline { OfflineBanner() }
             Spacer()
-            Image(systemName: "envelope.badge.shield.half.filled")
-                .font(.system(size: 56))
+            Image("ElevateoLogo")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 72, height: 72)
                 .accessibilityHidden(true)
             Text("Elevateo Mail")
                 .font(.largeTitle.bold())
             Text("Sign in with your Elevateo account")
-                .foregroundStyle(.secondary)
+                .foregroundStyle(CorporateTheme.muted)
 
             Button {
                 Task { await signIn() }
@@ -33,7 +34,7 @@ struct SignInView: View {
                         .frame(maxWidth: .infinity)
                 }
             }
-            .buttonStyle(.borderedProminent)
+            .buttonStyle(CorporateButtonStyle())
             .disabled(signingIn)
             .padding(.horizontal, 32)
             .accessibilityHint("Opens the Elevateo single sign-on page")
@@ -41,14 +42,13 @@ struct SignInView: View {
             if let notice = model.signInNotice {
                 Text(notice)
                     .font(.footnote)
-                    .foregroundStyle(.red)
+                    .foregroundStyle(CorporateTheme.danger)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal)
                     .accessibilityAddTraits(.updatesFrequently)
             }
             Spacer()
         }
-        .animation(reduceMotion ? nil : .default, value: signingIn)
     }
 
     private func signIn() async {

@@ -18,7 +18,7 @@ export function GetHelpMenu() {
         align="end"
         label="Get Help"
         trigger={
-          <Button ref={helpButton} variant="outline" size="xs" className="pe-4" icon={<QuestionMarkCircleIcon className="size-4" />} iconTrailing={<ChevronDownMiniIcon className="size-4 text-zinc-400" />}>
+          <Button ref={helpButton} variant="outline" size="xs" className="pe-4" icon={<QuestionMarkCircleIcon className="size-4" />} iconTrailing={<ChevronDownMiniIcon className="size-4 text-muted" />}>
             Get Help
           </Button>
         }

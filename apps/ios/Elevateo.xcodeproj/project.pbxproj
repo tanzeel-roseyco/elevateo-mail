@@ -18,6 +18,7 @@
 		E1E70000000000000000B009 /* ThreadDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1E70000000000000000F009 /* ThreadDetailView.swift */; };
 		E1E70000000000000000B00A /* ReplyComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1E70000000000000000F00A /* ReplyComposerView.swift */; };
 		E1E70000000000000000B00B /* ElevateoCore in Frameworks */ = {isa = PBXBuildFile; productRef = E1E70000000000000000D001 /* ElevateoCore */; };
+		E1E70000000000000000B00C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E1E70000000000000000F00C; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +34,7 @@
 		E1E70000000000000000F009 /* ThreadDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadDetailView.swift; sourceTree = "<group>"; };
 		E1E70000000000000000F00A /* ReplyComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyComposerView.swift; sourceTree = "<group>"; };
 		E1E70000000000000000F00B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E1E70000000000000000F00C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +79,7 @@
 				E1E70000000000000000F008 /* ThreadListView.swift */,
 				E1E70000000000000000F009 /* ThreadDetailView.swift */,
 				E1E70000000000000000F00A /* ReplyComposerView.swift */,
+				E1E70000000000000000F00C /* Assets.xcassets */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -153,6 +156,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E1E70000000000000000B00C /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

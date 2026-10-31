@@ -29,10 +29,10 @@ export function UserMenu({ session, compact = false, side = 'top', className, la
       label="Account"
       className={cx(compact ? undefined : 'w-full', className)}
       trigger={
-        <button type="button" aria-label={label} className="group flex w-full items-center rounded-lg p-1 hover:bg-zinc-800/5 dark:hover:bg-white/10">
+        <button type="button" aria-label={label} className="group flex w-full items-center rounded-lg p-1 hover:bg-surface-2 ">
           <Avatar name={name} />
-          {!compact && <span className="mx-2 min-w-0 truncate text-sm font-medium text-zinc-500 group-hover:text-zinc-800 dark:text-zinc-400 dark:group-hover:text-white">{name}</span>}
-          <span className="ms-auto flex size-8 shrink-0 items-center justify-center text-zinc-400">
+          {!compact && <span className="mx-2 min-w-0 truncate text-sm font-medium text-muted group-hover:text-fg  ">{name}</span>}
+          <span className="ms-auto flex size-8 shrink-0 items-center justify-center text-muted">
             <ChevronUpDownMiniIcon className="size-4" />
           </span>
         </button>

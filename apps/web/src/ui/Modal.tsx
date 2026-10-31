@@ -48,22 +48,22 @@ export function Modal({ open, onOpenChange, title, description, trigger, returnF
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       {trigger && <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>}
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 z-30 bg-zinc-800/15 backdrop-blur-xs dark:bg-black/40" />
+        <Dialog.Overlay className="fixed inset-0 z-30 bg-overlay " />
         <Dialog.Content
           onCloseAutoFocus={restoreOpener}
           {...(description ? {} : { 'aria-describedby': undefined })}
           className={cx(
-            'fixed start-1/2 top-1/2 z-30 max-h-[calc(100dvh-2rem)] w-[calc(100vw-2rem)] -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-xl bg-white p-6 shadow-lg dark:bg-zinc-800',
+            'fixed start-1/2 top-1/2 z-30 max-h-[calc(100dvh-2rem)] w-[calc(100vw-2rem)] -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-xl bg-surface p-6 shadow-lg ',
             size === 'lg' ? 'max-w-3xl' : 'max-w-[500px]',
           )}
         >
-          <Dialog.Title className="pe-10 text-base font-medium text-zinc-800 dark:text-white">{title}</Dialog.Title>
+          <Dialog.Title className="pe-10 text-base font-medium text-fg ">{title}</Dialog.Title>
           {description ? (
-            <Dialog.Description className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">{description}</Dialog.Description>
+            <Dialog.Description className="mt-1 text-sm text-muted ">{description}</Dialog.Description>
           ) : null}
-          <div className="mb-2 mt-1 h-px bg-zinc-800/5 dark:bg-white/10" />
+          <div className="mb-2 mt-1 h-px bg-surface-2 " />
           <Dialog.Close asChild>
-            <IconButton label="Close" className="absolute end-0 top-0 me-4 mt-4 text-zinc-500">
+            <IconButton label="Close" className="absolute end-0 top-0 me-4 mt-4 text-muted">
               <XMarkIcon className="size-5" />
             </IconButton>
           </Dialog.Close>

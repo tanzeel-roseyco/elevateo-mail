@@ -246,11 +246,11 @@ function UnifiedList({ view, mailboxes }: { view: InboxView; mailboxes: readonly
   return (
     <section aria-label="Conversations" className="flex min-h-0 flex-1 flex-col">
       <h2 className="sr-only">Conversations across your mailboxes</h2>
-      <div className="overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-xs dark:border-zinc-700 dark:bg-zinc-800">
-        <div className="flex min-h-12 flex-wrap items-center gap-x-1 gap-y-1 border-b border-zinc-200 px-2 py-1 dark:border-zinc-700">
+      <div className="overflow-hidden rounded-xl border border-line bg-surface shadow-xs  ">
+        <div className="flex min-h-12 flex-wrap items-center gap-x-1 gap-y-1 border-b border-line px-2 py-1 ">
           <IconButton label="Refresh" onClick={() => load(undefined, false)} disabled={state.status === 'loading'} className={cx(TOOL, 'ms-1')}><ArrowPathIcon className="size-5" /></IconButton>
-          <p className="ms-2 text-sm text-zinc-500">
-            Across <span className="font-medium text-zinc-800 dark:text-white">{mailboxes.length}</span> mailboxes
+          <p className="ms-2 text-sm text-muted">
+            Across <span className="font-medium text-fg ">{mailboxes.length}</span> mailboxes
           </p>
           <div className="flex-1" />
           <Select aria-label="Folder" value={view} onChange={(event) => navigate(unifiedPath(parseView(event.target.value)))} className="md:hidden">
@@ -266,7 +266,7 @@ function UnifiedList({ view, mailboxes }: { view: InboxView; mailboxes: readonly
                 aria-current={view === value ? 'page' : undefined}
                 className={cx(
                   'inline-flex h-8 items-center gap-1 rounded-lg px-2.5 text-sm font-medium',
-                  view === value ? 'border-b-2 border-(--color-accent) text-zinc-800 dark:text-white' : 'text-zinc-500 hover:text-zinc-800 dark:hover:text-white',
+                  view === value ? 'border-b-2 border-(--color-accent) text-fg ' : 'text-muted hover:text-fg ',
                 )}
               >
                 {value === 'starred' && <StarIcon className="size-4" aria-hidden />}
@@ -274,7 +274,7 @@ function UnifiedList({ view, mailboxes }: { view: InboxView; mailboxes: readonly
               </Link>
             ))}
           </nav>
-          {ready && visible.length > 0 && <span className="ms-2 text-sm tabular-nums text-zinc-500">{rangeLabel}</span>}
+          {ready && visible.length > 0 && <span className="ms-2 text-sm tabular-nums text-muted">{rangeLabel}</span>}
         </div>
 
         {writes.error !== null && (
@@ -310,15 +310,15 @@ function UnifiedList({ view, mailboxes }: { view: InboxView; mailboxes: readonly
           </ul>
         )}
         {more && (
-          <div className="flex flex-wrap justify-center gap-2 border-t border-zinc-200 p-3 dark:border-zinc-700">
-            {state.pageError !== null && <p role="alert" className="w-full text-center text-sm text-red-500">{state.pageError}</p>}
+          <div className="flex flex-wrap justify-center gap-2 border-t border-line p-3 ">
+            {state.pageError !== null && <p role="alert" className="w-full text-center text-sm text-danger">{state.pageError}</p>}
             <Button size="sm" disabled={state.loadingMore} onClick={() => load(state.nextCursor ?? undefined, true)}>
               {state.loadingMore ? 'Loading…' : 'Show more conversations'}
             </Button>
           </div>
         )}
       </div>
-      <p className="mt-3 text-xs text-zinc-400 max-md:hidden">
+      <p className="mt-3 text-xs text-muted max-md:hidden">
         Keyboard: <kbd>j</kbd>/<kbd>k</kbd> move · <kbd>o</kbd> open · <kbd>s</kbd> star · <kbd>e</kbd> archive · <kbd>#</kbd> delete · <kbd>!</kbd> spam · <kbd>Shift</kbd>+<kbd>U</kbd> unread · <kbd>/</kbd> search
       </p>
     </section>

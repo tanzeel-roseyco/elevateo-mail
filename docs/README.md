@@ -7,6 +7,8 @@ describe earlier stages. They are kept for context and do not describe the curre
 
 | Document | What it covers |
 | --- | --- |
+| [design-system.md](design-system.md) | Light corporate palette, contrast and component rules |
+| [product/appearance.md](product/appearance.md) | Current product appearance and unchanged workflows |
 | [end-goal.md](end-goal.md) | The finished product, daily workflow and completion criteria |
 | [goals-and-traceability.md](goals-and-traceability.md) | Requirements traced to implementation |
 | [decisions/](decisions/) | Architecture decision records (mailbox ownership, local architecture) |

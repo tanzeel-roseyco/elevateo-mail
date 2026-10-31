@@ -128,24 +128,24 @@ export function NotesPanel({ threadId, mailboxId }: { threadId: string; mailboxI
   const frozen = compose.kind === 'uncertain'
 
   return (
-    <section aria-labelledby={`${ids.body}-heading`} className="rounded-xl border border-zinc-200 bg-white p-4 shadow-xs dark:border-zinc-700 dark:bg-zinc-800">
-      <h2 id={`${ids.body}-heading`} className="mb-2 text-sm font-medium text-zinc-800 dark:text-white">Internal notes</h2>
-      <p className="mb-2 text-xs text-zinc-500">Plain text only, visible to people who can read this mailbox. Notes cannot be edited or deleted.</p>
-      {list.status === 'loading' && <p role="status" className="text-sm text-zinc-500">Loading notes…</p>}
-      {list.status === 'unavailable' && <p className="text-sm text-zinc-500">Notes are unavailable for this conversation.</p>}
+    <section aria-labelledby={`${ids.body}-heading`} className="rounded-xl border border-line bg-surface p-4 shadow-xs  ">
+      <h2 id={`${ids.body}-heading`} className="mb-2 text-sm font-medium text-fg ">Internal notes</h2>
+      <p className="mb-2 text-xs text-muted">Plain text only, visible to people who can read this mailbox. Notes cannot be edited or deleted.</p>
+      {list.status === 'loading' && <p role="status" className="text-sm text-muted">Loading notes…</p>}
+      {list.status === 'unavailable' && <p className="text-sm text-muted">Notes are unavailable for this conversation.</p>}
       {list.status === 'error' && (
-        <div role="alert" className="flex flex-wrap items-center gap-2 text-sm text-red-500">
+        <div role="alert" className="flex flex-wrap items-center gap-2 text-sm text-danger">
           <span>{list.failure.message}</span>
           <Button size="sm" onClick={() => void load()}>Try again</Button>
         </div>
       )}
       {list.status === 'ready' && (
         <>
-          {list.notes.length === 0 && <p className="text-sm text-zinc-500">No notes yet.</p>}
+          {list.notes.length === 0 && <p className="text-sm text-muted">No notes yet.</p>}
           <ol className="flex flex-col gap-2">
             {list.notes.map((note) => (
-              <li key={note.id} className="rounded-lg border border-zinc-200 bg-zinc-50 p-2">
-                <p className="mb-1 text-xs text-zinc-500">
+              <li key={note.id} className="rounded-lg border border-line bg-surface-2 p-2">
+                <p className="mb-1 text-xs text-muted">
                   {note.author_id === actorId ? 'You' : `User ${note.author_id}`} · {formatDateTime(note.created_at)}
                 </p>
                 {/* Escaped plaintext only; nothing is parsed or fetched. */}
@@ -153,7 +153,7 @@ export function NotesPanel({ threadId, mailboxId }: { threadId: string; mailboxI
               </li>
             ))}
           </ol>
-          {list.more && <p className="mt-1 text-xs text-zinc-500">More notes exist than are shown here.</p>}
+          {list.more && <p className="mt-1 text-xs text-muted">More notes exist than are shown here.</p>}
         </>
       )}
       {proof && list.status !== 'unavailable' && (
@@ -178,9 +178,9 @@ export function NotesPanel({ threadId, mailboxId }: { threadId: string; mailboxI
               rows={3}
             />
           </Field>
-          {compose.kind === 'failed' && <p role="alert" className="text-xs text-red-500">{compose.failure.message}</p>}
+          {compose.kind === 'failed' && <p role="alert" className="text-xs text-danger">{compose.failure.message}</p>}
           {compose.kind === 'uncertain' && (
-            <div role="alert" className="flex flex-col gap-2 rounded-lg border border-amber-300 bg-amber-50 p-2 text-xs">
+            <div role="alert" className="flex flex-col gap-2 rounded-lg border border-warn bg-warn-soft p-2 text-xs">
               <span>{compose.failure.message} Retrying the same note is safe: an identical retry is recognized and not duplicated.</span>
               <div className="flex flex-wrap gap-2">
                 <Button size="sm" variant="primary" onClick={() => void send(compose.attempt)}>Retry the same note</Button>

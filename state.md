@@ -1,8 +1,10 @@
 # Project state
 
-Updated 2026-10-30. Earlier entries are preserved verbatim in [docs/history/logs/state-log.md](docs/history/logs/state-log.md).
+Updated 2026-11-01. Earlier entries are preserved verbatim in [docs/history/logs/state-log.md](docs/history/logs/state-log.md).
 
 ## Summary
+
+The white/gold branch implements the [single light design system](docs/design-system.md) across all client themes. Current branch verification and remaining platform limits are recorded in the [design receipt](docs/completion/design-system-20261101/README.md). The historical integration status below describes `main`, not this branch.
 
 All Elevateo Mail work is consolidated in this repository. `main` contains the integrated product: backend,
 self-hosted mail server, email finder, and web, macOS, Windows, Android and iOS clients. Nothing is deployed.
@@ -36,7 +38,7 @@ been built or tested yet.
 ## Open
 
 1. **Final Docker pass on merged `main`** (web gate done; the rest below is outstanding): regenerate `apps/native/src-tauri/Cargo.lock`, then web lint, typecheck,
-   unit tests, build, Playwright, and screenshot visual QA at 1440 and 390 px in light and dark. Then the Windows and Mac
+   unit tests, build, Playwright, and screenshot visual QA at 1440 and 390 px in the single light theme, including an OS dark preference. Then the Windows and Mac
    packaging dry runs, the Android APK build and emulator acceptance, and the full backend gate.
 2. **Review packets P24–P34** (rest of Connections, Suppressions, all of Windows) never ran. Run them and fix the findings.
 3. **Repository-wide failures noted by the email-finder run:** 33 browser failures elsewhere in the app and 2 contract

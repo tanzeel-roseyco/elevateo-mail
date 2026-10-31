@@ -64,14 +64,14 @@ export function ToastProvider({ children }: { children: ReactNode }) {
           <div
             key={t.id}
             className={cx(
-              'pointer-events-auto flex items-start gap-2 rounded-lg border bg-white p-3 text-sm shadow-lg dark:bg-zinc-800',
-              t.variant === 'danger' ? 'border-red-200 dark:border-red-400/40' : 'border-zinc-200 dark:border-zinc-600',
+              'pointer-events-auto flex items-start gap-2 rounded-lg border bg-surface p-3 text-sm shadow-lg ',
+              t.variant === 'danger' ? 'border-danger ' : 'border-line ',
             )}
           >
-            <span aria-hidden className={cx('mt-0.5 shrink-0', t.variant === 'danger' ? 'text-red-500' : t.variant === 'success' ? 'text-green-600' : 'text-zinc-500')}>
+            <span aria-hidden className={cx('mt-0.5 shrink-0', t.variant === 'danger' ? 'text-danger' : t.variant === 'success' ? 'text-success' : 'text-muted')}>
               {t.variant === 'danger' ? <XCircleIcon className="size-4" /> : <CheckCircleIcon className="size-4" />}
             </span>
-            <span className="flex-1 text-zinc-800 dark:text-white">{t.message}</span>
+            <span className="flex-1 text-fg ">{t.message}</span>
             <IconButton label="Dismiss" variant="subtle" className="-me-1 -mt-1 size-6" onClick={() => dismiss(t.id)}>
               <XMarkIcon className="size-4" />
             </IconButton>

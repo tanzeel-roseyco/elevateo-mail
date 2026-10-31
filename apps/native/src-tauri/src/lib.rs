@@ -191,6 +191,8 @@ pub fn run() {
             let identity_provider = navigation::identity_provider_origin(option_env!("ELEVATEO_OIDC_ISSUER"));
             tauri::WebviewWindowBuilder::new(app, "main", tauri::WebviewUrl::External(approved.clone()))
                 .title("Elevateo Mail")
+                // AIDEV-NOTE: Native chrome stays light with the shared WebView design system.
+                .theme(Some(tauri::Theme::Light))
                 .inner_size(1120.0, 760.0)
                 .initialization_script(&init_script(&approved.origin().ascii_serialization()))
                 .on_navigation(move |url| navigation::is_approved_navigation(&navigation_origin, identity_provider.as_ref(), url))

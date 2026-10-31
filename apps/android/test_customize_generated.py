@@ -40,6 +40,10 @@ class CustomizeGeneratedTest(unittest.TestCase):
                 actual = self.activity.read_text()
                 self.assertTrue(actual.startswith("package " + package + "\n"))
                 self.assertNotIn("@PACKAGE@", actual)
+                # AIDEV-NOTE: Generated activities must retain the light chrome policy on every artifact identity.
+                self.assertIn("AppCompatDelegate.MODE_NIGHT_NO", actual)
+                self.assertIn("statusBarStyle = SystemBarStyle.light(Color.WHITE, Color.WHITE)", actual)
+                self.assertIn("navigationBarStyle = SystemBarStyle.light(Color.WHITE, Color.WHITE)", actual)
                 before = (self.activity.read_bytes(), self.manifest.read_bytes())
                 customize(self.project)
                 self.assertEqual(before, (self.activity.read_bytes(), self.manifest.read_bytes()))

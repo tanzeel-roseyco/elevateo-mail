@@ -1,0 +1,671 @@
+{
+  "testEngine": {
+    "name": "axe-core",
+    "version": "4.10.3"
+  },
+  "testRunner": {
+    "name": "axe"
+  },
+  "testEnvironment": {
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36",
+    "windowWidth": 390,
+    "windowHeight": 844,
+    "orientationAngle": 0,
+    "orientationType": "landscape-primary"
+  },
+  "timestamp": "2026-10-31T15:14:02.501Z",
+  "url": "http://127.0.0.1:4173/#/mailboxes/00000000-0000-4000-8000-000000000023/drafts/00000000-0000-4000-8000-000000000051/send-review",
+  "toolOptions": {
+    "runOnly": {
+      "type": "rule",
+      "values": [
+        "color-contrast"
+      ]
+    },
+    "reporter": "v1"
+  },
+  "inapplicable": [],
+  "passes": [
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "tags": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT"
+      ],
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+      "nodes": [
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#171717",
+                "bgColor": "#ffffff",
+                "contrastRatio": 17.92,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 17.92"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span class=\"text-sm font-semibold uppercase leading-none tracking-[0.18em] text-fg \">Elevateo Co.</span>",
+          "target": [
+            ".ms-2 > .tracking-\\[0\\.18em\\].font-semibold.uppercase"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#171717",
+                "bgColor": "#f5f5f4",
+                "contrastRatio": 16.43,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 16.43"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span aria-hidden=\"true\" class=\"inline-flex shrink-0 select-none items-center justify-center bg-surface-2 font-medium text-fg   size-8 text-xs rounded-md\">DR</span>",
+          "target": [
+            "button[aria-label=\"Account menu\"] > .select-none.size-8.bg-surface-2"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#171717",
+                "bgColor": "#ffffff",
+                "contrastRatio": 17.92,
+                "fontSize": "13.5pt (18px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 17.92"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<h1 tabindex=\"-1\" class=\"text-lg font-medium text-fg  mb-2\">Review send</h1>",
+          "target": [
+            "h1"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#525252",
+                "bgColor": "#ffffff",
+                "contrastRatio": 7.81,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 7.81"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<p class=\"wrap-anywhere text-sm text-muted \">Approve the exact saved content before anything is queued</p>",
+          "target": [
+            ".space-y-1 > p"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#171717",
+                "bgColor": "#ffffff",
+                "contrastRatio": 17.92,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 17.92"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button type=\"button\" class=\"inline-flex shrink-0 items-center justify-center whitespace-nowrap font-medium [&amp;_svg]:shrink-0 disabled:pointer-events-none disabled:opacity-50 bg-surface hover:bg-surface-2 border border-line border-b-line text-fg shadow-xs     h-10 gap-2 px-3 text-xs rounded-lg pe-4\" aria-haspopup=\"menu\" aria-expanded=\"false\">",
+          "target": [
+            ".pe-4"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#855400",
+                "bgColor": "#fff8e6",
+                "contrastRatio": 6.07,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 6.07"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span class=\"inline-flex items-center gap-1 whitespace-nowrap font-medium   rounded-md px-2 py-1 text-sm bg-warn-soft text-warn  \">Simulated - no live mail</span>",
+          "target": [
+            ".py-1"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#171717",
+                "bgColor": "#ffffff",
+                "contrastRatio": 17.92,
+                "fontSize": "12.0pt (16px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 17.92"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<h2 tabindex=\"-1\" class=\"text-base font-medium text-fg \">Review saved draft version 1</h2>",
+          "target": [
+            "h2"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#525252",
+                "bgColor": "#ffffff",
+                "contrastRatio": 7.81,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 7.81"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<p class=\"text-sm text-muted\">You are approving your own saved draft for individual correspondence.</p>",
+          "target": [
+            ".rounded-xl > p"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#525252",
+                "bgColor": "#ffffff",
+                "contrastRatio": 7.81,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 7.81"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<dt class=\"text-xs font-medium uppercase tracking-wide text-muted\">From</dt>",
+          "target": [
+            "div:nth-child(1) > dt"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#171717",
+                "bgColor": "#ffffff",
+                "contrastRatio": 17.92,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 17.92"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<dd class=\"mt-1 min-w-0 wrap-anywhere text-sm text-fg  whitespace-pre-wrap\">sender@example.test</dd>",
+          "target": [
+            "div:nth-child(1) > .whitespace-pre-wrap"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#525252",
+                "bgColor": "#ffffff",
+                "contrastRatio": 7.81,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 7.81"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<dt class=\"text-xs font-medium uppercase tracking-wide text-muted\">Purpose</dt>",
+          "target": [
+            "div:nth-child(2) > dt"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#171717",
+                "bgColor": "#ffffff",
+                "contrastRatio": 17.92,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 17.92"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<dd class=\"mt-1 min-w-0 wrap-anywhere text-sm text-fg \">Individual correspondence</dd>",
+          "target": [
+            "div:nth-child(2) > dd"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#525252",
+                "bgColor": "#ffffff",
+                "contrastRatio": 7.81,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 7.81"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<dt class=\"text-xs font-medium uppercase tracking-wide text-muted\">To — all 1 recipients</dt>",
+          "target": [
+            ".sm\\:col-span-2:nth-child(3) > dt"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#171717",
+                "bgColor": "#ffffff",
+                "contrastRatio": 17.92,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 17.92"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<li class=\"whitespace-pre-wrap\">&lt;img src=x onerror=alert(1)&gt; recipient@example.test</li>",
+          "target": [
+            "ol > .whitespace-pre-wrap"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#525252",
+                "bgColor": "#ffffff",
+                "contrastRatio": 7.81,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 7.81"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<dt class=\"text-xs font-medium uppercase tracking-wide text-muted\">Subject</dt>",
+          "target": [
+            ".sm\\:col-span-2:nth-child(4) > dt"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#171717",
+                "bgColor": "#ffffff",
+                "contrastRatio": 17.92,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 17.92"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<dd class=\"mt-1 min-w-0 wrap-anywhere text-sm text-fg  whitespace-pre-wrap\">&lt;script&gt;literal subject&lt;/script&gt;</dd>",
+          "target": [
+            ".sm\\:col-span-2:nth-child(4) > .whitespace-pre-wrap"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#525252",
+                "bgColor": "#ffffff",
+                "contrastRatio": 7.81,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 7.81"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<dt class=\"text-xs font-medium uppercase tracking-wide text-muted\">Message</dt>",
+          "target": [
+            ".sm\\:col-span-2:nth-child(5) > dt"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#171717",
+                "bgColor": "#f5f5f4",
+                "contrastRatio": 16.43,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 16.43"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<dd class=\"mt-1 min-w-0 wrap-anywhere text-sm text-fg  whitespace-pre-wrap rounded-lg border border-line bg-surface-2 p-3 leading-6  \">&lt;img src=\"https://example.invalid/pixel\"&gt;\nLiteral body</dd>",
+          "target": [
+            ".p-3"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#525252",
+                "bgColor": "#ffffff",
+                "contrastRatio": 7.81,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 7.81"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<dt class=\"text-xs font-medium uppercase tracking-wide text-muted\">Attachments</dt>",
+          "target": [
+            ".sm\\:col-span-2:nth-child(6) > dt"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#171717",
+                "bgColor": "#ffffff",
+                "contrastRatio": 17.92,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 17.92"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<label for=\"_r_6_\" class=\"text-sm text-fg \">I confirm this is individual correspondence and approve the full content and recipients shown above.</label>",
+          "target": [
+            "label"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#171717",
+                "bgColor": "#ffffff",
+                "contrastRatio": 17.92,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 17.92"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<a class=\"inline-flex shrink-0 items-center justify-center whitespace-nowrap font-medium [&amp;_svg]:shrink-0 disabled:pointer-events-none disabled:opacity-50 bg-transparent hover:bg-surface-2 text-fg   h-10 gap-2 px-4 text-sm rounded-lg\" href=\"#/mailboxes/00000000-0000-4000-8000-000000000023/drafts/00000000-0000-4000-8000-000000000051\" data-discover=\"true\">",
+          "target": [
+            ".px-4.bg-transparent.\\[\\&_svg\\]\\:shrink-0"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#855400",
+                "bgColor": "#fff8e6",
+                "contrastRatio": 6.07,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 6.07"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span class=\"inline-flex items-center gap-1 whitespace-nowrap font-medium   rounded-md px-1.5 py-0.5 text-xs bg-warn-soft text-warn  \">Simulated local mail</span>",
+          "target": [
+            ".px-1\\.5"
+          ]
+        }
+      ]
+    }
+  ],
+  "incomplete": [
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "tags": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT"
+      ],
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+      "nodes": [
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": "elmPartiallyObscuring",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because it partially overlaps other elements"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<dd class=\"mt-1 min-w-0 wrap-anywhere text-sm text-fg \">None. This sending route does not support attachments.</dd>",
+          "target": [
+            ".sm\\:col-span-2:nth-child(6) > dd"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it partially overlaps other elements"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": "elmPartiallyObscuring",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because it partially overlaps other elements"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<span>Simulation mode: no mail is sent or received. Drafts and notes are saved on the server.</span>",
+          "target": [
+            ".inset-x-0 > span:nth-child(2)"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it partially overlaps other elements"
+        }
+      ]
+    }
+  ],
+  "violations": []
+}

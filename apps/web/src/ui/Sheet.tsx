@@ -21,7 +21,7 @@ export function Sheet({ open, onOpenChange, trigger, title, children }: SheetPro
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 z-10 bg-black/40" />
+        <Dialog.Overlay className="fixed inset-0 z-10 bg-overlay" />
         <Dialog.Content
           aria-describedby={undefined}
           className="fixed inset-y-0 right-0 z-10 flex w-80 max-w-[90vw] flex-col bg-surface shadow-lg"

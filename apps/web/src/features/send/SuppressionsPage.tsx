@@ -101,23 +101,23 @@ function SuppressionList({ organizationId, q }: { organizationId: string; q: str
   return (
     <section aria-label="Suppressions" className="max-w-3xl space-y-3">
       <div className="flex flex-wrap items-center gap-2">
-        <h2 ref={heading} tabIndex={-1} className="text-base font-medium text-zinc-800 dark:text-white">{state.items.length === 0 ? 'No suppressed addresses' : `${state.items.length} shown`}</h2>
+        <h2 ref={heading} tabIndex={-1} className="text-base font-medium text-fg ">{state.items.length === 0 ? 'No suppressed addresses' : `${state.items.length} shown`}</h2>
         {port.simulated && <Badge tone="warn" size="sm">Simulated</Badge>}
       </div>
       {state.items.length === 0 ? (
         <EmptyState icon={<ShieldCheckIcon className="size-5" />} title={q === '' ? 'No suppressed addresses' : 'No match'} body={q === '' ? 'No address is suppressed in this organization.' : 'No suppressed address contains that text.'} />
       ) : (
-        <ul className="divide-y divide-zinc-200 rounded-xl border border-zinc-200 dark:divide-zinc-700 dark:border-zinc-700">
+        <ul className="divide-y divide-line rounded-xl border border-line  ">
           {state.items.map((record) => (
             <li key={record.id} className="space-y-1 p-4">
               <div className="flex flex-wrap items-center gap-2">
                 <Badge tone="danger" size="sm">{REASON_LABELS[record.reason]}</Badge>
-                <span className="min-w-0 break-all font-medium text-zinc-800 dark:text-white">{record.address}</span>
-                <time dateTime={record.since} className="ms-auto text-xs text-zinc-500">Since {formatDateTime(record.since)}</time>
+                <span className="min-w-0 break-all font-medium text-fg ">{record.address}</span>
+                <time dateTime={record.since} className="ms-auto text-xs text-muted">Since {formatDateTime(record.since)}</time>
               </div>
-              <p className="text-sm text-zinc-600 dark:text-zinc-300">Blocked from further sends.{record.removable ? '' : ' Removal is managed on the server.'}</p>
+              <p className="text-sm text-muted ">Blocked from further sends.{record.removable ? '' : ' Removal is managed on the server.'}</p>
               {/* Org-scoped list: the source send's mailbox is unknown here, so the id is shown as text, not a link. */}
-              {record.source_send_id !== null && <p className="text-xs text-zinc-500">Source send <span className="break-all font-mono">{record.source_send_id}</span></p>}
+              {record.source_send_id !== null && <p className="text-xs text-muted">Source send <span className="break-all font-mono">{record.source_send_id}</span></p>}
             </li>
           ))}
         </ul>

@@ -25,7 +25,7 @@ function Presets({ onSnooze }: { onSnooze: (at: string) => void }) {
     <MenuItem key={preset.key} onSelect={() => onSnooze(preset.at)}>
       <span className="flex min-w-0 flex-1 items-center justify-between gap-3">
         <span>{preset.label}</span>
-        <span className="text-xs text-zinc-400">{formatDateTime(preset.at)}</span>
+        <span className="text-xs text-muted">{formatDateTime(preset.at)}</span>
       </span>
     </MenuItem>
   ))

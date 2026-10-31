@@ -1,0 +1,581 @@
+{
+  "testEngine": {
+    "name": "axe-core",
+    "version": "4.10.3"
+  },
+  "testRunner": {
+    "name": "axe"
+  },
+  "testEnvironment": {
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36",
+    "windowWidth": 390,
+    "windowHeight": 844,
+    "orientationAngle": 0,
+    "orientationType": "landscape-primary"
+  },
+  "timestamp": "2026-10-31T15:13:45.207Z",
+  "url": "http://127.0.0.1:4173/dev-fixtures.html#/mailboxes/00000000-0000-4000-8000-000000000023",
+  "toolOptions": {
+    "runOnly": {
+      "type": "rule",
+      "values": [
+        "color-contrast"
+      ]
+    },
+    "reporter": "v1"
+  },
+  "inapplicable": [],
+  "passes": [
+    {
+      "id": "color-contrast",
+      "impact": null,
+      "tags": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT"
+      ],
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+      "nodes": [
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#171717",
+                "bgColor": "#ffffff",
+                "contrastRatio": 17.92,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 17.92"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span class=\"text-sm font-semibold uppercase leading-none tracking-[0.18em] text-fg \">Elevateo Co.</span>",
+          "target": [
+            ".h-6.ms-2[aria-label=\"Elevateo home\"] > .uppercase.tracking-\\[0\\.18em\\].font-semibold"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#171717",
+                "bgColor": "#f5f5f4",
+                "contrastRatio": 16.43,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 16.43"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span aria-hidden=\"true\" class=\"inline-flex shrink-0 select-none items-center justify-center bg-surface-2 font-medium text-fg   size-8 text-xs rounded-md\">FA</span>",
+          "target": [
+            "button[aria-label=\"Account menu\"] > .select-none.bg-surface-2.size-8"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#171717",
+                "bgColor": "#ffffff",
+                "contrastRatio": 17.92,
+                "fontSize": "13.5pt (18px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 17.92"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<h1 tabindex=\"-1\" class=\"text-lg font-medium text-fg  mb-2\">Inbox</h1>",
+          "target": [
+            "h1"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#525252",
+                "bgColor": "#ffffff",
+                "contrastRatio": 7.81,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 7.81"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<p class=\"wrap-anywhere text-sm text-muted \">C/D fixture mailbox · collaboration@example.test</p>",
+          "target": [
+            ".wrap-anywhere"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#171717",
+                "bgColor": "#ffffff",
+                "contrastRatio": 17.92,
+                "fontSize": "12.0pt (16px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 17.92"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<input id=\"_r_6_\" maxlength=\"512\" placeholder=\"Search\" autocomplete=\"off\" class=\"w-full rounded-lg border border-line border-b-line bg-surface ps-3 pe-3 text-base text-fg placeholder-muted shadow-xs sm:text-sm disabled:opacity-50     ps-10 w-48 sm:w-64\" type=\"search\" value=\"\" style=\"\">",
+          "target": [
+            "#_r_6_"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "messageKey": "hidden"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element is hidden"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<select id=\"_r_7_\" class=\"h-10 appearance-none pe-9 w-full rounded-lg border border-line border-b-line bg-surface ps-3 pe-3 text-base text-fg placeholder-muted shadow-xs sm:text-sm disabled:opacity-50    \">",
+          "target": [
+            "#_r_7_"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#171717",
+                "bgColor": "#ffffff",
+                "contrastRatio": 17.92,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 17.92"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button type=\"submit\" class=\"inline-flex shrink-0 items-center justify-center whitespace-nowrap font-medium [&amp;_svg]:shrink-0 disabled:pointer-events-none disabled:opacity-50 bg-transparent hover:bg-surface-2 text-fg   h-10 gap-2 px-4 text-sm rounded-lg\" aria-label=\"Run search\">Go</button>",
+          "target": [
+            "button[type=\"submit\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#171717",
+                "bgColor": "#ffffff",
+                "contrastRatio": 17.92,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 17.92"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button type=\"button\" class=\"inline-flex shrink-0 items-center justify-center whitespace-nowrap font-medium [&amp;_svg]:shrink-0 disabled:pointer-events-none disabled:opacity-50 bg-surface hover:bg-surface-2 border border-line border-b-line text-fg shadow-xs     h-10 gap-2 px-3 text-xs rounded-lg pe-4\" aria-haspopup=\"menu\" aria-expanded=\"false\">",
+          "target": [
+            ".pe-4.border-b-line[aria-haspopup=\"menu\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "messageKey": "hidden"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element is hidden"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<select aria-label=\"Mailbox\" class=\"h-10 appearance-none pe-9 w-full rounded-lg border border-line border-b-line bg-surface ps-3 pe-3 text-base text-fg placeholder-muted shadow-xs sm:text-sm disabled:opacity-50    \">",
+          "target": [
+            ".w-60 > .block.relative > select[aria-label=\"Mailbox\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "messageKey": "hidden"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element is hidden"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<select aria-label=\"Mailbox\" class=\"h-10 appearance-none pe-9 w-full rounded-lg border border-line border-b-line bg-surface ps-3 pe-3 text-base text-fg placeholder-muted shadow-xs sm:text-sm disabled:opacity-50    \">",
+          "target": [
+            ".max-w-xs.block.relative:nth-child(1) > select[aria-label=\"Mailbox\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "messageKey": "hidden"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element is hidden"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<select aria-label=\"Folder\" class=\"h-10 appearance-none pe-9 w-full rounded-lg border border-line border-b-line bg-surface ps-3 pe-3 text-base text-fg placeholder-muted shadow-xs sm:text-sm disabled:opacity-50    \">",
+          "target": [
+            ".max-w-xs.block.relative:nth-child(2) > select[aria-label=\"Folder\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#171717",
+                "bgColor": "#ffffff",
+                "contrastRatio": 17.92,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 17.92"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<a class=\"mb-3 inline-flex items-center gap-2 self-start rounded-lg px-2 py-1 text-sm font-medium text-fg hover:bg-surface-2 md:hidden\" href=\"#/mailboxes/00000000-0000-4000-8000-000000000023/drafts/2f05915c-0daf-4e95-8f70-52778830c8f2?new=1\" data-discover=\"true\">",
+          "target": [
+            ".mb-3"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#171717",
+                "bgColor": "#ffffff",
+                "contrastRatio": 17.92,
+                "fontSize": "12.0pt (16px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 17.92"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<select aria-label=\"Folder\" class=\"h-10 appearance-none pe-9 w-full rounded-lg border border-line border-b-line bg-surface ps-3 pe-3 text-base text-fg placeholder-muted shadow-xs sm:text-sm disabled:opacity-50    \">",
+          "target": [
+            ".md\\:hidden.block.relative > select[aria-label=\"Folder\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#525252",
+                "bgColor": "#ffffff",
+                "contrastRatio": 7.81,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 7.81"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span class=\"text-sm tabular-nums text-muted\">1–1 of 1</span>",
+          "target": [
+            ".tabular-nums.text-sm.text-muted"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#171717",
+                "bgColor": "#f5f5f4",
+                "contrastRatio": 16.43,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 16.43"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span aria-hidden=\"true\" class=\"inline-flex shrink-0 select-none items-center justify-center bg-surface-2 font-medium text-fg   size-10 text-sm rounded-full md:hidden\">FS</span>",
+          "target": [
+            ".rounded-full.select-none.size-10"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#171717",
+                "bgColor": "#ffffff",
+                "contrastRatio": 17.92,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 17.92"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span class=\"truncate md:w-50 md:shrink-0 font-semibold text-fg \">Fixture sender</span>",
+          "target": [
+            ".md\\:w-50"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#171717",
+                "bgColor": "#ffffff",
+                "contrastRatio": 17.92,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 17.92"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span class=\"shrink-0 text-xs md:hidden font-semibold text-fg \">13 Oct</span>",
+          "target": [
+            ".md\\:hidden.font-semibold.text-xs"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#171717",
+                "bgColor": "#ffffff",
+                "contrastRatio": 17.92,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 17.92"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span class=\"font-semibold text-fg \">Synthetic thread</span>",
+          "target": [
+            ".md\\:flex-1 > .font-semibold.text-fg"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#525252",
+                "bgColor": "#ffffff",
+                "contrastRatio": 7.81,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 7.81"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span class=\"text-muted \"> – &lt;img src=\"https://example.invalid/pixel\"&gt; &amp; plaintext</span>",
+          "target": [
+            ".md\\:flex-1 > .text-muted"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#855400",
+                "bgColor": "#fff8e6",
+                "contrastRatio": 6.07,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 6.07"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span class=\"inline-flex items-center gap-1 whitespace-nowrap font-medium   rounded-md px-1.5 py-0.5 text-xs bg-warn-soft text-warn  \">Simulated local mail</span>",
+          "target": [
+            ".px-1\\.5.py-0\\.5.bg-warn-soft"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#855400",
+                "bgColor": "#fff8e6",
+                "contrastRatio": 6.07,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 6.07"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span>Simulation mode: no mail is sent or received. Drafts and notes are saved on the server.</span>",
+          "target": [
+            ".bottom-0 > span:nth-child(2)"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#525252",
+                "bgColor": "#f5f5f4",
+                "contrastRatio": 7.16,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 7.16"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<div role=\"note\" class=\"pointer-events-none fixed inset-x-0 bottom-[var(--simulation-inset,0px)] z-30 border-t border-line bg-surface-2 px-3 pt-2 pb-[max(0.5rem,calc(env(safe-area-inset-bottom,0px)-var(--simulation-inset,0px)))] text-center text-xs text-muted   \">",
+          "target": [
+            ".bottom-\\[var\\(--simulation-inset\\,0px\\)\\]"
+          ]
+        }
+      ]
+    }
+  ],
+  "incomplete": [],
+  "violations": []
+}

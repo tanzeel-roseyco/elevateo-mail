@@ -1,0 +1,496 @@
+docker : [0/1] Planning build
+At line:3 char:1
++ docker run --rm --name elevateo-white-gold-ios-diagnostic --mount 'ty ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([0/1] Planning build:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+Building for debugging...
+[0/13] Write sources
+[4/383] Compiling chacha20_poly1305_x86_64-apple.S
+[5/383] Compiling err_data.c
+[6/383] Compiling chacha20_poly1305_armv8-apple.S
+[6/383] Compiling md5-x86_64-linux.S
+[8/383] Compiling md5-x86_64-apple.S
+[9/383] Compiling fiat_p256_adx_sqr.S
+[9/383] Compiling md5-586-apple.S
+[11/383] Compiling fiat_p256_adx_mul.S
+[11/383] Compiling chacha20_poly1305_armv8-linux.S
+[13/383] Compiling chacha20_poly1305_armv8-win.S
+[14/383] Compiling fiat_curve25519_adx_mul.S
+[15/383] Compiling md5-586-linux.S
+[16/383] Compiling fiat_curve25519_adx_square.S
+[17/383] Compiling chacha20_poly1305_x86_64-linux.S
+[18/383] Compiling chacha-x86_64-apple.S
+[19/383] Compiling aes128gcmsiv-x86_64-apple.S
+[20/383] Compiling aes128gcmsiv-x86_64-linux.S
+[21/383] Compiling chacha-x86_64-linux.S
+[21/383] Compiling chacha-x86-linux.S
+[23/383] Compiling chacha-armv8-linux.S
+[24/383] Compiling chacha-armv8-apple.S
+[25/383] Compiling x86_64-mont-linux.S
+[26/383] Compiling x86_64-mont-apple.S
+[27/383] Compiling x86_64-mont5-apple.S
+[27/383] Compiling x86-mont-linux.S
+[27/383] Compiling chacha-x86-apple.S
+[27/383] Compiling chacha-armv8-win.S
+[31/383] Write swift-version-24593BA9C3E375BF.txt
+[32/383] Compiling vpaes-x86-apple.S
+[33/383] Compiling vpaes-armv7-linux.S
+[34/383] Compiling x86_64-mont5-linux.S
+[35/383] Compiling vpaes-armv8-linux.S
+[36/383] Compiling x86-mont-apple.S
+[37/383] Compiling sha512-x86_64-linux.S
+[38/383] Compiling sha512-x86_64-apple.S
+[38/383] Compiling sha512-armv8-linux.S
+[39/383] Compiling sha256-x86_64-linux.S
+[41/383] Compiling sha512-armv8-apple.S
+[42/383] Compiling vpaes-x86_64-apple.S
+[43/383] Compiling sha512-586-apple.S
+[43/383] Compiling sha256-x86_64-apple.S
+[43/383] Compiling vpaes-armv8-apple.S
+[43/383] Compiling sha512-586-linux.S
+[47/383] Compiling sha256-armv8-apple.S
+[48/383] Compiling vpaes-armv8-win.S
+[49/383] Compiling vpaes-x86_64-linux.S
+[50/383] Compiling sha256-armv8-win.S
+[51/383] Compiling sha256-armv4-linux.S
+[52/383] Compiling sha512-armv8-win.S
+[53/383] Compiling sha512-armv4-linux.S
+[54/383] Compiling sha1-armv4-large-linux.S
+[55/383] Compiling sha1-armv8-apple.S
+[56/383] Compiling sha256-armv8-linux.S
+[57/383] Compiling sha256-586-apple.S
+[58/383] Compiling rsaz-avx2-linux.S
+[59/383] Compiling rdrand-x86_64-linux.S
+[60/383] Compiling sha1-x86_64-linux.S
+[61/383] Compiling chacha-armv4-linux.S
+[62/383] Compiling vpaes-x86-linux.S
+[63/383] Compiling CCryptoBoringSSLShims shims.c
+[63/383] Compiling sha256-586-linux.S
+[64/383] Compiling p256_beeu-x86_64-asm-linux.S
+[66/383] Compiling sha1-586-apple.S
+[67/383] Compiling sha1-586-linux.S
+[68/383] Compiling sha1-x86_64-apple.S
+[68/383] Compiling rsaz-avx2-apple.S
+[69/383] Compiling p256_beeu-armv8-asm-apple.S
+[71/383] Compiling p256_beeu-x86_64-asm-apple.S
+[72/383] Compiling p256_beeu-armv8-asm-win.S
+[73/383] Compiling sha1-armv8-linux.S
+[74/383] Compiling rdrand-x86_64-apple.S
+[75/383] Compiling p256-x86_64-asm-apple.S
+[76/383] Compiling p256_beeu-armv8-asm-linux.S
+[77/383] Compiling ghashv8-armv8-apple.S
+[77/383] Compiling ghashv8-armv8-linux.S
+[79/383] Compiling p256-armv8-asm-win.S
+[80/383] Compiling p256-armv8-asm-linux.S
+[81/383] Compiling p256-armv8-asm-apple.S
+[82/383] Compiling p256-x86_64-asm-linux.S
+[83/383] Compiling sha1-armv8-win.S
+[84/383] Compiling ghashv8-armv8-win.S
+[85/383] Compiling ghash-x86_64-apple.S
+[86/383] Compiling ghashv8-armv7-linux.S
+[87/383] Compiling ghash-x86-apple.S
+[88/383] Compiling ghash-ssse3-x86-linux.S
+[89/383] Compiling ghash-x86_64-linux.S
+[90/383] Compiling ghash-neon-armv8-apple.S
+[90/383] Compiling ghash-x86-linux.S
+[92/383] Compiling co-586-apple.S
+[92/383] Compiling ghash-armv4-linux.S
+[92/383] Compiling co-586-linux.S
+[95/383] Compiling ghash-neon-armv8-win.S
+[96/383] Compiling bn-armv8-linux.S
+[97/383] Compiling ghash-ssse3-x86_64-apple.S
+[97/383] Compiling ghash-ssse3-x86_64-linux.S
+[99/383] Compiling ghash-ssse3-x86-apple.S
+[100/383] Compiling bn-armv8-win.S
+[101/383] Compiling bn-armv8-apple.S
+[102/383] Compiling armv8-mont-apple.S
+[103/383] Compiling armv8-mont-win.S
+[104/383] Compiling ghash-neon-armv8-linux.S
+[105/383] Compiling armv4-mont-linux.S
+[106/383] Compiling bn-586-apple.S
+[107/383] Compiling armv8-mont-linux.S
+[108/383] Compiling aesv8-gcm-armv8-linux.S
+[109/383] Compiling bn-586-linux.S
+[110/383] Compiling aesv8-armv7-linux.S
+[111/383] Compiling aesv8-armv8-win.S
+[112/383] Compiling aesv8-gcm-armv8-win.S
+[112/383] Compiling aesv8-armv8-linux.S
+[114/383] Compiling aesni-x86_64-linux.S
+[115/383] Compiling bsaes-armv7-linux.S
+[116/383] Compiling aesv8-gcm-armv8-apple.S
+[117/383] Compiling aesv8-armv8-apple.S
+[118/383] Compiling aesni-x86-linux.S
+[119/383] Compiling aesni-x86_64-apple.S
+[120/383] Compiling aesni-x86-apple.S
+[121/383] Compiling aesni-gcm-x86_64-linux.S
+[122/383] Compiling aesni-gcm-x86_64-apple.S
+[123/383] Compiling x_sig.c
+[124/383] Compiling x_x509a.c
+[125/383] Compiling x_x509.c
+[126/383] Compiling x_algor.c
+[127/383] Compiling x_spki.c
+[128/383] Compiling x_req.c
+[129/383] Compiling x_val.c
+[130/383] Compiling x_crl.c
+[131/383] Compiling x_name.c
+[132/383] Compiling x_all.c
+[133/383] Compiling x_attrib.c
+[134/383] Compiling x_pubkey.c
+[135/383] Compiling x_exten.c
+[136/383] Compiling x509spki.c
+[137/383] Compiling x509rset.c
+[138/383] Compiling x509name.c
+[139/383] Compiling x509_set.c
+[140/383] Compiling x509_trs.c
+[141/383] Compiling x509_d2.c
+[142/383] Compiling x509_txt.c
+[143/383] Compiling x509_v3.c
+[144/383] Compiling x509_obj.c
+[145/383] Compiling x509_vfy.c
+[146/383] Compiling x509_req.c
+[147/383] Compiling x509_vpm.c
+[147/383] Compiling x509cset.c
+[149/383] Compiling x509_def.c
+[150/383] Compiling x509_lu.c
+[151/383] Compiling x509_ext.c
+[152/383] Compiling x509_cmp.c
+[153/383] Compiling x509.c
+[154/383] Compiling x509_att.c
+[155/383] Compiling v3_ocsp.c
+[156/383] Compiling v3_skey.c
+[157/383] Compiling v3_int.c
+[158/383] Compiling v3_utl.c
+[159/383] Compiling v3_pcons.c
+[160/383] Compiling v3_lib.c
+[161/383] Compiling v3_pmaps.c
+[162/383] Compiling v3_info.c
+[163/383] Compiling v3_enum.c
+[164/383] Compiling v3_purp.c
+[165/383] Compiling v3_prn.c
+[166/383] Compiling v3_conf.c
+[167/383] Compiling v3_genn.c
+[168/383] Compiling v3_extku.c
+[169/383] Compiling v3_ia5.c
+[170/383] Compiling v3_ncons.c
+[171/383] Compiling v3_cpols.c
+[172/383] Compiling v3_crld.c
+[173/383] Compiling v3_bcons.c
+[174/383] Compiling v3_bitst.c
+[175/383] Compiling v3_alt.c
+[176/383] Compiling i2d_pr.c
+[177/383] Compiling v3_akey.c
+[178/383] Compiling v3_akeya.c
+[179/383] Compiling t_x509a.c
+[180/383] Compiling t_x509.c
+[181/383] Compiling t_req.c
+[182/383] Compiling t_crl.c
+[183/383] Compiling by_file.c
+[184/383] Compiling by_dir.c
+[185/383] Compiling trust_token.c
+[186/383] Compiling thread_pthread.c
+[187/383] Compiling thread_win.c
+[188/383] Compiling name_print.c
+[189/383] Compiling thread_none.c
+[190/383] Compiling thread.c
+[191/383] Compiling voprf.c
+[192/383] Compiling asn1_gen.c
+[193/383] Compiling algorithm.c
+[194/383] Compiling rsa_pss.c
+[195/383] Compiling policy.c
+[196/383] Compiling spx_util.c
+[197/383] Compiling spx_thash.c
+[198/383] Compiling spx_merkle.c
+[199/383] Compiling pmbtoken.c
+[200/383] Compiling spx_wots.c
+[201/383] Compiling a_sign.c
+[202/383] Compiling spx_fors.c
+[203/383] Compiling stack.c
+[204/383] Compiling a_digest.c
+[205/383] Compiling sha256.c
+[206/383] Compiling sha1.c
+[207/383] Compiling spx.c
+[208/383] Compiling a_verify.c
+[208/383] Compiling siphash.c
+[210/383] Compiling spx_address.c
+[211/383] Compiling slhdsa.c
+[212/383] Compiling thash.c
+[212/383] Compiling rsa_print.c
+[212/383] Compiling fors.c
+[215/383] Compiling rsa_extra.c
+[216/383] Compiling sha512.c
+[217/383] Compiling refcount.c
+[218/383] Compiling rc4.c
+[219/383] Compiling getentropy.c
+[220/383] Compiling rand_extra.c
+[221/383] Compiling wots.c
+[222/383] Compiling windows.c
+[223/383] Compiling ios.c
+[224/383] Compiling trusty.c
+[225/383] Compiling merkle.c
+[226/383] Compiling deterministic.c
+[227/383] Compiling poly1305_arm_asm.S
+[228/383] Compiling forkunsafe.c
+[229/383] Compiling passive.c
+[230/383] Compiling rsa_asn1.c
+[231/383] Compiling pool.c
+[232/383] Compiling urandom.c
+[233/383] Compiling poly1305_arm.c
+[234/383] Compiling fork_detect.c
+[235/383] Compiling rsa_crypt.c
+[236/383] Compiling poly1305.c
+[237/383] Compiling pkcs7.c
+[238/383] Compiling obj_xref.c
+[239/383] Compiling p5_pbev2.c
+[240/383] Compiling poly1305_vec.c
+[241/383] Compiling pkcs8.c
+[242/383] Compiling pem_xaux.c
+[243/383] Compiling pem_x509.c
+[244/383] Compiling pem_pk8.c
+[244/383] Compiling pkcs7_x509.c
+[246/383] Compiling pem_pkey.c
+[247/383] Compiling mem.c
+[248/383] Compiling pem_oth.c
+[249/383] Compiling mldsa.c
+[249/383] Compiling md4.c
+[251/383] Compiling obj.c
+[252/383] Compiling pkcs8_x509.c
+[253/383] Compiling fips_shared_support.c
+[254/383] Compiling md5.c
+[255/383] Compiling lhash.c
+[256/383] Compiling poly_rq_mul.S
+[257/383] Compiling keccak.c
+[258/383] Compiling sign.c
+[259/383] Compiling ex_data.c
+[260/383] Compiling p_x25519.c
+[261/383] Compiling pem_all.c
+[262/383] Compiling pbkdf.c
+[263/383] Compiling kyber.c
+[264/383] Compiling p_x25519_asn1.c
+[265/383] Compiling print.c
+[266/383] Compiling pem_info.c
+[267/383] Compiling p_ed25519_asn1.c
+[268/383] Compiling scrypt.c
+[269/383] Compiling p_rsa_asn1.c
+[270/383] Compiling pem_lib.c
+[271/383] Compiling p_ed25519.c
+[272/383] Compiling p_ec_asn1.c
+[272/383] Compiling p_ec.c
+[274/383] Compiling p_dh_asn1.c
+[275/383] Compiling p_hkdf.c
+[276/383] Compiling evp.c
+[276/383] Compiling p_dsa_asn1.c
+[278/383] Compiling err.c
+[279/383] Compiling p_dh.c
+[280/383] Compiling p_rsa.c
+[281/383] Compiling hpke.c
+[282/383] Compiling hrss.c
+[283/383] Compiling evp_asn1.c
+[284/383] Compiling evp_ctx.c
+[285/383] Compiling engine.c
+[286/383] Compiling ecdsa_asn1.c
+[287/383] Compiling ec_derive.c
+[288/383] Compiling params.c
+[289/383] Compiling dsa_asn1.c
+[290/383] Compiling spake25519.c
+[291/383] Compiling x25519-asm-arm.S
+[292/383] Compiling ec_asn1.c
+[293/383] Compiling hash_to_curve.c
+[293/383] Compiling crypto.c
+[295/383] Compiling ecdh_extra.c
+[296/383] Compiling cpu_intel.c
+[297/383] Compiling cpu_arm_freebsd.c
+[298/383] Compiling cpu_aarch64_win.c
+[299/383] Compiling des.c
+[300/383] Compiling cpu_aarch64_openbsd.c
+[301/383] Compiling dh_asn1.c
+[302/383] Compiling cpu_aarch64_linux.c
+[302/383] Compiling dilithium.c
+[304/383] Compiling cpu_arm_linux.c
+[305/383] Compiling cpu_aarch64_sysreg.c
+[305/383] Compiling dsa.c
+[307/383] Compiling digest_extra.c
+[308/383] Compiling cpu_aarch64_apple.c
+[309/383] Compiling cpu_aarch64_fuchsia.c
+[310/383] Compiling derive_key.c
+[311/383] Compiling cipher_extra.c
+[312/383] Compiling tls_cbc.c
+[313/383] Compiling conf.c
+[314/383] Compiling e_aesgcmsiv.c
+[315/383] Compiling chacha.c
+[316/383] Compiling unicode.c
+[317/383] Compiling curve25519.c
+[318/383] Compiling e_rc2.c
+[319/383] Compiling ber.c
+[320/383] Compiling e_aesctrhmac.c
+[321/383] Compiling e_null.c
+[322/383] Compiling e_tls.c
+[323/383] Compiling asn1_compat.c
+[324/383] Compiling bn_asn1.c
+[325/383] Compiling buf.c
+[326/383] Compiling e_rc4.c
+[327/383] Compiling printf.c
+[328/383] Compiling e_des.c
+[328/383] Compiling e_chacha20poly1305.c
+[330/383] Compiling convert.c
+[331/383] Compiling cbs.c
+[332/383] Compiling cbb.c
+[333/383] Compiling blake2.c
+[334/383] Compiling errno.c
+[335/383] Compiling fd.c
+[336/383] Compiling pair.c
+[337/383] Compiling hexdump.c
+[338/383] Compiling base64.c
+[339/383] Compiling bio_mem.c
+[340/383] Compiling tasn_utl.c
+[341/383] Compiling bio.c
+[341/383] Compiling f_string.c
+[341/383] Compiling file.c
+[342/383] Compiling tasn_typ.c
+[345/383] Compiling posix_time.c
+[346/383] Compiling tasn_fre.c
+[347/383] Compiling tasn_new.c
+[348/383] Compiling f_int.c
+[349/383] Compiling curve25519_64_adx.c
+[350/383] Compiling tasn_enc.c
+[351/383] Compiling a_octet.c
+[352/383] Compiling asn1_par.c
+[353/383] Compiling tasn_dec.c
+[354/383] Compiling a_i2d_fp.c
+[355/383] Compiling a_strex.c
+[356/383] Compiling asn1_lib.c
+[357/383] Compiling a_int.c
+[358/383] Compiling a_type.c
+[359/383] Compiling a_utctm.c
+[359/383] Compiling a_time.c
+[361/383] Compiling asn_pack.c
+[361/383] Compiling a_strnid.c
+[363/383] Compiling a_gentm.c
+[364/383] Compiling a_bool.c
+[365/383] Compiling a_d2i_fp.c
+[366/383] Compiling a_bitstr.c
+[367/383] Compiling a_mbstr.c
+[368/383] Compiling a_object.c
+[369/383] Compiling a_dup.c
+[370/383] Compiling bcm.c
+[372/384] Emitting module CryptoBoringWrapper
+[373/385] Wrapping AST for CryptoBoringWrapper for debugging
+[375/386] Emitting module Crypto
+[376/387] Wrapping AST for Crypto for debugging
+[378/388] Emitting module ElevateoCore
+[379/389] Wrapping AST for ElevateoCore for debugging
+[381/394] Compiling ElevateoCoreTests TestSupport.swift
+[382/394] Compiling ElevateoCoreTests DraftTests.swift
+[383/394] Emitting module ElevateoCoreTests
+[384/394] Compiling ElevateoCoreTests AuthFlowTests.swift
+[385/394] Compiling ElevateoCoreTests APIClientTests.swift
+[386/395] /workspace/ios/ElevateoCore/.build/x86_64-unknown-linux-gnu/debug/ElevateoCorePackageDiscoveredTests.derived/
+all-discovered-tests.swift
+[387/395] Write sources
+[388/395] Wrapping AST for ElevateoCoreTests for debugging
+[390/398] Compiling ElevateoCorePackageDiscoveredTests all-discovered-tests.swift
+[391/398] Emitting module ElevateoCorePackageDiscoveredTests
+[392/398] Compiling ElevateoCorePackageDiscoveredTests ElevateoCoreTests.swift
+[393/399]
+/workspace/ios/ElevateoCore/.build/x86_64-unknown-linux-gnu/debug/ElevateoCorePackageTests.derived/runner.swift
+[394/399] Write sources
+[395/399] Wrapping AST for ElevateoCorePackageDiscoveredTests for debugging
+[397/401] Emitting module ElevateoCorePackageTests
+[398/401] Compiling ElevateoCorePackageTests runner.swift
+[399/402] Wrapping AST for ElevateoCorePackageTests for debugging
+[400/402] Write Objects.LinkFileList
+[401/402] Linking ElevateoCorePackageTests.xctest
+Build complete! (29.04s)
+Test Suite 'All tests' started at 2026-10-31 15:02:04.540
+Test Suite 'debug.xctest' started at 2026-10-31 15:02:04.608
+Test Suite 'APIClientTests' started at 2026-10-31 15:02:04.608
+Test Case 'APIClientTests.testBoundedBodyStopsAtTheLimit' started at 2026-10-31 15:02:04.608
+Test Case 'APIClientTests.testBoundedBodyStopsAtTheLimit' passed (0.002 seconds)
+Test Case 'APIClientTests.testContractInvalidPagesAreRejected' started at 2026-10-31 15:02:04.609
+Test Case 'APIClientTests.testContractInvalidPagesAreRejected' passed (0.121 seconds)
+Test Case 'APIClientTests.testCursorPagerAppendsDeduplicatedPages' started at 2026-10-31 15:02:04.730
+Test Case 'APIClientTests.testCursorPagerAppendsDeduplicatedPages' passed (0.001 seconds)
+Test Case 'APIClientTests.testCursorPagerReportsAndClearsPaginationFailure' started at 2026-10-31 15:02:04.731
+Test Case 'APIClientTests.testCursorPagerReportsAndClearsPaginationFailure' passed (0.0 seconds)
+Test Case 'APIClientTests.testListThreadsDecodesValidPage' started at 2026-10-31 15:02:04.731
+Test Case 'APIClientTests.testListThreadsDecodesValidPage' passed (0.011 seconds)
+Test Case 'APIClientTests.testLogoutPostsTheContractedRequest' started at 2026-10-31 15:02:04.742
+Test Case 'APIClientTests.testLogoutPostsTheContractedRequest' passed (0.001 seconds)
+Test Case 'APIClientTests.testMalformedJSONThrowsInvalidResponse' started at 2026-10-31 15:02:04.743
+Test Case 'APIClientTests.testMalformedJSONThrowsInvalidResponse' passed (0.0 seconds)
+Test Case 'APIClientTests.testOversizedErrorBodyIsRejected' started at 2026-10-31 15:02:04.744
+Test Case 'APIClientTests.testOversizedErrorBodyIsRejected' passed (0.0 seconds)
+Test Case 'APIClientTests.testOversizedSuccessBodyIsRejectedWithTheRouteLimit' started at 2026-10-31 15:02:04.744
+Test Case 'APIClientTests.testOversizedSuccessBodyIsRejectedWithTheRouteLimit' passed (0.001 seconds)
+Test Case 'APIClientTests.testPageForAnotherMailboxOrContextIsRejected' started at 2026-10-31 15:02:04.745
+Test Case 'APIClientTests.testPageForAnotherMailboxOrContextIsRejected' passed (0.001 seconds)
+Test Case 'APIClientTests.testRedirectPolicyAllowsOnlySameOrigin' started at 2026-10-31 15:02:04.746
+Test Case 'APIClientTests.testRedirectPolicyAllowsOnlySameOrigin' passed (0.001 seconds)
+Test Case 'APIClientTests.testRefreshInvalidatesAnOutstandingContinuation' started at 2026-10-31 15:02:04.747
+Test Case 'APIClientTests.testRefreshInvalidatesAnOutstandingContinuation' passed (0.0 seconds)
+Test Case 'APIClientTests.testRejectedRedirectIsTyped' started at 2026-10-31 15:02:04.747
+Test Case 'APIClientTests.testRejectedRedirectIsTyped' passed (0.0 seconds)
+Test Case 'APIClientTests.testUnauthenticatedMapsToSessionExpired' started at 2026-10-31 15:02:04.748
+Test Case 'APIClientTests.testUnauthenticatedMapsToSessionExpired' passed (0.001 seconds)
+Test Suite 'APIClientTests' passed at 2026-10-31 15:02:04.749
+	 Executed 14 tests, with 0 failures (0 unexpected) in 0.141 (0.141) seconds
+Test Suite 'AuthFlowTests' started at 2026-10-31 15:02:04.749
+Test Case 'AuthFlowTests.testCallbackToAnotherDestinationIsRejectedWithoutBurningTheAttempt' started at 2026-10-31 15:02:04.749
+Test Case 'AuthFlowTests.testCallbackToAnotherDestinationIsRejectedWithoutBurningTheAttempt' passed (0.004 seconds)
+Test Case 'AuthFlowTests.testCleartextAuthorizationEndpointIsRejectedBeforeBuildingTheURL' started at 2026-10-31 15:02:04.753
+Test Case 'AuthFlowTests.testCleartextAuthorizationEndpointIsRejectedBeforeBuildingTheURL' passed (0.0 seconds)
+Test Case 'AuthFlowTests.testClientSettingsValidation' started at 2026-10-31 15:02:04.753
+Test Case 'AuthFlowTests.testClientSettingsValidation' passed (0.0 seconds)
+Test Case 'AuthFlowTests.testConformsToSharedAuthVectors' started at 2026-10-31 15:02:04.754
+Test Case 'AuthFlowTests.testConformsToSharedAuthVectors' passed (0.008 seconds)
+Test Case 'AuthFlowTests.testExpiredCallbackIsRejected' started at 2026-10-31 15:02:04.762
+Test Case 'AuthFlowTests.testExpiredCallbackIsRejected' passed (0.001 seconds)
+Test Case 'AuthFlowTests.testReplayedCallbackIsRejected' started at 2026-10-31 15:02:04.763
+Test Case 'AuthFlowTests.testReplayedCallbackIsRejected' passed (0.0 seconds)
+Test Case 'AuthFlowTests.testRestoreSupersededBySignOutIsDiscarded' started at 2026-10-31 15:02:04.763
+Test Case 'AuthFlowTests.testRestoreSupersededBySignOutIsDiscarded' passed (0.052 seconds)
+Test Case 'AuthFlowTests.testRestoreThenSignOutRevokesAndClearsEverything' started at 2026-10-31 15:02:04.815
+Test Case 'AuthFlowTests.testRestoreThenSignOutRevokesAndClearsEverything' passed (0.0 seconds)
+Test Case 'AuthFlowTests.testSignOutClearsLocallyWhenTheServerCannotConfirm' started at 2026-10-31 15:02:04.815
+Test Case 'AuthFlowTests.testSignOutClearsLocallyWhenTheServerCannotConfirm' passed (0.0 seconds)
+Test Case 'AuthFlowTests.testSignOutReportsCredentialStorageFailure' started at 2026-10-31 15:02:04.816
+Test Case 'AuthFlowTests.testSignOutReportsCredentialStorageFailure' passed (0.008 seconds)
+Test Case 'AuthFlowTests.testStateMismatchIsRejectedWithoutBurningPendingAttempt' started at 2026-10-31 15:02:04.824
+Test Case 'AuthFlowTests.testStateMismatchIsRejectedWithoutBurningPendingAttempt' passed (0.001 seconds)
+Test Case 'AuthFlowTests.testValidCallbackReturnsCodeBoundToVerifier' started at 2026-10-31 15:02:04.825
+Test Case 'AuthFlowTests.testValidCallbackReturnsCodeBoundToVerifier' passed (0.101 seconds)
+Test Suite 'AuthFlowTests' passed at 2026-10-31 15:02:04.926
+	 Executed 12 tests, with 0 failures (0 unexpected) in 0.177 (0.177) seconds
+Test Suite 'DraftTests' started at 2026-10-31 15:02:04.926
+Test Case 'DraftTests.testConflictRequiresReconciliationBeforeSaving' started at 2026-10-31 15:02:04.926
+Test Case 'DraftTests.testConflictRequiresReconciliationBeforeSaving' passed (0.002 seconds)
+Test Case 'DraftTests.testConsecutiveSavesAdvanceVersionWithNewOperations' started at 2026-10-31 15:02:04.928
+Test Case 'DraftTests.testConsecutiveSavesAdvanceVersionWithNewOperations' passed (0.001 seconds)
+Test Case 'DraftTests.testContractInvalidSaveResultIsRejected' started at 2026-10-31 15:02:04.928
+Test Case 'DraftTests.testContractInvalidSaveResultIsRejected' passed (0.002 seconds)
+Test Case 'DraftTests.testCreateReplyDraftSucceeds' started at 2026-10-31 15:02:04.930
+Test Case 'DraftTests.testCreateReplyDraftSucceeds' passed (0.001 seconds)
+Test Case 'DraftTests.testLostResponseReplaysTheSamePayloadDespiteEdits' started at 2026-10-31 15:02:04.931
+Test Case 'DraftTests.testLostResponseReplaysTheSamePayloadDespiteEdits' passed (0.0 seconds)
+Test Case 'DraftTests.testNetworkFailureIsSurfaced' started at 2026-10-31 15:02:04.932
+Test Case 'DraftTests.testNetworkFailureIsSurfaced' passed (0.001 seconds)
+Test Case 'DraftTests.testNullRecipientFieldsAreEncodedAsExplicitNull' started at 2026-10-31 15:02:04.932
+Test Case 'DraftTests.testNullRecipientFieldsAreEncodedAsExplicitNull' passed (0.001 seconds)
+Test Case 'DraftTests.testSaveResultForAnotherOperationIsRejected' started at 2026-10-31 15:02:04.933
+Test Case 'DraftTests.testSaveResultForAnotherOperationIsRejected' passed (0.001 seconds)
+Test Case 'DraftTests.testSavedIndicatorTracksTheAcknowledgedContent' started at 2026-10-31 15:02:04.934
+Test Case 'DraftTests.testSavedIndicatorTracksTheAcknowledgedContent' passed (0.0 seconds)
+Test Case 'DraftTests.testVersionConflictMapsToTypedConflict' started at 2026-10-31 15:02:04.934
+Test Case 'DraftTests.testVersionConflictMapsToTypedConflict' passed (0.001 seconds)
+Test Suite 'DraftTests' passed at 2026-10-31 15:02:04.935
+	 Executed 10 tests, with 0 failures (0 unexpected) in 0.008 (0.008) seconds
+Test Suite 'debug.xctest' passed at 2026-10-31 15:02:04.935
+	 Executed 36 tests, with 0 failures (0 unexpected) in 0.326 (0.326) seconds
+Test Suite 'All tests' passed at 2026-10-31 15:02:04.935
+	 Executed 36 tests, with 0 failures (0 unexpected) in 0.326 (0.326) seconds
+◇ Test run started.
+↳ Testing Library Version: 6.0.3 (18c42c19cac3faf)
+✔ Test run with 0 tests passed after 0.001 seconds.
+/diagnostic.sh: 6: python3: not found
+Docker exit: 127

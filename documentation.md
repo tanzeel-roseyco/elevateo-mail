@@ -90,3 +90,7 @@ Detail: [docs/desktop-and-connectors.md](docs/desktop-and-connectors.md).
 
 All tests run in Docker; commands are in the README "Testing" table. Verification receipts per milestone are in
 [docs/completion/](docs/completion/). Review records and defect density are in [code-reviews.md](code-reviews.md).
+
+## Corporate appearance (2026-11-01)
+
+The [white-and-gold design system](docs/design-system.md) defines the single light appearance across clients. Web tokens and shared components own the palette; native platforms use their theme mechanisms. API contracts, authorization and send behavior are unchanged. [Verification evidence](docs/completion/design-system-20261101/README.md) distinguishes executed checks from platform limitations.

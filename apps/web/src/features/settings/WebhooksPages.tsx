@@ -67,7 +67,7 @@ function SimulatedWebhooksPage() {
   return (
     <>
       <div className="mb-5 flex items-center justify-between gap-4">
-        <h2 className="text-base font-medium text-zinc-800 dark:text-white">Endpoints</h2>
+        <h2 className="text-base font-medium text-fg ">Endpoints</h2>
         <Link to="/settings/webhooks/create" className={buttonClass('primary', 'xs')}><PlusIcon className="size-4" />Add New Webhook</Link>
       </div>
       <SimulatedAdapterNotice>Endpoints registered here are never called. Delivery requires a server-side dispatcher that this build does not include.</SimulatedAdapterNotice>
@@ -76,13 +76,13 @@ function SimulatedWebhooksPage() {
           <EmptyState icon={<BoltIcon className="size-5" />} title="No webhook URLs yet" body="After creating webhook URLs, you'll be able to see and manage all of your webhooks here." action={<Link to="/settings/webhooks/create" className={buttonClass('primary', 'md')}>Add New Webhook</Link>} />
         ) : (
           <Card className="p-0">
-            <ul className="divide-y divide-zinc-200 dark:divide-zinc-700" aria-label="Webhook URLs">
+            <ul className="divide-y divide-line " aria-label="Webhook URLs">
               {store.value.map((hook) => (
                 <li key={hook.id} className="flex flex-wrap items-center gap-3 px-6 py-4 text-sm">
                   <div className="min-w-0 flex-1">
-                    <p className="truncate font-mono text-xs text-zinc-800 dark:text-white">{hook.url}</p>
+                    <p className="truncate font-mono text-xs text-fg ">{hook.url}</p>
                     <p className="mt-1 flex flex-wrap gap-1">{hook.events.map((event) => <Badge key={event} tone="neutral" size="sm">{event}</Badge>)}</p>
-                    <p className="mt-1 text-xs text-zinc-500">Registered {formatDateTime(hook.created_at)}</p>
+                    <p className="mt-1 text-xs text-muted">Registered {formatDateTime(hook.created_at)}</p>
                   </div>
                   <Badge tone="warn" size="sm">Simulated · never called</Badge>
                   <Button size="sm" variant="danger" onClick={() => remove(hook)}>Remove</Button>
@@ -149,7 +149,7 @@ function SimulatedWebhookCreatePage() {
             <TextInput id={`${id}-url`} type="url" inputMode="url" placeholder="https://example.com/hooks/elevateo" value={url} onChange={(event) => setUrl(event.target.value)} aria-invalid={error ? true : undefined} aria-describedby={`${id}-url-hint`} />
           </Field>
           <fieldset className="space-y-2" aria-describedby={eventsError ? `${id}-events-error` : undefined} aria-invalid={eventsError ? true : undefined}>
-            <legend className="mb-3 text-sm font-medium text-zinc-800 dark:text-white">Events</legend>
+            <legend className="mb-3 text-sm font-medium text-fg ">Events</legend>
             {/* Block wrapper per option: the label primitive is inline-flex (a `flex` override loses to it
                 in Tailwind's class order), and the fieldset's space-y only separates block children. */}
             {WEBHOOK_EVENTS.map((event) => (
@@ -157,7 +157,7 @@ function SimulatedWebhookCreatePage() {
                 <CheckboxField id={`${id}-${event.key}`} label={event.label} checked={events.includes(event.key)} onChange={(change) => toggle(event.key, change.target.checked)} />
               </div>
             ))}
-            {eventsError && <p id={`${id}-events-error`} role="alert" className="mt-2 text-sm font-medium text-red-500">{eventsError}</p>}
+            {eventsError && <p id={`${id}-events-error`} role="alert" className="mt-2 text-sm font-medium text-danger">{eventsError}</p>}
           </fieldset>
           <div className="flex gap-2">
             <Button type="submit" variant="primary" disabled={!store.writable}>Save webhook</Button>

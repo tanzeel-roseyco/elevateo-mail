@@ -45,8 +45,8 @@ export function WorkspaceNamePage() {
   return (
     <div className="space-y-6">
       <Card className="max-w-lg">
-        <p className="text-sm font-medium text-zinc-800 dark:text-white">Workspace name</p>
-        <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">{serverName === '' ? 'Unavailable' : serverName}</p>
+        <p className="text-sm font-medium text-fg ">Workspace name</p>
+        <p className="mt-1 text-sm text-muted ">{serverName === '' ? 'Unavailable' : serverName}</p>
       </Card>
       <UnavailableSetting
         icon={<BuildingOfficeIcon className="size-5" />}
@@ -169,9 +169,9 @@ function SimulatedWorkspaceInvitePage() {
             <TextArea id={`${id}-emails`} rows={4} value={emails} onChange={(event) => setEmails(event.target.value)} aria-invalid={error ? true : undefined} aria-describedby={`${id}-emails-hint`} />
           </Field>
           <fieldset className="space-y-2">
-            <legend className="mb-3 text-sm font-medium text-zinc-800 dark:text-white">Role</legend>
+            <legend className="mb-3 text-sm font-medium text-fg ">Role</legend>
             {(['member', 'admin'] as const).map((option) => (
-              <label key={option} className="flex items-center gap-2 text-sm text-zinc-800 dark:text-zinc-200">
+              <label key={option} className="flex items-center gap-2 text-sm text-fg ">
                 <input type="radio" name={`${id}-role`} value={option} checked={role === option} onChange={() => setRole(option)} className="size-4 accent-(--color-accent)" />
                 {option === 'member' ? 'Member' : 'Administrator'}
               </label>
@@ -227,10 +227,10 @@ function SimulatedWorkspaceInvitationsPage() {
           <EmptyState icon={<EnvelopeIcon className="size-5" />} title="No pending invitations" body="Invitations you record on the Invite New Members page appear here until you remove them." action={<Link to="/settings/workspace/invite" className={buttonClass('primary', 'md')}>Invite New Members</Link>} />
         ) : (
           <Card className="p-0">
-            <ul className="divide-y divide-zinc-200 dark:divide-zinc-700" aria-label="Pending invitations">
+            <ul className="divide-y divide-line " aria-label="Pending invitations">
               {store.value.map((inv) => (
                 <li key={inv.id} className="flex flex-wrap items-center gap-3 px-6 py-4 text-sm">
-                  <span className="min-w-0 flex-1 truncate font-medium text-zinc-800 dark:text-white">{inv.email}</span>
+                  <span className="min-w-0 flex-1 truncate font-medium text-fg ">{inv.email}</span>
                   <Badge tone="neutral" size="sm">{inv.role === 'admin' ? 'Administrator' : 'Member'}</Badge>
                   <Badge tone="warn" size="sm">Pending · not sent</Badge>
                   <Button size="sm" onClick={() => setEditing(inv)}>Edit</Button>

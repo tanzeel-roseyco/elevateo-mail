@@ -1,0 +1,11 @@
+docker : usage: python3 -m unittest discover [-h] [-v] [-q] [--locals] [-f] [-c] [-b]
+At line:3 char:1
++ docker run --rm --name elevateo-white-gold-android-python --mount "ty ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (usage: python3 ... [-f] [-c] [-b]:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+                                    [-k TESTNAMEPATTERNS] [-s START]
+                                    [-p PATTERN] [-t TOP]
+python3 -m unittest discover: error: unrecognized arguments: test_verify_permissions.py test_verify_qa_package.py
+test_verify_unsigned.py

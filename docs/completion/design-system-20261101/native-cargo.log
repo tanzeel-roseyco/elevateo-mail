@@ -1,0 +1,23 @@
+NONRELEASE COMPILE ONLY: https://app.elevateo.invalid; launch is intentionally denied.
+docker :     Updating crates.io index
+At line:9 char:28
++ ... DE -eq 0) { docker run --rm --name elevateo-white-gold-native-tests - ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Updating crates.io index:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+warning: spurious network error (3 tries remaining): [92] Stream error in the HTTP/2 framing layer (HTTP/2 stream 135
+was not closed cleanly: PROTOCOL_ERROR (err 1))
+warning: spurious network error (3 tries remaining): [92] Stream error in the HTTP/2 framing layer (HTTP/2 stream 103
+was not closed cleanly: PROTOCOL_ERROR (err 1))
+warning: spurious network error (3 tries remaining): [92] Stream error in the HTTP/2 framing layer (HTTP/2 stream 75
+was not closed cleanly: PROTOCOL_ERROR (err 1))
+warning: spurious network error (3 tries remaining): [92] Stream error in the HTTP/2 framing layer (HTTP/2 stream 93
+was not closed cleanly: PROTOCOL_ERROR (err 1))
+warning: spurious network error (3 tries remaining): [92] Stream error in the HTTP/2 framing layer (HTTP/2 stream 143
+was not closed cleanly: PROTOCOL_ERROR (err 1))
+error: the lock file /workspace/apps/native/src-tauri/Cargo.lock needs to be updated but --locked was passed to
+prevent this
+If you want to try to generate the lock file without accessing the network, remove the --locked flag and use --offline
+instead.
+Docker exit: 101

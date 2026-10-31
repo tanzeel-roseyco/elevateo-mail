@@ -129,8 +129,8 @@ export function PersonalSettingsPage() {
           <Button type="submit" variant="primary" loading={saving} disabled={writeBlocked || !validName(name)}>Save display name</Button>
           <Button type="button" onClick={() => void load()} disabled={saving}>Reload settings</Button>
         </div>
-        <p className="text-sm text-zinc-500">Signed in as {session.actor.display_name ?? 'Unnamed user'}. Mailbox access follows your current memberships and server permissions.</p>
-        <p className="text-sm text-zinc-500">Timezone, credentials and notification preferences are unavailable in this build.</p>
+        <p className="text-sm text-muted">Signed in as {session.actor.display_name ?? 'Unnamed user'}. Mailbox access follows your current memberships and server permissions.</p>
+        <p className="text-sm text-muted">Timezone, credentials and notification preferences are unavailable in this build.</p>
       </form>
     </Frame>
   )

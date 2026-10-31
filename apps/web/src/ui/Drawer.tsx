@@ -35,14 +35,14 @@ export function Drawer({ open, onOpenChange, trigger, title, children }: DrawerP
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 z-20 bg-black/10 lg:hidden" />
+        <Dialog.Overlay className="fixed inset-0 z-20 bg-overlay lg:hidden" />
         {/* lg:hidden only hides overlay/content visuals; it does not disable Radix modal behavior
             (focus trap and background inerting persist while open). The caller's matchMedia close
             in Shell is what actually releases the dialog on a resize to desktop (D6, FE-R06). */}
         <Dialog.Content
           aria-describedby={undefined}
           onEscapeKeyDown={(event) => { if (escapeBelongsToNestedPopup(event)) event.preventDefault() }}
-          className="fixed inset-y-0 start-0 z-20 w-66 max-w-[85vw] overflow-y-auto overscroll-contain border-e border-zinc-200 bg-zinc-50 shadow-lg lg:hidden dark:border-zinc-700 dark:bg-zinc-900"
+          className="fixed inset-y-0 start-0 z-20 w-66 max-w-[85vw] overflow-y-auto overscroll-contain border-e border-line bg-surface-2 shadow-lg lg:hidden  "
         >
           <Dialog.Title className="sr-only">{title}</Dialog.Title>
           {children}

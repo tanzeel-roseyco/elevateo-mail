@@ -1,7 +1,5 @@
-// Sidebar brand lockup (DESIGN-SPEC §3, handoff branding/elevateo-logo.png = gold mark above
-// "ELEVATEO CO."): the handoff mark on its dark tile beside the typeset wordmark at the 24px logo
-// height EmailGuard uses. Typeset text inherits the slate colour in both themes; the mark artwork
-// itself is never recoloured.
+// Corporate brand lockup uses the canonical artwork on white beside a near-black wordmark.
+// AIDEV-NOTE: Artwork is never recoloured; the decorative image avoids a duplicate accessible name.
 import { Link } from 'react-router'
 import { cx } from '@/lib/format'
 import { BrandMark } from './BrandMark'
@@ -16,7 +14,7 @@ export function BrandLockup({ to = '/', className, linked = true }: { to?: strin
   const body = (
     <>
       <BrandMark size={24} decorative className="rounded-md p-0.5" />
-      <span className="text-sm font-semibold uppercase leading-none tracking-[0.18em] text-zinc-800 dark:text-white">Elevateo Co.</span>
+      <span className="text-sm font-semibold uppercase leading-none tracking-[0.18em] text-fg ">Elevateo Co.</span>
     </>
   )
   if (!linked) return <span className={cx(LOCKUP, className)}>{body}</span>

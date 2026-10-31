@@ -60,9 +60,9 @@ describe('sidebar sections', () => {
     expect(within(admin).getByRole('link', { name: 'Help' }).getAttribute('href')).toBe('/help')
     expect(screen.getByRole('button', { name: 'Workspace: Test organization' })).toBeTruthy()
     expect(screen.getByRole('button', { name: 'Account and sign-out' }).textContent).toContain('Test user')
-    // AIDEV-NOTE: Compact publisher assets; BrandMark tests verify authentic hashes and transfer budgets.
+    // AIDEV-NOTE: Canonical brand asset; BrandMark tests verify provenance and reserved geometry.
     const mark = screen.getByTestId('brand-mark').querySelector('img')
-    expect(mark?.getAttribute('src')).toBe('/brand/elevateo-mark-64.png')
+    expect(mark?.getAttribute('src')).toBe('/brand/elevateo-logo.png')
     expect(mark?.getAttribute('alt')).toBe('')
     expect(screen.getByText('Elevateo Co.')).toBeTruthy()
   })

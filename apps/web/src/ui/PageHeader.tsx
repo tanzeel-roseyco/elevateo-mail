@@ -27,10 +27,10 @@ export function PageHeader({ title, subtitle, actions, help = true, className }:
             only page-specific actions (the inbox search box) need their own row below the title. */}
         <div className={cx('flex items-center justify-between gap-4', Boolean(actions) && 'max-sm:flex-col max-sm:items-start')}>
           <div className="min-w-0 space-y-1">
-            <h1 tabIndex={-1} className={cx('text-lg font-medium text-zinc-800 dark:text-white', subtitle && 'mb-2')}>{title}</h1>
+            <h1 tabIndex={-1} className={cx('text-lg font-medium text-fg ', subtitle && 'mb-2')}>{title}</h1>
             {/* wrap-anywhere (not break-words): only overflow-wrap:anywhere shrinks a 4096-character
                 query's min-content width inside the flex column, so the page cannot widen. */}
-            {subtitle && <p className="wrap-anywhere text-sm text-zinc-500 dark:text-zinc-400">{subtitle}</p>}
+            {subtitle && <p className="wrap-anywhere text-sm text-muted ">{subtitle}</p>}
           </div>
           <div className="mb-6 flex flex-wrap items-center gap-3">
             {actions}
@@ -48,8 +48,8 @@ export function SectionHeader({ title, subtitle, action, className }: { title: s
   return (
     <div className={cx('mb-5 mt-6 flex items-center justify-between gap-4', className)}>
       <div className="min-w-0">
-        <h2 className="text-lg font-medium text-zinc-800 dark:text-white">{title}</h2>
-        {subtitle && <p className="text-sm text-zinc-500 dark:text-zinc-400">{subtitle}</p>}
+        <h2 className="text-lg font-medium text-fg ">{title}</h2>
+        {subtitle && <p className="text-sm text-muted ">{subtitle}</p>}
       </div>
       {action}
     </div>

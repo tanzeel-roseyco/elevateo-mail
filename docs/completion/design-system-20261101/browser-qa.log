@@ -1,0 +1,174 @@
+Chromium 156.0.8078.73 built on Debian GNU/Linux 12 (bookworm)
+
+Running 24 tests using 1 worker
+
+  ✓   1 [desktop-1440] › e2e/design-system.spec.ts:53:3 › corporate inbox (4.5s)
+  ✓   2 [desktop-1440] › e2e/design-system.spec.ts:53:3 › corporate thread (2.4s)
+  ✘   3 [desktop-1440] › e2e/design-system.spec.ts:53:3 › corporate draft-editor (35.8s)
+  ✓   4 [desktop-1440] › e2e/design-system.spec.ts:53:3 › corporate settings (6.0s)
+  ✘   5 [desktop-1440] › e2e/design-system.spec.ts:53:3 › corporate empty (6.2s)
+  ✓   6 [desktop-1440] › e2e/design-system.spec.ts:64:1 › corporate outreach (12.3s)
+  ✓   7 [desktop-1440] › e2e/design-system.spec.ts:71:1 › corporate email finder (2.5s)
+  ✓   8 [desktop-1440] › e2e/design-system.spec.ts:83:1 › corporate sign-in (1.6s)
+  ✓   9 [desktop-1440] › e2e/design-system.spec.ts:89:1 › corporate send review (4.5s)
+  ✓  10 [desktop-1440] › e2e/design-system.spec.ts:97:1 › corporate send status (5.5s)
+  ✓  11 [desktop-1440] › e2e/design-system.spec.ts:103:1 › corporate loading (3.7s)
+  ✓  12 [desktop-1440] › e2e/design-system.spec.ts:109:1 › corporate error (1.8s)
+  ✓  13 [narrow-390] › e2e/design-system.spec.ts:53:3 › corporate inbox (1.9s)
+  ✓  14 [narrow-390] › e2e/design-system.spec.ts:53:3 › corporate thread (2.8s)
+  ✘  15 [narrow-390] › e2e/design-system.spec.ts:53:3 › corporate draft-editor (36.1s)
+  ✓  16 [narrow-390] › e2e/design-system.spec.ts:53:3 › corporate settings (3.3s)
+  ✘  17 [narrow-390] › e2e/design-system.spec.ts:53:3 › corporate empty (7.4s)
+  ✓  18 [narrow-390] › e2e/design-system.spec.ts:64:1 › corporate outreach (5.3s)
+  ✓  19 [narrow-390] › e2e/design-system.spec.ts:71:1 › corporate email finder (2.3s)
+  ✓  20 [narrow-390] › e2e/design-system.spec.ts:83:1 › corporate sign-in (3.0s)
+  ✓  21 [narrow-390] › e2e/design-system.spec.ts:89:1 › corporate send review (7.2s)
+  ✓  22 [narrow-390] › e2e/design-system.spec.ts:97:1 › corporate send status (18.0s)
+  ✓  23 [narrow-390] › e2e/design-system.spec.ts:103:1 › corporate loading (26.8s)
+  ✓  24 [narrow-390] › e2e/design-system.spec.ts:109:1 › corporate error (1.4s)
+
+
+  1) [desktop-1440] › e2e/design-system.spec.ts:53:3 › corporate draft-editor ──────────────────────
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.scrollIntoViewIfNeeded: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('link', { name: 'Review simulated send' })
+
+
+      57 |     await capture(page, info, name)
+      58 |     if (name === 'draft-editor') {
+    > 59 |       await page.getByRole('link', { name: 'Review simulated send' }).scrollIntoViewIfNeeded()
+         |                                                                       ^
+      60 |       await capture(page, info, 'draft-editor-actions')
+      61 |     }
+      62 |   })
+        at /qa/apps/web/e2e/design-system.spec.ts:59:71
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../evidence/browser/design-system-corporate-draft-editor-desktop-1440/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../evidence/browser/design-system-corporate-draft-editor-desktop-1440/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../evidence/browser/design-system-corporate-draft-editor-desktop-1440/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../../evidence/browser/design-system-corporate-draft-editor-desktop-1440/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [desktop-1440] › e2e/design-system.spec.ts:53:3 › corporate empty ─────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('Nothing archived', { exact: true }).first()
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('Nothing archived', { exact: true }).first() with timeout 5000ms
+      - waiting for getByText('Nothing archived', { exact: true }).first()
+
+
+      54 |     await page.emulateMedia({ colorScheme: 'dark' })
+      55 |     await page.goto(`/dev-fixtures.html#${path}`)
+    > 56 |     await expect(page.getByText(ready, { exact: true }).first()).toBeVisible()
+         |                                                                  ^
+      57 |     await capture(page, info, name)
+      58 |     if (name === 'draft-editor') {
+      59 |       await page.getByRole('link', { name: 'Review simulated send' }).scrollIntoViewIfNeeded()
+        at /qa/apps/web/e2e/design-system.spec.ts:56:66
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../evidence/browser/design-system-corporate-empty-desktop-1440/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../evidence/browser/design-system-corporate-empty-desktop-1440/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../evidence/browser/design-system-corporate-empty-desktop-1440/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../../evidence/browser/design-system-corporate-empty-desktop-1440/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) [narrow-390] › e2e/design-system.spec.ts:53:3 › corporate draft-editor ────────────────────────
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.scrollIntoViewIfNeeded: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('link', { name: 'Review simulated send' })
+
+
+      57 |     await capture(page, info, name)
+      58 |     if (name === 'draft-editor') {
+    > 59 |       await page.getByRole('link', { name: 'Review simulated send' }).scrollIntoViewIfNeeded()
+         |                                                                       ^
+      60 |       await capture(page, info, 'draft-editor-actions')
+      61 |     }
+      62 |   })
+        at /qa/apps/web/e2e/design-system.spec.ts:59:71
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../evidence/browser/design-system-corporate-draft-editor-narrow-390/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../evidence/browser/design-system-corporate-draft-editor-narrow-390/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../evidence/browser/design-system-corporate-draft-editor-narrow-390/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../../evidence/browser/design-system-corporate-draft-editor-narrow-390/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4) [narrow-390] › e2e/design-system.spec.ts:53:3 › corporate empty ───────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('Nothing archived', { exact: true }).first()
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('Nothing archived', { exact: true }).first() with timeout 5000ms
+      - waiting for getByText('Nothing archived', { exact: true }).first()
+
+
+      54 |     await page.emulateMedia({ colorScheme: 'dark' })
+      55 |     await page.goto(`/dev-fixtures.html#${path}`)
+    > 56 |     await expect(page.getByText(ready, { exact: true }).first()).toBeVisible()
+         |                                                                  ^
+      57 |     await capture(page, info, name)
+      58 |     if (name === 'draft-editor') {
+      59 |       await page.getByRole('link', { name: 'Review simulated send' }).scrollIntoViewIfNeeded()
+        at /qa/apps/web/e2e/design-system.spec.ts:56:66
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../evidence/browser/design-system-corporate-empty-narrow-390/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../evidence/browser/design-system-corporate-empty-narrow-390/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../evidence/browser/design-system-corporate-empty-narrow-390/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../../evidence/browser/design-system-corporate-empty-narrow-390/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4 failed
+    [desktop-1440] › e2e/design-system.spec.ts:53:3 › corporate draft-editor ───────────────────────
+    [desktop-1440] › e2e/design-system.spec.ts:53:3 › corporate empty ──────────────────────────────
+    [narrow-390] › e2e/design-system.spec.ts:53:3 › corporate draft-editor ─────────────────────────
+    [narrow-390] › e2e/design-system.spec.ts:53:3 › corporate empty ────────────────────────────────
+  20 passed (4.4m)

@@ -332,8 +332,8 @@ function DraftEditor({ mailboxId, draftId }: { mailboxId: string; draftId: strin
   return (
     <article aria-label="Draft" className="flex min-h-0 flex-col">
       {/* Status strip: back link, save state and the transport reminder. */}
-      <div className="flex flex-wrap items-center gap-2 border-b border-zinc-200 px-4 py-2 text-xs text-zinc-500 dark:border-zinc-700">
-        <Link to={backTo} className="inline-flex items-center gap-1 rounded-md font-medium text-zinc-700 hover:underline dark:text-zinc-300">
+      <div className="flex flex-wrap items-center gap-2 border-b border-line px-4 py-2 text-xs text-muted ">
+        <Link to={backTo} className="inline-flex items-center gap-1 rounded-md font-medium text-fg hover:underline ">
           <ArrowLeftIcon className="size-4" /> Back to drafts
         </Link>
         <span aria-hidden>·</span>
@@ -347,8 +347,8 @@ function DraftEditor({ mailboxId, draftId }: { mailboxId: string; draftId: strin
         <Badge tone="warn" size="sm" className="ms-auto">Draft only — nothing is sent</Badge>
       </div>
       <h1 ref={headingRef} tabIndex={-1} className="sr-only">{title}</h1>
-      {!canCompose && <p role="alert" className="border-b border-zinc-200 px-4 py-2 text-sm text-red-500 dark:border-zinc-700">Composing is not available in this mailbox; this draft is shown read-only.</p>}
-      {note !== null && <p role="status" className="border-b border-zinc-200 bg-zinc-50 px-4 py-2 text-sm text-zinc-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">{note}</p>}
+      {!canCompose && <p role="alert" className="border-b border-line px-4 py-2 text-sm text-danger ">Composing is not available in this mailbox; this draft is shown read-only.</p>}
+      {note !== null && <p role="status" className="border-b border-line bg-surface-2 px-4 py-2 text-sm text-fg   ">{note}</p>}
 
       <form
         className="flex min-h-0 flex-1 flex-col"
@@ -392,7 +392,7 @@ function DraftEditor({ mailboxId, draftId }: { mailboxId: string; draftId: strin
             </Callout>
           )}
           {(status.kind === 'saving' || status.kind === 'uncertain') && (
-            <p role="note" className="text-sm text-amber-700 dark:text-amber-300">
+            <p role="note" className="text-sm text-warn ">
               Keep this tab open. Reloading or closing it loses your unsaved text and this save’s retry details.
               The save may still reach the server; recovery after a full reload is unavailable.
             </p>
@@ -409,7 +409,7 @@ function DraftEditor({ mailboxId, draftId }: { mailboxId: string; draftId: strin
               }
             >
               <span>{status.message}{hold !== null && ` The server asked to wait ${hold} s before retrying.`}</span>
-              <span className="block text-xs text-zinc-500">The retry resends exactly the same save (same attempt id and text), so it cannot create a second version.</span>
+              <span className="block text-xs text-muted">The retry resends exactly the same save (same attempt id and text), so it cannot create a second version.</span>
             </Callout>
           )}
           {status.kind === 'conflict' && (
@@ -438,7 +438,7 @@ function DraftEditor({ mailboxId, draftId }: { mailboxId: string; draftId: strin
         </div>
 
         {/* Footer: primary save, review-send entry, attachment and discard affordances. */}
-        <div className="mt-auto flex flex-wrap items-center gap-2 border-t border-zinc-200 px-4 py-3 dark:border-zinc-700">
+        <div className="mt-auto flex flex-wrap items-center gap-2 border-t border-line px-4 py-3 ">
           {status.kind !== 'uncertain' && (
             <Button type="submit" variant="primary" disabled={locked || Object.keys(errors).length > 0}>
               {status.kind === 'saving' ? 'Saving…' : buffer.savedVersion === 0 ? 'Save draft' : 'Save changes'}
@@ -447,7 +447,7 @@ function DraftEditor({ mailboxId, draftId }: { mailboxId: string; draftId: strin
           {!consumed && canCompose && mailbox?.capabilities.approve_send === true && buffer.savedVersion > 0 && status.kind === 'idle' && !dirty && recipientsText === formatRecipients(buffer.savedContent.to) && (
             <Link to={`/mailboxes/${mailboxId}/drafts/${draftId}/send-review`} className={buttonClass('outline', 'md')}>{sessionState.status === 'ready' && sessionState.session.simulation_mode ? 'Review simulated send' : 'Review send'}</Link>
           )}
-          {status.kind === 'saving' && <span role="status" className="text-xs text-zinc-500">Saving…</span>}
+          {status.kind === 'saving' && <span role="status" className="text-xs text-muted">Saving…</span>}
           <span className="ms-auto flex items-center gap-0.5">
             <IconButton label="Attach file (save the draft first)" disabled><PaperClipIcon className="size-5" /></IconButton>
             <IconButton label="Discard (not available yet)" disabled><TrashIcon className="size-5" /></IconButton>
@@ -458,18 +458,18 @@ function DraftEditor({ mailboxId, draftId }: { mailboxId: string; draftId: strin
   )
 }
 
-const COMPOSE_INPUT = 'w-full min-w-0 bg-transparent px-0 text-sm text-zinc-800 placeholder-zinc-400 outline-none focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50 dark:text-white'
+const COMPOSE_INPUT = 'w-full min-w-0 bg-transparent px-0 text-sm text-fg placeholder-muted outline-none focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50 '
 
 /** Borderless compose row: label on the start side, control filling the rest, hint/error below. */
 function ComposeField({ id, label, labelHidden = false, hint, error, children }: { id: string; label: string; labelHidden?: boolean; hint?: string; error: string | null; children: ReactNode }) {
   return (
-    <div className="border-b border-zinc-200 px-4 py-1 dark:border-zinc-700">
+    <div className="border-b border-line px-4 py-1 ">
       <div className="flex items-start gap-3">
-        <label htmlFor={id} className={cx('w-16 shrink-0 pt-2.5 text-sm text-zinc-500', labelHidden && 'sr-only')}>{label}</label>
+        <label htmlFor={id} className={cx('w-16 shrink-0 pt-2.5 text-sm text-muted', labelHidden && 'sr-only')}>{label}</label>
         <div className="min-w-0 flex-1">{children}</div>
       </div>
-      {hint && <p id={`${id}-hint`} className="pb-1 text-xs text-zinc-400">{hint}</p>}
-      {error && <p id={`${id}-error`} role="alert" className="pb-1 text-sm font-medium text-red-500">{error}</p>}
+      {hint && <p id={`${id}-hint`} className="pb-1 text-xs text-muted">{hint}</p>}
+      {error && <p id={`${id}-error`} role="alert" className="pb-1 text-sm font-medium text-danger">{error}</p>}
     </div>
   )
 }

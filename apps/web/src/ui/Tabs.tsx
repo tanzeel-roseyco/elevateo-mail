@@ -4,13 +4,13 @@
 import { Link, useLocation, useMatch } from 'react-router'
 import { cx } from '@/lib/format'
 
-const ROW = 'flex h-10 gap-4 overflow-x-auto border-b border-zinc-800/10 dark:border-white/10'
+const ROW = 'flex h-10 gap-4 overflow-x-auto border-b border-line '
 const TAB = '-mb-px inline-flex shrink-0 items-center border-b-2 px-2 text-sm font-medium'
 // AIDEV-NOTE: Colour classes never go in TAB. Tailwind orders same-property utilities itself, so a
-// border-transparent/text-zinc-500 default there silently out-ranked SELECTED (no gold underline).
-// Inactive text is zinc-500 (4.75:1 on white, AA) rather than the lighter reference grey.
-const INACTIVE = 'border-transparent text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-white'
-const SELECTED = 'border-(--color-accent-content) text-(--color-accent-content)'
+// border-transparent/text-muted default there silently out-ranked SELECTED (no gold underline).
+// Inactive text uses the same accessible muted ink as descriptions.
+const INACTIVE = 'border-transparent text-muted hover:text-fg  '
+const SELECTED = 'border-line text-fg'
 
 export interface LinkTab {
   to: string
@@ -82,7 +82,7 @@ export function ButtonTabs<K extends string>({ tabs, value, onChange, label, cla
             }}
           >
             {tab.label}
-            {typeof tab.count === 'number' && <span className="ms-1.5 text-xs text-zinc-500">{tab.count}</span>}
+            {typeof tab.count === 'number' && <span className="ms-1.5 text-xs text-muted">{tab.count}</span>}
           </button>
         )
       })}

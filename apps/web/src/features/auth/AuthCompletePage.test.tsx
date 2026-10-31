@@ -87,6 +87,6 @@ describe('completion form', () => {
     expect(sessionStorage.length).toBe(0)
     // The only resource is the constant brand mark: no script, stylesheet or image derived from the URL or the typed values.
     const resources = Array.from(document.querySelectorAll('script[src], link[href], img[src]'), (el) => el.getAttribute('src') ?? el.getAttribute('href'))
-    expect(resources).toEqual(['/brand/elevateo-mark-64.png'])
+    expect(resources).toEqual(['/brand/elevateo-logo.png'])
   })
 })

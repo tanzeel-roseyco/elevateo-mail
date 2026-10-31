@@ -107,15 +107,15 @@ function SearchResults({ q, mailboxId }: { q: string; mailboxId: string | undefi
   return (
     <section aria-label="Search results" className="flex min-h-0 flex-1 flex-col">
       <div className="mb-3 flex flex-wrap items-center gap-2">
-        <h2 className="text-base font-medium text-zinc-800 dark:text-white">Results</h2>
+        <h2 className="text-base font-medium text-fg ">Results</h2>
         {q !== '' && (
-          <p className="min-w-0 truncate text-sm text-zinc-500">
+          <p className="min-w-0 truncate text-sm text-muted">
             “{q}” in {mailboxId === undefined ? 'all your mailboxes' : mailboxName(mailboxId)}
           </p>
         )}
         <Badge tone="neutral" size="sm" className="ms-auto">Literal text match</Badge>
       </div>
-      <div className="overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-xs dark:border-zinc-700 dark:bg-zinc-800">
+      <div className="overflow-hidden rounded-xl border border-line bg-surface shadow-xs  ">
         {state.status === 'idle' && <EmptyState icon={<MagnifyingGlassIcon className="size-5" />} title="Search your mail" body="Enter a word or phrase and choose a search scope above. Matching is literal and case-insensitive; drafts and notes are not searched." className="m-6" />}
         {state.status === 'invalid' && <div role="alert"><EmptyState icon={<MagnifyingGlassIcon className="size-5" />} title="That search cannot be run" body={state.message} className="m-6" /></div>}
         {state.status === 'loading' && <div role="status" aria-label="Searching"><MessageRowSkeleton rows={5} /></div>}
@@ -137,7 +137,7 @@ function SearchResults({ q, mailboxId }: { q: string; mailboxId: string | undefi
               </ol>
             )}
             {state.nextCursor !== null && (
-              <div className="flex justify-center border-t border-zinc-200 p-3 dark:border-zinc-700">
+              <div className="flex justify-center border-t border-line p-3 ">
                 <Button size="sm" disabled={state.loadingMore} onClick={() => void load(state.nextCursor ?? undefined, true)}>
                   {state.loadingMore ? 'Loading…' : 'Show more results'}
                 </Button>

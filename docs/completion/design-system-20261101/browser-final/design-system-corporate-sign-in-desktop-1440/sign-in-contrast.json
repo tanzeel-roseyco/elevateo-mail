@@ -1,0 +1,376 @@
+{
+  "testEngine": {
+    "name": "axe-core",
+    "version": "4.10.3"
+  },
+  "testRunner": {
+    "name": "axe"
+  },
+  "testEnvironment": {
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36",
+    "windowWidth": 1440,
+    "windowHeight": 900,
+    "orientationAngle": 0,
+    "orientationType": "landscape-primary"
+  },
+  "timestamp": "2026-10-31T15:13:31.093Z",
+  "url": "http://127.0.0.1:4173/dev-fixtures.html#/fixtures?getSession=unauthenticated",
+  "toolOptions": {
+    "runOnly": {
+      "type": "rule",
+      "values": [
+        "color-contrast"
+      ]
+    },
+    "reporter": "v1"
+  },
+  "inapplicable": [],
+  "passes": [
+    {
+      "id": "color-contrast",
+      "impact": null,
+      "tags": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT"
+      ],
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+      "nodes": [
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#171717",
+                "bgColor": "#ffffff",
+                "contrastRatio": 17.92,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 17.92"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<span class=\"text-sm font-semibold uppercase leading-none tracking-[0.18em] text-fg \">Elevateo Co.</span>",
+          "target": [
+            ".leading-none"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#171717",
+                "bgColor": "#ffffff",
+                "contrastRatio": 17.92,
+                "fontSize": "13.5pt (18px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 17.92"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<h1 id=\"sign-in-heading\" tabindex=\"-1\" class=\"text-lg font-medium text-fg \">Sign in</h1>",
+          "target": [
+            "#sign-in-heading"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#171717",
+                "bgColor": "#f5f5f4",
+                "contrastRatio": 16.43,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 16.43"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<div class=\"text-sm\">Your session ended. Sign in again to continue.</div>",
+          "target": [
+            ".min-w-0 > .text-sm"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#171717",
+                "bgColor": "#ffffff",
+                "contrastRatio": 17.92,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 17.92"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button type=\"button\" class=\"inline-flex shrink-0 items-center justify-center whitespace-nowrap font-medium [&amp;_svg]:shrink-0 disabled:pointer-events-none disabled:opacity-50 bg-surface hover:bg-surface-2 text-fg border-2 border-line font-semibold h-10 gap-2 px-4 text-sm rounded-lg w-full\">",
+          "target": [
+            ".border-2"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#525252",
+                "bgColor": "#ffffff",
+                "contrastRatio": 7.81,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 7.81"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<div role=\"separator\" aria-label=\"or\" class=\"flex items-center gap-3 text-xs font-medium uppercase tracking-wider text-muted\"><span aria-hidden=\"true\" class=\"h-px flex-1 bg-surface-2 \"></span>or<span aria-hidden=\"true\" class=\"h-px flex-1 bg-surface-2 \"></span></div>",
+          "target": [
+            ".tracking-wider"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#171717",
+                "bgColor": "#ffffff",
+                "contrastRatio": 17.92,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 17.92"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<label for=\"_r_2_\" class=\"text-sm font-medium text-fg \">Email address</label>",
+          "target": [
+            "label[for=\"_r_2_\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#171717",
+                "bgColor": "#ffffff",
+                "contrastRatio": 17.92,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 17.92"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<input id=\"_r_2_\" autocomplete=\"username\" inputmode=\"email\" required=\"\" maxlength=\"320\" class=\"h-10 w-full rounded-lg border border-line border-b-line bg-surface ps-3 pe-3 text-base text-fg placeholder-muted shadow-xs sm:text-sm disabled:opacity-50    \" type=\"email\" value=\"\" name=\"email\" style=\"\">",
+          "target": [
+            "#_r_2_"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#171717",
+                "bgColor": "#ffffff",
+                "contrastRatio": 17.92,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 17.92"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<label for=\"_r_3_\" class=\"text-sm font-medium text-fg \">Password</label>",
+          "target": [
+            "label[for=\"_r_3_\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#171717",
+                "bgColor": "#ffffff",
+                "contrastRatio": 17.92,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 17.92"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button type=\"button\" class=\"text-sm font-medium text-fg hover:underline\">Forgot your password?</button>",
+          "target": [
+            ".hover\\:underline"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#171717",
+                "bgColor": "#ffffff",
+                "contrastRatio": 17.92,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 17.92"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<input id=\"_r_3_\" autocomplete=\"current-password\" required=\"\" class=\"h-10 w-full rounded-lg border border-line border-b-line bg-surface ps-3 pe-3 text-base text-fg placeholder-muted shadow-xs sm:text-sm disabled:opacity-50    \" type=\"password\" value=\"\" name=\"password\" style=\"\">",
+          "target": [
+            "#_r_3_"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#171717",
+                "bgColor": "#ffffff",
+                "contrastRatio": 17.92,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 17.92"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<button type=\"submit\" class=\"inline-flex shrink-0 items-center justify-center whitespace-nowrap font-medium [&amp;_svg]:shrink-0 disabled:pointer-events-none disabled:opacity-50 bg-surface hover:bg-surface-2 border border-line border-b-line text-fg shadow-xs     h-10 gap-2 px-4 text-sm rounded-lg w-full\">",
+          "target": [
+            "button[type=\"submit\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#525252",
+                "bgColor": "#ffffff",
+                "contrastRatio": 7.81,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 7.81"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<p class=\"text-xs leading-snug text-muted\">Sign in securely to this Elevateo Mail installation.</p>",
+          "target": [
+            "p"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "fgColor": "#525252",
+                "bgColor": "#f5f5f4",
+                "contrastRatio": 7.16,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element has sufficient color contrast of 7.16"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<div role=\"note\" class=\"pointer-events-none fixed inset-x-0 bottom-[var(--simulation-inset,0px)] z-30 border-t border-line bg-surface-2 px-3 pt-2 pb-[max(0.5rem,calc(env(safe-area-inset-bottom,0px)-var(--simulation-inset,0px)))] text-center text-xs text-muted   \">",
+          "target": [
+            ".pointer-events-none"
+          ]
+        }
+      ]
+    }
+  ],
+  "incomplete": [],
+  "violations": []
+}

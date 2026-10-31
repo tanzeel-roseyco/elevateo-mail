@@ -1,0 +1,256 @@
+[
+    {
+        "Screen":  "design-system-corporate-draft-editor-desktop-1440",
+        "Capture":  "draft-editor-actions-contrast",
+        "Violations":  0,
+        "IncompleteNodes":  1,
+        "Reasons":  [
+                        "elmPartiallyObscuring"
+                    ]
+    },
+    {
+        "Screen":  "design-system-corporate-draft-editor-desktop-1440",
+        "Capture":  "draft-editor-contrast",
+        "Violations":  0,
+        "IncompleteNodes":  1,
+        "Reasons":  [
+                        "elmPartiallyObscuring"
+                    ]
+    },
+    {
+        "Screen":  "design-system-corporate-draft-editor-narrow-390",
+        "Capture":  "draft-editor-actions-contrast",
+        "Violations":  0,
+        "IncompleteNodes":  1,
+        "Reasons":  [
+                        "elmPartiallyObscuring"
+                    ]
+    },
+    {
+        "Screen":  "design-system-corporate-draft-editor-narrow-390",
+        "Capture":  "draft-editor-contrast",
+        "Violations":  0,
+        "IncompleteNodes":  1,
+        "Reasons":  [
+                        "elmPartiallyObscuring"
+                    ]
+    },
+    {
+        "Screen":  "design-system-corporate-email-finder-desktop-1440",
+        "Capture":  "email-finder-contrast",
+        "Violations":  0,
+        "IncompleteNodes":  0,
+        "Reasons":  [
+
+                    ]
+    },
+    {
+        "Screen":  "design-system-corporate-email-finder-narrow-390",
+        "Capture":  "email-finder-contrast",
+        "Violations":  0,
+        "IncompleteNodes":  1,
+        "Reasons":  [
+                        "elmPartiallyObscuring"
+                    ]
+    },
+    {
+        "Screen":  "design-system-corporate-empty-desktop-1440",
+        "Capture":  "empty-contrast",
+        "Violations":  0,
+        "IncompleteNodes":  0,
+        "Reasons":  [
+
+                    ]
+    },
+    {
+        "Screen":  "design-system-corporate-empty-narrow-390",
+        "Capture":  "empty-contrast",
+        "Violations":  0,
+        "IncompleteNodes":  0,
+        "Reasons":  [
+
+                    ]
+    },
+    {
+        "Screen":  "design-system-corporate-error-desktop-1440",
+        "Capture":  "error-contrast",
+        "Violations":  0,
+        "IncompleteNodes":  0,
+        "Reasons":  [
+
+                    ]
+    },
+    {
+        "Screen":  "design-system-corporate-error-narrow-390",
+        "Capture":  "error-contrast",
+        "Violations":  0,
+        "IncompleteNodes":  0,
+        "Reasons":  [
+
+                    ]
+    },
+    {
+        "Screen":  "design-system-corporate-inbox-desktop-1440",
+        "Capture":  "inbox-contrast",
+        "Violations":  0,
+        "IncompleteNodes":  1,
+        "Reasons":  [
+                        "bgOverlap"
+                    ]
+    },
+    {
+        "Screen":  "design-system-corporate-inbox-narrow-390",
+        "Capture":  "inbox-contrast",
+        "Violations":  0,
+        "IncompleteNodes":  0,
+        "Reasons":  [
+
+                    ]
+    },
+    {
+        "Screen":  "design-system-corporate-loading-desktop-1440",
+        "Capture":  "loading-contrast",
+        "Violations":  0,
+        "IncompleteNodes":  0,
+        "Reasons":  [
+
+                    ]
+    },
+    {
+        "Screen":  "design-system-corporate-loading-narrow-390",
+        "Capture":  "loading-contrast",
+        "Violations":  0,
+        "IncompleteNodes":  0,
+        "Reasons":  [
+
+                    ]
+    },
+    {
+        "Screen":  "design-system-corporate-outreach-desktop-1440",
+        "Capture":  "outreach-contrast",
+        "Violations":  0,
+        "IncompleteNodes":  0,
+        "Reasons":  [
+
+                    ]
+    },
+    {
+        "Screen":  "design-system-corporate-outreach-narrow-390",
+        "Capture":  "outreach-contrast",
+        "Violations":  0,
+        "IncompleteNodes":  0,
+        "Reasons":  [
+
+                    ]
+    },
+    {
+        "Screen":  "design-system-corporate-send-review-desktop-1440",
+        "Capture":  "send-review-actions-contrast",
+        "Violations":  0,
+        "IncompleteNodes":  0,
+        "Reasons":  [
+
+                    ]
+    },
+    {
+        "Screen":  "design-system-corporate-send-review-desktop-1440",
+        "Capture":  "send-review-contrast",
+        "Violations":  0,
+        "IncompleteNodes":  0,
+        "Reasons":  [
+
+                    ]
+    },
+    {
+        "Screen":  "design-system-corporate-send-review-narrow-390",
+        "Capture":  "send-review-actions-contrast",
+        "Violations":  0,
+        "IncompleteNodes":  1,
+        "Reasons":  [
+                        "elmPartiallyObscuring"
+                    ]
+    },
+    {
+        "Screen":  "design-system-corporate-send-review-narrow-390",
+        "Capture":  "send-review-contrast",
+        "Violations":  0,
+        "IncompleteNodes":  2,
+        "Reasons":  [
+                        "elmPartiallyObscuring"
+                    ]
+    },
+    {
+        "Screen":  "design-system-corporate-send-status-desktop-1440",
+        "Capture":  "send-status-contrast",
+        "Violations":  0,
+        "IncompleteNodes":  0,
+        "Reasons":  [
+
+                    ]
+    },
+    {
+        "Screen":  "design-system-corporate-send-status-narrow-390",
+        "Capture":  "send-status-contrast",
+        "Violations":  0,
+        "IncompleteNodes":  1,
+        "Reasons":  [
+                        "elmPartiallyObscuring"
+                    ]
+    },
+    {
+        "Screen":  "design-system-corporate-settings-desktop-1440",
+        "Capture":  "settings-contrast",
+        "Violations":  0,
+        "IncompleteNodes":  0,
+        "Reasons":  [
+
+                    ]
+    },
+    {
+        "Screen":  "design-system-corporate-settings-narrow-390",
+        "Capture":  "settings-contrast",
+        "Violations":  0,
+        "IncompleteNodes":  3,
+        "Reasons":  [
+                        "elmPartiallyObscured",
+                        "elmPartiallyObscuring"
+                    ]
+    },
+    {
+        "Screen":  "design-system-corporate-sign-in-desktop-1440",
+        "Capture":  "sign-in-contrast",
+        "Violations":  0,
+        "IncompleteNodes":  0,
+        "Reasons":  [
+
+                    ]
+    },
+    {
+        "Screen":  "design-system-corporate-sign-in-narrow-390",
+        "Capture":  "sign-in-contrast",
+        "Violations":  0,
+        "IncompleteNodes":  0,
+        "Reasons":  [
+
+                    ]
+    },
+    {
+        "Screen":  "design-system-corporate-thread-desktop-1440",
+        "Capture":  "thread-contrast",
+        "Violations":  0,
+        "IncompleteNodes":  1,
+        "Reasons":  [
+                        "elmPartiallyObscured"
+                    ]
+    },
+    {
+        "Screen":  "design-system-corporate-thread-narrow-390",
+        "Capture":  "thread-contrast",
+        "Violations":  0,
+        "IncompleteNodes":  3,
+        "Reasons":  [
+                        "elmPartiallyObscured",
+                        "elmPartiallyObscuring"
+                    ]
+    }
+]

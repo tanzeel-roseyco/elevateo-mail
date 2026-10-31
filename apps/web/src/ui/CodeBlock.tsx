@@ -30,7 +30,7 @@ export function CopyButton({ text, label = 'Copy', className }: { text: string; 
     <button
       type="button"
       onClick={() => void copy(text)}
-      className={cx('rounded-md px-2 py-1 text-xs font-medium text-zinc-500 hover:bg-zinc-200/60 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-white/10 dark:hover:text-white', className)}
+      className={cx('rounded-md px-2 py-1 text-xs font-medium text-muted hover:bg-surface-2 hover:text-fg   ', className)}
       aria-live="polite"
     >
       {status === 'copied' ? 'Copied' : status === 'failed' ? 'Copy failed' : label}
@@ -41,13 +41,13 @@ export function CopyButton({ text, label = 'Copy', className }: { text: string; 
 export function CodeBlock({ code, language, className }: { code: string; language?: string; className?: string }) {
   return (
     <div className={cx('relative', className)}>
-      {/* DESIGN-SPEC §5 "Code block with copy": rounded-lg bg-zinc-50 border-zinc-200 font-mono text-sm px-3 py-2. */}
-      <pre className="overflow-x-auto rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2 pe-20 font-mono text-sm leading-6 text-zinc-800 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100" data-language={language}>
+      {/* DESIGN-SPEC §5 "Code block with copy": rounded-lg bg-surface-2 border-line font-mono text-sm px-3 py-2. */}
+      <pre className="overflow-x-auto rounded-lg border border-line bg-surface-2 px-3 py-2 pe-20 font-mono text-sm leading-6 text-fg   " data-language={language}>
         <code>{code}</code>
       </pre>
-      {/* The fade gives Copy an opaque surface: long lines scroll under it instead of through it (390px). */}
-      <span aria-hidden className="pointer-events-none absolute inset-y-px end-px w-20 rounded-e-lg bg-linear-to-l from-zinc-50 from-60% to-transparent dark:from-zinc-900" />
-      <CopyButton text={code} className="absolute end-2 top-2 bg-zinc-50 dark:bg-zinc-900" />
+      {/* The solid backing gives Copy an opaque surface: long lines scroll under it instead of through it (390px). */}
+      <span aria-hidden className="pointer-events-none absolute inset-y-px end-px w-20 rounded-e-lg bg-surface-2 " />
+      <CopyButton text={code} className="absolute end-2 top-2 bg-surface-2 " />
     </div>
   )
 }

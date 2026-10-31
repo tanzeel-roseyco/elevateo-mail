@@ -49,7 +49,7 @@ function HelpSearchForm({ initial = '', autoFocus = false }: { initial?: string;
     <form role="search" aria-label="Search help articles" onSubmit={submit} className="flex max-w-2xl gap-2">
       <label htmlFor={id} className="sr-only">Search help articles</label>
       <span className="relative flex-1">
-        <MagnifyingGlassIcon aria-hidden className="pointer-events-none absolute start-3 top-1/2 size-5 -translate-y-1/2 text-zinc-400" />
+        <MagnifyingGlassIcon aria-hidden className="pointer-events-none absolute start-3 top-1/2 size-5 -translate-y-1/2 text-muted" />
         <input id={id} type="search" value={query} onChange={(event) => setDraft(event.target.value)} placeholder="Search for articles..." autoFocus={autoFocus} className={cx(inputClass, 'h-10 ps-10')} />
       </span>
       <Button type="submit" variant="primary">Search</Button>
@@ -98,12 +98,12 @@ function HelpSearchPage() {
 function ArticleList({ articles }: { articles: readonly Article[] }) {
   return (
     <Card className="p-0">
-      <ul className="divide-y divide-zinc-200 dark:divide-zinc-700" aria-label="Articles">
+      <ul className="divide-y divide-line " aria-label="Articles">
         {articles.map((article) => (
           <li key={article.slug}>
-            <Link to={`/help/articles/${article.slug}`} className="block px-6 py-4 hover:bg-zinc-50 dark:hover:bg-zinc-800">
-              <p className="text-sm font-medium text-zinc-800 dark:text-white">{article.title}</p>
-              <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">{article.summary}</p>
+            <Link to={`/help/articles/${article.slug}`} className="block px-6 py-4 hover:bg-surface-2 ">
+              <p className="text-sm font-medium text-fg ">{article.title}</p>
+              <p className="mt-1 text-sm text-muted ">{article.summary}</p>
             </Link>
           </li>
         ))}
@@ -140,7 +140,7 @@ function ArticlePage() {
     <article aria-labelledby="help-article-title">
       <Breadcrumbs crumbs={crumbs} />
       <PageHeader title={article.title} subtitle={article.summary} help={false} actions={<CopyForLlmButton article={article} />} />
-      <div className="max-w-3xl space-y-4 text-sm leading-6 text-zinc-800 dark:text-zinc-200">
+      <div className="max-w-3xl space-y-4 text-sm leading-6 text-fg ">
         <h2 id="help-article-title" className="sr-only">{article.title}</h2>
         {article.blocks.map((block, index) => <BlockView key={index} block={block} />)}
       </div>
@@ -189,9 +189,9 @@ function CommunityPage() {
           Elevateo does not run a public chat or forum in this build. Ask your workspace operator for the internal channel your team uses, or browse the help centre.
         </Callout>
         <Card>
-          <h2 className="flex items-center gap-2 text-base font-medium text-zinc-800 dark:text-white"><ChatBubbleLeftRightIcon className="size-5 text-zinc-400" />Ways to get help</h2>
-          <ul className="mt-3 list-disc space-y-1 ps-5 text-sm text-zinc-800 dark:text-zinc-200">
-            <li>Search the <Link to="/help" className="font-medium text-(--color-accent-content) underline-offset-4 hover:underline">help centre</Link> for guides and walkthroughs.</li>
+          <h2 className="flex items-center gap-2 text-base font-medium text-fg "><ChatBubbleLeftRightIcon className="size-5 text-muted" />Ways to get help</h2>
+          <ul className="mt-3 list-disc space-y-1 ps-5 text-sm text-fg ">
+            <li>Search the <Link to="/help" className="font-medium text-fg underline-offset-4 hover:underline">help centre</Link> for guides and walkthroughs.</li>
             <li>Use "Copy for LLM" on any article to bring its content into your assistant.</li>
             <li>Quote the request id from an error message when you contact your operator.</li>
           </ul>

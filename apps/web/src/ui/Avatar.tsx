@@ -23,7 +23,7 @@ export function Avatar({ name, size = 8, shape = 'square', className }: AvatarPr
     <span
       aria-hidden
       className={cx(
-        'inline-flex shrink-0 select-none items-center justify-center bg-zinc-200 font-medium text-zinc-700 dark:bg-zinc-700 dark:text-zinc-200',
+        'inline-flex shrink-0 select-none items-center justify-center bg-surface-2 font-medium text-fg  ',
         size === 10 ? 'size-10 text-sm' : 'size-8 text-xs',
         shape === 'circle' ? 'rounded-full' : 'rounded-md',
         className,

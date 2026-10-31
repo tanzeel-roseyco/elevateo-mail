@@ -43,9 +43,9 @@ export function SearchBox({ expanded = false, variant = expanded ? 'expanded' : 
     >
       {/* AIDEV-NOTE: Keep each visible label with its control when the expanded form wraps on mobile. */}
       <div className={full ? 'flex min-w-0 flex-1 basis-64 flex-col gap-1' : 'relative'}>
-        <label htmlFor={ids.q} className={full ? 'text-sm font-medium text-zinc-800 dark:text-white' : 'sr-only'}>Search mail</label>
+        <label htmlFor={ids.q} className={full ? 'text-sm font-medium text-fg ' : 'sr-only'}>Search mail</label>
         <div className="relative">
-          <MagnifyingGlassIcon aria-hidden className="pointer-events-none absolute start-3 top-1/2 size-5 -translate-y-1/2 text-zinc-400" />
+          <MagnifyingGlassIcon aria-hidden className="pointer-events-none absolute start-3 top-1/2 size-5 -translate-y-1/2 text-muted" />
           <input
             id={ids.q}
             type="search"
@@ -59,7 +59,7 @@ export function SearchBox({ expanded = false, variant = expanded ? 'expanded' : 
         </div>
       </div>
       <div className={full ? 'flex min-w-0 flex-1 basis-48 flex-col gap-1 sm:flex-none' : 'contents'}>
-        <label htmlFor={ids.mailbox} className={full ? 'text-sm font-medium text-zinc-800 dark:text-white' : 'sr-only'}>Search scope</label>
+        <label htmlFor={ids.mailbox} className={full ? 'text-sm font-medium text-fg ' : 'sr-only'}>Search scope</label>
         <Select id={ids.mailbox} value={mailbox} onChange={(e) => { setDraft({ ...fields, mailbox: e.target.value }); setEditing(true) }} className={full ? 'w-full min-w-0' : 'hidden max-w-40 md:block'}>
           <option value="">All mailboxes</option>
           {mailbox !== '' && (mailboxes.status !== 'ready' || !mailboxes.mailboxes.some((m) => m.id === mailbox)) && (

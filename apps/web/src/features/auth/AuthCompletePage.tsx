@@ -83,8 +83,8 @@ export function AuthCompletePage({ gateway }: { gateway: MailroomGateway }) {
     return (
       <AuthFrame>
         <div className="space-y-2">
-          <h1 ref={headingRef} tabIndex={-1} className="text-lg font-medium text-zinc-800 dark:text-white">{copy.title}</h1>
-          <p role="status" className="text-sm text-zinc-500 dark:text-zinc-400">{copy.body}</p>
+          <h1 ref={headingRef} tabIndex={-1} className="text-lg font-medium text-fg ">{copy.title}</h1>
+          <p role="status" className="text-sm text-muted ">{copy.body}</p>
         </div>
         {/* Plain navigation to the application root: this page lives outside the hash router. */}
         <a href="/" className={buttonClass('primary', 'md')}>
@@ -97,8 +97,8 @@ export function AuthCompletePage({ gateway }: { gateway: MailroomGateway }) {
   return (
     <AuthFrame>
       <div className="space-y-2">
-        <h1 ref={headingRef} tabIndex={-1} className="text-lg font-medium text-zinc-800 dark:text-white">Set your password</h1>
-        <p id={ids.hint} className="text-sm text-zinc-500 dark:text-zinc-400">Choose a password of at least 12 characters. Setting it completes your invitation or recovery and signs you in.</p>
+        <h1 ref={headingRef} tabIndex={-1} className="text-lg font-medium text-fg ">Set your password</h1>
+        <p id={ids.hint} className="text-sm text-muted ">Choose a password of at least 12 characters. Setting it completes your invitation or recovery and signs you in.</p>
       </div>
       <form onSubmit={submit} aria-busy={busy} aria-describedby={failure ? `${ids.hint} ${ids.error}` : ids.hint} className="flex flex-col gap-4" noValidate>
         <Field id={ids.password} label="New password">
@@ -129,7 +129,7 @@ export function AuthCompletePage({ gateway }: { gateway: MailroomGateway }) {
           />
         </Field>
         {failure && (
-          <p id={ids.error} role="alert" className="text-sm font-medium text-red-500">{failure.message}</p>
+          <p id={ids.error} role="alert" className="text-sm font-medium text-danger">{failure.message}</p>
         )}
         <Button type="submit" variant="primary" className="w-full" disabled={busy}>{busy ? 'Setting password…' : 'Set password and sign in'}</Button>
       </form>

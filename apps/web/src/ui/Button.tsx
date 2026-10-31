@@ -1,7 +1,5 @@
-// Flux button recipes (DESIGN-SPEC §5.1) in Elevateo gold. Variants map onto EmailGuard's
-// primary / outline / ghost / danger buttons; `secondary` is kept as the outline alias used by
-// pre-existing pages, so no legacy call site changes meaning.
-// AIDEV-NOTE: Primary is gold with slate-950 text (8.4:1); never white-on-gold (2.4:1 fails AA).
+// Corporate buttons preserve the existing variant API and control geometry.
+// AIDEV-NOTE: A double-weight gold outline and bold ink distinguish primary actions without large gold fills.
 import type { ButtonHTMLAttributes, ReactNode, Ref } from 'react'
 import { cx } from '@/lib/format'
 
@@ -10,16 +8,16 @@ export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'sub
 export type ButtonSize = 'xs' | 'sm' | 'md'
 
 const OUTLINE =
-  'bg-white hover:bg-zinc-50 border border-zinc-200 border-b-zinc-300/80 text-zinc-800 shadow-xs dark:bg-zinc-700 dark:hover:bg-zinc-600/75 dark:border-white/10 dark:text-white'
+  'bg-surface hover:bg-surface-2 border border-line border-b-line text-fg shadow-xs    '
 
 const VARIANTS: Record<ButtonVariant, string> = {
   primary:
-    'bg-(--color-accent) hover:bg-[color-mix(in_oklab,var(--color-accent),transparent_10%)] text-(--color-accent-foreground) border border-black/10 shadow-[inset_0_1px_rgb(255_255_255/0.2)]',
+    'bg-surface hover:bg-surface-2 text-fg border-2 border-line font-semibold',
   outline: OUTLINE,
   secondary: OUTLINE,
-  ghost: 'bg-transparent hover:bg-zinc-800/5 text-zinc-800 dark:hover:bg-white/15 dark:text-white',
-  subtle: 'bg-transparent hover:bg-zinc-800/5 text-zinc-500 hover:text-zinc-800 dark:hover:bg-white/15 dark:text-zinc-400 dark:hover:text-white',
-  danger: 'bg-red-500 hover:bg-red-600 text-white border border-black/10 shadow-[inset_0_1px_rgb(255_255_255/0.2)]',
+  ghost: 'bg-transparent hover:bg-surface-2 text-fg  ',
+  subtle: 'bg-transparent hover:bg-surface-2 text-muted hover:text-fg   ',
+  danger: 'bg-danger hover:bg-danger text-danger-fg border border-line ',
 }
 // Captured recipes: "Get Help"/"View All" are h-10 text-xs rounded-lg (ps-3 pe-4 with a trailing
 // icon); the h-8 controls are rounded-md; plain h-10 buttons use px-4.

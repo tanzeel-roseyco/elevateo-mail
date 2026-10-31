@@ -44,7 +44,7 @@ struct ThreadDetailView: View {
                         if let error = pager.paginationError {
                             Text(error)
                                 .font(.footnote)
-                                .foregroundStyle(.red)
+                                .foregroundStyle(CorporateTheme.danger)
                                 .accessibilityAddTraits(.updatesFrequently)
                         }
                         if pager.hasMore {
@@ -168,13 +168,13 @@ struct MessageView: View {
                 if let at = message.sentAt {
                     Text(at.date, format: .dateTime.day().month().hour().minute())
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(CorporateTheme.muted)
                 }
             }
             if !message.to.isEmpty {
                 Text("To: \(message.to.map { $0.displayName ?? $0.address ?? "unknown" }.joined(separator: ", "))")
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(CorporateTheme.muted)
             }
             // Plain Text view: no HTML, no link detection, no remote content.
             Text(verbatim: message.bodyText)
@@ -183,17 +183,17 @@ struct MessageView: View {
             if message.bodyTruncated {
                 Text("Message truncated by the server.")
                     .font(.caption2)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(CorporateTheme.muted)
             }
             if message.attachmentCount > 0 {
                 Label("\(message.attachmentCount) attachment(s) — view in the web app", systemImage: "paperclip")
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(CorporateTheme.muted)
             }
         }
         .padding(12)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.quaternary.opacity(0.4), in: RoundedRectangle(cornerRadius: 10))
+        .background(CorporateTheme.neutral, in: RoundedRectangle(cornerRadius: 4))
         .accessibilityElement(children: .combine)
     }
 }

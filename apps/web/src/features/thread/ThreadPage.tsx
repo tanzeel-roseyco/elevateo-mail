@@ -303,13 +303,13 @@ function ConversationReader({ mailboxId, threadId, readDirectMessage, attachment
 
   return (
     <article aria-label="Conversation" className="flex min-h-0 flex-1 flex-col">
-      <div className="overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-xs dark:border-zinc-700 dark:bg-zinc-800">
+      <div className="overflow-hidden rounded-xl border border-line bg-surface shadow-xs  ">
         {/* Thread toolbar (INBOX-SPEC thread view): back, folder moves, snooze, star; all server writes. */}
-        <div className="flex min-h-12 flex-wrap items-center gap-1 border-b border-zinc-200 px-2 dark:border-zinc-700">
-          <Link to={backTo} className="inline-flex h-8 items-center gap-1.5 rounded-lg px-2 text-sm font-medium text-zinc-700 hover:bg-zinc-800/5 dark:text-zinc-300 dark:hover:bg-white/10">
+        <div className="flex min-h-12 flex-wrap items-center gap-1 border-b border-line px-2 ">
+          <Link to={backTo} className="inline-flex h-8 items-center gap-1.5 rounded-lg px-2 text-sm font-medium text-fg hover:bg-surface-2  ">
             <ArrowLeftIcon className="size-5" /> Back to conversations
           </Link>
-          <span className="mx-1 h-5 w-px bg-zinc-200 dark:bg-zinc-700" aria-hidden />
+          <span className="mx-1 h-5 w-px bg-surface-2 " aria-hidden />
           {folderActionsFor(actionView).map((action) => (
             <IconButton key={action.key} label={action.label} disabled={!canWrite || busy} onClick={() => void applyFolder(action)}>
               <action.Icon className="size-5" />
@@ -318,7 +318,7 @@ function ConversationReader({ mailboxId, threadId, readDirectMessage, attachment
           {canSnoozeIn(actionView) && <SnoozeMenu snoozedUntil={snoozedUntil} disabled={!canWrite || busy} onSnooze={(at) => void applySnooze(at)} />}
           <div className="flex-1" />
           <IconButton label={starred ? 'Unstar' : 'Star'} aria-pressed={starred} disabled={!canWrite || busy} onClick={() => void toggleStar()}>
-            {starred ? <StarSolidIcon className="size-5 text-gold-500" /> : <StarIcon className="size-5" />}
+            {starred ? <StarSolidIcon className="size-5 text-fg" /> : <StarIcon className="size-5" />}
           </IconButton>
         </div>
         {mutations.error !== null && (
@@ -342,14 +342,14 @@ function ConversationReader({ mailboxId, threadId, readDirectMessage, attachment
           <>
             <header className="px-6 pb-4 pt-5">
               <div className="flex flex-wrap items-center gap-2">
-                <h1 ref={headingRef} tabIndex={-1} className="min-w-0 text-xl font-medium text-zinc-800 dark:text-white">
+                <h1 ref={headingRef} tabIndex={-1} className="min-w-0 text-xl font-medium text-fg ">
                   {state.thread.subject ?? '(no subject)'}
                 </h1>
                 {state.thread.subject_truncated && <Badge tone="warn" size="sm">Subject shortened</Badge>}
                 {state.thread.unread && <Badge tone="accent" size="sm">Unread</Badge>}
               </div>
               <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-2">
-                <p className="text-xs text-zinc-500">
+                <p className="text-xs text-muted">
                   {state.thread.message_count} message{state.thread.message_count === 1 ? '' : 's'} in this conversation
                 </p>
                 <ReadStateControl
@@ -374,7 +374,7 @@ function ConversationReader({ mailboxId, threadId, readDirectMessage, attachment
               </div>
             )}
             {canCompose && (replyMessage === null || replyAddress(replyMessage) === null) && (
-              <p className="px-6 pb-4 text-xs text-zinc-500">
+              <p className="px-6 pb-4 text-xs text-muted">
                 {selectedMessageId === null ? 'A message with a sender is needed to reply.' : 'This selected message cannot be replied to yet.'}
               </p>
             )}
@@ -386,10 +386,10 @@ function ConversationReader({ mailboxId, threadId, readDirectMessage, attachment
               <EmptyState icon={<EnvelopeIcon className="size-5" />} title="Nothing on this page" body="This page of the conversation was empty, but more messages may be available below." className="mx-6 mb-6" />
             )}
             {!selectedOnPage && directResult?.status === 'ready' && (
-              <ol className="border-t border-zinc-200 dark:border-zinc-700">
-                <li ref={selectedMessageRef} tabIndex={-1} aria-label="Selected message" className="border-s-2 border-s-gold-500 bg-gold-50/40 px-6 py-5 dark:bg-gold-400/5">
+              <ol className="border-t border-line ">
+                <li ref={selectedMessageRef} tabIndex={-1} aria-label="Selected message" className="border-s-2 border-s-line bg-surface px-6 py-5 ">
                   <MessageHeader message={directResult.message} />
-                  <pre className="mt-3 whitespace-pre-wrap break-words font-sans text-sm leading-6 text-zinc-700 dark:text-zinc-300">{directResult.message.body_text}</pre>
+                  <pre className="mt-3 whitespace-pre-wrap break-words font-sans text-sm leading-6 text-fg ">{directResult.message.body_text}</pre>
                   <footer className="mt-3 flex flex-wrap items-center gap-2">
                     {canCompose && replyAddress(directResult.message) !== null && (
                       <Button size="sm" icon={<ArrowUturnLeftIcon className="size-4" />} onClick={() => replyToMessage(directResult.message)}>Reply to this sender as draft</Button>
@@ -400,17 +400,17 @@ function ConversationReader({ mailboxId, threadId, readDirectMessage, attachment
                 </li>
               </ol>
             )}
-            <ol className="divide-y divide-zinc-200 border-t border-zinc-200 dark:divide-zinc-700 dark:border-zinc-700">
+            <ol className="divide-y divide-line border-t border-line  ">
               {state.messages.map((message) => {
                 const isSelected = canonicalId(message.id) === selectedMessageId
                 return (
-                  <li key={message.id} ref={isSelected ? selectedMessageRef : undefined} tabIndex={isSelected ? -1 : undefined} aria-label={isSelected ? 'Selected message' : undefined} className={cx('px-6 py-5', isSelected && 'border-s-2 border-s-gold-500 bg-gold-50/40 dark:bg-gold-400/5')}>
+                  <li key={message.id} ref={isSelected ? selectedMessageRef : undefined} tabIndex={isSelected ? -1 : undefined} aria-label={isSelected ? 'Selected message' : undefined} className={cx('px-6 py-5', isSelected && 'border-s-2 border-s-line bg-surface ')}>
                     <MessageHeader message={message} />
                     {/* Escaped plaintext only: React text rendering in a wrapping <pre>; nothing is parsed. */}
-                    <pre className="mt-3 whitespace-pre-wrap break-words font-sans text-sm leading-6 text-zinc-700 dark:text-zinc-300">{message.body_text}</pre>
+                    <pre className="mt-3 whitespace-pre-wrap break-words font-sans text-sm leading-6 text-fg ">{message.body_text}</pre>
                     {/* flex-wrap: both badges together overflow a 390px viewport otherwise (r10 visual QA). */}
                     <footer className="mt-3 flex flex-wrap items-center gap-2">
-                      <Link to={`?${view === 'all' ? '' : `filter=${view}&`}message=${encodeURIComponent(message.id)}`} aria-current={isSelected ? 'location' : undefined} className="rounded-md text-sm font-medium text-(--color-accent-content) underline-offset-4 hover:underline">Open this message</Link>
+                      <Link to={`?${view === 'all' ? '' : `filter=${view}&`}message=${encodeURIComponent(message.id)}`} aria-current={isSelected ? 'location' : undefined} className="rounded-md text-sm font-medium text-fg underline-offset-4 hover:underline">Open this message</Link>
                       {canCompose && replyAddress(message) !== null && (
                         <Button size="sm" icon={<ArrowUturnLeftIcon className="size-4" />} onClick={() => replyToMessage(message)}>Reply to this sender as draft</Button>
                       )}
@@ -422,9 +422,9 @@ function ConversationReader({ mailboxId, threadId, readDirectMessage, attachment
               })}
             </ol>
             {state.nextCursor !== null && (
-              <div className="flex justify-center border-t border-zinc-200 p-3 dark:border-zinc-700">
+              <div className="flex justify-center border-t border-line p-3 ">
                 <div className="flex flex-col items-center gap-2">
-                  {state.pageError !== null && <p role="alert" className="text-sm text-red-500">{state.pageError}</p>}
+                  {state.pageError !== null && <p role="alert" className="text-sm text-danger">{state.pageError}</p>}
                   <Button size="sm" disabled={state.loadingMore} onClick={() => load(state.nextCursor ?? undefined, true)}>
                     {state.loadingMore ? 'Loading…' : state.pageError !== null ? 'Retry more messages' : 'Show more messages'}
                   </Button>
@@ -433,7 +433,7 @@ function ConversationReader({ mailboxId, threadId, readDirectMessage, attachment
             )}
             {/* Reply bar (INBOX-SPEC): every button starts a draft; nothing is sent from here. */}
             {canCompose && (
-              <div className="flex flex-wrap items-center gap-2 border-t border-zinc-200 px-6 py-4 dark:border-zinc-700">
+              <div className="flex flex-wrap items-center gap-2 border-t border-line px-6 py-4 ">
                 <Button icon={<ArrowUturnLeftIcon className="size-4" />} disabled={replyMessage === null || replyAddress(replyMessage) === null || sessionState.status !== 'ready'}
                   onClick={() => { if (replyMessage !== null) replyToMessage(replyMessage) }}>
                   Reply as draft
@@ -468,13 +468,13 @@ function MessageHeader({ message }: { message: Message }) {
     <header className="flex items-start gap-3">
       <Avatar name={name} size={10} shape="circle" />
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-semibold text-zinc-800 dark:text-white">{name}</p>
-        <p className="truncate text-xs text-zinc-500">
+        <p className="truncate text-sm font-semibold text-fg ">{name}</p>
+        <p className="truncate text-xs text-muted">
           {message.sender?.display_name && message.sender.address ? `${message.sender.address} · ` : ''}
           {sameAddressLine(message)}
         </p>
       </div>
-      <time dateTime={message.sent_at ?? undefined} className="shrink-0 text-xs tabular-nums text-zinc-500">
+      <time dateTime={message.sent_at ?? undefined} className="shrink-0 text-xs tabular-nums text-muted">
         {message.sent_at === null ? 'No date recorded' : formatDateTime(message.sent_at)}
       </time>
     </header>
