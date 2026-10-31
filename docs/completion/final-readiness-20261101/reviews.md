@@ -55,7 +55,6 @@ Design simulations: lost acknowledgement favors one bounded pending payload over
 | P26c | deliveryFilters:18-26; IntegrationsPages.tsx:89-100; SettingsLayout:1-87; SettingsRoutes:1-47; main.tsx:1-44 | 199 | 0 | 0 |
 | Suppression/verification repair | SuppressionsPage.tsx:7-134; SuppressionsPage.test.tsx:1-61; verification.Dockerfile:1-11 | 200 | 0 | 0 |
 | UI/connection repair | WindowLayoutTests:1-47; MainViewModelTests:286-320; MainViewModel:491-502; CredentialStoreTests:86; AssistantResetTests:85-87; ConnectionsPage.tsx:81-159; ConnectionsPage.test.tsx:57-79 | 200 | 0 | 0 |
-
 | Final web repair | ConnectionsPage.tsx:432-480,564-584; IntegrationsPages.tsx:28-44,68-106; ConnectionsReadiness.test.tsx:1-34 | 160 | 0 | 0 |
 
 Additional findings repaired (runtime results recorded separately):
@@ -71,3 +70,9 @@ Additional findings repaired (runtime results recorded separately):
 - P25 medium: grant selection lacked the contract's 50-mailbox maximum. The form now validates the shared limit with 50/51 boundary tests.
 - P25 medium: instructions advertised unpublished connector installation and confused connection secrets with API-user tokens. Setup is explicitly planned and fixture grants simulated; messaging regression added. This finding incorporates the earlier review evidence after the initial packet missed it.
 - P26 medium: URL query navigation did not update the uncontrolled suppression search input. Query-keyed remount plus navigation regression keeps visible state aligned.
+
+Runtime HTML nesting repair: ThreadPage.tsx:350-380 (31), ThreadPage.test.tsx:160-200 (41), ConnectionsReadiness.test.tsx:1-34 (34): 106 LOC, zero residual defects, 0/KLOC. Runtime found one invalid block-in-paragraph status wrapper defect; both loading/unavailable branches repaired with a regression. Lint also caught the new test's unused mock parameter, corrected with an explicit function type.
+
+Browser design review: playwright.config.ts:1-28, production.spec.ts:1-100, launch-visual-capture.cjs:1-72: 200 LOC, zero defects, 0/KLOC. Production URL tests mock APIs and do not establish backend integration. Operational follow-up: acceptance_runtime.py:39-110, run.py:115-175, run_focused_acceptance.py:1-50: 183 LOC, zero product defects, 0/KLOC; the existing backend browser harness rejects Windows paths and requires POSIX ownership.
+
+Batched boundary-test fixture follow-up: ConnectionsReadiness.test.tsx:1-36, 36 LOC, zero defects, 0/KLOC. Event-driven selection still distinguishes accepted 50 and rejected 51 selections. Full Docker runtime passes.

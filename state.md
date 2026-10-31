@@ -69,3 +69,7 @@ P24–P34 and dedicated design reviews ran in bounded packets; repairs and exact
 [review evidence](docs/completion/final-readiness-20261101/reviews.md). Web repairs await their Docker gate.
 Cargo.lock regeneration, remaining client gates and web visual/backend browser coverage remain in progress.
 Evidence: [Windows receipt](docs/completion/final-readiness-20261101/windows-receipt.md).
+
+## Client web verification checkpoint — 2026-11-01
+
+Docker Desktop final web gate passed: lint, typecheck, 1,195 tests / 99 files, production build and bundle budget. Five product defects repaired with regressions; browser visual verification remains pending. See docs/completion/final-readiness-20261101/web-receipt.md. Native/Android/iOS verification remains in progress; no deployment.

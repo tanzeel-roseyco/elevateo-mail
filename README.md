@@ -106,7 +106,7 @@ Its port-25 checks can get an IP blocklisted.
 | --- | --- |
 | Backend, contracts, Mox, MCP, native bridge | Implemented. Full local Docker gate passed on `feature/backend-completion`: 1,285 tests / 14,595 assertions, 412-assertion Mox protocol suite, real SMTP→IMAP application chain, encrypted restore, deploy dry run |
 | Email finder | Implemented. Module gates passed (53 backend tests, 12 browser cases) |
-| Clients | Windows Docker build: 0 warnings/errors, 93 tests and 7 installer regressions pass; unsigned installer built, Avalonia views inspected at 960/1280 px. P24–P34 and design reviews completed with repairs. Web repairs, native lock regeneration and remaining client gates are in progress. [Evidence](docs/completion/final-readiness-20261101/windows-receipt.md) |
+| Clients | Windows Docker build: 0 warnings/errors, 93 tests and 7 installer regressions pass; unsigned installer built, Avalonia views inspected at 960/1280 px. P24–P34 and design reviews completed with repairs. Web lint/types, 1,195 unit tests, production build and bundle budget pass. Browser QA and remaining native client gates are in progress. [Evidence](docs/completion/final-readiness-20261101/windows-receipt.md) |
 | Merged `main` | On `feature/final-readiness`: web gate passes (1,190 unit tests); fixture Playwright across four projects: 176 passed, 0 failed, 344 production-URL skips. Production browser coverage, visual QA, packaging and merged backend gates remain unverified |
 | Deployment | Not deployed. No live sends, DNS, MX or Cloudflare changes. Credentials are pending |
 | Known limits | Mac `.dmg` signing/notarization and the iOS app build need a macOS host. The Android emulator run needs about 8 GB free RAM |

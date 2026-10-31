@@ -175,6 +175,8 @@ describe('message reply draft', () => {
     })
     await waitFor(() => expect(direct).toHaveBeenCalledTimes(1))
     expect((screen.getByRole('button', { name: 'Reply as draft' }) as HTMLButtonElement).disabled).toBe(true)
+    // AIDEV-NOTE: Callout renders block elements; status containers must keep valid HTML nesting.
+    expect(screen.getByText('Loading selected message…').closest('p')).toBeNull()
     await act(async () => resolveDirect({
       context_id: 'context_A_0123456789', authorization_version: 'authz_A_0123456789',
       mailbox_id: CD.mailboxId, thread_id: CD.threadId,
