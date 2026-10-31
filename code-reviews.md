@@ -2684,3 +2684,15 @@ Final application-chain repair review covered115 primary LOC (wrapper99, HTTP us
 Further correction to the historical SMTP fixture review: the coherent run exposed a second missed defect in the original33-LOC repair packet: committing historical DDL restored obsolete SMTP credential constraints and authority functions. Together with the previously recorded role defect, that packet had2 execution-discovered defects (60.61/KLOC). The replacement uses transaction rollback for the entire historical experiment, asserts exact current credential constraint restoration, then runs the separate worker against current schema. Independent final review covered28 method LOC, zero residual defects (0/KLOC). It supersedes the earlier ad hoc function replay repair.
 
 Final coherent local acceptance: standard1285/14595 (four protocol skips covered by separate Mox4/412), dedicated28/202, boot2/12, app-chain1/88, HTTP1/33, Mailpit2/107, Ruby contracts19/264, Resend stub3/26 and worker revocation drain all passed; Steep and RuboCop506files clean. Independent MCP11, Node contracts50, operations62, native8Rust/15Python/1Docker lifecycle, historical31/1531, encrypted restore and deployment dry-run also passed. Evidence: docs/completion/backend-20261030-receipt.md. Historical pending statements above describe earlier checkpoints and are superseded only within this final tested scope.
+
+## Final client readiness reviews — 2026-11-01
+
+P24–P34 have now run, superseding their historical wave-1 pending status. Bounded packets
+(maximum 200 LOC) and a dedicated design review are recorded with exact ranges, defect counts
+and densities in [current evidence](docs/completion/final-readiness-20261101/reviews.md).
+The inherited [2026-10-30 review notes](docs/completion/final-readiness-20261030/review-findings.md)
+are preserved separately and are not double-counted as current findings. Final compile repair
+reviews: 48 LOC and 57 LOC, both zero defects (0/KLOC). Execution exposed one nullable
+argument error and two test compile/analyzer errors; all repaired before the passing Windows gate.
+Coverage denominators overlap; do not sum them as unique code coverage. Obsidian tools were
+unavailable; design scenarios were analytical, not Obsidian-backed. Web runtime verification is pending.

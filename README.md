@@ -100,13 +100,13 @@ Fill values in the order of [docs/credentials-last.md](docs/credentials-last.md)
 Before deploying, give the email-finder worker (`ELEVATEO_FINDER_PUBLIC_IP`) a different public IP from Mox.
 Its port-25 checks can get an IP blocklisted.
 
-## Current state (2026-10-30)
+## Current state (2026-11-01)
 
 | Area | State |
 | --- | --- |
 | Backend, contracts, Mox, MCP, native bridge | Implemented. Full local Docker gate passed on `feature/backend-completion`: 1,285 tests / 14,595 assertions, 412-assertion Mox protocol suite, real SMTP→IMAP application chain, encrypted restore, deploy dry run |
 | Email finder | Implemented. Module gates passed (53 backend tests, 12 browser cases) |
-| Web, macOS, Windows, Android, iOS clients | Implemented, and all 71 review defects fixed. **Not yet built or tested:** lint, typecheck, tests, packaging and visual QA run in one final Docker pass. `apps/native/src-tauri/Cargo.lock` must be regenerated first. Review packets P24–P34 have not run |
+| Clients | Windows Docker build: 0 warnings/errors, 93 tests and 7 installer regressions pass; unsigned installer built, Avalonia views inspected at 960/1280 px. P24–P34 and design reviews completed with repairs. Web repairs, native lock regeneration and remaining client gates are in progress. [Evidence](docs/completion/final-readiness-20261101/windows-receipt.md) |
 | Merged `main` | On `feature/final-readiness`: web gate passes (1,190 unit tests); fixture Playwright across four projects: 176 passed, 0 failed, 344 production-URL skips. Production browser coverage, visual QA, packaging and merged backend gates remain unverified |
 | Deployment | Not deployed. No live sends, DNS, MX or Cloudflare changes. Credentials are pending |
 | Known limits | Mac `.dmg` signing/notarization and the iOS app build need a macOS host. The Android emulator run needs about 8 GB free RAM |

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,9 +25,31 @@ public sealed record MessageRow(string Sender, string SentAt, string Body, bool 
 public partial class MainViewModel : ObservableObject, IDisposable
 {
     private readonly AppServices _services;
+    private CancellationTokenSource _sessionCts = new();
+    private CancellationTokenSource? _mailboxLoadCts;
+    private CancellationTokenSource? _threadsLoadCts;
     private CancellationTokenSource? _threadLoadCts;
+    private int _composerGeneration;
+    private string? _mailboxCursor, _threadsCursor, _messagesCursor;
 
-    public void Dispose() => _threadLoadCts?.Dispose();
+    // AIDEV-NOTE: cancellation plus identity checks reject even adapters that complete after cancellation.
+    private static void CancelLoad(ref CancellationTokenSource? source)
+    {
+        source?.Cancel();
+        source?.Dispose();
+        source = null;
+    }
+
+    public void Dispose()
+    {
+        _sessionCts.Cancel();
+        _sessionCts.Dispose();
+        CancelLoad(ref _mailboxLoadCts);
+        CancelLoad(ref _threadsLoadCts);
+        CancelLoad(ref _threadLoadCts);
+        Assistant.Dispose();
+        GC.SuppressFinalize(this);
+    }
 
     public MainViewModel(AppServices services)
     {
@@ -41,15 +64,26 @@ public partial class MainViewModel : ObservableObject, IDisposable
     [ObservableProperty] private bool _signInBusy;
     [ObservableProperty] private string? _signInError;
     [ObservableProperty] private string _accountLabel = "";
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(SaveDraftLabel))]
+    private bool _simulationMode;
+    public string SaveDraftLabel => SimulationMode ? "Simulate draft save" : "Save draft";
+    [ObservableProperty] private bool _hasMoreMailboxes;
+    [ObservableProperty] private bool _hasMoreThreads;
+    [ObservableProperty] private bool _hasMoreMessages;
 
     [RelayCommand]
     private async Task SignInAsync(CancellationToken ct)
     {
+        using var linked = CancellationTokenSource.CreateLinkedTokenSource(ct, _sessionCts.Token);
+        ct = linked.Token;
         SignInBusy = true;
         SignInError = null;
+        var established = false;
         try
         {
             var result = await _services.Authenticator.SignInAsync(ct);
+            if (ct.IsCancellationRequested) return;
             if (result.Success is null)
             {
                 SignInError = result.Failure!.Reason;
@@ -57,7 +91,9 @@ public partial class MainViewModel : ObservableObject, IDisposable
             }
 
             _services.Session.Establish(result.Success);
+            established = true;
             var session = await _services.Api.GetSessionAsync(ct);
+            ct.ThrowIfCancellationRequested();
             if (!session.IsSuccess)
             {
                 _services.Session.SignOut();
@@ -65,13 +101,20 @@ public partial class MainViewModel : ObservableObject, IDisposable
                 return;
             }
 
-            AccountLabel = session.Value!.Actor.DisplayName ?? session.Value.Organization.Name;
+            SimulationMode = session.Value!.SimulationMode;
+            AccountLabel = session.Value.Actor.DisplayName ?? session.Value.Organization.Name;
             IsSignedIn = true;
             await LoadMailboxesAsync(ct);
         }
         catch (OperationCanceledException)
         {
-            SignInError = "Sign-in was cancelled.";
+            // AIDEV-NOTE: SignInCommand is non-concurrent; roll back credentials if bootstrap was cancelled.
+            if (established) SignOut();
+            SignInError = "Sign-in was cancelled." + (SignInError is null ? "" : " " + SignInError);
+        }
+        catch (Win32Exception)
+        {
+            SignInError = "Windows Credential Manager could not update your credentials. Sign-in did not complete.";
         }
         finally
         {
@@ -82,15 +125,35 @@ public partial class MainViewModel : ObservableObject, IDisposable
     [RelayCommand]
     private void SignOut()
     {
-        // DESK-05: erase local tokens; server-side revocation applies to subsequent calls.
-        _services.Session.SignOut();
+        _sessionCts.Cancel();
+        _sessionCts.Dispose();
+        _sessionCts = new CancellationTokenSource();
+        CancelLoad(ref _mailboxLoadCts);
+        CancelLoad(ref _threadsLoadCts);
+        CancelLoad(ref _threadLoadCts);
+        // AIDEV-NOTE: clear private UI state before credential erasure, which can fail independently.
         IsSignedIn = false;
         Mailboxes.Clear();
-        Threads.Clear();
-        Messages.Clear();
         SelectedMailbox = null;
-        SelectedThread = null;
+        ClearConversation();
+        Threads.Clear();
+        MailboxesLoading = ThreadsLoading = false;
+        MailboxesError = ThreadsError = null;
+        MailboxesEmpty = ThreadsEmpty = false;
+        _mailboxCursor = _threadsCursor = null;
+        HasMoreMailboxes = HasMoreThreads = false;
         AccountLabel = "";
+        SimulationMode = false;
+        Assistant.Reset();
+        SignInError = null;
+        try
+        {
+            _services.Session.SignOut();
+        }
+        catch (Win32Exception)
+        {
+            SignInError = "Signed out locally, but Windows Credential Manager could not erase the stored credential.";
+        }
     }
 
     // ---- Mailboxes ----
@@ -101,14 +164,26 @@ public partial class MainViewModel : ObservableObject, IDisposable
     [ObservableProperty] private Mailbox? _selectedMailbox;
 
     [RelayCommand]
-    private async Task LoadMailboxesAsync(CancellationToken ct)
+    private Task LoadMailboxesAsync(CancellationToken ct) => LoadMailboxPageAsync(false, ct);
+
+    [RelayCommand]
+    private Task MoreMailboxesAsync(CancellationToken ct) => LoadMailboxPageAsync(true, ct);
+
+    private async Task LoadMailboxPageAsync(bool append, CancellationToken ct)
     {
+        if (append && (MailboxesLoading || _mailboxCursor is null)) return;
+        CancelLoad(ref _mailboxLoadCts);
+        _mailboxLoadCts = CancellationTokenSource.CreateLinkedTokenSource(ct, _sessionCts.Token);
+        var owner = _mailboxLoadCts;
+        ct = _mailboxLoadCts.Token;
+        var cursor = append ? _mailboxCursor : null;
         MailboxesLoading = true;
         MailboxesError = null;
         MailboxesEmpty = false;
         try
         {
-            var result = await _services.Api.ListMailboxesAsync(null, ct);
+            var result = await _services.Api.ListMailboxesAsync(cursor, ct);
+            if (ct.IsCancellationRequested) return;
             if (!result.IsSuccess)
             {
                 MailboxesError = result.Error!.Message;
@@ -116,30 +191,44 @@ public partial class MainViewModel : ObservableObject, IDisposable
                 return;
             }
 
-            Mailboxes.Clear();
+            if (!append)
+            {
+                // AIDEV-NOTE: an empty refreshed authorization list must also erase the previous mailbox context.
+                SelectedMailbox = null;
+                Mailboxes.Clear();
+            }
             foreach (var mailbox in result.Value!.Items)
             {
-                Mailboxes.Add(mailbox);
+                if (!Mailboxes.Any(m => m.Id == mailbox.Id)) Mailboxes.Add(mailbox);
             }
 
+            _mailboxCursor = result.Value.NextCursor == cursor ? null : result.Value.NextCursor;
+            HasMoreMailboxes = _mailboxCursor is not null;
             MailboxesEmpty = Mailboxes.Count == 0;
-            if (!MailboxesEmpty)
+            if (!MailboxesEmpty && !append)
             {
                 SelectedMailbox = Mailboxes[0];
             }
         }
+        catch (OperationCanceledException) when (ct.IsCancellationRequested) { }
         finally
         {
-            MailboxesLoading = false;
+            // AIDEV-NOTE: command cancellation clears loading; superseded operations cannot clear the new owner's state.
+            if (ReferenceEquals(owner, _mailboxLoadCts)) MailboxesLoading = false;
         }
     }
 
     partial void OnSelectedMailboxChanged(Mailbox? value)
     {
-        if (value is not null)
-        {
-            _ = LoadThreadsCommand.ExecuteAsync(null);
-        }
+        CancelLoad(ref _threadsLoadCts);
+        Threads.Clear();
+        ThreadsLoading = false;
+        ThreadsError = null;
+        ThreadsEmpty = false;
+        _threadsCursor = null;
+        HasMoreThreads = false;
+        ClearConversation();
+        if (value is not null) _ = LoadThreadsAsync(CancellationToken.None);
     }
 
     // ---- Threads ----
@@ -150,20 +239,32 @@ public partial class MainViewModel : ObservableObject, IDisposable
     [ObservableProperty] private ThreadRow? _selectedThread;
 
     [RelayCommand]
-    private async Task LoadThreadsAsync(CancellationToken ct)
+    private Task LoadThreadsAsync(CancellationToken ct) => LoadThreadsPageAsync(false, ct);
+
+    [RelayCommand]
+    private Task MoreThreadsAsync(CancellationToken ct) => LoadThreadsPageAsync(true, ct);
+
+    private async Task LoadThreadsPageAsync(bool append, CancellationToken ct)
     {
+        if (append && (ThreadsLoading || _threadsCursor is null)) return;
         var mailbox = SelectedMailbox;
         if (mailbox is null)
         {
             return;
         }
 
+        CancelLoad(ref _threadsLoadCts);
+        _threadsLoadCts = CancellationTokenSource.CreateLinkedTokenSource(ct, _sessionCts.Token);
+        var owner = _threadsLoadCts;
+        ct = _threadsLoadCts.Token;
+        var cursor = append ? _threadsCursor : null;
         ThreadsLoading = true;
         ThreadsError = null;
         ThreadsEmpty = false;
         try
         {
-            var result = await _services.Api.ListThreadsAsync(mailbox.Id, null, ct);
+            var result = await _services.Api.ListThreadsAsync(mailbox.Id, cursor, ct);
+            if (ct.IsCancellationRequested || SelectedMailbox?.Id != mailbox.Id) return;
             if (!result.IsSuccess)
             {
                 ThreadsError = result.Error!.Message;
@@ -171,9 +272,10 @@ public partial class MainViewModel : ObservableObject, IDisposable
                 return;
             }
 
-            Threads.Clear();
+            if (!append) Threads.Clear();
             foreach (var t in result.Value!.Items)
             {
+                if (Threads.Any(row => row.Id == t.Id)) continue;
                 Threads.Add(new ThreadRow(
                     t.Id,
                     t.Subject ?? "(no subject)",
@@ -183,20 +285,21 @@ public partial class MainViewModel : ObservableObject, IDisposable
                     t.LastMessageAt ?? ""));
             }
 
+            _threadsCursor = result.Value.NextCursor == cursor ? null : result.Value.NextCursor;
+            HasMoreThreads = _threadsCursor is not null;
             ThreadsEmpty = Threads.Count == 0;
         }
+        catch (OperationCanceledException) when (ct.IsCancellationRequested) { }
         finally
         {
-            ThreadsLoading = false;
+            if (ReferenceEquals(owner, _threadsLoadCts)) ThreadsLoading = false;
         }
     }
 
     partial void OnSelectedThreadChanged(ThreadRow? value)
     {
-        if (value is not null)
-        {
-            _ = LoadThreadDetailAsync(value);
-        }
+        ClearConversation(false);
+        if (value is not null) _ = LoadThreadDetailAsync(value);
     }
 
     // ---- Thread view (plain text only) ----
@@ -205,7 +308,16 @@ public partial class MainViewModel : ObservableObject, IDisposable
     [ObservableProperty] private string? _threadError;
     [ObservableProperty] private string _threadSubject = "";
 
-    private async Task LoadThreadDetailAsync(ThreadRow row)
+    [RelayCommand]
+    private Task MoreMessagesAsync() => SelectedThread is { } row && !ThreadLoading && _messagesCursor is not null
+        ? LoadThreadDetailAsync(row, true) : Task.CompletedTask;
+
+    // AIDEV-NOTE: retry the failed page without clearing already loaded messages or unsaved composer text.
+    [RelayCommand]
+    private Task RetryMessagesAsync() => SelectedThread is { } row && !ThreadLoading
+        ? LoadThreadDetailAsync(row, true) : Task.CompletedTask;
+
+    private async Task LoadThreadDetailAsync(ThreadRow row, bool append = false)
     {
         var mailbox = SelectedMailbox;
         if (mailbox is null)
@@ -213,20 +325,23 @@ public partial class MainViewModel : ObservableObject, IDisposable
             return;
         }
 
-        // Cancel a previous in-flight detail load when the user moves selection quickly.
-        _threadLoadCts?.Cancel();
-        _threadLoadCts = new CancellationTokenSource();
+        CancelLoad(ref _threadLoadCts);
+        _threadLoadCts = CancellationTokenSource.CreateLinkedTokenSource(_sessionCts.Token);
+        var cursor = append ? _messagesCursor : null;
         var ct = _threadLoadCts.Token;
 
         ThreadLoading = true;
         ThreadError = null;
-        Messages.Clear();
-        ThreadSubject = row.Subject;
-        ResetComposer(row);
+        if (!append)
+        {
+            Messages.Clear();
+            ThreadSubject = row.Subject;
+            ResetComposer(row);
+        }
         try
         {
-            var result = await _services.Api.GetThreadAsync(row.Id, mailbox.Id, null, ct);
-            if (ct.IsCancellationRequested)
+            var result = await _services.Api.GetThreadAsync(row.Id, mailbox.Id, cursor, ct);
+            if (ct.IsCancellationRequested || SelectedMailbox?.Id != mailbox.Id || SelectedThread?.Id != row.Id)
             {
                 return;
             }
@@ -238,7 +353,9 @@ public partial class MainViewModel : ObservableObject, IDisposable
                 return;
             }
 
-            foreach (var m in result.Value!.Messages)
+            _messagesCursor = result.Value!.NextCursor == cursor ? null : result.Value.NextCursor;
+            HasMoreMessages = _messagesCursor is not null;
+            foreach (var m in result.Value.Messages)
             {
                 Messages.Add(new MessageRow(
                     m.Sender?.DisplayName ?? m.Sender?.AddressValue ?? "(unknown sender)",
@@ -268,14 +385,37 @@ public partial class MainViewModel : ObservableObject, IDisposable
     private string? _composerDraftId;
     private int _composerVersion;
     private string? _composerThreadId;
+    private DraftSaveInput? _pendingSave;
 
-    private void ResetComposer(ThreadRow row)
+    partial void OnComposerBodyChanged(string value)
     {
+        if (!ComposerBusy)
+            ComposerStatus = _pendingSave is null ? "Unsaved changes." : "Save unconfirmed. Retry to confirm the earlier content.";
+    }
+
+    private void ClearConversation(bool clearSelection = true)
+    {
+        CancelLoad(ref _threadLoadCts);
+        if (clearSelection) SelectedThread = null;
+        Messages.Clear();
+        ThreadSubject = "";
+        ThreadError = null;
+        ThreadLoading = false;
+        _messagesCursor = null;
+        HasMoreMessages = false;
+        ResetComposer(null);
+    }
+
+    private void ResetComposer(ThreadRow? row)
+    {
+        _composerGeneration++;
+        _pendingSave = null;
         ComposerBody = "";
         ComposerStatus = "";
+        ComposerBusy = false;
         _composerDraftId = null;
         _composerVersion = 0;
-        _composerThreadId = row.Id;
+        _composerThreadId = row?.Id;
     }
 
     [RelayCommand]
@@ -295,13 +435,16 @@ public partial class MainViewModel : ObservableObject, IDisposable
             return;
         }
 
+        using var linked = CancellationTokenSource.CreateLinkedTokenSource(ct, _sessionCts.Token);
+        ct = linked.Token;
+        var generation = _composerGeneration;
         ComposerBusy = true;
-        ComposerStatus = "Saving draft…";
+        ComposerStatus = SimulationMode ? "Simulating draft save..." : "Saving draft...";
         try
         {
-            // expected_version=0 creates; operation_id makes retries idempotent on the server ledger.
+            // AIDEV-NOTE: replay an unconfirmed immutable operation; a fresh ID could conflict after a lost response.
             _composerDraftId ??= Guid.NewGuid().ToString();
-            var input = new DraftSaveInput
+            var input = _pendingSave ??= new DraftSaveInput
             {
                 MailboxId = mailbox.Id,
                 OperationId = Guid.NewGuid().ToString(),
@@ -312,29 +455,48 @@ public partial class MainViewModel : ObservableObject, IDisposable
                 ReplyToThreadId = threadId,
             };
             var result = await _services.Api.SaveDraftAsync(_composerDraftId, input, ct);
+            if (ct.IsCancellationRequested || generation != _composerGeneration) return;
             if (!result.IsSuccess)
             {
-                ComposerStatus = result.Error!.Message;
-                HandleSessionError(result.Error);
+                var error = result.Error!;
+                if (error.Kind is ApiErrorKind.Unavailable or ApiErrorKind.Server or ApiErrorKind.InvalidResponse)
+                    ComposerStatus = "Save unconfirmed. Retry to confirm the earlier content. " + error.Message;
+                else
+                {
+                    _pendingSave = null;
+                    ComposerStatus = error.Message;
+                }
+                HandleSessionError(error);
                 return;
             }
 
             _composerVersion = result.Value!.Version;
-            ComposerStatus = "Draft saved (v" + _composerVersion
-                + "). Review and approve sending in the Elevateo web app.";
+            _pendingSave = null;
+            ComposerStatus = ComposerBody == input.BodyText
+                ? (SimulationMode ? "Simulated draft saved (v" : "Draft saved (v") + _composerVersion
+                    + "). Review and approve sending in the Elevateo web app."
+                : "Earlier content saved. Your latest changes are unsaved.";
+        }
+        catch (OperationCanceledException) when (ct.IsCancellationRequested)
+        {
+            if (generation == _composerGeneration)
+                ComposerStatus = "Save unconfirmed. Retry to confirm the earlier content.";
         }
         finally
         {
-            ComposerBusy = false;
+            if (generation == _composerGeneration) ComposerBusy = false;
         }
     }
 
     private void HandleSessionError(ApiError error)
     {
-        if (error.Kind == ApiErrorKind.SessionExpired)
+        if (error.Kind is ApiErrorKind.SessionExpired or ApiErrorKind.ContextChanged)
         {
             SignOut();
-            SignInError = "Your session has expired. Sign in again.";
+            var recovery = error.Kind == ApiErrorKind.ContextChanged
+                ? "Your mailbox permissions changed. Sign in again to reload authorized data."
+                : "Your session has expired. Sign in again.";
+            SignInError = SignInError is null ? recovery : recovery + " " + SignInError;
         }
     }
 }

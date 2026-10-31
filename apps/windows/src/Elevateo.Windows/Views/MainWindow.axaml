@@ -47,7 +47,10 @@
         </DockPanel>
       </Border>
 
-      <Grid ColumnDefinitions="220,320,*,320">
+      <TextBlock DockPanel.Dock="Top" Name="SimulationBanner" IsVisible="{Binding SimulationMode}"
+                 Text="SIMULATION MODE: actions and draft saves are simulated." Margin="12,8" FontWeight="Bold"/>
+      <!-- AIDEV-NOTE: assistant collapses below 1280px so the reader retains at least 400px at minimum width. -->
+      <Grid Name="MailLayout" ColumnDefinitions="200,280,*,0">
 
         <!-- Mailboxes -->
         <DockPanel Grid.Column="0" Margin="8">
@@ -64,6 +67,8 @@
             <TextBlock Text="No mailboxes are available to you yet."
                        IsVisible="{Binding MailboxesEmpty}" TextWrapping="Wrap"/>
           </StackPanel>
+          <Button DockPanel.Dock="Bottom" Content="Load more mailboxes" Command="{Binding MoreMailboxesCommand}"
+                  IsVisible="{Binding HasMoreMailboxes}" IsEnabled="{Binding !MailboxesLoading}"/>
           <ListBox ItemsSource="{Binding Mailboxes}" SelectedItem="{Binding SelectedMailbox}"
                    AutomationProperties.Name="Mailbox list">
             <ListBox.ItemTemplate>
@@ -92,6 +97,8 @@
             <TextBlock Text="This mailbox has no conversations." IsVisible="{Binding ThreadsEmpty}"
                        TextWrapping="Wrap"/>
           </StackPanel>
+          <Button DockPanel.Dock="Bottom" Content="Load more conversations" Command="{Binding MoreThreadsCommand}"
+                  IsVisible="{Binding HasMoreThreads}" IsEnabled="{Binding !ThreadsLoading}"/>
           <ListBox ItemsSource="{Binding Threads}" SelectedItem="{Binding SelectedThread}"
                    AutomationProperties.Name="Conversation list">
             <ListBox.ItemTemplate>
@@ -108,15 +115,20 @@
         </DockPanel>
 
         <!-- Thread view + composer -->
-        <Grid Grid.Column="2" RowDefinitions="Auto,Auto,*,Auto" Margin="0,8,8,8">
+        <Grid Name="ReaderPane" Grid.Column="2" MinWidth="400" RowDefinitions="Auto,Auto,*,Auto" Margin="0,8,8,8">
           <TextBlock Grid.Row="0" Text="{Binding ThreadSubject}" FontSize="18" FontWeight="SemiBold"
                      TextWrapping="Wrap"/>
           <StackPanel Grid.Row="1" Spacing="8" Margin="0,8,0,0">
+            <Button Content="Load more messages" Command="{Binding MoreMessagesCommand}"
+                    IsVisible="{Binding HasMoreMessages}" IsEnabled="{Binding !ThreadLoading}"/>
             <ProgressBar IsIndeterminate="True" IsVisible="{Binding ThreadLoading}"
                          AutomationProperties.Name="Loading conversation"/>
             <TextBlock Text="{Binding ThreadError}" TextWrapping="Wrap"
                        IsVisible="{Binding ThreadError, Converter={x:Static ObjectConverters.IsNotNull}}"
                        AutomationProperties.LiveSetting="Assertive"/>
+            <Button Content="Retry loading messages" Command="{Binding RetryMessagesCommand}"
+                    IsVisible="{Binding ThreadError, Converter={x:Static ObjectConverters.IsNotNull}}"
+                    IsEnabled="{Binding !ThreadLoading}" AutomationProperties.Name="Retry loading messages"/>
           </StackPanel>
           <ScrollViewer Grid.Row="2">
             <ItemsControl ItemsSource="{Binding Messages}" AutomationProperties.Name="Messages">
@@ -140,15 +152,15 @@
           </ScrollViewer>
           <StackPanel Grid.Row="3" Spacing="6" Margin="0,8,0,0">
             <TextBlock Text="Reply (saved as a draft; approval and sending happen in the web app)"
-                       FontSize="12" Opacity="0.8"/>
+                       FontSize="12" Opacity="0.8" TextWrapping="Wrap"/>
             <TextBox Text="{Binding ComposerBody}" AcceptsReturn="True" MinHeight="90" MaxHeight="200"
                      Watermark="Write your reply…"
                      AutomationProperties.Name="Reply body"/>
             <DockPanel>
-              <Button DockPanel.Dock="Right" Content="Save draft"
+              <Button DockPanel.Dock="Right" Content="{Binding SaveDraftLabel}"
                       Command="{Binding SaveDraftCommand}"
                       IsEnabled="{Binding !ComposerBusy}"
-                      AutomationProperties.Name="Save reply as draft"/>
+                      AutomationProperties.Name="{Binding SaveDraftLabel}"/>
               <TextBlock Text="{Binding ComposerStatus}" VerticalAlignment="Center" TextWrapping="Wrap"
                          AutomationProperties.LiveSetting="Polite"/>
             </DockPanel>
@@ -156,7 +168,7 @@
         </Grid>
 
         <!-- Assistant side panel -->
-        <Border Grid.Column="3" Margin="0,8,8,8" Padding="10" CornerRadius="6"
+        <Border Name="AssistantPane" IsVisible="False" Grid.Column="3" Margin="0,8,8,8" Padding="10" CornerRadius="6"
                 BorderThickness="1"
                 BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}">
           <Grid RowDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto" DataContext="{Binding Assistant}"

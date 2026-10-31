@@ -90,3 +90,16 @@ Detail: [docs/desktop-and-connectors.md](docs/desktop-and-connectors.md).
 
 All tests run in Docker; commands are in the README "Testing" table. Verification receipts per milestone are in
 [docs/completion/](docs/completion/). Review records and defect density are in [code-reviews.md](code-reviews.md).
+
+## Client verification checkpoint — 2026-11-01
+
+Windows: Docker Release build passes with 0 warnings/errors; 93 tests pass (0 failed/skipped),
+7 installer regressions pass, and the unsigned win-x64 self-contained NSIS installer builds.
+The installer is retained locally in apps/windows/artifacts (not committed). Actual Avalonia views
+were rendered and inspected at 960/1280 px. Native Windows launch exposes the sign-in UI, but the
+computer-use provider captured an overlapping window; those captures were discarded and native
+screenshot verification remains limited. No live authentication was performed.
+P24–P34 and dedicated design reviews ran in bounded packets; repairs and exact coverage are in
+[review evidence](docs/completion/final-readiness-20261101/reviews.md). Web repairs await their Docker gate.
+Cargo.lock regeneration, remaining client gates and web visual/backend browser coverage remain in progress.
+Evidence: [Windows receipt](docs/completion/final-readiness-20261101/windows-receipt.md).

@@ -13,6 +13,7 @@ public interface ITokenStore
     void WriteRefreshToken(string refreshToken);
 
     /// <summary>Erases the stored credential. Idempotent: erasing an absent credential succeeds.</summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1716", Justification = "Internal C# client API; no Visual Basic overrides.")]
     void Erase();
 }
 
@@ -46,11 +47,23 @@ public sealed class AuthSession
 
     public void Establish(SignInSuccess success)
     {
-        _accessToken = success.AccessToken;
+        ArgumentNullException.ThrowIfNull(success);
+        if (!TokenValidation.IsBearerToken(success.AccessToken)
+            || success.RefreshToken is { Length: 0 })
+        {
+            throw new ArgumentException("Invalid session credentials.", nameof(success));
+        }
+
+        // AIDEV-NOTE: persist first; a storage failure leaves the previously published session unchanged.
         if (success.RefreshToken is not null)
         {
             _store.WriteRefreshToken(success.RefreshToken);
         }
+        else
+        {
+            _store.Erase();
+        }
+        _accessToken = success.AccessToken;
     }
 
     /// <summary>Sign-out erases both the in-memory access token and the persisted refresh credential.</summary>

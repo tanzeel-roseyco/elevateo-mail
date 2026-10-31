@@ -18,7 +18,25 @@ public sealed record TranscriptLine(string Speaker, string Text);
 /// </summary>
 public partial class AssistantViewModel : ObservableObject, IDisposable
 {
-    public void Dispose() => _responseCts?.Dispose();
+    public void Dispose()
+    {
+        _responseCts?.Cancel();
+        _responseCts?.Dispose();
+        GC.SuppressFinalize(this);
+    }
+
+    // AIDEV-NOTE: invalidate transcript ownership before cancellation can resume a pending continuation.
+    public void Reset()
+    {
+        _generation++;
+        _responseCts?.Cancel();
+        _responseCts?.Dispose();
+        _responseCts = null;
+        _sessionId = null;
+        Transcript.Clear();
+        Input = "";
+        Busy = false;
+    }
 
     public const string ExternalAiNotice =
         "Messages and any mail content you include are sent to an external AI service.";
@@ -28,6 +46,7 @@ public partial class AssistantViewModel : ObservableObject, IDisposable
 
     private readonly AppServices _services;
     private string? _sessionId;
+    private int _generation;
     private CancellationTokenSource? _responseCts;
 
     public AssistantViewModel(AppServices services)
@@ -46,7 +65,12 @@ public partial class AssistantViewModel : ObservableObject, IDisposable
     [ObservableProperty] private bool _busy;
     [ObservableProperty] private bool _isAvailable;
 
-    partial void OnSelectedRuntimeChanged(string value) => RefreshAvailability();
+    partial void OnSelectedRuntimeChanged(string value)
+    {
+        // AIDEV-NOTE: a session belongs to one provider; switching must invalidate even late stream output.
+        Reset();
+        RefreshAvailability();
+    }
 
     private void RefreshAvailability()
     {
@@ -70,15 +94,20 @@ public partial class AssistantViewModel : ObservableObject, IDisposable
         Input = "";
         Transcript.Add(new TranscriptLine("You", text));
         _responseCts = new CancellationTokenSource();
+        var generation = _generation;
+        var ct = _responseCts.Token;
         try
         {
-            _sessionId ??= await _services.AgentsBridge.StartSessionAsync(runtime, _responseCts.Token);
-            await foreach (var evt in _services.AgentsBridge.SendAsync(_sessionId, text, _responseCts.Token))
+            var sessionId = _sessionId ?? await _services.AgentsBridge.StartSessionAsync(runtime, ct);
+            if (generation != _generation) return;
+            _sessionId = sessionId;
+            await foreach (var evt in _services.AgentsBridge.SendAsync(sessionId, text, ct))
             {
+                if (generation != _generation) return;
                 switch (evt.Kind)
                 {
                     case AgentEventKind.Output:
-                        Transcript.Add(new TranscriptLine(SelectedRuntime, evt.Text));
+                        Transcript.Add(new TranscriptLine(runtime.ToString(), evt.Text));
                         break;
                     case AgentEventKind.Error:
                         Transcript.Add(new TranscriptLine("System", "Assistant error: " + evt.Text));
@@ -90,16 +119,19 @@ public partial class AssistantViewModel : ObservableObject, IDisposable
         }
         catch (OperationCanceledException)
         {
-            Transcript.Add(new TranscriptLine("System", "Response cancelled."));
+            if (generation == _generation) Transcript.Add(new TranscriptLine("System", "Response cancelled."));
         }
         catch (InvalidOperationException ex)
         {
-            Transcript.Add(new TranscriptLine("System", ex.Message));
-            RefreshAvailability();
+            if (generation == _generation)
+            {
+                Transcript.Add(new TranscriptLine("System", ex.Message));
+                RefreshAvailability();
+            }
         }
         finally
         {
-            Busy = false;
+            if (generation == _generation) Busy = false;
         }
     }
 

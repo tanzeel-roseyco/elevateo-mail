@@ -12,6 +12,10 @@
   !error "Pass -DOUTFILE=installer output path"
 !endif
 
+!ifndef UNINSTALL_MANIFEST
+  !error "Pass -DUNINSTALL_MANIFEST=generated uninstall file list"
+!endif
+
 Unicode true
 Name "Elevateo Mail ${VERSION}"
 OutFile "${OUTFILE}"
@@ -43,6 +47,9 @@ Section "Uninstall"
   Delete "$SMPROGRAMS\Elevateo Mail\Elevateo Mail.lnk"
   RMDir "$SMPROGRAMS\Elevateo Mail"
   ; Remove only files the installer placed; Credential Manager entries are the app's sign-out job.
-  RMDir /r "$INSTDIR"
+  ; AIDEV-NOTE: the build embeds exact installed paths; nonempty directories and unrelated files survive.
+  !include "${UNINSTALL_MANIFEST}"
+  Delete "$INSTDIR\Uninstall.exe"
+  RMDir "$INSTDIR"
   DeleteRegKey HKCU "${UNINST_KEY}"
 SectionEnd

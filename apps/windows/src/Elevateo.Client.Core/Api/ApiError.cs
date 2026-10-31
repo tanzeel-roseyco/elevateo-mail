@@ -27,6 +27,8 @@ public enum ApiErrorKind
 public sealed record ApiError(ApiErrorKind Kind, string Message, string? RequestId = null, TimeSpan? RetryAfter = null);
 
 /// <summary>Result of an API call: exactly one of Value / Error is set.</summary>
+// AIDEV-NOTE: typed factories keep the result invariant without exposing an invalid public constructor.
+[System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1000", Justification = "Typed result factories are intentional.")]
 public sealed class ApiResult<T> where T : class
 {
     public T? Value { get; }

@@ -1,13 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <IsPackable>false</IsPackable>
+    <!-- AIDEV-NOTE: test names use scenario_outcome separators; production naming analyzers remain enabled. -->
+    <NoWarn>$(NoWarn);CA1707</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Avalonia.Headless.XUnit" Version="11.1.4" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
     <PackageReference Include="xunit" Version="2.9.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Elevateo.Windows\Elevateo.Windows.csproj" />
     <ProjectReference Include="..\..\src\Elevateo.Client.Core\Elevateo.Client.Core.csproj" />
   </ItemGroup>
 </Project>

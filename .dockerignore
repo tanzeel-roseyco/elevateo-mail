@@ -6,3 +6,7 @@ ops/local
 **/coverage
 **/test-results
 **/playwright-report
+# AIDEV-NOTE: Windows verification restores its own runtime graphs; host outputs must not enter the image.
+apps/windows/**/bin
+apps/windows/**/obj
+apps/windows/artifacts

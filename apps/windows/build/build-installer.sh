@@ -5,11 +5,18 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 VERSION="$(tr -d '[:space:]' < VERSION)"
-ARTIFACTS="artifacts"
-PUBLISH_DIR="$ARTIFACTS/publish"
+ARTIFACTS="$PWD/artifacts"
 INSTALLER_UNSIGNED="$ARTIFACTS/ElevateoMail-Setup-$VERSION-unsigned.exe"
 INSTALLER_SIGNED="$ARTIFACTS/ElevateoMail-Setup-$VERSION.exe"
 mkdir -p "$ARTIFACTS"
+# AIDEV-NOTE: fresh staging prevents removed binaries from leaking into subsequent installers.
+PUBLISH_DIR="$(mktemp -d "$ARTIFACTS/publish.XXXXXX")"
+PFX_TEMP=""
+cleanup() {
+    rm -rf "$PUBLISH_DIR"
+    if [ -n "$PFX_TEMP" ]; then rm -f "$PFX_TEMP"; fi
+}
+trap cleanup EXIT
 
 echo "==> restore"
 dotnet restore Elevateo.Windows.sln
@@ -22,9 +29,10 @@ dotnet publish src/Elevateo.Windows/Elevateo.Windows.csproj \
     -c Release -r win-x64 --self-contained true \
     -o "$PUBLISH_DIR"
 
+bash build/uninstall-manifest.sh "$PUBLISH_DIR" > "$ARTIFACTS/uninstall-files.nsh"
 echo "==> makensis"
 makensis -DVERSION="$VERSION" -DPUBLISH_DIR="$PUBLISH_DIR" \
-    -DOUTFILE="$INSTALLER_UNSIGNED" installer/elevateo.nsi
+    -DOUTFILE="$INSTALLER_UNSIGNED" -DUNINSTALL_MANIFEST="$ARTIFACTS/uninstall-files.nsh" installer/elevateo.nsi
 
 # Signing credential policy:
 #  - all of PFX (base64 or path), password and timestamp URL set -> sign
@@ -52,10 +60,9 @@ fi
 
 echo "==> signing installer"
 PFX_FILE="$PFX_PATH"
-cleanup() { if [ -n "$PFX_B64" ] && [ -n "$PFX_FILE" ]; then rm -f "$PFX_FILE"; fi; }
-trap cleanup EXIT
 if [ -n "$PFX_B64" ]; then
     PFX_FILE="$(mktemp)"
+    PFX_TEMP="$PFX_FILE"
     printf '%s' "$PFX_B64" | base64 -d > "$PFX_FILE"
 fi
 if [ ! -s "$PFX_FILE" ]; then
