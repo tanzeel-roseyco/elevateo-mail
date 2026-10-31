@@ -9,6 +9,8 @@ Web, macOS, Windows, Android and iOS clients over one Rails backend, with a self
 
 ---
 
+![Elevateo Mail system design](docs/architecture/system-design.svg)
+
 This is the single repository for all Elevateo Mail work. Every earlier repository, worktree, branch,
 bundle and uncommitted change was consolidated here on 2026-10-30. `main` holds the current product;
 the full history is in `archive/` branches (see [docs/history](docs/history/README.md)).
