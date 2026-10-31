@@ -49,14 +49,14 @@ module Elevateo
       def process: (object) -> void
       def discover: (String, object, String) -> object
       def pattern_counts: (String, String?) -> Hash[String, Integer]
-      def verify: (object, Array[object], object, String, object) -> object?
+      def verify: (object, object, object, String, object) -> object?
       def reserve_probe: (String) -> Integer?
       def apply_backoff: (String, object) -> void
       def learn: (String, object, object) -> void
       def result: (String, ?email: String?, ?confidence: Integer, ?reasons: Array[String], ?sources: Array[String]) -> object
       def decorate: (object, object) -> object
-      def save: (object, Array[object], ?Integer) -> void
-      def finish: (object, Array[object], object) -> void
+      def save: (object, object, ?Integer) -> void
+      def finish: (object, object, object) -> void
     end
   end
 end

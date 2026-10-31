@@ -18,32 +18,32 @@ class DraftStagingMigrationTest < DraftStagingDatabaseTestCase
     SQL
   end
 
-  def migration(direction, connection: @admin)
+  def migration(direction, connection: @admin, transaction: true)
     object = CreateDraftAttachmentStaging.new
     admin = connection
     object.define_singleton_method(:execute) { |sql| admin.exec(sql) }
-    connection.exec("BEGIN")
+    connection.exec("BEGIN") if transaction
     connection.exec("SET LOCAL ROLE elevateo_owner")
     object.public_send(direction)
     # AIDEV-NOTE: Reapply migration32 list semantics after restoring migration28 scaffolding.
     if direction == :up
       connection.exec(File.read(File.expand_path("../../db/draft_attachments/read_recoverable.sql", __dir__)))
     end
-    connection.exec("COMMIT")
   ensure
-    connection.exec("ROLLBACK") if connection.transaction_status != PG::PQTRANS_IDLE
+    # AIDEV-NOTE: Legacy DDL must not erase constraints or indexes added by later migrations in the shared database.
+    connection.exec("ROLLBACK") if transaction && connection.transaction_status != PG::PQTRANS_IDLE
   end
 
   def test_empty_roundtrip_restores_body_owner_acl_and_api_worker_behavior
     before = definitions
     assert_equal 9, before.length
-    migration(:down)
-    dropped = true
+    @admin.exec("BEGIN")
+    migration(:down, transaction: false)
     assert_empty definitions
     assert_nil @admin.exec("SELECT to_regclass('app.draft_attachments')").getvalue(0, 0)
-    migration(:up)
-    dropped = false
+    migration(:up, transaction: false)
     assert_equal before, definitions
+    @admin.exec("ROLLBACK")
     assert_equal "reserved", reserve.fetch("stage_state")
     assert_equal "committed", finalize.fetch("stage_state")
     token, = claim
@@ -52,7 +52,7 @@ class DraftStagingMigrationTest < DraftStagingDatabaseTestCase
     assert_raises(PG::InsufficientPrivilege) { @api.exec("SELECT * FROM app.draft_attachments") }
     assert_raises(PG::InsufficientPrivilege) { @worker.exec("SELECT * FROM app_drafts_private.attachment_stage_operations") }
   ensure
-    migration(:up) if dropped
+    @admin.exec("ROLLBACK") if @admin.transaction_status != PG::PQTRANS_IDLE
   end
 
   def test_populated_rollback_refuses_before_any_destruction
@@ -91,7 +91,7 @@ class DraftStagingMigrationTest < DraftStagingDatabaseTestCase
     assert_equal "reserved", stage_rows.first.fetch("stage_state")
     assert_equal "committed", finalize.fetch("stage_state")
   ensure
-    # AIDEV-NOTE: Always release the writer before draining migration; restore empty scaffolding on regression.
+    # AIDEV-NOTE: Release the writer before draining migration; its rollback retains the complete current schema.
     failure = $!
     begin
       @api.exec("ROLLBACK") if @api.transaction_status != PG::PQTRANS_IDLE
@@ -104,7 +104,6 @@ class DraftStagingMigrationTest < DraftStagingDatabaseTestCase
           thread.kill
           thread.join(1)
         end
-        migration(:up) unless @admin.exec("SELECT to_regclass('app.draft_attachments')").getvalue(0, 0)
       rescue StandardError, Minitest::Assertion => error
         failure ||= error
       ensure

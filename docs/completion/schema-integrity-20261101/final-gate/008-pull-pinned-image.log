@@ -1,0 +1,6 @@
+docker.io/supabase/postgres@sha256:[opaque value redacted]: Pulling from supabase/postgres
+Digest: sha256:[opaque value redacted]
+Status: Image is up to date for supabase/postgres@sha256:[opaque value redacted]
+docker.io/supabase/postgres:17.6.1.136@sha256:[opaque value redacted]
+
+exit=0 seconds=4.53

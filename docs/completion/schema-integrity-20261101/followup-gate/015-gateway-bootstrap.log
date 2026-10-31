@@ -1,0 +1,9 @@
+                 status
+[opaque value redacted]
+ gateway bootstrap: restricted login ok
+(1 row)
+
+ Container [opaque value redacted] Creating
+ Container [opaque value redacted] Created
+
+exit=0 seconds=1.44

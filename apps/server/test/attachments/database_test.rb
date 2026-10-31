@@ -3,6 +3,7 @@
 require "minitest/autorun"
 require "pg"
 require "securerandom"
+require_relative "../../lib/elevateo/thread_reads"
 
 # AIDEV-NOTE: Run against the fully migrated disposable database using restricted API and worker logins.
 class AttachmentDatabaseTest < Minitest::Test
@@ -61,6 +62,87 @@ class AttachmentDatabaseTest < Minitest::Test
     SQL
   end
 
+  def attachment_count(sql = Elevateo::ThreadReads::MESSAGES_SQL)
+    params = sql == Elevateo::ThreadReads::MESSAGES_SQL ? [@org, @box, @thread, nil, nil, 50] :
+      [@org, @box, @thread, @message]
+    @admin.exec_params(sql, params).first.fetch("attachment_count").to_i
+  end
+
+  def test_staged_attachment_count_is_derived_in_both_message_projections
+    assert_equal 0, attachment_count
+    insert_pending
+    assert_equal 1, attachment_count
+    assert_equal 1, attachment_count(Elevateo::ThreadReads::DIRECT_MESSAGE_SQL)
+    @admin.exec_params("DELETE FROM app.inbox_attachments WHERE id=$1", [@attachment])
+    assert_equal 0, attachment_count
+    # AIDEV-NOTE: Provider metadata can describe parts that have not been materialized locally.
+    @admin.exec_params("UPDATE app.messages SET attachment_count=3 WHERE id=$1", [@message])
+    assert_equal 3, attachment_count
+  end
+
+  def test_materialized_attachment_limit_matches_the_message_contract
+    @admin.exec_params(<<~SQL, [@org, @box, @thread, @message])
+      INSERT INTO app.inbox_attachments(id,organization_id,mailbox_id,thread_id,message_id,
+        filename,content_type,byte_size,scan_status,rejection_reason)
+      SELECT gen_random_uuid(),$1,$2,$3,$4,'oversize.bin','application/octet-stream',0,'rejected','oversize'
+        FROM generate_series(1,1000)
+    SQL
+    assert_equal 1000, attachment_count
+    assert_raises(PG::CheckViolation) { insert_pending }
+  end
+
+  def test_concurrent_attachment_limit_without_caller_tenant_scope
+    assert_concurrent_attachment_limit("READ COMMITTED", PG::CheckViolation)
+  end
+
+  def test_repeatable_read_attachment_limit_rejects_stale_snapshot
+    assert_concurrent_attachment_limit("REPEATABLE READ", PG::TRSerializationFailure)
+  end
+
+  def assert_concurrent_attachment_limit(isolation, error_class)
+    @admin.exec_params(<<~SQL, [@org, @box, @thread, @message])
+      INSERT INTO app.inbox_attachments(id,organization_id,mailbox_id,thread_id,message_id,
+        filename,content_type,byte_size,scan_status,rejection_reason)
+      SELECT gen_random_uuid(),$1,$2,$3,$4,'part.bin','application/octet-stream',0,'rejected','oversize'
+        FROM generate_series(1,999)
+    SQL
+    other = connect("ATT823_MIGRATOR_DATABASE_URL", "elevateo_migrator")
+    other.exec("SET ROLE elevateo_owner; SET lock_timeout='5s'; SET statement_timeout='8s'")
+    other.exec("BEGIN ISOLATION LEVEL #{isolation}")
+    # AIDEV-NOTE: Establish the repeatable-read snapshot before the competing parent tuple changes.
+    other.exec("SELECT count(*) FROM app.inbox_attachments")
+    @migrator.exec("BEGIN")
+    prior_scope = SecureRandom.uuid
+    @migrator.exec_params("SELECT set_config('app.org_id',$1,true)", [prior_scope])
+    insert_pending
+    assert_equal prior_scope, @migrator.exec("SELECT current_setting('app.org_id')").getvalue(0, 0)
+    other.send_query_params(<<~SQL, [SecureRandom.uuid, @org, @box, @thread, @message])
+      INSERT INTO app.inbox_attachments(id,organization_id,mailbox_id,thread_id,message_id,
+        filename,content_type,byte_size,scan_status,rejection_reason)
+      VALUES ($1,$2,$3,$4,$5,'part.bin','application/octet-stream',0,'rejected','oversize')
+    SQL
+    # AIDEV-NOTE: Observe the actual lock wait, avoiding a scheduling-dependent concurrency assertion.
+    blocked = false
+    deadline = Process.clock_gettime(Process::CLOCK_MONOTONIC) + 2
+    until blocked || Process.clock_gettime(Process::CLOCK_MONOTONIC) >= deadline
+      blocked = @admin.exec_params("SELECT cardinality(pg_blocking_pids($1))>0", [other.backend_pid]).getvalue(0, 0) == "t"
+      sleep 0.01 unless blocked
+    end
+    assert blocked, "second attachment insert must wait for the parent tuple"
+    @migrator.exec("COMMIT")
+    assert_raises(error_class) { other.get_last_result }
+    other.exec("ROLLBACK")
+    assert_equal 1000, attachment_count
+  ensure
+    @migrator.exec("ROLLBACK") if @migrator.transaction_status != PG::PQTRANS_IDLE
+    if other
+      other.cancel if other.transaction_status == PG::PQTRANS_ACTIVE
+      loop { break unless other.get_result }
+      other.exec("ROLLBACK") if other.transaction_status != PG::PQTRANS_IDLE
+      other.close
+    end
+  end
+
   def import(id: SecureRandom.uuid, sha: "a" * 64, reason: nil)
     @worker.exec_params("SELECT app.#{@wrapper}($1::uuid,$2,$3)", [id, sha, reason]).getvalue(0, 0)
   end
@@ -111,6 +193,21 @@ class AttachmentDatabaseTest < Minitest::Test
 
   def test_identical_replay_after_clean_preserves_canonical_id_and_verdict
     assert_terminal_replay("clean")
+  end
+
+  def test_same_source_replay_at_full_capacity_preserves_existing_attachment
+    original = import(id: @attachment)
+    @admin.exec_params(<<~SQL, [@org, @box, @thread, @message])
+      INSERT INTO app.inbox_attachments(id,organization_id,mailbox_id,thread_id,message_id,
+        filename,content_type,byte_size,scan_status,rejection_reason)
+      SELECT gen_random_uuid(),$1,$2,$3,$4,'part.bin','application/octet-stream',0,'rejected','oversize'
+        FROM generate_series(1,999)
+    SQL
+    # AIDEV-NOTE: A provider retry allocates a fresh candidate UUID but inserts no new logical attachment.
+    assert_equal original, import
+    assert_equal 1000, attachment_count
+    assert_raises(PG::UniqueViolation) { import(sha: "b" * 64) }
+    assert_equal 1000, attachment_count
   end
 
   def test_identical_replay_after_malware_preserves_canonical_id_and_verdict

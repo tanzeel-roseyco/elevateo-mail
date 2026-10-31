@@ -1,0 +1,296 @@
+[
+    {
+        "Id": "[opaque value redacted]",
+        "Created": "2026-10-31T14:36:21.914339271Z",
+        "Path": "bundle",
+        "Args": [
+            "exec",
+            "rails",
+            "server",
+            "-b",
+            "0.0.0.0",
+            "-p",
+            "3000"
+        ],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 51194,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2026-10-31T14:36:22.134383522Z",
+            "FinishedAt": "0001-01-01T00:00:00Z"
+        },
+        "Image": "sha256:[opaque value redacted]",
+        "ResolvConfPath": "[opaque value redacted]",
+        "HostnamePath": "[opaque value redacted]",
+        "HostsPath": "[opaque value redacted]",
+        "LogPath": "[opaque value redacted]",
+        "Name": "[opaque value redacted]",
+        "RestartCount": 0,
+        "Driver": "overlayfs",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": [
+                "C:[opaque value redacted] Mail [opaque value redacted]:/workspace/ops/tests/be02:ro",
+                "C:[opaque value redacted] Mail [opaque value redacted]:/workspace/apps/server:ro",
+                "C:[opaque value redacted] Mail [opaque value redacted]:/workspace/contracts:ro"
+            ],
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {}
+            },
+            "NetworkMode": "[opaque value redacted]",
+            "PortBindings": {},
+            "RestartPolicy": {
+                "Name": "no",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "CapAdd": null,
+            "CapDrop": [
+                "ALL"
+            ],
+            "CgroupnsMode": "private",
+            "Dns": null,
+            "DnsOptions": null,
+            "DnsSearch": null,
+            "ExtraHosts": [],
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": true,
+            "SecurityOpt": [
+                "no-new-privileges:true"
+            ],
+            "Tmpfs": {
+                "/tmp": "",
+                "/workspace/apps/server/log": "uid=10001,gid=10001,mode=1770",
+                "/workspace/apps/server/tmp": "uid=10001,gid=10001,mode=1770"
+            },
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 805306368,
+            "NanoCpus": 1000000000,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": null,
+            "BlkioDeviceReadBps": null,
+            "BlkioDeviceWriteBps": null,
+            "BlkioDeviceReadIOps": null,
+            "BlkioDeviceWriteIOps": null,
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": null,
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 1610612736,
+            "MemorySwappiness": null,
+            "OomKillDisable": null,
+            "PidsLimit": 256,
+            "Ulimits": null,
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "MaskedPaths": [
+                "/proc/acpi",
+                "/proc/asound",
+                "/proc/interrupts",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/sys/devices/virtual/powercap",
+                "/sys/firmware"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ],
+            "Init": true
+        },
+        "Storage": {
+            "RootFS": {
+                "Snapshot": {
+                    "Name": "overlayfs"
+                }
+            }
+        },
+        "Mounts": [
+            {
+                "Type": "bind",
+                "Source": "C:[opaque value redacted] Mail [opaque value redacted]",
+                "Destination": "/workspace/contracts",
+                "Mode": "ro",
+                "RW": false,
+                "Propagation": "rprivate"
+            },
+            {
+                "Type": "bind",
+                "Source": "C:[opaque value redacted] Mail [opaque value redacted]",
+                "Destination": "/workspace/ops/tests/be02",
+                "Mode": "ro",
+                "RW": false,
+                "Propagation": "rprivate"
+            },
+            {
+                "Type": "bind",
+                "Source": "C:[opaque value redacted] Mail [opaque value redacted]",
+                "Destination": "/workspace/apps/server",
+                "Mode": "ro",
+                "RW": false,
+                "Propagation": "rprivate"
+            }
+        ],
+        "Config": {
+            "Hostname": "967b6d1b68c4",
+            "Domainname": "",
+            "User": "10001",
+            "AttachStdin": false,
+            "AttachStdout": true,
+            "AttachStderr": true,
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "ELEVATEO_DB_NAME=postgres",
+                "ELEVATEO_STORAGE_URL=http://storage:5000",
+                "ELEVATEO_COOKIE_SECURE=false",
+                "ELEVATEO_DB_ROLE=elevateo_api",
+                "ELEVATEO_DB_HOST=db",
+                "ELEVATEO_PROCESS=api",
+                "[opaque value redacted]",
+                "SECRET_KEY_BASE=[REDACTED]",
+[credential-bearing line redacted]
+                "ELEVATEO_SMTP_PORT=1025",
+                "ELEVATEO_LOCAL_HTTP=true",
+                "ELEVATEO_MODE=local",
+                "ELEVATEO_SMTP_HOST=mailpit",
+[credential-bearing line redacted]
+                "ELEVATEO_OUTBOUND_HOLD=true",
+                "ELEVATEO_AUTH_JWT_ISSUER=http://auth:9999",
+                "ELEVATEO_AUTH_URL=http://auth:9999",
+                "RAILS_ENV=test",
+                "ELEVATEO_BROWSER_ORIGIN=http://api:3000",
+                "ELEVATEO_MAILPIT_URL=http://mailpit:8025",
+                "ELEVATEO_SESSION_KEY_BASE64=[REDACTED]",
+                "[opaque value redacted]",
+                "PATH=/usr/local/bundle/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "LANG=C.UTF-8",
+                "RUBY_VERSION=3.4.11",
+                "RUBY_DOWNLOAD_URL=https://cache.ruby-lang.org/pub/ruby/3.4/ruby-3.4.11.tar.xz",
+                "[opaque value redacted]",
+                "GEM_HOME=/usr/local/bundle",
+                "BUNDLE_SILENCE_ROOT_WARNING=1",
+                "[opaque value redacted]",
+                "BUNDLE_DEPLOYMENT=0",
+                "BUNDLE_PATH=/usr/local/bundle"
+            ],
+            "Cmd": [
+                "bundle",
+                "exec",
+                "rails",
+                "server",
+                "-b",
+                "0.0.0.0",
+                "-p",
+                "3000"
+            ],
+            "Image": "sha256:[opaque value redacted]",
+            "Volumes": null,
+            "WorkingDir": "/workspace/apps/server",
+            "Entrypoint": null,
+            "Labels": {
+                "com.docker.compose.config-hash": "[opaque value redacted]",
+                "com.docker.compose.container-number": "1",
+                "com.docker.compose.depends_on": "",
+                "com.docker.compose.image": "sha256:[opaque value redacted]",
+                "com.docker.compose.oneoff": "False",
+                "com.docker.compose.project": "elevateo-final-c60c1eb5d42a",
+                "com.docker.compose.project.config_files": "C:\\Users\\Tanzeel\\orca\\workspaces\\Elevateo Mail Monorepo\\bugfix-schema-integrity\\ops\\compose.be02-test.yaml,C:\\Users\\Tanzeel\\AppData\\Local\\Temp\\elevateo-local-backend-7guwyz3r\\local.compose.json",
+                "com.docker.compose.project.environment_file": "C:\\Users\\Tanzeel\\AppData\\Local\\Temp\\elevateo-local-backend-7guwyz3r\\.env.runtime",
+                "com.docker.compose.project.working_dir": "C:\\Users\\Tanzeel\\orca\\workspaces\\Elevateo Mail Monorepo\\bugfix-schema-integrity\\ops",
+                "com.docker.compose.service": "api",
+                "com.docker.compose.version": "5.3.1"
+            }
+        },
+        "NetworkSettings": {
+            "SandboxID": "[opaque value redacted]",
+            "SandboxKey": "[opaque value redacted]",
+            "Ports": {},
+            "Networks": {
+                "[opaque value redacted]": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": [
+                        "[opaque value redacted]",
+                        "api"
+                    ],
+                    "DriverOpts": null,
+                    "GwPriority": 0,
+                    "NetworkID": "[opaque value redacted]",
+                    "EndpointID": "[opaque value redacted]",
+                    "Gateway": "",
+                    "IPAddress": "172.22.0.5",
+                    "MacAddress": "fa:93:0f:55:aa:48",
+                    "IPPrefixLen": 16,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DNSNames": [
+                        "[opaque value redacted]",
+                        "api",
+                        "967b6d1b68c4"
+                    ]
+                }
+            }
+        },
+        "ImageManifestDescriptor": {
+            "mediaType": "application/vnd.oci.image.manifest.v1+json",
+            "digest": "sha256:[opaque value redacted]",
+            "size": 2386,
+            "platform": {
+                "architecture": "amd64",
+                "os": "linux"
+            }
+        }
+    }
+]
+
+exit=0 seconds=0.10

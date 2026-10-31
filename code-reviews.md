@@ -2705,3 +2705,25 @@ Swift wrapper/import repair review: 42 LOC, zero residual defects (0/KLOC). Runt
 
 
 Native gate follow-up: 49 LOC, one unchecked-directory defect (20.41/KLOC). Four cd operations now stop on failure; a Docker regression exercises all four. Repair review: 49 LOC, zero residual defects (0/KLOC). Formatting and two Clippy style repairs were delegated to tools. Final native gate passes, with eight existing compiler dead-code warnings explicitly retained as follow-up; strict warnings gate did not pass.
+
+## Schema integrity - 2026-11-01
+
+Full DDL/ALTER/index and domain-query audit: [inventory](docs/completion/schema-integrity-20261101/audit-inventory.md). Adversarial agents received the prescribed correctness, boundary, security, coupling, testing and complexity rubric. Each code-reading packet was limited to 200 lines; larger files were split into bounded passes. Styling is delegated to RuboCop. Review scope includes migrations111-117, SQL helpers, finder repository/worker, suppression send fences, attachment read/ingest coupling, contracts/RBS and regression/catalog tests.
+
+| Review | Reviewed LOC (overlapping passes) | Confirmed defects | Defects/KLOC | Disposition |
+| --- | ---: | ---: | ---: | --- |
+| Suppression/attachment/catalog/finder first pass | 447 | 4 | 8.95 | Fixed missing RLS-visible parent lock, prefix-index detection and exception registry; bounded finder deferred-count cost documented and max-size test executed |
+| Design and attachment replay | 567 | 1 | 1.76 | Moved attachment capacity enforcement AFTER insert so conflict replay at capacity remains idempotent |
+| Redundant UNIQUE, catalog and finder follow-up (approximate code LOC, registry additional) | 454 | 2 | 4.41 | Added derived job total and composite-PK membership user exceptions; narrowed catalog PK exclusion |
+| Catalog/registry/documentation final | 367 | 3 | 8.17 | Fixed encoding/spacing, auth evidence and audit evidence references |
+| Constraint migrations and coupled providers | 306 | 0 | 0 | No further confirmed defects |
+
+Counts describe review findings, including documentation and test-oracle defects, not unique implementation defects or whole-project certification. Runtime fixture failures (incomplete send-intent transaction and missing organization policy) were corrected and rerun; earlier failures remain in evidence. Independent review of concurrent-index retry logic led to definition verification and invalid-index rebuilding, covered by four regression tests. Dedicated design scenarios are in [database-design.md](docs/database-design.md); Obsidian tooling was unavailable, so no Obsidian execution is claimed. Runtime acceptance is recorded in the schema completion receipt.
+
+Final gate-driven fixture review: historical thread rollback138 LOC/1 defect (7.25/KLOC); draft staging117, IMAP rejection66 and suppression assertions70 LOC/4 defects (15.81/KLOC); load fixture79 LOC/2 defects (25.32/KLOC). Historical DDL now rolls back, suppression assertions use canonical keys, and bulk fixture statistics/disposal use the existing administrative setup budget while worker limits remain unchanged. Final design/helper/catalog review110 LOC/0 defects (0/KLOC). Backend gate resource review83 LOC identified eight default Steep workers competing inside a one-CPU/768 MiB container; the gate now requests one worker without weakening the type checks or deadline. Parent reviewed the final load/runner diffs. Fresh full-gate results supersede earlier fixture failures only where explicitly recorded in the completion receipt.
+
+Additional historical rollback coverage: organization-access95 LOC/1 missing finder-policy dependency (10.53/KLOC), send-schema159 LOC/1 missing enrollment FK dependency (6.29/KLOC). Both fixtures detach exact dependencies only inside rollback transactions and verify restoration. Parent reviewed these final diffs.
+
+Final fixture follow-up: organization-access96 LOC exposed one additional child-policy dependency (10.42 defects/KLOC), now included with exact rollback restoration. Frozen-v1 contract review72 LOC found one description edit invalidating preservation seals (13.89/KLOC); restored the sealed contract, retained current semantics in v2/design documentation. Four ambiguous-block test lint offenses were corrected; lint results are recorded in the completion receipt.
+
+Final executed acceptance: standard1,399/15,907, dedicated33/228, boot2/12, Mox protocol4/406, app-chain1/88, HTTP1/33, Mailpit2/107, contracts19/264, Resend3/26; zero failures/errors. Four standard skips covered by isolated protocol gate. Steep clean; RuboCop542 files clean. Full migration down/up and focused87/1,155 passed. See schema receipt for commands, failures superseded, exceptions and cleanup.

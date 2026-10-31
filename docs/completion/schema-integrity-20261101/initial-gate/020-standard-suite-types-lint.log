@@ -1,0 +1,3904 @@
+Standard app suites selected: 237; dedicated suites deferred: 14
+DEFERRED [opaque value redacted]: migrator session for reversible assignment-options DDL
+DEFERRED [opaque value redacted]: migrator session for organization-access rollback DDL
+DEFERRED [opaque value redacted]: dedicated gateway login URL and private bootstrap
+DEFERRED [opaque value redacted]: migrator session and private gateway bootstrap
+DEFERRED test/attachments/database_test.rb: ATT823 admin/migrator/API/worker task URLs
+DEFERRED [opaque value redacted]: historical R1 state/role fixture
+DEFERRED [opaque value redacted]: historical R1 state/role fixture
+DEFERRED test/be_01_r1/tenancy_test.rb: historical R1 state/role fixture
+DEFERRED test/be_01_r1/worker_role_test.rb: historical R1 state/role fixture
+DEFERRED test/campaigns/database_test.rb: OUT804 admin/API task URLs
+DEFERRED [opaque value redacted]: migrator DDL with private admin fixtures
+DEFERRED [opaque value redacted]: isolated Mailpit protocol flag and network
+DEFERRED [opaque value redacted]: exactly six HTTP calls in dedicated network-none container
+DEFERRED [opaque value redacted]: dedicated isolated Mox app-chain harness
+RUN [opaque value redacted]
+Run options: --seed 44964
+
+# Running:
+
+...
+
+Finished in 0.305618s, 9.8162 runs/s, 107.9779 assertions/s.
+
+3 runs, 33 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 59347
+
+# Running:
+
+...
+
+Finished in 0.002407s, 1246.3539 runs/s, 7893.5747 assertions/s.
+
+3 runs, 19 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 31754
+
+# Running:
+
+....
+
+Finished in 0.353240s, 11.3237 runs/s, 101.9137 assertions/s.
+
+4 runs, 36 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 7710
+
+# Running:
+
+........
+
+Finished in 0.312032s, 25.6384 runs/s, 150.6254 assertions/s.
+
+8 runs, 47 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 49986
+
+# Running:
+
+...
+
+Finished in 0.002817s, 1064.8459 runs/s, 3549.4864 assertions/s.
+
+3 runs, 10 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 30863
+
+# Running:
+
+...
+
+Finished in 0.316431s, 9.4807 runs/s, 56.8845 assertions/s.
+
+3 runs, 18 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 32075
+
+# Running:
+
+....
+
+Finished in 0.003226s, 1239.8180 runs/s, 6818.9990 assertions/s.
+
+4 runs, 22 assertions, 0 failures, 0 errors, 0 skips
+RUN test/administration/roster_test.rb
+Run options: --seed 21580
+
+# Running:
+
+.....
+
+Finished in 0.019417s, 257.5027 runs/s, 824.0087 assertions/s.
+
+5 runs, 16 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 23936
+
+# Running:
+
+......
+
+Finished in 0.504609s, 11.8904 runs/s, 65.3972 assertions/s.
+
+6 runs, 33 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 45466
+
+# Running:
+
+...
+
+Finished in 0.659219s, 4.5508 runs/s, 24.2712 assertions/s.
+
+3 runs, 16 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 54518
+
+# Running:
+
+...
+
+Finished in 0.005305s, 565.5407 runs/s, 1696.6221 assertions/s.
+
+3 runs, 9 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 2483
+
+# Running:
+
+...
+
+Finished in 0.866847s, 3.4608 runs/s, 11.5361 assertions/s.
+
+3 runs, 10 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 24538
+
+# Running:
+
+.......
+
+Finished in 0.006575s, 1064.6487 runs/s, 3954.4093 assertions/s.
+
+7 runs, 26 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 15247
+
+# Running:
+
+.....
+
+Finished in 0.009898s, 505.1633 runs/s, 1010.3265 assertions/s.
+
+5 runs, 10 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 33312
+
+# Running:
+
+.......
+
+Finished in 0.008407s, 832.6673 runs/s, 2973.8118 assertions/s.
+
+7 runs, 25 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 23844
+
+# Running:
+
+....
+
+Finished in 0.002307s, 1734.2158 runs/s, 8671.0791 assertions/s.
+
+4 runs, 20 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 7157
+
+# Running:
+
+.....
+
+Finished in 0.007822s, 639.1842 runs/s, 1789.7158 assertions/s.
+
+5 runs, 14 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 22734
+
+# Running:
+
+.....
+
+Finished in 0.479843s, 10.4201 runs/s, 235.4938 assertions/s.
+
+5 runs, 113 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 33727
+
+# Running:
+
+.
+
+Finished in 0.107850s, 9.2722 runs/s, 92.7216 assertions/s.
+
+1 runs, 10 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 61433
+
+# Running:
+
+......
+
+Finished in 0.642741s, 9.3350 runs/s, 216.2614 assertions/s.
+
+6 runs, 139 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 51014
+
+# Running:
+
+...
+
+Finished in 0.524477s, 5.7200 runs/s, 76.2665 assertions/s.
+
+3 runs, 40 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 49769
+
+# Running:
+
+......
+
+Finished in 0.874008s, 6.8649 runs/s, 109.8388 assertions/s.
+
+6 runs, 96 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 63853
+
+# Running:
+
+...
+
+Finished in 0.567623s, 5.2852 runs/s, 65.1842 assertions/s.
+
+3 runs, 37 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 35173
+
+# Running:
+
+....
+
+Finished in 0.054887s, 72.8765 runs/s, 327.9443 assertions/s.
+
+4 runs, 18 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 38645
+
+# Running:
+
+...
+
+Finished in 0.006687s, 448.6380 runs/s, 1794.5522 assertions/s.
+
+3 runs, 12 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 20107
+
+# Running:
+
+...
+
+Finished in 0.005028s, 596.6893 runs/s, 4375.7217 assertions/s.
+
+3 runs, 22 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 41396
+
+# Running:
+
+........
+
+Finished in 0.036122s, 221.4746 runs/s, 2436.2206 assertions/s.
+
+8 runs, 88 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 64369
+
+# Running:
+
+..
+
+Finished in 0.004163s, 480.4700 runs/s, 3363.2898 assertions/s.
+
+2 runs, 14 assertions, 0 failures, 0 errors, 0 skips
+RUN test/attachments/scan_loop_test.rb
+Run options: --seed 48232
+
+# Running:
+
+..........
+
+Finished in 0.004497s, 2223.5737 runs/s, 16232.0877 assertions/s.
+
+10 runs, 73 assertions, 0 failures, 0 errors, 0 skips
+RUN test/attachments/service_test.rb
+Run options: --seed 14448
+
+# Running:
+
+.......................
+
+Finished in 0.022600s, 1017.6834 runs/s, 5176.9110 assertions/s.
+
+23 runs, 117 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 6566
+
+# Running:
+
+......
+
+Finished in 1.145028s, 5.2400 runs/s, 78.6007 assertions/s.
+
+6 runs, 90 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 47752
+
+# Running:
+
+..........
+
+Finished in 0.830781s, 12.0369 runs/s, 326.1991 assertions/s.
+
+10 runs, 271 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 56580
+
+# Running:
+
+...
+
+Finished in 8.768648s, 0.3421 runs/s, 7.5268 assertions/s.
+
+3 runs, 66 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 52212
+
+# Running:
+
+...
+
+Finished in 0.174801s, 17.1624 runs/s, 137.2991 assertions/s.
+
+3 runs, 24 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/auth_client_test.rb
+Run options: --seed 62133
+
+# Running:
+
+............
+
+Finished in 0.029143s, 411.7670 runs/s, 2676.4852 assertions/s.
+
+12 runs, 78 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/auth_config_test.rb
+Run options: --seed 18544
+
+# Running:
+
+.................
+
+Finished in 0.034925s, 486.7541 runs/s, 4409.4198 assertions/s.
+
+17 runs, 154 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 13660
+
+# Running:
+
+...
+
+Finished in 0.364724s, 8.2254 runs/s, 169.9915 assertions/s.
+
+3 runs, 62 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/auth_entry_test.rb
+Run options: --seed 29169
+
+# Running:
+
+......
+
+Finished in 0.031931s, 187.9026 runs/s, 1221.3671 assertions/s.
+
+6 runs, 39 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 44521
+
+# Running:
+
+...
+
+Finished in 0.022538s, 133.1090 runs/s, 621.1753 assertions/s.
+
+3 runs, 14 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 15081
+
+# Running:
+
+.
+
+Finished in 0.106375s, 9.4007 runs/s, 94.0073 assertions/s.
+
+1 runs, 10 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 61128
+
+# Running:
+
+.......
+
+Finished in 0.008952s, 781.9580 runs/s, 8713.2457 assertions/s.
+
+7 runs, 78 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 56176
+
+# Running:
+
+.......
+
+Finished in 0.954202s, 7.3360 runs/s, 23.0559 assertions/s.
+
+7 runs, 22 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 39234
+
+# Running:
+
+......
+
+Finished in 1.822112s, 3.2929 runs/s, 28.5383 assertions/s.
+
+6 runs, 52 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 37528
+
+# Running:
+
+.........
+
+Finished in 0.401942s, 22.3913 runs/s, 791.1583 assertions/s.
+
+9 runs, 318 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 54244
+
+# Running:
+
+........
+
+Finished in 7.579223s, 1.0555 runs/s, 22.6936 assertions/s.
+
+8 runs, 172 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 9846
+
+# Running:
+
+...
+
+Finished in 1.059764s, 2.8308 runs/s, 57.5600 assertions/s.
+
+3 runs, 61 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 58961
+
+# Running:
+
+.......
+
+Finished in 0.216111s, 32.3907 runs/s, 397.9434 assertions/s.
+
+7 runs, 86 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 29390
+
+# Running:
+
+...........
+
+Finished in 3.620638s, 3.0381 runs/s, 77.8868 assertions/s.
+
+11 runs, 282 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/connector_input_test.rb
+Run options: --seed 211
+
+# Running:
+
+....
+
+Finished in 0.003584s, 1116.1421 runs/s, 6696.8527 assertions/s.
+
+4 runs, 24 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/cursors_test.rb
+Run options: --seed 46048
+
+# Running:
+
+.......
+
+Finished in 0.005444s, 1285.8351 runs/s, 7347.6290 assertions/s.
+
+7 runs, 40 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/database_helper_test.rb
+Run options: --seed 27028
+
+# Running:
+
+........
+
+Finished in 0.875234s, 9.1404 runs/s, 34.2766 assertions/s.
+
+8 runs, 30 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/database_yaml_test.rb
+Run options: --seed 35367
+
+# Running:
+
+...
+
+Finished in 0.088398s, 33.9375 runs/s, 701.3751 assertions/s.
+
+3 runs, 62 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 45912
+
+# Running:
+
+......
+
+Finished in 1.321975s, 4.5387 runs/s, 44.6302 assertions/s.
+
+6 runs, 59 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/draft_bootstrap_test.rb
+Run options: --seed 10583
+
+# Running:
+
+.....
+
+Finished in 0.569816s, 8.7748 runs/s, 98.2774 assertions/s.
+
+5 runs, 56 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 31616
+
+# Running:
+
+....
+
+Finished in 0.557753s, 7.1716 runs/s, 69.9234 assertions/s.
+
+4 runs, 39 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/draft_database_test.rb
+Run options: --seed 36726
+
+# Running:
+
+........
+
+Finished in 0.976459s, 8.1929 runs/s, 87.0493 assertions/s.
+
+8 runs, 85 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/draft_payload_test.rb
+Run options: --seed 11540
+
+# Running:
+
+......
+
+Finished in 0.020357s, 294.7362 runs/s, 2259.6440 assertions/s.
+
+6 runs, 46 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/draft_reads_test.rb
+Run options: --seed 17235
+
+# Running:
+
+.......
+
+Finished in 0.151608s, 46.1718 runs/s, 217.6671 assertions/s.
+
+7 runs, 33 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 32048
+
+# Running:
+
+......
+
+Finished in 0.474426s, 12.6469 runs/s, 120.1452 assertions/s.
+
+6 runs, 57 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 14218
+
+# Running:
+
+.......
+
+Finished in 0.096308s, 72.6833 runs/s, 654.1498 assertions/s.
+
+7 runs, 63 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/google_sso_test.rb
+Run options: --seed 62685
+
+# Running:
+
+.............
+
+Finished in 0.029916s, 434.5466 runs/s, 2339.8666 assertions/s.
+
+13 runs, 70 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 51254
+
+# Running:
+
+......
+
+Finished in 1.120825s, 5.3532 runs/s, 42.8256 assertions/s.
+
+6 runs, 48 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/mail_search_test.rb
+Run options: --seed 44190
+
+# Running:
+
+......
+
+Finished in 0.209372s, 28.6571 runs/s, 401.1991 assertions/s.
+
+6 runs, 84 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 12822
+
+# Running:
+
+......
+
+Finished in 1.167041s, 5.1412 runs/s, 51.4121 assertions/s.
+
+6 runs, 60 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 8237
+
+# Running:
+
+........
+
+Finished in 1.486586s, 5.3815 runs/s, 57.1780 assertions/s.
+
+8 runs, 85 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 37090
+
+# Running:
+
+......
+
+Finished in 0.237177s, 25.2975 runs/s, 307.7867 assertions/s.
+
+6 runs, 73 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/mailbox_reads_test.rb
+Run options: --seed 8719
+
+# Running:
+
+............
+
+Finished in 0.714393s, 16.7975 runs/s, 132.9800 assertions/s.
+
+12 runs, 95 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 54406
+
+# Running:
+
+.......
+
+Finished in 0.800636s, 8.7430 runs/s, 66.1974 assertions/s.
+
+7 runs, 53 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 34070
+
+# Running:
+
+......
+
+Finished in 0.802952s, 7.4724 runs/s, 41.0984 assertions/s.
+
+6 runs, 33 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 45160
+
+# Running:
+
+....................
+
+Finished in 2.514100s, 7.9551 runs/s, 60.4590 assertions/s.
+
+20 runs, 152 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 26356
+
+# Running:
+
+...
+
+Finished in 0.302372s, 9.9215 runs/s, 36.3790 assertions/s.
+
+3 runs, 11 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 30442
+
+# Running:
+
+...
+
+Finished in 0.043338s, 69.2232 runs/s, 92.2976 assertions/s.
+
+3 runs, 4 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 27800
+
+# Running:
+
+..
+
+Finished in 6.147480s, 0.3253 runs/s, 1.1387 assertions/s.
+
+2 runs, 7 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/rate_limits_test.rb
+Run options: --seed 60371
+
+# Running:
+
+..
+
+Finished in 0.284854s, 7.0211 runs/s, 70.2113 assertions/s.
+
+2 runs, 20 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/read_controller_test.rb
+Run options: --seed 13115
+
+# Running:
+
+...............
+
+Finished in 0.257904s, 58.1611 runs/s, 1403.6218 assertions/s.
+
+15 runs, 362 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/read_response_test.rb
+Run options: --seed 33419
+
+# Running:
+
+..........
+
+Finished in 0.020239s, 494.0924 runs/s, 3211.6007 assertions/s.
+
+10 runs, 65 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 43690
+
+# Running:
+
+......
+
+Finished in 0.517487s, 11.5945 runs/s, 295.6593 assertions/s.
+
+6 runs, 153 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 63103
+
+# Running:
+
+....
+
+Finished in 0.389619s, 10.2664 runs/s, 418.3572 assertions/s.
+
+4 runs, 163 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 37316
+
+# Running:
+
+.............
+
+Finished in 1.176270s, 11.0519 runs/s, 81.6139 assertions/s.
+
+13 runs, 96 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 13504
+
+# Running:
+
+............
+
+Finished in 9.595109s, 1.2506 runs/s, 8.9629 assertions/s.
+
+12 runs, 86 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 31170
+
+# Running:
+
+.............
+
+Finished in 0.021713s, 598.7103 runs/s, 2993.5516 assertions/s.
+
+13 runs, 65 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 17011
+
+# Running:
+
+....
+
+Finished in 0.423168s, 9.4525 runs/s, 115.7932 assertions/s.
+
+4 runs, 49 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 59873
+
+# Running:
+
+...
+
+Finished in 0.012475s, 240.4868 runs/s, 1683.4079 assertions/s.
+
+3 runs, 21 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 29819
+
+# Running:
+
+........
+
+Finished in 0.013759s, 581.4281 runs/s, 5087.4958 assertions/s.
+
+8 runs, 70 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/session_store_test.rb
+Run options: --seed 39359
+
+# Running:
+
+...
+
+Finished in 0.155737s, 19.2632 runs/s, 70.6319 assertions/s.
+
+3 runs, 11 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 64836
+
+# Running:
+
+...
+
+Finished in 0.209281s, 14.3348 runs/s, 152.9042 assertions/s.
+
+3 runs, 32 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 54405
+
+# Running:
+
+...
+
+Finished in 0.003999s, 750.2418 runs/s, 6752.1759 assertions/s.
+
+3 runs, 27 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/thread_database_test.rb
+Run options: --seed 29287
+
+# Running:
+
+......Organization threads: 120 mailboxes; traversal seconds: 0.06368778899991412
+....E.Organization threads: 120 mailboxes, 12001 threads; plan: {
+  "Plan": {
+    "Node Type": "Limit",
+    "Parallel Aware": false,
+    "Async Capable": false,
+    "Startup Cost": 267.21,
+    "Total Cost": 267.22,
+    "Plan Rows": 1,
+    "Plan Width": 230,
+    "Actual Startup Time": 301.593,
+    "Actual Total Time": 301.617,
+    "Actual Rows": 51,
+    "Actual Loops": 1,
+    "Plans": [
+      {
+        "Node Type": "Sort",
+        "Parent Relationship": "Outer",
+        "Parallel Aware": false,
+        "Async Capable": false,
+        "Startup Cost": 267.21,
+        "Total Cost": 267.22,
+        "Plan Rows": 1,
+        "Plan Width": 230,
+        "Actual Startup Time": 301.592,
+        "Actual Total Time": 301.612,
+        "Actual Rows": 51,
+        "Actual Loops": 1,
+        "Sort Key": [
+          "(to_char((page.activity AT TIME ZONE 'UTC'::text), 'YYYY-MM-DD\"T\"HH24:MI:SS.US\"Z\"'::text)) DESC NULLS LAST",
+          "page.id DESC"
+        ],
+        "Sort Method": "top-N heapsort",
+        "Sort Space Used": 34,
+        "Sort Space Type": "Memory",
+        "Plans": [
+          {
+            "Node Type": "Result",
+            "Parent Relationship": "Outer",
+            "Parallel Aware": false,
+            "Async Capable": false,
+            "Startup Cost": 159.22,
+            "Total Cost": 267.2,
+            "Plan Rows": 1,
+            "Plan Width": 230,
+            "Actual Startup Time": 2.191,
+            "Actual Total Time": 299.378,
+            "Actual Rows": 6120,
+            "Actual Loops": 1,
+            "One-Time Filter": "(app.context_uuid('app.org_id'::text) = '[opaque value redacted]'::uuid)",
+            "Plans": [
+              {
+                "Node Type": "Nested Loop",
+                "Parent Relationship": "Outer",
+                "Parallel Aware": false,
+                "Async Capable": false,
+                "Join Type": "Inner",
+                "Startup Cost": 159.22,
+                "Total Cost": 267.2,
+                "Plan Rows": 1,
+                "Plan Width": 230,
+                "Actual Startup Time": 2.156,
+                "Actual Total Time": 298.491,
+                "Actual Rows": 6120,
+                "Actual Loops": 1,
+                "Inner Unique": false,
+                "Plans": [
+                  {
+                    "Node Type": "Index Scan",
+                    "Parent Relationship": "Outer",
+                    "Parallel Aware": false,
+                    "Async Capable": false,
+                    "Scan Direction": "Forward",
+                    "Index Name": "[opaque value redacted]",
+                    "Relation Name": "mailboxes",
+                    "Alias": "mailbox",
+                    "Startup Cost": 0.27,
+                    "Total Cost": 25.12,
+                    "Plan Rows": 1,
+                    "Plan Width": 16,
+                    "Actual Startup Time": 0.05,
+                    "Actual Total Time": 0.441,
+                    "Actual Rows": 120,
+                    "Actual Loops": 1,
+                    "Index Cond": "(organization_id = '[opaque value redacted]'::uuid)",
+                    "Rows Removed by Index Recheck": 0,
+                    "Filter": "((ANY (organization_id = (hashed SubPlan 2).col1)) AND ((visibility = 'shared'::text) OR (ANY ((id = (hashed SubPlan 4).col1) AND (organization_id = (hashed SubPlan 4).col2)))))",
+                    "Rows Removed by Filter": 0,
+                    "Plans": [
+                      {
+                        "Node Type": "Index Only Scan",
+                        "Parent Relationship": "SubPlan",
+                        "Subplan Name": "SubPlan 2",
+                        "Parallel Aware": false,
+                        "Async Capable": false,
+                        "Scan Direction": "Forward",
+                        "Index Name": "organization_memberships_pkey",
+                        "Relation Name": "organization_memberships",
+                        "Alias": "m",
+                        "Startup Cost": 0.65,
+                        "Total Cost": 8.66,
+                        "Plan Rows": 1,
+                        "Plan Width": 16,
+                        "Actual Startup Time": 0.012,
+                        "Actual Total Time": 0.013,
+                        "Actual Rows": 1,
+                        "Actual Loops": 1,
+                        "Index Cond": "((organization_id = app.context_uuid('app.org_id'::text)) AND (user_id = app.context_uuid('app.user_id'::text)))",
+                        "Rows Removed by Index Recheck": 0,
+                        "Heap Fetches": 1
+                      },
+                      {
+                        "Node Type": "Index Scan",
+                        "Parent Relationship": "SubPlan",
+                        "Subplan Name": "SubPlan 4",
+                        "Parallel Aware": false,
+                        "Async Capable": false,
+                        "Scan Direction": "Forward",
+                        "Index Name": "membership_mailbox_fk",
+                        "Relation Name": "mailbox_memberships",
+                        "Alias": "mm",
+                        "Startup Cost": 0.39,
+                        "Total Cost": 8.66,
+                        "Plan Rows": 1,
+                        "Plan Width": 32,
+                        "Actual Startup Time": 0.0,
+                        "Actual Total Time": 0.0,
+                        "Actual Rows": 0,
+                        "Actual Loops": 0,
+                        "Index Cond": "(organization_id = app.context_uuid('app.org_id'::text))",
+                        "Rows Removed by Index Recheck": 0,
+                        "Filter": "(user_id = app.context_uuid('app.user_id'::text))",
+                        "Rows Removed by Filter": 0
+                      }
+                    ]
+                  },
+                  {
+                    "Node Type": "Nested Loop",
+                    "Parent Relationship": "Inner",
+                    "Parallel Aware": false,
+                    "Async Capable": false,
+                    "Join Type": "Left",
+                    "Startup Cost": 158.7,
+                    "Total Cost": 241.81,
+                    "Plan Rows": 1,
+                    "Plan Width": 238,
+                    "Actual Startup Time": 1.648,
+                    "Actual Total Time": 2.475,
+                    "Actual Rows": 51,
+                    "Actual Loops": 120,
+                    "Inner Unique": true,
+                    "Plans": [
+                      {
+                        "Node Type": "Limit",
+                        "Parent Relationship": "InitPlan",
+                        "Subplan Name": "CTE page",
+                        "Parallel Aware": false,
+                        "Async Capable": false,
+                        "Startup Cost": 158.41,
+                        "Total Cost": 158.41,
+                        "Plan Rows": 1,
+                        "Plan Width": 154,
+                        "Actual Startup Time": 1.607,
+                        "Actual Total Time": 1.615,
+                        "Actual Rows": 51,
+                        "Actual Loops": 120,
+                        "Plans": [
+                          {
+                            "Node Type": "Sort",
+                            "Parent Relationship": "Outer",
+                            "Parallel Aware": false,
+                            "Async Capable": false,
+                            "Startup Cost": 158.41,
+                            "Total Cost": 158.41,
+                            "Plan Rows": 1,
+                            "Plan Width": 154,
+                            "Actual Startup Time": 1.605,
+                            "Actual Total Time": 1.609,
+                            "Actual Rows": 51,
+                            "Actual Loops": 120,
+                            "Sort Key": [
+                              "message.sent_at DESC NULLS LAST",
+                              "thread_3.id DESC"
+                            ],
+                            "Sort Method": "quicksort",
+                            "Sort Space Used": 38,
+                            "Sort Space Type": "Memory",
+                            "Plans": [
+                              {
+                                "Node Type": "Result",
+                                "Parent Relationship": "Outer",
+                                "Parallel Aware": false,
+                                "Async Capable": false,
+                                "Startup Cost": 1.37,
+                                "Total Cost": 158.4,
+                                "Plan Rows": 1,
+                                "Plan Width": 154,
+                                "Actual Startup Time": 0.04,
+                                "Actual Total Time": 1.574,
+                                "Actual Rows": 100,
+                                "Actual Loops": 120,
+                                "One-Time Filter": "(app.context_uuid('app.org_id'::text) = '[opaque value redacted]'::uuid)",
+                                "Plans": [
+                                  {
+                                    "Node Type": "Nested Loop",
+                                    "Parent Relationship": "Outer",
+                                    "Parallel Aware": false,
+                                    "Async Capable": false,
+                                    "Join Type": "Left",
+                                    "Startup Cost": 1.37,
+                                    "Total Cost": 158.39,
+                                    "Plan Rows": 1,
+                                    "Plan Width": 130,
+                                    "Actual Startup Time": 0.037,
+                                    "Actual Total Time": 1.548,
+                                    "Actual Rows": 100,
+                                    "Actual Loops": 120,
+                                    "Inner Unique": false,
+                                    "Plans": [
+                                      {
+                                        "Node Type": "Nested Loop",
+                                        "Parent Relationship": "Outer",
+                                        "Parallel Aware": false,
+                                        "Async Capable": false,
+                                        "Join Type": "Left",
+                                        "Startup Cost": 0.71,
+                                        "Total Cost": 116.4,
+                                        "Plan Rows": 1,
+                                        "Plan Width": 106,
+                                        "Actual Startup Time": 0.022,
+                                        "Actual Total Time": 0.815,
+                                        "Actual Rows": 100,
+                                        "Actual Loops": 120,
+                                        "Inner Unique": true,
+                                        "Join Filter": "(star.thread_id = thread_3.id)",
+                                        "Rows Removed by Join Filter": 0,
+                                        "Plans": [
+                                          {
+                                            "Node Type": "Nested Loop",
+                                            "Parent Relationship": "Outer",
+                                            "Parallel Aware": false,
+                                            "Async Capable": false,
+                                            "Join Type": "Left",
+                                            "Startup Cost": 0.56,
+                                            "Total Cost": 74.91,
+                                            "Plan Rows": 1,
+                                            "Plan Width": 121,
+                                            "Actual Startup Time": 0.016,
+                                            "Actual Total Time": 0.448,
+                                            "Actual Rows": 100,
+                                            "Actual Loops": 120,
+                                            "Inner Unique": true,
+                                            "Join Filter": "(state.thread_id = thread_3.id)",
+                                            "Rows Removed by Join Filter": 0,
+                                            "Plans": [
+                                              {
+                                                "Node Type": "Index Scan",
+                                                "Parent Relationship": "Outer",
+                                                "Parallel Aware": false,
+                                                "Async Capable": false,
+                                                "Scan Direction": "Forward",
+                                                "Index Name": "threads_mailbox_folder_order",
+                                                "Relation Name": "threads",
+                                                "Alias": "thread_3",
+                                                "Startup Cost": 0.41,
+                                                "Total Cost": 33.43,
+                                                "Plan Rows": 1,
+                                                "Plan Width": 120,
+                                                "Actual Startup Time": 0.009,
+                                                "Actual Total Time": 0.063,
+                                                "Actual Rows": 100,
+                                                "Actual Loops": 120,
+                                                "Index Cond": "((organization_id = '[opaque value redacted]'::uuid) AND (mailbox_id = mailbox.id) AND (folder = 'inbox'::text))",
+                                                "Rows Removed by Index Recheck": 0,
+                                                "Filter": "(((snoozed_until IS NULL) OR (snoozed_until <= clock_timestamp())) AND (ANY ((organization_id = (hashed SubPlan 14).col1) AND (mailbox_id = (hashed SubPlan 14).col2))))",
+                                                "Rows Removed by Filter": 0,
+                                                "Plans": [
+                                                  {
+                                                    "Node Type": "Index Scan",
+                                                    "Parent Relationship": "SubPlan",
+                                                    "Subplan Name": "SubPlan 14",
+                                                    "Parallel Aware": false,
+                                                    "Async Capable": false,
+                                                    "Scan Direction": "Forward",
+                                                    "Index Name": "[opaque value redacted]",
+                                                    "Relation Name": "mailboxes",
+                                                    "Alias": "mailbox_1",
+                                                    "Startup Cost": 0.52,
+                                                    "Total Cost": 25.37,
+                                                    "Plan Rows": 1,
+                                                    "Plan Width": 32,
+                                                    "Actual Startup Time": 0.023,
+                                                    "Actual Total Time": 0.062,
+                                                    "Actual Rows": 120,
+                                                    "Actual Loops": 1,
+                                                    "Index Cond": "(organization_id = app.context_uuid('app.org_id'::text))",
+                                                    "Rows Removed by Index Recheck": 0,
+                                                    "Filter": "((ANY (organization_id = (hashed SubPlan 11).col1)) AND ((visibility = 'shared'::text) OR (ANY ((id = (hashed SubPlan 13).col1) AND (organization_id = (hashed SubPlan 13).col2)))))",
+                                                    "Rows Removed by Filter": 0,
+                                                    "Plans": [
+                                                      {
+                                                        "Node Type": "Index Only Scan",
+                                                        "Parent Relationship": "SubPlan",
+                                                        "Subplan Name": "SubPlan 11",
+                                                        "Parallel Aware": false,
+                                                        "Async Capable": false,
+                                                        "Scan Direction": "Forward",
+                                                        "Index Name": "organization_memberships_pkey",
+                                                        "Relation Name": "organization_memberships",
+                                                        "Alias": "m_1",
+                                                        "Startup Cost": 0.65,
+                                                        "Total Cost": 8.66,
+                                                        "Plan Rows": 1,
+                                                        "Plan Width": 16,
+                                                        "Actual Startup Time": 0.006,
+                                                        "Actual Total Time": 0.007,
+                                                        "Actual Rows": 1,
+                                                        "Actual Loops": 1,
+                                                        "Index Cond": "((organization_id = app.context_uuid('app.org_id'::text)) AND (user_id = app.context_uuid('app.user_id'::text)))",
+                                                        "Rows Removed by Index Recheck": 0,
+                                                        "Heap Fetches": 1
+                                                      },
+                                                      {
+                                                        "Node Type": "Index Scan",
+                                                        "Parent Relationship": "SubPlan",
+                                                        "Subplan Name": "SubPlan 13",
+                                                        "Parallel Aware": false,
+                                                        "Async Capable": false,
+                                                        "Scan Direction": "Forward",
+                                                        "Index Name": "membership_mailbox_fk",
+                                                        "Relation Name": "mailbox_memberships",
+                                                        "Alias": "mm_1",
+                                                        "Startup Cost": 0.39,
+                                                        "Total Cost": 8.66,
+                                                        "Plan Rows": 1,
+                                                        "Plan Width": 32,
+                                                        "Actual Startup Time": 0.0,
+                                                        "Actual Total Time": 0.0,
+                                                        "Actual Rows": 0,
+                                                        "Actual Loops": 0,
+                                                        "Index Cond": "(organization_id = app.context_uuid('app.org_id'::text))",
+                                                        "Rows Removed by Index Recheck": 0,
+                                                        "Filter": "(user_id = app.context_uuid('app.user_id'::text))",
+                                                        "Rows Removed by Filter": 0
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "Node Type": "Result",
+                                                "Parent Relationship": "Inner",
+                                                "Parallel Aware": false,
+                                                "Async Capable": false,
+                                                "Startup Cost": 0.15,
+                                                "Total Cost": 41.47,
+                                                "Plan Rows": 1,
+                                                "Plan Width": 49,
+                                                "Actual Startup Time": 0.004,
+                                                "Actual Total Time": 0.004,
+                                                "Actual Rows": 0,
+                                                "Actual Loops": 12001,
+                                                "One-Time Filter": "((app.context_uuid('app.org_id'::text) = '[opaque value redacted]'::uuid) AND (app.context_uuid('app.user_id'::text) = '[opaque value redacted]'::uuid))",
+                                                "Plans": [
+                                                  {
+                                                    "Node Type": "Index Scan",
+                                                    "Parent Relationship": "Outer",
+                                                    "Parallel Aware": false,
+                                                    "Async Capable": false,
+                                                    "Scan Direction": "Forward",
+                                                    "Index Name": "thread_read_states_actor",
+                                                    "Relation Name": "thread_read_states",
+                                                    "Alias": "state",
+                                                    "Startup Cost": 0.15,
+                                                    "Total Cost": 41.47,
+                                                    "Plan Rows": 1,
+                                                    "Plan Width": 49,
+                                                    "Actual Startup Time": 0.001,
+                                                    "Actual Total Time": 0.001,
+                                                    "Actual Rows": 0,
+                                                    "Actual Loops": 12001,
+                                                    "Index Cond": "((organization_id = '[opaque value redacted]'::uuid) AND (user_id = '[opaque value redacted]'::uuid) AND (mailbox_id = mailbox.id))",
+                                                    "Rows Removed by Index Recheck": 0,
+                                                    "Filter": "EXISTS(SubPlan 25)",
+                                                    "Rows Removed by Filter": 0,
+                                                    "Plans": [
+                                                      {
+                                                        "Node Type": "Result",
+                                                        "Parent Relationship": "SubPlan",
+                                                        "Subplan Name": "SubPlan 25",
+                                                        "Parallel Aware": false,
+                                                        "Async Capable": false,
+                                                        "Startup Cost": 0.28,
+                                                        "Total Cost": 33.3,
+                                                        "Plan Rows": 1,
+                                                        "Plan Width": 0,
+                                                        "Actual Startup Time": 0.0,
+                                                        "Actual Total Time": 0.0,
+                                                        "Actual Rows": 0,
+                                                        "Actual Loops": 0,
+                                                        "One-Time Filter": "(app.context_uuid('app.org_id'::text) = state.organization_id)",
+                                                        "Plans": [
+                                                          {
+                                                            "Node Type": "Index Scan",
+                                                            "Parent Relationship": "Outer",
+                                                            "Parallel Aware": false,
+                                                            "Async Capable": false,
+                                                            "Scan Direction": "Forward",
+                                                            "Index Name": "threads_pkey",
+                                                            "Relation Name": "threads",
+                                                            "Alias": "thread",
+                                                            "Startup Cost": 0.28,
+                                                            "Total Cost": 33.3,
+                                                            "Plan Rows": 1,
+                                                            "Plan Width": 0,
+                                                            "Actual Startup Time": 0.0,
+                                                            "Actual Total Time": 0.0,
+                                                            "Actual Rows": 0,
+                                                            "Actual Loops": 0,
+                                                            "Index Cond": "(id = state.thread_id)",
+                                                            "Rows Removed by Index Recheck": 0,
+                                                            "Filter": "((organization_id = state.organization_id) AND (mailbox_id = state.mailbox_id) AND (ANY ((organization_id = (hashed SubPlan 24).col1) AND (mailbox_id = (hashed SubPlan 24).col2))))",
+                                                            "Rows Removed by Filter": 0,
+                                                            "Plans": [
+                                                              {
+                                                                "Node Type": "Index Scan",
+                                                                "Parent Relationship": "SubPlan",
+                                                                "Subplan Name": "SubPlan 24",
+                                                                "Parallel Aware": false,
+                                                                "Async Capable": false,
+                                                                "Scan Direction": "Forward",
+                                                                "Index Name": "[opaque value redacted]",
+                                                                "Relation Name": "mailboxes",
+                                                                "Alias": "mailbox_2",
+                                                                "Startup Cost": 0.52,
+                                                                "Total Cost": 25.37,
+                                                                "Plan Rows": 1,
+                                                                "Plan Width": 32,
+                                                                "Actual Startup Time": 0.0,
+                                                                "Actual Total Time": 0.0,
+                                                                "Actual Rows": 0,
+                                                                "Actual Loops": 0,
+                                                                "Index Cond": "(organization_id = app.context_uuid('app.org_id'::text))",
+                                                                "Rows Removed by Index Recheck": 0,
+                                                                "Filter": "((ANY (organization_id = (hashed SubPlan 21).col1)) AND ((visibility = 'shared'::text) OR (ANY ((id = (hashed SubPlan 23).col1) AND (organization_id = (hashed SubPlan 23).col2)))))",
+                                                                "Rows Removed by Filter": 0,
+                                                                "Plans": [
+                                                                  {
+                                                                    "Node Type": "Index Only Scan",
+                                                                    "Parent Relationship": "SubPlan",
+                                                                    "Subplan Name": "SubPlan 21",
+                                                                    "Parallel Aware": false,
+                                                                    "Async Capable": false,
+                                                                    "Scan Direction": "Forward",
+                                                                    "Index Name": "organization_memberships_pkey",
+                                                                    "Relation Name": "organization_memberships",
+                                                                    "Alias": "m_2",
+                                                                    "Startup Cost": 0.65,
+                                                                    "Total Cost": 8.66,
+                                                                    "Plan Rows": 1,
+                                                                    "Plan Width": 16,
+                                                                    "Actual Startup Time": 0.0,
+                                                                    "Actual Total Time": 0.0,
+                                                                    "Actual Rows": 0,
+                                                                    "Actual Loops": 0,
+                                                                    "Index Cond": "((organization_id = app.context_uuid('app.org_id'::text)) AND (user_id = app.context_uuid('app.user_id'::text)))",
+                                                                    "Rows Removed by Index Recheck": 0,
+                                                                    "Heap Fetches": 0
+                                                                  },
+                                                                  {
+                                                                    "Node Type": "Index Scan",
+                                                                    "Parent Relationship": "SubPlan",
+                                                                    "Subplan Name": "SubPlan 23",
+                                                                    "Parallel Aware": false,
+                                                                    "Async Capable": false,
+                                                                    "Scan Direction": "Forward",
+                                                                    "Index Name": "membership_mailbox_fk",
+                                                                    "Relation Name": "mailbox_memberships",
+                                                                    "Alias": "mm_2",
+                                                                    "Startup Cost": 0.39,
+                                                                    "Total Cost": 8.66,
+                                                                    "Plan Rows": 1,
+                                                                    "Plan Width": 32,
+                                                                    "Actual Startup Time": 0.0,
+                                                                    "Actual Total Time": 0.0,
+                                                                    "Actual Rows": 0,
+                                                                    "Actual Loops": 0,
+                                                                    "Index Cond": "(organization_id = app.context_uuid('app.org_id'::text))",
+                                                                    "Rows Removed by Index Recheck": 0,
+                                                                    "Filter": "(user_id = app.context_uuid('app.user_id'::text))",
+                                                                    "Rows Removed by Filter": 0
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "Node Type": "Result",
+                                            "Parent Relationship": "Inner",
+                                            "Parallel Aware": false,
+                                            "Async Capable": false,
+                                            "Startup Cost": 0.15,
+                                            "Total Cost": 41.47,
+                                            "Plan Rows": 1,
+                                            "Plan Width": 49,
+                                            "Actual Startup Time": 0.003,
+                                            "Actual Total Time": 0.003,
+                                            "Actual Rows": 0,
+                                            "Actual Loops": 12001,
+                                            "One-Time Filter": "((app.context_uuid('app.org_id'::text) = '[opaque value redacted]'::uuid) AND (app.context_uuid('app.user_id'::text) = '[opaque value redacted]'::uuid))",
+                                            "Plans": [
+                                              {
+                                                "Node Type": "Index Scan",
+                                                "Parent Relationship": "Outer",
+                                                "Parallel Aware": false,
+                                                "Async Capable": false,
+                                                "Scan Direction": "Forward",
+                                                "Index Name": "thread_stars_actor",
+                                                "Relation Name": "thread_stars",
+                                                "Alias": "star",
+                                                "Startup Cost": 0.15,
+                                                "Total Cost": 41.47,
+                                                "Plan Rows": 1,
+                                                "Plan Width": 49,
+                                                "Actual Startup Time": 0.001,
+                                                "Actual Total Time": 0.001,
+                                                "Actual Rows": 0,
+                                                "Actual Loops": 12001,
+                                                "Index Cond": "((organization_id = '[opaque value redacted]'::uuid) AND (user_id = '[opaque value redacted]'::uuid) AND (mailbox_id = mailbox.id))",
+                                                "Rows Removed by Index Recheck": 0,
+                                                "Filter": "EXISTS(SubPlan 47)",
+                                                "Rows Removed by Filter": 0,
+                                                "Plans": [
+                                                  {
+                                                    "Node Type": "Result",
+                                                    "Parent Relationship": "SubPlan",
+                                                    "Subplan Name": "SubPlan 47",
+                                                    "Parallel Aware": false,
+                                                    "Async Capable": false,
+                                                    "Startup Cost": 0.28,
+                                                    "Total Cost": 33.3,
+                                                    "Plan Rows": 1,
+                                                    "Plan Width": 0,
+                                                    "Actual Startup Time": 0.0,
+                                                    "Actual Total Time": 0.0,
+                                                    "Actual Rows": 0,
+                                                    "Actual Loops": 0,
+                                                    "One-Time Filter": "(app.context_uuid('app.org_id'::text) = star.organization_id)",
+                                                    "Plans": [
+                                                      {
+                                                        "Node Type": "Index Scan",
+                                                        "Parent Relationship": "Outer",
+                                                        "Parallel Aware": false,
+                                                        "Async Capable": false,
+                                                        "Scan Direction": "Forward",
+                                                        "Index Name": "threads_pkey",
+                                                        "Relation Name": "threads",
+                                                        "Alias": "thread_1",
+                                                        "Startup Cost": 0.28,
+                                                        "Total Cost": 33.3,
+                                                        "Plan Rows": 1,
+                                                        "Plan Width": 0,
+                                                        "Actual Startup Time": 0.0,
+                                                        "Actual Total Time": 0.0,
+                                                        "Actual Rows": 0,
+                                                        "Actual Loops": 0,
+                                                        "Index Cond": "(id = star.thread_id)",
+                                                        "Rows Removed by Index Recheck": 0,
+                                                        "Filter": "((organization_id = star.organization_id) AND (mailbox_id = star.mailbox_id) AND (ANY ((organization_id = (hashed SubPlan 46).col1) AND (mailbox_id = (hashed SubPlan 46).col2))))",
+                                                        "Rows Removed by Filter": 0,
+                                                        "Plans": [
+                                                          {
+                                                            "Node Type": "Index Scan",
+                                                            "Parent Relationship": "SubPlan",
+                                                            "Subplan Name": "SubPlan 46",
+                                                            "Parallel Aware": false,
+                                                            "Async Capable": false,
+                                                            "Scan Direction": "Forward",
+                                                            "Index Name": "[opaque value redacted]",
+                                                            "Relation Name": "mailboxes",
+                                                            "Alias": "mailbox_3",
+                                                            "Startup Cost": 0.52,
+                                                            "Total Cost": 25.37,
+                                                            "Plan Rows": 1,
+                                                            "Plan Width": 32,
+                                                            "Actual Startup Time": 0.0,
+                                                            "Actual Total Time": 0.0,
+                                                            "Actual Rows": 0,
+                                                            "Actual Loops": 0,
+                                                            "Index Cond": "(organization_id = app.context_uuid('app.org_id'::text))",
+                                                            "Rows Removed by Index Recheck": 0,
+                                                            "Filter": "((ANY (organization_id = (hashed SubPlan 43).col1)) AND ((visibility = 'shared'::text) OR (ANY ((id = (hashed SubPlan 45).col1) AND (organization_id = (hashed SubPlan 45).col2)))))",
+                                                            "Rows Removed by Filter": 0,
+                                                            "Plans": [
+                                                              {
+                                                                "Node Type": "Index Only Scan",
+                                                                "Parent Relationship": "SubPlan",
+                                                                "Subplan Name": "SubPlan 43",
+                                                                "Parallel Aware": false,
+                                                                "Async Capable": false,
+                                                                "Scan Direction": "Forward",
+                                                                "Index Name": "organization_memberships_pkey",
+                                                                "Relation Name": "organization_memberships",
+                                                                "Alias": "m_3",
+                                                                "Startup Cost": 0.65,
+                                                                "Total Cost": 8.66,
+                                                                "Plan Rows": 1,
+                                                                "Plan Width": 16,
+                                                                "Actual Startup Time": 0.0,
+                                                                "Actual Total Time": 0.0,
+                                                                "Actual Rows": 0,
+                                                                "Actual Loops": 0,
+                                                                "Index Cond": "((organization_id = app.context_uuid('app.org_id'::text)) AND (user_id = app.context_uuid('app.user_id'::text)))",
+                                                                "Rows Removed by Index Recheck": 0,
+                                                                "Heap Fetches": 0
+                                                              },
+                                                              {
+                                                                "Node Type": "Index Scan",
+                                                                "Parent Relationship": "SubPlan",
+                                                                "Subplan Name": "SubPlan 45",
+                                                                "Parallel Aware": false,
+                                                                "Async Capable": false,
+                                                                "Scan Direction": "Forward",
+                                                                "Index Name": "membership_mailbox_fk",
+                                                                "Relation Name": "mailbox_memberships",
+                                                                "Alias": "mm_3",
+                                                                "Startup Cost": 0.39,
+                                                                "Total Cost": 8.66,
+                                                                "Plan Rows": 1,
+                                                                "Plan Width": 32,
+                                                                "Actual Startup Time": 0.0,
+                                                                "Actual Total Time": 0.0,
+                                                                "Actual Rows": 0,
+                                                                "Actual Loops": 0,
+                                                                "Index Cond": "(organization_id = app.context_uuid('app.org_id'::text))",
+                                                                "Rows Removed by Index Recheck": 0,
+                                                                "Filter": "(user_id = app.context_uuid('app.user_id'::text))",
+                                                                "Rows Removed by Filter": 0
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "Node Type": "Limit",
+                                        "Parent Relationship": "Inner",
+                                        "Parallel Aware": false,
+                                        "Async Capable": false,
+                                        "Startup Cost": 0.41,
+                                        "Total Cost": 41.73,
+                                        "Plan Rows": 1,
+                                        "Plan Width": 24,
+                                        "Actual Startup Time": 0.007,
+                                        "Actual Total Time": 0.007,
+                                        "Actual Rows": 1,
+                                        "Actual Loops": 12001,
+                                        "Plans": [
+                                          {
+                                            "Node Type": "Result",
+                                            "Parent Relationship": "Outer",
+                                            "Parallel Aware": false,
+                                            "Async Capable": false,
+                                            "Startup Cost": 0.41,
+                                            "Total Cost": 41.73,
+                                            "Plan Rows": 1,
+                                            "Plan Width": 24,
+                                            "Actual Startup Time": 0.007,
+                                            "Actual Total Time": 0.007,
+                                            "Actual Rows": 1,
+                                            "Actual Loops": 12001,
+                                            "One-Time Filter": "(app.context_uuid('app.org_id'::text) = '[opaque value redacted]'::uuid)",
+                                            "Plans": [
+                                              {
+                                                "Node Type": "Index Only Scan",
+                                                "Parent Relationship": "Outer",
+                                                "Parallel Aware": false,
+                                                "Async Capable": false,
+                                                "Scan Direction": "Forward",
+                                                "Index Name": "messages_thread_order",
+                                                "Relation Name": "messages",
+                                                "Alias": "message",
+                                                "Startup Cost": 0.41,
+                                                "Total Cost": 41.73,
+                                                "Plan Rows": 1,
+                                                "Plan Width": 24,
+                                                "Actual Startup Time": 0.005,
+                                                "Actual Total Time": 0.005,
+                                                "Actual Rows": 1,
+                                                "Actual Loops": 12001,
+                                                "Index Cond": "((organization_id = '[opaque value redacted]'::uuid) AND (mailbox_id = mailbox.id) AND (thread_id = thread_3.id))",
+                                                "Rows Removed by Index Recheck": 0,
+                                                "Filter": "EXISTS(SubPlan 69)",
+                                                "Rows Removed by Filter": 0,
+                                                "Heap Fetches": 12001,
+                                                "Plans": [
+                                                  {
+                                                    "Node Type": "Result",
+                                                    "Parent Relationship": "SubPlan",
+                                                    "Subplan Name": "SubPlan 69",
+                                                    "Parallel Aware": false,
+                                                    "Async Capable": false,
+                                                    "Startup Cost": 0.28,
+                                                    "Total Cost": 33.3,
+                                                    "Plan Rows": 1,
+                                                    "Plan Width": 0,
+                                                    "Actual Startup Time": 0.003,
+                                                    "Actual Total Time": 0.003,
+                                                    "Actual Rows": 1,
+                                                    "Actual Loops": 12001,
+                                                    "One-Time Filter": "(app.context_uuid('app.org_id'::text) = message.organization_id)",
+                                                    "Plans": [
+                                                      {
+                                                        "Node Type": "Index Scan",
+                                                        "Parent Relationship": "Outer",
+                                                        "Parallel Aware": false,
+                                                        "Async Capable": false,
+                                                        "Scan Direction": "Forward",
+                                                        "Index Name": "threads_pkey",
+                                                        "Relation Name": "threads",
+                                                        "Alias": "thread_2",
+                                                        "Startup Cost": 0.28,
+                                                        "Total Cost": 33.3,
+                                                        "Plan Rows": 1,
+                                                        "Plan Width": 0,
+                                                        "Actual Startup Time": 0.002,
+                                                        "Actual Total Time": 0.002,
+                                                        "Actual Rows": 1,
+                                                        "Actual Loops": 12001,
+                                                        "Index Cond": "(id = message.thread_id)",
+                                                        "Rows Removed by Index Recheck": 0,
+                                                        "Filter": "((organization_id = message.organization_id) AND (mailbox_id = message.mailbox_id) AND (ANY ((organization_id = (hashed SubPlan 68).col1) AND (mailbox_id = (hashed SubPlan 68).col2))))",
+                                                        "Rows Removed by Filter": 0,
+                                                        "Plans": [
+                                                          {
+                                                            "Node Type": "Index Scan",
+                                                            "Parent Relationship": "SubPlan",
+                                                            "Subplan Name": "SubPlan 68",
+                                                            "Parallel Aware": false,
+                                                            "Async Capable": false,
+                                                            "Scan Direction": "Forward",
+                                                            "Index Name": "[opaque value redacted]",
+                                                            "Relation Name": "mailboxes",
+                                                            "Alias": "mailbox_4",
+                                                            "Startup Cost": 0.52,
+                                                            "Total Cost": 25.37,
+                                                            "Plan Rows": 1,
+                                                            "Plan Width": 32,
+                                                            "Actual Startup Time": 0.019,
+                                                            "Actual Total Time": 0.052,
+                                                            "Actual Rows": 120,
+                                                            "Actual Loops": 1,
+                                                            "Index Cond": "(organization_id = app.context_uuid('app.org_id'::text))",
+                                                            "Rows Removed by Index Recheck": 0,
+                                                            "Filter": "((ANY (organization_id = (hashed SubPlan 65).col1)) AND ((visibility = 'shared'::text) OR (ANY ((id = (hashed SubPlan 67).col1) AND (organization_id = (hashed SubPlan 67).col2)))))",
+                                                            "Rows Removed by Filter": 0,
+                                                            "Plans": [
+                                                              {
+                                                                "Node Type": "Index Only Scan",
+                                                                "Parent Relationship": "SubPlan",
+                                                                "Subplan Name": "SubPlan 65",
+                                                                "Parallel Aware": false,
+                                                                "Async Capable": false,
+                                                                "Scan Direction": "Forward",
+                                                                "Index Name": "organization_memberships_pkey",
+                                                                "Relation Name": "organization_memberships",
+                                                                "Alias": "m_4",
+                                                                "Startup Cost": 0.65,
+                                                                "Total Cost": 8.66,
+                                                                "Plan Rows": 1,
+                                                                "Plan Width": 16,
+                                                                "Actual Startup Time": 0.006,
+                                                                "Actual Total Time": 0.007,
+                                                                "Actual Rows": 1,
+                                                                "Actual Loops": 1,
+                                                                "Index Cond": "((organization_id = app.context_uuid('app.org_id'::text)) AND (user_id = app.context_uuid('app.user_id'::text)))",
+                                                                "Rows Removed by Index Recheck": 0,
+                                                                "Heap Fetches": 1
+                                                              },
+                                                              {
+                                                                "Node Type": "Index Scan",
+                                                                "Parent Relationship": "SubPlan",
+                                                                "Subplan Name": "SubPlan 67",
+                                                                "Parallel Aware": false,
+                                                                "Async Capable": false,
+                                                                "Scan Direction": "Forward",
+                                                                "Index Name": "membership_mailbox_fk",
+                                                                "Relation Name": "mailbox_memberships",
+                                                                "Alias": "mm_4",
+                                                                "Startup Cost": 0.39,
+                                                                "Total Cost": 8.66,
+                                                                "Plan Rows": 1,
+                                                                "Plan Width": 32,
+                                                                "Actual Startup Time": 0.0,
+                                                                "Actual Total Time": 0.0,
+                                                                "Actual Rows": 0,
+                                                                "Actual Loops": 0,
+                                                                "Index Cond": "(organization_id = app.context_uuid('app.org_id'::text))",
+                                                                "Rows Removed by Index Recheck": 0,
+                                                                "Filter": "(user_id = app.context_uuid('app.user_id'::text))",
+                                                                "Rows Removed by Filter": 0
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "Node Type": "CTE Scan",
+                        "Parent Relationship": "Outer",
+                        "Parallel Aware": false,
+                        "Async Capable": false,
+                        "CTE Name": "page",
+                        "Alias": "page",
+                        "Startup Cost": 0.0,
+                        "Total Cost": 0.02,
+                        "Plan Rows": 1,
+                        "Plan Width": 154,
+                        "Actual Startup Time": 1.609,
+                        "Actual Total Time": 1.624,
+                        "Actual Rows": 51,
+                        "Actual Loops": 120
+                      },
+                      {
+                        "Node Type": "Result",
+                        "Parent Relationship": "Inner",
+                        "Parallel Aware": false,
+                        "Async Capable": false,
+                        "Startup Cost": 0.28,
+                        "Total Cost": 41.61,
+                        "Plan Rows": 1,
+                        "Plan Width": 96,
+                        "Actual Startup Time": 0.008,
+                        "Actual Total Time": 0.008,
+                        "Actual Rows": 1,
+                        "Actual Loops": 6120,
+                        "One-Time Filter": "(app.context_uuid('app.org_id'::text) = '[opaque value redacted]'::uuid)",
+                        "Plans": [
+                          {
+                            "Node Type": "Index Scan",
+                            "Parent Relationship": "Outer",
+                            "Parallel Aware": false,
+                            "Async Capable": false,
+                            "Scan Direction": "Forward",
+                            "Index Name": "messages_pkey",
+                            "Relation Name": "messages",
+                            "Alias": "latest",
+                            "Startup Cost": 0.28,
+                            "Total Cost": 41.61,
+                            "Plan Rows": 1,
+                            "Plan Width": 96,
+                            "Actual Startup Time": 0.006,
+                            "Actual Total Time": 0.006,
+                            "Actual Rows": 1,
+                            "Actual Loops": 6120,
+                            "Index Cond": "(id = page.latest_id)",
+                            "Rows Removed by Index Recheck": 0,
+                            "Filter": "((organization_id = '[opaque value redacted]'::uuid) AND (mailbox_id = mailbox.id) AND (thread_id = page.id) AND EXISTS(SubPlan 115))",
+                            "Rows Removed by Filter": 0,
+                            "Plans": [
+                              {
+                                "Node Type": "Result",
+                                "Parent Relationship": "SubPlan",
+                                "Subplan Name": "SubPlan 115",
+                                "Parallel Aware": false,
+                                "Async Capable": false,
+                                "Startup Cost": 0.28,
+                                "Total Cost": 33.3,
+                                "Plan Rows": 1,
+                                "Plan Width": 0,
+                                "Actual Startup Time": 0.004,
+                                "Actual Total Time": 0.004,
+                                "Actual Rows": 1,
+                                "Actual Loops": 6120,
+                                "One-Time Filter": "(app.context_uuid('app.org_id'::text) = latest.organization_id)",
+                                "Plans": [
+                                  {
+                                    "Node Type": "Index Scan",
+                                    "Parent Relationship": "Outer",
+                                    "Parallel Aware": false,
+                                    "Async Capable": false,
+                                    "Scan Direction": "Forward",
+                                    "Index Name": "threads_pkey",
+                                    "Relation Name": "threads",
+                                    "Alias": "thread_5",
+                                    "Startup Cost": 0.28,
+                                    "Total Cost": 33.3,
+                                    "Plan Rows": 1,
+                                    "Plan Width": 0,
+                                    "Actual Startup Time": 0.002,
+                                    "Actual Total Time": 0.002,
+                                    "Actual Rows": 1,
+                                    "Actual Loops": 6120,
+                                    "Index Cond": "(id = latest.thread_id)",
+                                    "Rows Removed by Index Recheck": 0,
+                                    "Filter": "((organization_id = latest.organization_id) AND (mailbox_id = latest.mailbox_id) AND (ANY ((organization_id = (hashed SubPlan 114).col1) AND (mailbox_id = (hashed SubPlan 114).col2))))",
+                                    "Rows Removed by Filter": 0,
+                                    "Plans": [
+                                      {
+                                        "Node Type": "Index Scan",
+                                        "Parent Relationship": "SubPlan",
+                                        "Subplan Name": "SubPlan 114",
+                                        "Parallel Aware": false,
+                                        "Async Capable": false,
+                                        "Scan Direction": "Forward",
+                                        "Index Name": "[opaque value redacted]",
+                                        "Relation Name": "mailboxes",
+                                        "Alias": "mailbox_6",
+                                        "Startup Cost": 0.52,
+                                        "Total Cost": 25.37,
+                                        "Plan Rows": 1,
+                                        "Plan Width": 32,
+                                        "Actual Startup Time": 0.047,
+                                        "Actual Total Time": 0.109,
+                                        "Actual Rows": 120,
+                                        "Actual Loops": 1,
+                                        "Index Cond": "(organization_id = app.context_uuid('app.org_id'::text))",
+                                        "Rows Removed by Index Recheck": 0,
+                                        "Filter": "((ANY (organization_id = (hashed SubPlan 111).col1)) AND ((visibility = 'shared'::text) OR (ANY ((id = (hashed SubPlan 113).col1) AND (organization_id = (hashed SubPlan 113).col2)))))",
+                                        "Rows Removed by Filter": 0,
+                                        "Plans": [
+                                          {
+                                            "Node Type": "Index Only Scan",
+                                            "Parent Relationship": "SubPlan",
+                                            "Subplan Name": "SubPlan 111",
+                                            "Parallel Aware": false,
+                                            "Async Capable": false,
+                                            "Scan Direction": "Forward",
+                                            "Index Name": "organization_memberships_pkey",
+                                            "Relation Name": "organization_memberships",
+                                            "Alias": "m_6",
+                                            "Startup Cost": 0.65,
+                                            "Total Cost": 8.66,
+                                            "Plan Rows": 1,
+                                            "Plan Width": 16,
+                                            "Actual Startup Time": 0.01,
+                                            "Actual Total Time": 0.011,
+                                            "Actual Rows": 1,
+                                            "Actual Loops": 1,
+                                            "Index Cond": "((organization_id = app.context_uuid('app.org_id'::text)) AND (user_id = app.context_uuid('app.user_id'::text)))",
+                                            "Rows Removed by Index Recheck": 0,
+                                            "Heap Fetches": 1
+                                          },
+                                          {
+                                            "Node Type": "Index Scan",
+                                            "Parent Relationship": "SubPlan",
+                                            "Subplan Name": "SubPlan 113",
+                                            "Parallel Aware": false,
+                                            "Async Capable": false,
+                                            "Scan Direction": "Forward",
+                                            "Index Name": "membership_mailbox_fk",
+                                            "Relation Name": "mailbox_memberships",
+                                            "Alias": "mm_6",
+                                            "Startup Cost": 0.39,
+                                            "Total Cost": 8.66,
+                                            "Plan Rows": 1,
+                                            "Plan Width": 32,
+                                            "Actual Startup Time": 0.0,
+                                            "Actual Total Time": 0.0,
+                                            "Actual Rows": 0,
+                                            "Actual Loops": 0,
+                                            "Index Cond": "(organization_id = app.context_uuid('app.org_id'::text))",
+                                            "Rows Removed by Index Recheck": 0,
+                                            "Filter": "(user_id = app.context_uuid('app.user_id'::text))",
+                                            "Rows Removed by Filter": 0
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "Node Type": "Aggregate",
+                        "Strategy": "Plain",
+                        "Partial Mode": "Simple",
+                        "Parent Relationship": "SubPlan",
+                        "Subplan Name": "SubPlan 104",
+                        "Parallel Aware": false,
+                        "Async Capable": false,
+                        "Startup Cost": 41.73,
+                        "Total Cost": 41.75,
+                        "Plan Rows": 1,
+                        "Plan Width": 4,
+                        "Actual Startup Time": 0.007,
+                        "Actual Total Time": 0.007,
+                        "Actual Rows": 1,
+                        "Actual Loops": 6120,
+                        "Plans": [
+                          {
+                            "Node Type": "Result",
+                            "Parent Relationship": "Outer",
+                            "Parallel Aware": false,
+                            "Async Capable": false,
+                            "Startup Cost": 0.41,
+                            "Total Cost": 41.73,
+                            "Plan Rows": 1,
+                            "Plan Width": 16,
+                            "Actual Startup Time": 0.007,
+                            "Actual Total Time": 0.007,
+                            "Actual Rows": 1,
+                            "Actual Loops": 6120,
+                            "One-Time Filter": "(app.context_uuid('app.org_id'::text) = '[opaque value redacted]'::uuid)",
+                            "Plans": [
+                              {
+                                "Node Type": "Index Only Scan",
+                                "Parent Relationship": "Outer",
+                                "Parallel Aware": false,
+                                "Async Capable": false,
+                                "Scan Direction": "Forward",
+                                "Index Name": "messages_thread_order",
+                                "Relation Name": "messages",
+                                "Alias": "message_1",
+                                "Startup Cost": 0.41,
+                                "Total Cost": 41.73,
+                                "Plan Rows": 1,
+                                "Plan Width": 16,
+                                "Actual Startup Time": 0.005,
+                                "Actual Total Time": 0.005,
+                                "Actual Rows": 1,
+                                "Actual Loops": 6120,
+                                "Index Cond": "((organization_id = '[opaque value redacted]'::uuid) AND (mailbox_id = mailbox.id) AND (thread_id = page.id))",
+                                "Rows Removed by Index Recheck": 0,
+                                "Filter": "EXISTS(SubPlan 92)",
+                                "Rows Removed by Filter": 0,
+                                "Heap Fetches": 6120,
+                                "Plans": [
+                                  {
+                                    "Node Type": "Result",
+                                    "Parent Relationship": "SubPlan",
+                                    "Subplan Name": "SubPlan 92",
+                                    "Parallel Aware": false,
+                                    "Async Capable": false,
+                                    "Startup Cost": 0.28,
+                                    "Total Cost": 33.3,
+                                    "Plan Rows": 1,
+                                    "Plan Width": 0,
+                                    "Actual Startup Time": 0.003,
+                                    "Actual Total Time": 0.003,
+                                    "Actual Rows": 1,
+                                    "Actual Loops": 6120,
+                                    "One-Time Filter": "(app.context_uuid('app.org_id'::text) = message_1.organization_id)",
+                                    "Plans": [
+                                      {
+                                        "Node Type": "Index Scan",
+                                        "Parent Relationship": "Outer",
+                                        "Parallel Aware": false,
+                                        "Async Capable": false,
+                                        "Scan Direction": "Forward",
+                                        "Index Name": "threads_pkey",
+                                        "Relation Name": "threads",
+                                        "Alias": "thread_4",
+                                        "Startup Cost": 0.28,
+                                        "Total Cost": 33.3,
+                                        "Plan Rows": 1,
+                                        "Plan Width": 0,
+                                        "Actual Startup Time": 0.001,
+                                        "Actual Total Time": 0.001,
+                                        "Actual Rows": 1,
+                                        "Actual Loops": 6120,
+                                        "Index Cond": "(id = message_1.thread_id)",
+                                        "Rows Removed by Index Recheck": 0,
+                                        "Filter": "((organization_id = message_1.organization_id) AND (mailbox_id = message_1.mailbox_id) AND (ANY ((organization_id = (hashed SubPlan 91).col1) AND (mailbox_id = (hashed SubPlan 91).col2))))",
+                                        "Rows Removed by Filter": 0,
+                                        "Plans": [
+                                          {
+                                            "Node Type": "Index Scan",
+                                            "Parent Relationship": "SubPlan",
+                                            "Subplan Name": "SubPlan 91",
+                                            "Parallel Aware": false,
+                                            "Async Capable": false,
+                                            "Scan Direction": "Forward",
+                                            "Index Name": "[opaque value redacted]",
+                                            "Relation Name": "mailboxes",
+                                            "Alias": "mailbox_5",
+                                            "Startup Cost": 0.52,
+                                            "Total Cost": 25.37,
+                                            "Plan Rows": 1,
+                                            "Plan Width": 32,
+                                            "Actual Startup Time": 0.021,
+                                            "Actual Total Time": 0.055,
+                                            "Actual Rows": 120,
+                                            "Actual Loops": 1,
+                                            "Index Cond": "(organization_id = app.context_uuid('app.org_id'::text))",
+                                            "Rows Removed by Index Recheck": 0,
+                                            "Filter": "((ANY (organization_id = (hashed SubPlan 88).col1)) AND ((visibility = 'shared'::text) OR (ANY ((id = (hashed SubPlan 90).col1) AND (organization_id = (hashed SubPlan 90).col2)))))",
+                                            "Rows Removed by Filter": 0,
+                                            "Plans": [
+                                              {
+                                                "Node Type": "Index Only Scan",
+                                                "Parent Relationship": "SubPlan",
+                                                "Subplan Name": "SubPlan 88",
+                                                "Parallel Aware": false,
+                                                "Async Capable": false,
+                                                "Scan Direction": "Forward",
+                                                "Index Name": "organization_memberships_pkey",
+                                                "Relation Name": "organization_memberships",
+                                                "Alias": "m_5",
+                                                "Startup Cost": 0.65,
+                                                "Total Cost": 8.66,
+                                                "Plan Rows": 1,
+                                                "Plan Width": 16,
+                                                "Actual Startup Time": 0.006,
+                                                "Actual Total Time": 0.006,
+                                                "Actual Rows": 1,
+                                                "Actual Loops": 1,
+                                                "Index Cond": "((organization_id = app.context_uuid('app.org_id'::text)) AND (user_id = app.context_uuid('app.user_id'::text)))",
+                                                "Rows Removed by Index Recheck": 0,
+                                                "Heap Fetches": 1
+                                              },
+                                              {
+                                                "Node Type": "Index Scan",
+                                                "Parent Relationship": "SubPlan",
+                                                "Subplan Name": "SubPlan 90",
+                                                "Parallel Aware": false,
+                                                "Async Capable": false,
+                                                "Scan Direction": "Forward",
+                                                "Index Name": "membership_mailbox_fk",
+                                                "Relation Name": "mailbox_memberships",
+                                                "Alias": "mm_5",
+                                                "Startup Cost": 0.39,
+                                                "Total Cost": 8.66,
+                                                "Plan Rows": 1,
+                                                "Plan Width": 32,
+                                                "Actual Startup Time": 0.0,
+                                                "Actual Total Time": 0.0,
+                                                "Actual Rows": 0,
+                                                "Actual Loops": 0,
+                                                "Index Cond": "(organization_id = app.context_uuid('app.org_id'::text))",
+                                                "Rows Removed by Index Recheck": 0,
+                                                "Filter": "(user_id = app.context_uuid('app.user_id'::text))",
+                                                "Rows Removed by Filter": 0
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "Planning Time": 4.928,
+  "Triggers": [],
+  "Execution Time": 302.671
+}
+....
+
+Finished in 6.149840s, 2.6017 runs/s, 42.6027 assertions/s.
+
+  1) Error:
+ThreadDatabaseTest#[opaque value redacted]:
+PG::DependentObjectsStillExist: ERROR:  cannot drop table app.drafts because other objects depend on it
+DETAIL:  constraint enrollment_draft_identity_fk on table app.marketing_enrollments depends on table app.drafts
+HINT:  Use DROP ... CASCADE to drop the dependent objects too.
+
+    test/be_02/thread_database_test.rb:413:in 'PG::Connection#exec'
+    test/be_02/thread_database_test.rb:413:in 'ThreadDatabaseTest#[opaque value redacted]'
+
+16 runs, 262 assertions, 0 failures, 1 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 33946
+
+# Running:
+
+.....
+
+Finished in 0.308522s, 16.2063 runs/s, 103.7203 assertions/s.
+
+5 runs, 32 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 35410
+
+# Running:
+
+.....
+
+Finished in 0.547399s, 9.1341 runs/s, 270.3694 assertions/s.
+
+5 runs, 148 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 43343
+
+# Running:
+
+...
+
+Finished in 0.513739s, 5.8395 runs/s, 266.6724 assertions/s.
+
+3 runs, 137 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 9940
+
+# Running:
+
+........
+
+Finished in 0.009571s, 835.8815 runs/s, 9194.6961 assertions/s.
+
+8 runs, 88 assertions, 0 failures, 0 errors, 0 skips
+RUN test/be_02/thread_reads_test.rb
+Run options: --seed 17160
+
+# Running:
+
+............
+
+Finished in 0.261638s, 45.8649 runs/s, 546.5562 assertions/s.
+
+12 runs, 143 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 33034
+
+# Running:
+
+.....
+
+Finished in 0.175440s, 28.4997 runs/s, 125.3987 assertions/s.
+
+5 runs, 22 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 23333
+
+# Running:
+
+.......
+
+Finished in 3.863227s, 1.8120 runs/s, 5.9536 assertions/s.
+
+7 runs, 23 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 18787
+
+# Running:
+
+................
+
+Finished in 0.376116s, 42.5400 runs/s, 957.1507 assertions/s.
+
+16 runs, 360 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 24961
+
+# Running:
+
+.{"native_timeout_diagnostic":{"backend":2135,"error_class":"PG::ConnectionBad","result_sqlstate":null,"error_has_25p04":false,"connection_has_25p04":false,"connection_bad":true,"structured_fatal":[{"sqlstate":"25P04","severity":"FATAL"}]}}
+..{"native_timeout_diagnostic":{"backend":2142,"error_class":"PG::TransactionTimeout","result_sqlstate":"25P04","error_has_25p04":true,"connection_has_25p04":true,"connection_bad":false,"structured_fatal":[{"sqlstate":"25P04","severity":"FATAL"}]}}
+..
+
+Finished in 1.955908s, 2.5564 runs/s, 13.2931 assertions/s.
+
+5 runs, 26 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 7245
+
+# Running:
+
+...........
+
+Finished in 1.465912s, 7.5039 runs/s, 42.9767 assertions/s.
+
+11 runs, 63 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 65308
+
+# Running:
+
+........
+
+Finished in 0.755077s, 10.5949 runs/s, 104.6251 assertions/s.
+
+8 runs, 79 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 13724
+
+# Running:
+
+...........
+
+Finished in 0.012168s, 904.0043 runs/s, 15039.3439 assertions/s.
+
+11 runs, 183 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 63602
+
+# Running:
+
+......
+
+Finished in 3.113818s, 1.9269 runs/s, 217.7391 assertions/s.
+
+6 runs, 678 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 5915
+
+# Running:
+
+...
+
+Finished in 0.672899s, 4.4583 runs/s, 132.2636 assertions/s.
+
+3 runs, 89 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 51842
+
+# Running:
+
+.....................
+
+Finished in 6.434512s, 3.2637 runs/s, 109.0992 assertions/s.
+
+21 runs, 702 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 31478
+
+# Running:
+
+..
+
+Finished in 0.495567s, 4.0358 runs/s, 161.4312 assertions/s.
+
+2 runs, 80 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 38698
+
+# Running:
+
+.....
+
+Finished in 0.008984s, 556.5577 runs/s, 1780.9845 assertions/s.
+
+5 runs, 16 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 34610
+
+# Running:
+
+....
+
+Finished in 0.646442s, 6.1877 runs/s, 41.7671 assertions/s.
+
+4 runs, 27 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 64473
+
+# Running:
+
+........
+
+Finished in 1.420195s, 5.6330 runs/s, 35.2064 assertions/s.
+
+8 runs, 50 assertions, 0 failures, 0 errors, 0 skips
+RUN test/campaigns/controller_test.rb
+Run options: --seed 22358
+
+# Running:
+
+....
+
+Finished in 0.362631s, 11.0305 runs/s, 57.9101 assertions/s.
+
+4 runs, 21 assertions, 0 failures, 0 errors, 0 skips
+RUN test/campaigns/input_test.rb
+Run options: --seed 61305
+
+# Running:
+
+.....
+
+Finished in 0.002829s, 1767.5114 runs/s, 2828.0183 assertions/s.
+
+5 runs, 8 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 37757
+
+# Running:
+
+........
+
+Finished in 0.274820s, 29.1100 runs/s, 181.9374 assertions/s.
+
+8 runs, 50 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 57497
+
+# Running:
+
+...
+
+Finished in 0.004712s, 636.6657 runs/s, 1485.5533 assertions/s.
+
+3 runs, 7 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 12340
+
+# Running:
+
+.
+
+Finished in 0.002702s, 370.0595 runs/s, 37746.0711 assertions/s.
+
+1 runs, 102 assertions, 0 failures, 0 errors, 0 skips
+RUN test/campaigns/repository_test.rb
+Run options: --seed 42488
+
+# Running:
+
+..........
+
+Finished in 0.191787s, 52.1411 runs/s, 229.4207 assertions/s.
+
+10 runs, 44 assertions, 0 failures, 0 errors, 0 skips
+RUN test/campaigns/run_input_test.rb
+Run options: --seed 16497
+
+# Running:
+
+....
+
+Finished in 0.004967s, 805.3313 runs/s, 2818.6595 assertions/s.
+
+4 runs, 14 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 64234
+
+# Running:
+
+..
+
+Finished in 0.502125s, 3.9831 runs/s, 35.8477 assertions/s.
+
+2 runs, 18 assertions, 0 failures, 0 errors, 0 skips
+RUN test/email_finder/config_test.rb
+Run options: --seed 26465
+
+# Running:
+
+...
+
+Finished in 0.002878s, 1042.5286 runs/s, 1737.5476 assertions/s.
+
+3 runs, 5 assertions, 0 failures, 0 errors, 0 skips
+RUN test/email_finder/contract_test.rb
+Run options: --seed 9551
+
+# Running:
+
+...
+
+Finished in 0.026061s, 115.1125 runs/s, 1458.0914 assertions/s.
+
+3 runs, 38 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 49817
+
+# Running:
+
+....
+
+Finished in 0.248894s, 16.0711 runs/s, 152.6757 assertions/s.
+
+4 runs, 38 assertions, 0 failures, 0 errors, 0 skips
+RUN test/email_finder/core_test.rb
+Run options: --seed 10503
+
+# Running:
+
+......
+
+Finished in 0.034194s, 175.4684 runs/s, 1316.0133 assertions/s.
+
+6 runs, 45 assertions, 0 failures, 0 errors, 0 skips
+RUN test/email_finder/database_test.rb
+Run options: --seed 29271
+
+# Running:
+
+.........
+
+Finished in 10.212719s, 0.8813 runs/s, 4.6021 assertions/s.
+
+9 runs, 47 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 58745
+
+# Running:
+
+......
+
+Finished in 0.026091s, 229.9634 runs/s, 1073.1625 assertions/s.
+
+6 runs, 28 assertions, 0 failures, 0 errors, 0 skips
+RUN test/email_finder/input_test.rb
+Run options: --seed 63423
+
+# Running:
+
+.....
+
+Finished in 0.121043s, 41.3076 runs/s, 206.5381 assertions/s.
+
+5 runs, 25 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 45412
+
+# Running:
+
+.
+
+Finished in 0.151151s, 6.6159 runs/s, 52.9271 assertions/s.
+
+1 runs, 8 assertions, 0 failures, 0 errors, 0 skips
+RUN test/email_finder/smtp_test.rb
+Run options: --seed 16906
+
+# Running:
+
+.........
+
+Finished in 0.240404s, 37.4370 runs/s, 158.0672 assertions/s.
+
+9 runs, 38 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 26628
+
+# Running:
+
+...
+
+Finished in 0.020850s, 143.8853 runs/s, 143.8853 assertions/s.
+
+3 runs, 3 assertions, 0 failures, 0 errors, 0 skips
+RUN test/email_finder/worker_test.rb
+Run options: --seed 14622
+
+# Running:
+
+............
+
+Finished in 0.062458s, 192.1284 runs/s, 1537.0276 assertions/s.
+
+12 runs, 96 assertions, 0 failures, 0 errors, 0 skips
+RUN test/inbound/database_test.rb
+Run options: --seed 18646
+
+# Running:
+
+....
+
+Finished in 0.499992s, 8.0001 runs/s, 70.0011 assertions/s.
+
+4 runs, 35 assertions, 0 failures, 0 errors, 0 skips
+RUN test/inbound/fake_ingress_test.rb
+Run options: --seed 777
+
+# Running:
+
+......
+
+Finished in 0.069764s, 86.0044 runs/s, 458.6902 assertions/s.
+
+6 runs, 32 assertions, 0 failures, 0 errors, 0 skips
+RUN test/inbound/http_test.rb
+Run options: --seed 46995
+
+# Running:
+
+....
+
+Finished in 0.407784s, 9.8091 runs/s, 56.4023 assertions/s.
+
+4 runs, 23 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 56077
+
+# Running:
+
+...
+
+Finished in 0.329711s, 9.0989 runs/s, 42.4614 assertions/s.
+
+3 runs, 14 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 47552
+
+# Running:
+
+...
+
+Finished in 0.079334s, 37.8149 runs/s, 163.8645 assertions/s.
+
+3 runs, 13 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 42626
+
+# Running:
+
+.
+
+Finished in 0.084860s, 11.7841 runs/s, 106.0568 assertions/s.
+
+1 runs, 9 assertions, 0 failures, 0 errors, 0 skips
+RUN test/inbound/imap_claim_test.rb
+Run options: --seed 39508
+
+# Running:
+
+..
+
+Finished in 0.143227s, 13.9638 runs/s, 293.2401 assertions/s.
+
+2 runs, 42 assertions, 0 failures, 0 errors, 0 skips
+RUN test/inbound/imap_database_test.rb
+Run options: --seed 22792
+
+# Running:
+
+.....
+
+Finished in 0.447498s, 11.1732 runs/s, 69.2740 assertions/s.
+
+5 runs, 31 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 12422
+
+# Running:
+
+.....
+
+Finished in 3.753505s, 1.3321 runs/s, 9.3246 assertions/s.
+
+5 runs, 35 assertions, 0 failures, 0 errors, 0 skips
+RUN test/inbound/imap_deadline_test.rb
+Run options: --seed 28380
+
+# Running:
+
+...........
+
+Finished in 1.076029s, 10.2228 runs/s, 54.8312 assertions/s.
+
+11 runs, 59 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 20991
+
+# Running:
+
+....
+
+Finished in 0.110063s, 36.3429 runs/s, 145.3717 assertions/s.
+
+4 runs, 16 assertions, 0 failures, 0 errors, 0 skips
+RUN test/inbound/imap_ingress_test.rb
+Run options: --seed 57399
+
+# Running:
+
+........
+
+Finished in 0.112033s, 71.4078 runs/s, 330.2610 assertions/s.
+
+8 runs, 37 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 7515
+
+# Running:
+
+.....
+
+Finished in 0.190977s, 26.1811 runs/s, 162.3231 assertions/s.
+
+5 runs, 31 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 31237
+
+# Running:
+
+.........
+
+Finished in 0.101315s, 88.8315 runs/s, 779.7433 assertions/s.
+
+9 runs, 79 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 46334
+
+# Running:
+
+...
+
+Finished in 0.200314s, 14.9765 runs/s, 274.5686 assertions/s.
+
+3 runs, 55 assertions, 0 failures, 0 errors, 0 skips
+RUN test/inbound/imap_poller_test.rb
+Run options: --seed 1779
+
+# Running:
+
+.....
+
+Finished in 0.264439s, 18.9080 runs/s, 733.6290 assertions/s.
+
+5 runs, 194 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 35939
+
+# Running:
+
+.......
+
+Finished in 1.958637s, 3.5739 runs/s, 69.4360 assertions/s.
+
+7 runs, 136 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 16687
+
+# Running:
+
+..
+
+Finished in 0.249658s, 8.0110 runs/s, 84.1152 assertions/s.
+
+2 runs, 21 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 19923
+
+# Running:
+
+............
+
+Finished in 1.212739s, 9.8950 runs/s, 61.0189 assertions/s.
+
+12 runs, 74 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 6
+
+# Running:
+
+.
+
+Finished in 0.108998s, 9.1744 runs/s, 73.3956 assertions/s.
+
+1 runs, 8 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 8909
+
+# Running:
+
+...
+
+Finished in 1.487009s, 2.0175 runs/s, 18.1573 assertions/s.
+
+3 runs, 27 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 39553
+
+# Running:
+
+.......
+
+Finished in 0.870533s, 8.0410 runs/s, 128.6568 assertions/s.
+
+7 runs, 112 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 36559
+
+# Running:
+
+..
+
+Finished in 0.364851s, 5.4817 runs/s, 32.8901 assertions/s.
+
+2 runs, 12 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 30783
+
+# Running:
+
+...
+
+Finished in 0.230297s, 13.0266 runs/s, 104.2130 assertions/s.
+
+3 runs, 24 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 12627
+
+# Running:
+
+...
+
+Finished in 0.058447s, 51.3283 runs/s, 427.7354 assertions/s.
+
+3 runs, 25 assertions, 0 failures, 0 errors, 0 skips
+RUN test/inbound/imap_sync_test.rb
+Run options: --seed 17897
+
+# Running:
+
+.......
+
+Finished in 0.143607s, 48.7442 runs/s, 320.3191 assertions/s.
+
+7 runs, 46 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 22319
+
+# Running:
+
+.....
+
+Finished in 0.327796s, 15.2534 runs/s, 118.9763 assertions/s.
+
+5 runs, 39 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 22266
+
+# Running:
+
+........
+
+Finished in 0.209689s, 38.1517 runs/s, 1888.5095 assertions/s.
+
+8 runs, 396 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 8353
+
+# Running:
+
+...
+
+Finished in 0.373260s, 8.0373 runs/s, 48.2238 assertions/s.
+
+3 runs, 18 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 44795
+
+# Running:
+
+...
+
+Finished in 0.360906s, 8.3124 runs/s, 22.1664 assertions/s.
+
+3 runs, 8 assertions, 0 failures, 0 errors, 0 skips
+RUN test/inbound/poll_loop_test.rb
+Run options: --seed 39481
+
+# Running:
+
+........
+
+Finished in 0.004177s, 1915.3997 runs/s, 12928.9478 assertions/s.
+
+8 runs, 54 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 4912
+
+# Running:
+
+....
+
+Finished in 0.003882s, 1030.4461 runs/s, 2833.7267 assertions/s.
+
+4 runs, 11 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 30010
+
+# Running:
+
+.........
+
+Finished in 0.010379s, 867.1679 runs/s, 5203.0074 assertions/s.
+
+9 runs, 54 assertions, 0 failures, 0 errors, 0 skips
+RUN test/inbound/worker_config_test.rb
+Run options: --seed 22647
+
+# Running:
+
+......
+
+Finished in 1.632732s, 3.6748 runs/s, 45.3228 assertions/s.
+
+6 runs, 74 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 56399
+
+# Running:
+
+....
+
+Finished in 0.618315s, 6.4692 runs/s, 51.7535 assertions/s.
+
+4 runs, 32 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 28115
+
+# Running:
+
+....
+
+Finished in 0.357619s, 11.1851 runs/s, 55.9254 assertions/s.
+
+4 runs, 20 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 14343
+
+# Running:
+
+....
+
+Finished in 0.016607s, 240.8668 runs/s, 782.8170 assertions/s.
+
+4 runs, 13 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 32178
+
+# Running:
+
+......
+
+Finished in 0.123438s, 48.6074 runs/s, 202.5309 assertions/s.
+
+6 runs, 25 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 58052
+
+# Running:
+
+........
+
+Finished in 0.012426s, 643.8285 runs/s, 2011.9639 assertions/s.
+
+8 runs, 25 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 50452
+
+# Running:
+
+.....
+
+Finished in 0.006040s, 827.7485 runs/s, 5794.2396 assertions/s.
+
+5 runs, 35 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 56326
+
+# Running:
+
+..
+
+Finished in 0.105826s, 18.8989 runs/s, 56.6968 assertions/s.
+
+2 runs, 6 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 19608
+
+# Running:
+
+...
+
+Finished in 0.368634s, 8.1381 runs/s, 46.1162 assertions/s.
+
+3 runs, 17 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 42674
+
+# Running:
+
+...
+
+Finished in 0.387586s, 7.7402 runs/s, 38.7011 assertions/s.
+
+3 runs, 15 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 5621
+
+# Running:
+
+...
+
+Finished in 0.370306s, 8.1014 runs/s, 83.7144 assertions/s.
+
+3 runs, 31 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 32291
+
+# Running:
+
+...
+
+Finished in 0.420768s, 7.1298 runs/s, 42.7789 assertions/s.
+
+3 runs, 18 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 48999
+
+# Running:
+
+.....
+
+Finished in 0.699930s, 7.1436 runs/s, 78.5792 assertions/s.
+
+5 runs, 55 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 12049
+
+# Running:
+
+...
+
+Finished in 0.420697s, 7.1310 runs/s, 45.1632 assertions/s.
+
+3 runs, 19 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 55680
+
+# Running:
+
+.
+
+Finished in 0.194507s, 5.1412 runs/s, 35.9885 assertions/s.
+
+1 runs, 7 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 2451
+
+# Running:
+
+...
+
+Finished in 0.416440s, 7.2039 runs/s, 52.8287 assertions/s.
+
+3 runs, 22 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 37640
+
+# Running:
+
+...
+
+Finished in 0.402008s, 7.4625 runs/s, 54.7253 assertions/s.
+
+3 runs, 22 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 463
+
+# Running:
+
+...
+
+Finished in 0.249534s, 12.0224 runs/s, 52.0971 assertions/s.
+
+3 runs, 13 assertions, 0 failures, 0 errors, 0 skips
+RUN test/requests/drafts_test.rb
+Run options: --seed 26433
+
+# Running:
+
+......
+
+Finished in 0.273174s, 21.9641 runs/s, 153.7484 assertions/s.
+
+6 runs, 42 assertions, 0 failures, 0 errors, 0 skips
+RUN test/resend_events/content_test.rb
+Run options: --seed 11736
+
+# Running:
+
+....
+
+Finished in 0.039684s, 100.7966 runs/s, 428.3857 assertions/s.
+
+4 runs, 17 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 34190
+
+# Running:
+
+.......
+
+Finished in 0.629630s, 11.1176 runs/s, 52.4117 assertions/s.
+
+7 runs, 33 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 25047
+
+# Running:
+
+.F
+
+Finished in 0.350596s, 5.7046 runs/s, 62.7503 assertions/s.
+
+  1) Failure:
+ResendDeliveryDatabaseTest#[opaque value redacted] [[opaque value redacted]:89]:
+Expected: "1"
+  Actual: "0"
+
+2 runs, 22 assertions, 1 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 46715
+
+# Running:
+
+......
+
+Finished in 0.003359s, 1785.9928 runs/s, 3274.3202 assertions/s.
+
+6 runs, 11 assertions, 0 failures, 0 errors, 0 skips
+RUN test/resend_events/worker_test.rb
+Run options: --seed 44081
+
+# Running:
+
+....
+
+Finished in 0.053738s, 74.4354 runs/s, 279.1326 assertions/s.
+
+4 runs, 15 assertions, 0 failures, 0 errors, 0 skips
+RUN test/send_worker/control_test.rb
+Run options: --seed 17439
+
+# Running:
+
+....
+
+Finished in 0.003792s, 1054.8971 runs/s, 16614.6295 assertions/s.
+
+4 runs, 63 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 39493
+
+# Running:
+
+.....
+
+Finished in 0.002845s, 1757.7745 runs/s, 5273.3234 assertions/s.
+
+5 runs, 15 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 49087
+
+# Running:
+
+.......
+
+Finished in 0.007750s, 903.2213 runs/s, 7483.8333 assertions/s.
+
+7 runs, 58 assertions, 0 failures, 0 errors, 0 skips
+RUN test/send_worker/drain_test.rb
+Run options: --seed 7325
+
+# Running:
+
+..
+
+Finished in 0.003340s, 598.8531 runs/s, 3892.5454 assertions/s.
+
+2 runs, 13 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 55040
+
+# Running:
+
+...
+
+Finished in 0.005903s, 508.2147 runs/s, 1355.2392 assertions/s.
+
+3 runs, 8 assertions, 0 failures, 0 errors, 0 skips
+RUN test/send_worker/executor_test.rb
+Run options: --seed 52336
+
+# Running:
+
+.....
+
+Finished in 0.006410s, 780.0076 runs/s, 2808.0273 assertions/s.
+
+5 runs, 18 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 43883
+
+# Running:
+
+..........
+
+Finished in 0.010364s, 964.9093 runs/s, 5982.4379 assertions/s.
+
+10 runs, 62 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 11493
+
+# Running:
+
+...
+
+Finished in 0.002683s, 1118.0226 runs/s, 3354.0677 assertions/s.
+
+3 runs, 9 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 59781
+
+# Running:
+
+..........
+
+Finished in 0.015460s, 646.8130 runs/s, 4074.9219 assertions/s.
+
+10 runs, 63 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 63760
+
+# Running:
+
+SSSS
+
+Finished in 0.003343s, 1196.3833 runs/s, 0.0000 assertions/s.
+
+4 runs, 0 assertions, 0 failures, 0 errors, 4 skips
+
+You have skipped tests. Run with --verbose for details.
+RUN [opaque value redacted]
+Run options: --seed 51336
+
+# Running:
+
+............
+
+Finished in 0.016154s, 742.8357 runs/s, 6252.2007 assertions/s.
+
+12 runs, 101 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 15730
+
+# Running:
+
+......
+
+Finished in 0.019903s, 301.4677 runs/s, 1909.2957 assertions/s.
+
+6 runs, 38 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 40132
+
+# Running:
+
+...
+
+Finished in 0.002860s, 1048.9907 runs/s, 3846.2991 assertions/s.
+
+3 runs, 11 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 48667
+
+# Running:
+
+......
+
+Finished in 0.003700s, 1621.5923 runs/s, 7837.6959 assertions/s.
+
+6 runs, 29 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 19431
+
+# Running:
+
+......
+
+Finished in 0.026281s, 228.3058 runs/s, 875.1721 assertions/s.
+
+6 runs, 23 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 42248
+
+# Running:
+
+...............
+
+Finished in 7.445266s, 2.0147 runs/s, 27.1313 assertions/s.
+
+15 runs, 202 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 25047
+
+# Running:
+
+.
+
+Finished in 0.369785s, 2.7043 runs/s, 83.8325 assertions/s.
+
+1 runs, 31 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 60309
+
+# Running:
+
+..
+
+Finished in 0.434666s, 4.6012 runs/s, 52.9141 assertions/s.
+
+2 runs, 23 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 3209
+
+# Running:
+
+....
+
+Finished in 1.955574s, 2.0454 runs/s, 23.5225 assertions/s.
+
+4 runs, 46 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 5796
+
+# Running:
+
+.
+
+Finished in 0.401838s, 2.4886 runs/s, 39.8170 assertions/s.
+
+1 runs, 16 assertions, 0 failures, 0 errors, 0 skips
+RUN test/sends/budget_database_test.rb
+Run options: --seed 30210
+
+# Running:
+
+.............
+
+Finished in 5.328098s, 2.4399 runs/s, 27.7773 assertions/s.
+
+13 runs, 148 assertions, 0 failures, 0 errors, 0 skips
+RUN test/sends/budget_schema_test.rb
+Run options: --seed 10536
+
+# Running:
+
+....
+
+Finished in 0.785570s, 5.0918 runs/s, 71.2858 assertions/s.
+
+4 runs, 56 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 21832
+
+# Running:
+
+.....
+
+Finished in 0.615457s, 8.1240 runs/s, 60.1179 assertions/s.
+
+5 runs, 37 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 50656
+
+# Running:
+
+....
+
+Finished in 0.636617s, 6.2832 runs/s, 62.8321 assertions/s.
+
+4 runs, 40 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 49325
+
+# Running:
+
+....
+
+Finished in 0.002603s, 1536.6076 runs/s, 5378.1265 assertions/s.
+
+4 runs, 14 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 11499
+
+# Running:
+
+.......
+
+Finished in 1.581208s, 4.4270 runs/s, 29.0917 assertions/s.
+
+7 runs, 46 assertions, 0 failures, 0 errors, 0 skips
+RUN test/sends/fixture_cleanup_test.rb
+Run options: --seed 5343
+
+# Running:
+
+....
+
+Finished in 0.004684s, 853.8957 runs/s, 3415.5827 assertions/s.
+
+4 runs, 16 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 29709
+
+# Running:
+
+....
+
+Finished in 0.713447s, 5.6066 runs/s, 60.2708 assertions/s.
+
+4 runs, 43 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 56531
+
+# Running:
+
+......
+
+Finished in 1.321859s, 4.5391 runs/s, 75.6511 assertions/s.
+
+6 runs, 100 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 49909
+
+# Running:
+
+E
+
+Finished in 57.458766s, 0.0174 runs/s, 0.1044 assertions/s.
+
+  1) Error:
+MailboxRotationLoadTest#[opaque value redacted]:
+PG::QueryCanceled: ERROR:  canceling statement due to statement timeout
+
+    [opaque value redacted]:15:in 'PG::Connection#exec'
+    [opaque value redacted]:15:in 'MailboxRotationLoadTest#[opaque value redacted]'
+
+Error:
+MailboxRotationLoadTest#[opaque value redacted]:
+PG::QueryCanceled: ERROR:  canceling statement due to statement timeout
+
+    [opaque value redacted]:32:in 'PG::Connection#exec_params'
+    [opaque value redacted]:32:in 'block in SendDatabaseTestCase#teardown'
+    [opaque value redacted]:28:in 'Array#each'
+    [opaque value redacted]:28:in 'SendDatabaseTestCase#teardown'
+
+1 runs, 6 assertions, 0 failures, 1 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 15187
+
+# Running:
+
+E
+
+Finished in 10.588507s, 0.0944 runs/s, 1.7944 assertions/s.
+
+  1) Error:
+MailboxRotationTenantTest#[opaque value redacted]:
+PG::QueryCanceled: ERROR:  canceling statement due to statement timeout
+CONTEXT:  SQL statement "INSERT INTO app_send_private.mailbox_schedule(organization_id,mailbox_id,last_turn)
+    SELECT p.organization_id,p.mailbox_id,current_turn FROM app_send_private.mailbox_policy p
+    WHERE NOT EXISTS (SELECT 1 FROM app_send_private.mailbox_schedule s
+      WHERE s.organization_id=p.organization_id AND s.mailbox_id=p.mailbox_id)
+      AND EXISTS (SELECT 1 FROM app_send_private.intents i WHERE i.organization_id=p.organization_id
+        AND i.mailbox_id=p.mailbox_id AND i.approval_epoch=p_epoch AND i.simulated)
+    ON CONFLICT DO NOTHING"
+PL/pgSQL function app_send_private.next_due_send(uuid,uuid[]) line 12 at SQL statement
+
+    [opaque value redacted]:29:in 'PG::Connection#exec_params'
+    [opaque value redacted]:29:in 'MailboxRotationTestCase#due'
+    [opaque value redacted]:15:in 'MailboxRotationTenantTest#[opaque value redacted]'
+
+Error:
+MailboxRotationTenantTest#[opaque value redacted]:
+PG::QueryCanceled: ERROR:  canceling statement due to statement timeout
+
+    [opaque value redacted]:32:in 'PG::Connection#exec_params'
+    [opaque value redacted]:32:in 'block in SendDatabaseTestCase#teardown'
+    [opaque value redacted]:28:in 'Array#each'
+    [opaque value redacted]:28:in 'SendDatabaseTestCase#teardown'
+    [opaque value redacted]:24:in 'MailboxRotationTenantTest#teardown'
+
+1 runs, 19 assertions, 0 failures, 1 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 43438
+
+# Running:
+
+EEEEEEEE
+
+Finished in 26.593988s, 0.3008 runs/s, 2.7074 assertions/s.
+
+  1) Error:
+[opaque value redacted]#[opaque value redacted]:
+PG::QueryCanceled: ERROR:  canceling statement due to statement timeout
+
+    [opaque value redacted]:32:in 'PG::Connection#exec_params'
+    [opaque value redacted]:32:in 'block in SendDatabaseTestCase#teardown'
+    [opaque value redacted]:28:in 'Array#each'
+    [opaque value redacted]:28:in 'SendDatabaseTestCase#teardown'
+
+  2) Error:
+[opaque value redacted]#[opaque value redacted]:
+PG::QueryCanceled: ERROR:  canceling statement due to statement timeout
+
+    [opaque value redacted]:32:in 'PG::Connection#exec_params'
+    [opaque value redacted]:32:in 'block in SendDatabaseTestCase#teardown'
+    [opaque value redacted]:28:in 'Array#each'
+    [opaque value redacted]:28:in 'SendDatabaseTestCase#teardown'
+
+  3) Error:
+[opaque value redacted]#[opaque value redacted]:
+PG::QueryCanceled: ERROR:  canceling statement due to statement timeout
+
+    [opaque value redacted]:32:in 'PG::Connection#exec_params'
+    [opaque value redacted]:32:in 'block in SendDatabaseTestCase#teardown'
+    [opaque value redacted]:28:in 'Array#each'
+    [opaque value redacted]:28:in 'SendDatabaseTestCase#teardown'
+
+  4) Error:
+[opaque value redacted]#[opaque value redacted]:
+PG::QueryCanceled: ERROR:  canceling statement due to statement timeout
+
+    [opaque value redacted]:32:in 'PG::Connection#exec_params'
+    [opaque value redacted]:32:in 'block in SendDatabaseTestCase#teardown'
+    [opaque value redacted]:28:in 'Array#each'
+    [opaque value redacted]:28:in 'SendDatabaseTestCase#teardown'
+
+  5) Error:
+[opaque value redacted]#[opaque value redacted]:
+PG::QueryCanceled: ERROR:  canceling statement due to statement timeout
+
+    [opaque value redacted]:32:in 'PG::Connection#exec_params'
+    [opaque value redacted]:32:in 'block in SendDatabaseTestCase#teardown'
+    [opaque value redacted]:28:in 'Array#each'
+    [opaque value redacted]:28:in 'SendDatabaseTestCase#teardown'
+
+  6) Error:
+[opaque value redacted]#[opaque value redacted]:
+PG::QueryCanceled: ERROR:  canceling statement due to statement timeout
+
+    [opaque value redacted]:32:in 'PG::Connection#exec_params'
+    [opaque value redacted]:32:in 'block in SendDatabaseTestCase#teardown'
+    [opaque value redacted]:28:in 'Array#each'
+    [opaque value redacted]:28:in 'SendDatabaseTestCase#teardown'
+
+  7) Error:
+[opaque value redacted]#[opaque value redacted]:
+PG::QueryCanceled: ERROR:  canceling statement due to statement timeout
+
+    [opaque value redacted]:32:in 'PG::Connection#exec_params'
+    [opaque value redacted]:32:in 'block in SendDatabaseTestCase#teardown'
+    [opaque value redacted]:28:in 'Array#each'
+    [opaque value redacted]:28:in 'SendDatabaseTestCase#teardown'
+
+  8) Error:
+[opaque value redacted]#[opaque value redacted]:
+PG::QueryCanceled: ERROR:  canceling statement due to statement timeout
+
+    [opaque value redacted]:32:in 'PG::Connection#exec_params'
+    [opaque value redacted]:32:in 'block in SendDatabaseTestCase#teardown'
+    [opaque value redacted]:28:in 'Array#each'
+    [opaque value redacted]:28:in 'SendDatabaseTestCase#teardown'
+
+8 runs, 72 assertions, 0 failures, 8 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 45830
+
+# Running:
+
+E..
+
+Finished in 4.753782s, 0.6311 runs/s, 5.0486 assertions/s.
+
+  1) Error:
+SendMailpitWorkerDatabaseTest#[opaque value redacted]:
+PG::QueryCanceled: ERROR:  canceling statement due to statement timeout
+
+    [opaque value redacted]:32:in 'PG::Connection#exec_params'
+    [opaque value redacted]:32:in 'block in SendDatabaseTestCase#teardown'
+    [opaque value redacted]:28:in 'Array#each'
+    [opaque value redacted]:28:in 'SendDatabaseTestCase#teardown'
+
+3 runs, 24 assertions, 0 failures, 1 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 53053
+
+# Running:
+
+......
+
+Finished in 1.102505s, 5.4422 runs/s, 45.3513 assertions/s.
+
+6 runs, 50 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 30204
+
+# Running:
+
+................
+
+Finished in 11.880465s, 1.3467 runs/s, 9.6798 assertions/s.
+
+16 runs, 115 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 42483
+
+# Running:
+
+F
+
+Finished in 1.585126s, 0.6309 runs/s, 1.8926 assertions/s.
+
+  1) Failure:
+RedundantUniqueDatabaseTest#[opaque value redacted] [[opaque value redacted]:17]:
+app.[opaque value redacted].
+Expected "app.[opaque value redacted]" to be nil.
+
+1 runs, 3 assertions, 1 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 21331
+
+# Running:
+
+..
+
+Finished in 2.524585s, 0.7922 runs/s, 7.1299 assertions/s.
+
+2 runs, 18 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 61514
+
+# Running:
+
+...F..F
+
+Finished in 17.444969s, 0.4013 runs/s, 4.0699 assertions/s.
+
+  1) Failure:
+ResendPilotFlowTest#[opaque value redacted] [[opaque value redacted]:79]:
+Expected: "1"
+  Actual: "0"
+
+  2) Failure:
+ResendPilotFlowTest#[opaque value redacted] [[opaque value redacted]:39]:
+Expected: 0
+  Actual: 15967
+
+7 runs, 71 assertions, 2 failures, 0 errors, 0 skips
+RUN test/sends/schema_database_test.rb
+Run options: --seed 5288
+
+# Running:
+
+FFFFE.
+
+Finished in 3.314674s, 1.8101 runs/s, 31.9790 assertions/s.
+
+  1) Failure:
+SendSchemaDatabaseTest#[opaque value redacted] [test/sends/schema_database_test.rb:93]:
+Expected: [0, 0, 0, 0]
+  Actual: [15967, 15967, 15976, 15967]
+
+  2) Failure:
+SendSchemaDatabaseTest#[opaque value redacted] [test/sends/schema_database_test.rb:53]:
+Expected: [0, 0, 0, 0]
+  Actual: [15967, 15967, 15976, 15967]
+
+  3) Failure:
+SendSchemaDatabaseTest#[opaque value redacted] [test/sends/schema_database_test.rb:34]:
+Expected: [1, 1, 1, 1]
+  Actual: [15968, 15968, 15977, 15968]
+
+  4) Failure:
+SendSchemaDatabaseTest#[opaque value redacted] [test/sends/schema_database_test.rb:82]:
+Expected: [1, 1, 1, 1]
+  Actual: [15968, 15968, 15977, 15968]
+
+  5) Error:
+SendSchemaDatabaseTest#[opaque value redacted]:
+PG::ObjectNotInPrerequisiteState: ERROR:  worker authority rollback refused: durable reconciliation evidence exists
+CONTEXT:  PL/pgSQL function inline_code_block line 2 at RAISE
+
+    test/sends/schema_database_test.rb:133:in 'PG::Connection#exec'
+    test/sends/schema_database_test.rb:133:in 'SendSchemaDatabaseTest#[opaque value redacted]'
+
+6 runs, 106 assertions, 4 failures, 1 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 35407
+
+# Running:
+
+.F.F..
+
+Finished in 0.609694s, 9.8410 runs/s, 560.9373 assertions/s.
+
+  1) Failure:
+SchemaIntegrityDatabaseTest#[opaque value redacted] [[opaque value redacted]:112]:
+--- expected
++++ actual
+@@ -1 +1 @@
+-["app.[opaque value redacted]", "app.[opaque value redacted]", "app.[opaque value redacted]", "app.[opaque value redacted]", "app.draft_organization_identity", "app.[opaque value redacted]", "app.[opaque value redacted]", "app.imap_account_identity", "app.[opaque value redacted]", "app.marketing_lead_org_identity", "app.[opaque value redacted]", "app.[opaque value redacted]", "app.[opaque value redacted]", "app_drafts_private.[opaque value redacted]", "app_send_private.attempt_send_identity", "app_send_private.intent_enrollment_identity"]
++["app.[opaque value redacted]", "app.[opaque value redacted]", "app.[opaque value redacted]", "app.[opaque value redacted]", "app.[opaque value redacted]", "app.draft_organization_identity", "app.[opaque value redacted]", "app.[opaque value redacted]", "app.imap_account_identity", "app.[opaque value redacted]", "app.marketing_lead_org_identity", "app.[opaque value redacted]", "app.[opaque value redacted]", "app.[opaque value redacted]", "app_drafts_private.[opaque value redacted]", "app_send_private.attempt_send_identity", "app_send_private.intent_enrollment_identity"]
+
+
+  2) Failure:
+SchemaIntegrityDatabaseTest#[opaque value redacted] [[opaque value redacted]:44]:
+Expected [{"relation" => "app.draft_attachments", "conname" => "[opaque value redacted]", "definition" => "FOREIGN KEY (organization_id, mailbox_id, draft_id, actor_id, id) REFERENCES app_drafts_private.attachment_stage_operations(organization_id, mailbox_id, draft_id, actor_id, attachment_id)"}, {"relation" => "app.inbound_imap_rejections", "conname" => "[opaque value redacted]", "definition" => "FOREIGN KEY (organization_id, mailbox_id) REFERENCES app.mailboxes(organization_id, id) ON DELETE RESTRICT"}] to be empty.
+
+6 runs, 342 assertions, 2 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 17635
+
+# Running:
+
+..F.
+
+Finished in 0.923092s, 4.3333 runs/s, 28.1662 assertions/s.
+
+  1) Failure:
+SchemaRelationshipDatabaseTest#[opaque value redacted] [[opaque value redacted]:102]:
+PG::ForeignKeyViolation expected but nothing was raised.
+
+4 runs, 26 assertions, 1 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 17544
+
+# Running:
+
+............................
+
+Finished in 0.917355s, 30.5225 runs/s, 475.2796 assertions/s.
+
+28 runs, 436 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 63536
+
+# Running:
+
+............
+
+Finished in 0.018200s, 659.3536 runs/s, 4615.4754 assertions/s.
+
+12 runs, 84 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 61975
+
+# Running:
+
+........
+
+Finished in 0.799303s, 10.0087 runs/s, 113.8491 assertions/s.
+
+8 runs, 91 assertions, 0 failures, 0 errors, 0 skips
+RUN test/sends/send_api_reads_test.rb
+Run options: --seed 26196
+
+# Running:
+
+..............
+
+Finished in 1.216902s, 11.5046 runs/s, 115.0463 assertions/s.
+
+14 runs, 140 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 13005
+
+# Running:
+
+.....
+
+Finished in 1.250101s, 3.9997 runs/s, 30.3975 assertions/s.
+
+5 runs, 38 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 16367
+
+# Running:
+
+.........
+
+Finished in 1.912979s, 4.7047 runs/s, 35.0239 assertions/s.
+
+9 runs, 67 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 47102
+
+# Running:
+
+..
+
+Finished in 0.634539s, 3.1519 runs/s, 25.2152 assertions/s.
+
+2 runs, 16 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 29630
+
+# Running:
+
+...
+
+Finished in 0.168065s, 17.8502 runs/s, 71.4008 assertions/s.
+
+3 runs, 12 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 12116
+
+# Running:
+
+..FFF.
+
+Finished in 1.555654s, 3.8569 runs/s, 36.6405 assertions/s.
+
+  1) Failure:
+UserBudgetDatabaseTest#[opaque value redacted] [[opaque value redacted]:45]:
+Expected: "0"
+  Actual: "7"
+
+  2) Failure:
+UserBudgetDatabaseTest#[opaque value redacted] [[opaque value redacted]:40]:
+Expected: "0"
+  Actual: "7"
+
+  3) Failure:
+UserBudgetDatabaseTest#[opaque value redacted] [[opaque value redacted]:85]:
+Expected: "1"
+  Actual: "8"
+
+6 runs, 57 assertions, 3 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 58059
+
+# Running:
+
+.........
+
+Finished in 1.814803s, 4.9592 runs/s, 49.0411 assertions/s.
+
+9 runs, 89 assertions, 0 failures, 0 errors, 0 skips
+RUN [opaque value redacted]
+Run options: --seed 64838
+
+# Running:
+
+..
+
+Finished in 0.003590s, 557.1695 runs/s, 1392.9237 assertions/s.
+
+2 runs, 5 assertions, 0 failures, 0 errors, 0 skips
+RUN test/v2_attachment_error_test.rb
+Run options: --seed 4240
+
+# Running:
+
+...
+
+Finished in 0.002090s, 1435.6162 runs/s, 2392.6937 assertions/s.
+
+3 runs, 5 assertions, 0 failures, 0 errors, 0 skips
+RUN test/v2_route_registry_test.rb
+Run options: --seed 43530
+
+# Running:
+
+............
+
+Finished in 0.003096s, 3876.5249 runs/s, 10014.3561 assertions/s.
+
+12 runs, 31 assertions, 0 failures, 0 errors, 0 skips
+RUN Steep
+# Type checking files:
+
+..................................................................................................................................................................................................................................................................................
+
+No type error detected. 🧋
+ Container [opaque value redacted] Creating
+ Container [opaque value redacted] Created
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+fixture rollback also failed (PG::ConnectionBad)
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+WARNING:  there is no transaction in progress
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+unknown OID 2278: failed to recognize type of 'pg_advisory_xact_lock'. It will be treated as String.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+Warning: no type cast defined for type "void" format 0 with oid 2278. Please cast this type explicitly to TEXT to be safe for future changes.
+Warning: no type cast defined for type "void" format 0 with oid 2278. Please cast this type explicitly to TEXT to be safe for future changes.
+Warning: no type cast defined for type "uuid" format 0 with oid 2950. Please cast this type explicitly to TEXT to be safe for future changes.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+unknown OID 2278: failed to recognize type of 'pg_advisory_xact_lock'. It will be treated as String.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+NOTICE:  trigger "fixture_rejection_failure" for relation "app.inbound_imap_rejections" does not exist, skipping
+NOTICE:  function app.fixture_rejection_failure() does not exist, skipping
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+unknown OID 2278: failed to recognize type of 'pg_advisory_xact_lock'. It will be treated as String.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]:4: warning: ostruct was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 4.0.0.
+You can add ostruct to your Gemfile or gemspec to silence this warning.
+[opaque value redacted]: line 60: er: command not found
+
+
+exit=127 seconds=744.18

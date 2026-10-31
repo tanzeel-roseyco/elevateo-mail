@@ -16,7 +16,7 @@ class ThreadDatabaseTest < SessionDatabaseTestCase
   UnexpectedLaterDependency = Class.new(StandardError)
   PARTS = File.expand_path("../../db/be02_threads", __dir__)
   # AIDEV-NOTE: These later-owned FKs are the only dependency exceptions to the B/C/D rollback probe.
-  # Draft attachment metadata is included; pinned definitions require review before another dependency is detached.
+  # Attachments and enrollment draft identity are pinned; new dependencies require review before detachment.
   LATER_THREAD_FOREIGN_KEYS = {
     "app_send_private.intents" => {
       "intents_organization_id_mailbox_id_draft_id_fkey" =>
@@ -41,6 +41,10 @@ class ThreadDatabaseTest < SessionDatabaseTestCase
     "app.draft_attachments" => {
       "draft_attachments_organization_id_mailbox_id_draft_id_fkey" =>
         "FOREIGN KEY (organization_id, mailbox_id, draft_id) REFERENCES app.drafts(organization_id, mailbox_id, id) ON DELETE CASCADE"
+    },
+    "app.marketing_enrollments" => {
+      "enrollment_draft_identity_fk" =>
+        "FOREIGN KEY (organization_id, draft_id) REFERENCES app.drafts(organization_id, id)"
     },
     "app.inbox_attachments" => {
       "inbox_attachments_organization_id_mailbox_id_thread_id_mes_fkey" =>
@@ -399,7 +403,7 @@ class ThreadDatabaseTest < SessionDatabaseTestCase
     before_foreign_keys = later_thread_foreign_keys
     before_policies = later_thread_policies
     @admin.exec("BEGIN")
-    # AIDEV-NOTE: Detach known later-feature FKs, including Resend receipts, and read policy inside this rollback-only transaction.
+    # AIDEV-NOTE: Detach pinned later FKs, including enrollment drafts, inside this rollback-only transaction.
     # Their definitions, tables and rows return with rollback; the original B/C/D scripts stay unchanged.
     detach_later_thread_foreign_keys
     @admin.exec("SET LOCAL ROLE elevateo_owner")
@@ -485,7 +489,8 @@ class ThreadDatabaseTest < SessionDatabaseTestCase
          AND c.conrelid IN (
            to_regclass('app_send_private.intents'), to_regclass('app.inbound_receipts'),
            to_regclass('app.inbound_imap_receipts'), to_regclass('app.inbox_attachments'),
-            to_regclass('app.draft_attachments'), to_regclass('app.resend_inbound_receipts'))
+            to_regclass('app.draft_attachments'), to_regclass('app.resend_inbound_receipts'),
+            to_regclass('app.marketing_enrollments'))
          AND c.confrelid IN (
            to_regclass('app.drafts'), to_regclass('app.threads'), to_regclass('app.messages'))
        ORDER BY c.conrelid::regclass::text, c.conname

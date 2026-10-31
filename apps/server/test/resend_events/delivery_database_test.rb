@@ -86,7 +86,8 @@ class ResendDeliveryDatabaseTest < SendDatabaseTestCase
     assert_equal "bounced", result["delivery_status"]
     evidence = JSON.parse(@worker.exec_params("SELECT app_send_private.resend_acceptance_evidence($1,$2)", [claim.send_id, authorization.attempt_id]).getvalue(0, 0))
     assert_equal "resend:#{@email}", evidence["receipt_ref"]
-    assert_equal "1", @admin.exec_params("SELECT count(*) FROM app_send_private.recipient_suppressions WHERE organization_id=$1 AND canonical_address='Recipient@example.invalid'", [@org]).getvalue(0, 0)
+    # AIDEV-NOTE: Immutable approval retains case; delivery-safety identity is stored lowercase.
+    assert_equal "1", @admin.exec_params("SELECT count(*) FROM app_send_private.recipient_suppressions WHERE organization_id=$1 AND canonical_address='recipient@example.invalid'", [@org]).getvalue(0, 0)
     assert_equal "processed", apply_event(claim, authorization.attempt_id, "email.delivered")["result"]
     assert_equal "bounced", status(claim.send_id)["delivery_status"]
   end

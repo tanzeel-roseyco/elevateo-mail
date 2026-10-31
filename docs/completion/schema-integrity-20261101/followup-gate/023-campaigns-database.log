@@ -1,0 +1,13 @@
+Run options: --seed 53808
+
+# Running:
+
+.......
+
+Finished in 0.548715s, 12.7571 runs/s, 30.9815 assertions/s.
+
+7 runs, 17 assertions, 0 failures, 0 errors, 0 skips
+ Container [opaque value redacted] Creating
+ Container [opaque value redacted] Created
+
+exit=0 seconds=2.07

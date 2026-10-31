@@ -1,0 +1,6 @@
+docker.io/axllent/mailpit@sha256:[opaque value redacted]: Pulling from axllent/mailpit
+Digest: sha256:[opaque value redacted]
+Status: Image is up to date for axllent/mailpit@sha256:[opaque value redacted]
+docker.io/axllent/mailpit:v1.31.5@sha256:[opaque value redacted]
+
+exit=0 seconds=5.30

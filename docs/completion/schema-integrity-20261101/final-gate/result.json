@@ -1,0 +1,10 @@
+{
+  "status": "PASSED",
+  "failure": "",
+  "separate_gates": [
+    "historical BE01 R1 fixture",
+    "MCP",
+    "native bridge",
+    "restore drill"
+  ]
+}

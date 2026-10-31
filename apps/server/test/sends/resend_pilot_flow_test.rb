@@ -194,7 +194,7 @@ class ResendPilotFlowTest < SendDatabaseTestCase
     Elevateo::ResendEvents::Store.new(connection: adapter)
   end
 
-  # AIDEV-NOTE: Both negative delivery events must survive signed intake and suppress only once on replay.
+  # AIDEV-NOTE: Signed negative events retain snapshot case but create one lowercase suppression key on replay.
   def assert_signed_suppression_replay(send_id, event_type: "email.bounced", delivery_status: "bounced")
     @event_id = "msg_#{SecureRandom.hex(12)}"
     body = JSON.generate(type: event_type, created_at: Time.now.utc.iso8601,
@@ -218,7 +218,7 @@ class ResendPilotFlowTest < SendDatabaseTestCase
     assert_equal "empty", worker.claim.fetch("result")
     assert_equal "1", @admin.exec_params(<<~SQL, [@org]).getvalue(0, 0)
       SELECT count(*) FROM app_send_private.recipient_suppressions
-        WHERE organization_id=$1 AND canonical_address='Recipient@example.invalid'
+        WHERE organization_id=$1 AND canonical_address='recipient@example.invalid'
     SQL
   end
 

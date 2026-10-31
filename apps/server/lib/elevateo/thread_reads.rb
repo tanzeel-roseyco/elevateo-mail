@@ -95,10 +95,17 @@ module Elevateo
        LIMIT 1
     SQL
 
+    # AIDEV-NOTE: Import metadata may precede local parts; staging must also be reflected without a cached counter.
+    ATTACHMENT_COUNT_SQL = <<~SQL.freeze
+      GREATEST(message.attachment_count, (SELECT count(*) FROM app.inbox_attachments attachment
+        WHERE attachment.organization_id=message.organization_id AND attachment.mailbox_id=message.mailbox_id
+          AND attachment.thread_id=message.thread_id AND attachment.message_id=message.id)) AS attachment_count
+    SQL
+
     MESSAGES_SQL = <<~SQL.freeze
       SELECT message.id, message.sender::text AS sender, message.recipients::text AS recipients,
              left(message.body_text, 16385) AS body_text,
-             message.attachment_count,
+             #{ATTACHMENT_COUNT_SQL},
              to_char(message.sent_at AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS sent_at
         FROM app.messages AS message
        WHERE message.organization_id = $1::uuid AND message.mailbox_id = $2::uuid AND message.thread_id = $3::uuid
@@ -112,7 +119,7 @@ module Elevateo
     # AIDEV-NOTE: A permalink resolves one scoped row; a cursor walk would make late messages unreachable.
     DIRECT_MESSAGE_SQL = <<~SQL.freeze
       SELECT message.id, message.sender::text AS sender, message.recipients::text AS recipients,
-             left(message.body_text, 16385) AS body_text, message.attachment_count,
+             left(message.body_text, 16385) AS body_text, #{ATTACHMENT_COUNT_SQL},
              to_char(message.sent_at AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS sent_at
         FROM app.mailboxes AS mailbox
         JOIN app.threads AS thread ON thread.organization_id = mailbox.organization_id

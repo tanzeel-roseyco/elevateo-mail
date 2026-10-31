@@ -1,0 +1,10 @@
+{
+  "status": "FAILED",
+  "failure": "failed gates: standard-suite-types-lint, [opaque value redacted], contracts-v1",
+  "separate_gates": [
+    "historical BE01 R1 fixture",
+    "MCP",
+    "native bridge",
+    "restore drill"
+  ]
+}

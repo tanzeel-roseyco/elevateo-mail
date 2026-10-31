@@ -1,0 +1,315 @@
+docker : #0 building with "desktop-linux" instance using docker driver
+At line:3 char:1
++ docker build --pull=false --build-arg SERVER_IMAGE=elevateo-schema-in ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (#0 building wit...g docker driver:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+
+#1 [internal] load build definition from Dockerfile.mox
+#1 transferring dockerfile: 731B 0.0s done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/elevateo-schema-integrity:server
+#2 DONE 0.1s
+
+#3 [internal] load metadata for r.xmox.nl/mox@sha256:831c6f11b3c2ee1633077052e6d4b7ae53f73972adf4bf08be0a740121d24cc7
+#3 DONE 2.8s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 140B done
+#4 DONE 0.1s
+
+#5 [internal] load build context
+#5 DONE 0.0s
+
+#6 [mox 1/1] FROM r.xmox.nl/mox@sha256:831c6f11b3c2ee1633077052e6d4b7ae53f73972adf4bf08be0a740121d24cc7
+#6 resolve r.xmox.nl/mox@sha256:831c6f11b3c2ee1633077052e6d4b7ae53f73972adf4bf08be0a740121d24cc7 0.1s done
+#6 ...
+
+#5 [internal] load build context
+#5 transferring context: 126.75kB 0.2s done
+#5 DONE 0.5s
+
+#6 [mox 1/1] FROM r.xmox.nl/mox@sha256:831c6f11b3c2ee1633077052e6d4b7ae53f73972adf4bf08be0a740121d24cc7
+#6 sha256:5432c20445e7803b6a0884739b26f299578483139bcab042fa221b2a504b09fa 0B / 19.89MB 0.2s
+#6 sha256:f98470dd7d776898537d7d617841e85931a2879ac1af7afc4753c2423c0a4fa2 0B / 3.96MB 0.2s
+#6 ...
+
+#7 [stage-1 1/7] FROM docker.io/library/elevateo-schema-integrity:server@sha256:9ae1d78630c86a3abcdcfb2ba860be55d26059f
+42d4dd38f5370de0c9dbf3c7c
+#7 resolve docker.io/library/elevateo-schema-integrity:server@sha256:9ae1d78630c86a3abcdcfb2ba860be55d26059f42d4dd38f53
+70de0c9dbf3c7c 0.1s done
+#7 DONE 0.8s
+
+#6 [mox 1/1] FROM r.xmox.nl/mox@sha256:831c6f11b3c2ee1633077052e6d4b7ae53f73972adf4bf08be0a740121d24cc7
+#6 sha256:5432c20445e7803b6a0884739b26f299578483139bcab042fa221b2a504b09fa 1.05MB / 19.89MB 3.3s
+#6 sha256:5432c20445e7803b6a0884739b26f299578483139bcab042fa221b2a504b09fa 2.10MB / 19.89MB 4.7s
+#6 sha256:f98470dd7d776898537d7d617841e85931a2879ac1af7afc4753c2423c0a4fa2 0B / 3.96MB 5.3s
+#6 sha256:5432c20445e7803b6a0884739b26f299578483139bcab042fa221b2a504b09fa 3.15MB / 19.89MB 5.6s
+#6 sha256:5432c20445e7803b6a0884739b26f299578483139bcab042fa221b2a504b09fa 4.19MB / 19.89MB 6.8s
+#6 sha256:5432c20445e7803b6a0884739b26f299578483139bcab042fa221b2a504b09fa 5.24MB / 19.89MB 7.7s
+#6 ...
+
+#8 [stage-1 2/7] RUN apt-get update -qq && apt-get install -y --no-install-recommends python3 openssl  && rm -rf
+/var/lib/apt/lists/*
+#8 ...
+
+#6 [mox 1/1] FROM r.xmox.nl/mox@sha256:831c6f11b3c2ee1633077052e6d4b7ae53f73972adf4bf08be0a740121d24cc7
+#6 sha256:f98470dd7d776898537d7d617841e85931a2879ac1af7afc4753c2423c0a4fa2 0B / 3.96MB 10.4s
+#6 sha256:5432c20445e7803b6a0884739b26f299578483139bcab042fa221b2a504b09fa 5.24MB / 19.89MB 12.8s
+#6 sha256:5432c20445e7803b6a0884739b26f299578483139bcab042fa221b2a504b09fa 6.29MB / 19.89MB 13.7s
+#6 sha256:5432c20445e7803b6a0884739b26f299578483139bcab042fa221b2a504b09fa 7.34MB / 19.89MB 14.7s
+#6 sha256:f98470dd7d776898537d7d617841e85931a2879ac1af7afc4753c2423c0a4fa2 0B / 3.96MB 15.5s
+#6 sha256:5432c20445e7803b6a0884739b26f299578483139bcab042fa221b2a504b09fa 8.39MB / 19.89MB 17.0s
+#6 sha256:f98470dd7d776898537d7d617841e85931a2879ac1af7afc4753c2423c0a4fa2 1.05MB / 3.96MB 18.0s
+#6 sha256:5432c20445e7803b6a0884739b26f299578483139bcab042fa221b2a504b09fa 8.39MB / 19.89MB 22.1s
+#6 sha256:f98470dd7d776898537d7d617841e85931a2879ac1af7afc4753c2423c0a4fa2 1.05MB / 3.96MB 23.1s
+#6 sha256:5432c20445e7803b6a0884739b26f299578483139bcab042fa221b2a504b09fa 9.44MB / 19.89MB 24.6s
+#6 ...
+
+#8 [stage-1 2/7] RUN apt-get update -qq && apt-get install -y --no-install-recommends python3 openssl  && rm -rf
+/var/lib/apt/lists/*
+#8 16.03 Reading package lists...
+#8 16.64 Building dependency tree...
+#8 16.77 Reading state information...
+#8 16.92 openssl is already the newest version (3.0.22-1~deb12u2).
+#8 16.92 openssl set to manually installed.
+#8 16.92 The following additional packages will be installed:
+#8 16.92   libncursesw6 libpython3-stdlib libpython3.11-minimal libpython3.11-stdlib
+#8 16.92   libreadline8 media-types python3-minimal python3.11 python3.11-minimal
+#8 16.92   readline-common
+#8 16.92 Suggested packages:
+#8 16.92   python3-doc python3-tk python3-venv python3.11-venv python3.11-doc
+#8 16.92   binfmt-support readline-doc
+#8 16.92 Recommended packages:
+#8 16.92   libgpm2
+#8 17.00 The following NEW packages will be installed:
+#8 17.00   libncursesw6 libpython3-stdlib libpython3.11-minimal libpython3.11-stdlib
+#8 17.00   libreadline8 media-types python3 python3-minimal python3.11
+#8 17.00   python3.11-minimal readline-common
+#8 17.18 0 upgraded, 11 newly installed, 0 to remove and 2 not upgraded.
+#8 17.18 Need to get 5706 kB of archives.
+#8 17.18 After this operation, 22.8 MB of additional disk space will be used.
+#8 17.18 Get:1 http://deb.debian.org/debian-security bookworm-security/main amd64 libpython3.11-minimal amd64
+3.11.2-6+deb12u9 [821 kB]
+#8 19.51 Get:2 http://deb.debian.org/debian-security bookworm-security/main amd64 python3.11-minimal amd64
+3.11.2-6+deb12u9 [2055 kB]
+#8 ...
+
+#6 [mox 1/1] FROM r.xmox.nl/mox@sha256:831c6f11b3c2ee1633077052e6d4b7ae53f73972adf4bf08be0a740121d24cc7
+#6 sha256:f98470dd7d776898537d7d617841e85931a2879ac1af7afc4753c2423c0a4fa2 2.10MB / 3.96MB 27.3s
+#6 sha256:5432c20445e7803b6a0884739b26f299578483139bcab042fa221b2a504b09fa 9.44MB / 19.89MB 29.7s
+#6 sha256:f98470dd7d776898537d7d617841e85931a2879ac1af7afc4753c2423c0a4fa2 2.10MB / 3.96MB 32.4s
+#6 sha256:5432c20445e7803b6a0884739b26f299578483139bcab042fa221b2a504b09fa 9.44MB / 19.89MB 34.8s
+#6 sha256:f98470dd7d776898537d7d617841e85931a2879ac1af7afc4753c2423c0a4fa2 3.15MB / 3.96MB 37.0s
+#6 ...
+
+#8 [stage-1 2/7] RUN apt-get update -qq && apt-get install -y --no-install-recommends python3 openssl  && rm -rf
+/var/lib/apt/lists/*
+#8 27.08 Get:3 http://deb.debian.org/debian bookworm/main amd64 python3-minimal amd64 3.11.2-1+b1 [26.3 kB]
+#8 27.16 Get:4 http://deb.debian.org/debian bookworm/main amd64 media-types all 10.0.0 [26.1 kB]
+#8 27.30 Get:5 http://deb.debian.org/debian bookworm/main amd64 libncursesw6 amd64 6.4-4 [134 kB]
+#8 27.96 Get:6 http://deb.debian.org/debian bookworm/main amd64 readline-common all 8.2-1.3 [69.0 kB]
+#8 28.53 Get:7 http://deb.debian.org/debian bookworm/main amd64 libreadline8 amd64 8.2-1.3 [166 kB]
+#8 29.27 Get:8 http://deb.debian.org/debian-security bookworm-security/main amd64 libpython3.11-stdlib amd64
+3.11.2-6+deb12u9 [1798 kB]
+#8 ...
+
+#6 [mox 1/1] FROM r.xmox.nl/mox@sha256:831c6f11b3c2ee1633077052e6d4b7ae53f73972adf4bf08be0a740121d24cc7
+#6 sha256:5432c20445e7803b6a0884739b26f299578483139bcab042fa221b2a504b09fa 9.44MB / 19.89MB 40.6s
+#6 sha256:f98470dd7d776898537d7d617841e85931a2879ac1af7afc4753c2423c0a4fa2 3.15MB / 3.96MB 42.1s
+#6 sha256:f98470dd7d776898537d7d617841e85931a2879ac1af7afc4753c2423c0a4fa2 3.96MB / 3.96MB 45.1s
+#6 sha256:5432c20445e7803b6a0884739b26f299578483139bcab042fa221b2a504b09fa 9.44MB / 19.89MB 45.7s
+#6 sha256:f98470dd7d776898537d7d617841e85931a2879ac1af7afc4753c2423c0a4fa2 3.96MB / 3.96MB 45.6s done
+#6 extracting sha256:f98470dd7d776898537d7d617841e85931a2879ac1af7afc4753c2423c0a4fa2
+#6 extracting sha256:f98470dd7d776898537d7d617841e85931a2879ac1af7afc4753c2423c0a4fa2 0.2s done
+#6 sha256:5432c20445e7803b6a0884739b26f299578483139bcab042fa221b2a504b09fa 9.44MB / 19.89MB 50.8s
+#6 sha256:5432c20445e7803b6a0884739b26f299578483139bcab042fa221b2a504b09fa 10.49MB / 19.89MB 52.6s
+#6 ...
+
+#8 [stage-1 2/7] RUN apt-get update -qq && apt-get install -y --no-install-recommends python3 openssl  && rm -rf
+/var/lib/apt/lists/*
+#8 44.68 Get:9 http://deb.debian.org/debian-security bookworm-security/main amd64 python3.11 amd64 3.11.2-6+deb12u9
+[575 kB]
+#8 46.59 Get:10 http://deb.debian.org/debian bookworm/main amd64 libpython3-stdlib amd64 3.11.2-1+b1 [9312 B]
+#8 46.63 Get:11 http://deb.debian.org/debian bookworm/main amd64 python3 amd64 3.11.2-1+b1 [26.3 kB]
+#8 46.92 debconf: delaying package configuration, since apt-utils is not installed
+#8 46.98 Fetched 5706 kB in 30s (193 kB/s)
+#8 47.06 Selecting previously unselected package libpython3.11-minimal:amd64.
+#8 47.06 (Reading database ...
+(Reading database ... 5%
+(Reading database ... 10%
+(Reading database ... 15%
+(Reading database ... 20%
+(Reading database ... 25%
+(Reading database ... 30%
+(Reading database ... 35%
+(Reading database ... 40%
+(Reading database ... 45%
+(Reading database ... 50%
+(Reading database ... 55%
+(Reading database ... 60%
+(Reading database ... 65%
+(Reading database ... 70%
+(Reading database ... 75%
+(Reading database ... 80%
+(Reading database ... 85%
+(Reading database ... 90%
+(Reading database ... 95%
+(Reading database ... 100%
+(Reading database ... 13555 files and directories currently installed.)
+#8 47.09 Preparing to unpack .../libpython3.11-minimal_3.11.2-6+deb12u9_amd64.deb ...
+#8 47.11 Unpacking libpython3.11-minimal:amd64 (3.11.2-6+deb12u9) ...
+#8 47.30 Selecting previously unselected package python3.11-minimal.
+#8 47.30 Preparing to unpack .../python3.11-minimal_3.11.2-6+deb12u9_amd64.deb ...
+#8 47.35 Unpacking python3.11-minimal (3.11.2-6+deb12u9) ...
+#8 47.62 Setting up libpython3.11-minimal:amd64 (3.11.2-6+deb12u9) ...
+#8 47.70 Setting up python3.11-minimal (3.11.2-6+deb12u9) ...
+#8 48.65 Selecting previously unselected package python3-minimal.
+#8 48.65 (Reading database ...
+(Reading database ... 5%
+(Reading database ... 10%
+(Reading database ... 15%
+(Reading database ... 20%
+(Reading database ... 25%
+(Reading database ... 30%
+(Reading database ... 35%
+(Reading database ... 40%
+(Reading database ... 45%
+(Reading database ... 50%
+(Reading database ... 55%
+(Reading database ... 60%
+(Reading database ... 65%
+(Reading database ... 70%
+(Reading database ... 75%
+(Reading database ... 80%
+(Reading database ... 85%
+(Reading database ... 90%
+(Reading database ... 95%
+(Reading database ... 100%
+(Reading database ... 13862 files and directories currently installed.)
+#8 48.66 Preparing to unpack .../0-python3-minimal_3.11.2-1+b1_amd64.deb ...
+#8 48.68 Unpacking python3-minimal (3.11.2-1+b1) ...
+#8 48.79 Selecting previously unselected package media-types.
+#8 48.80 Preparing to unpack .../1-media-types_10.0.0_all.deb ...
+#8 48.82 Unpacking media-types (10.0.0) ...
+#8 49.01 Selecting previously unselected package libncursesw6:amd64.
+#8 49.01 Preparing to unpack .../2-libncursesw6_6.4-4_amd64.deb ...
+#8 49.06 Unpacking libncursesw6:amd64 (6.4-4) ...
+#8 49.38 Selecting previously unselected package readline-common.
+#8 49.38 Preparing to unpack .../3-readline-common_8.2-1.3_all.deb ...
+#8 49.41 Unpacking readline-common (8.2-1.3) ...
+#8 49.56 Selecting previously unselected package libreadline8:amd64.
+#8 49.57 Preparing to unpack .../4-libreadline8_8.2-1.3_amd64.deb ...
+#8 49.59 Unpacking libreadline8:amd64 (8.2-1.3) ...
+#8 49.74 Selecting previously unselected package libpython3.11-stdlib:amd64.
+#8 49.74 Preparing to unpack .../5-libpython3.11-stdlib_3.11.2-6+deb12u9_amd64.deb ...
+#8 49.81 Unpacking libpython3.11-stdlib:amd64 (3.11.2-6+deb12u9) ...
+#8 50.09 Selecting previously unselected package python3.11.
+#8 50.09 Preparing to unpack .../6-python3.11_3.11.2-6+deb12u9_amd64.deb ...
+#8 50.11 Unpacking python3.11 (3.11.2-6+deb12u9) ...
+#8 50.27 Selecting previously unselected package libpython3-stdlib:amd64.
+#8 50.28 Preparing to unpack .../7-libpython3-stdlib_3.11.2-1+b1_amd64.deb ...
+#8 50.31 Unpacking libpython3-stdlib:amd64 (3.11.2-1+b1) ...
+#8 50.48 Setting up python3-minimal (3.11.2-1+b1) ...
+#8 50.89 Selecting previously unselected package python3.
+#8 50.89 (Reading database ...
+(Reading database ... 5%
+(Reading database ... 10%
+(Reading database ... 15%
+(Reading database ... 20%
+(Reading database ... 25%
+(Reading database ... 30%
+(Reading database ... 35%
+(Reading database ... 40%
+(Reading database ... 45%
+(Reading database ... 50%
+(Reading database ... 55%
+(Reading database ... 60%
+(Reading database ... 65%
+(Reading database ... 70%
+(Reading database ... 75%
+(Reading database ... 80%
+(Reading database ... 85%
+(Reading database ... 90%
+(Reading database ... 95%
+(Reading database ... 100%
+(Reading database ... 14305 files and directories currently installed.)
+#8 50.90 Preparing to unpack .../python3_3.11.2-1+b1_amd64.deb ...
+#8 50.94 Unpacking python3 (3.11.2-1+b1) ...
+#8 51.29 Setting up media-types (10.0.0) ...
+#8 51.43 Setting up libncursesw6:amd64 (6.4-4) ...
+#8 51.49 Setting up readline-common (8.2-1.3) ...
+#8 51.59 Setting up libreadline8:amd64 (8.2-1.3) ...
+#8 51.65 Setting up libpython3.11-stdlib:amd64 (3.11.2-6+deb12u9) ...
+#8 51.71 Setting up libpython3-stdlib:amd64 (3.11.2-1+b1) ...
+#8 51.76 Setting up python3.11 (3.11.2-6+deb12u9) ...
+#8 52.58 Setting up python3 (3.11.2-1+b1) ...
+#8 52.63 running python rtupdate hooks for python3.11...
+#8 52.63 running python post-rtupdate hooks for python3.11...
+#8 52.72 Processing triggers for libc-bin (2.36-9+deb12u14) ...
+#8 ...
+
+#6 [mox 1/1] FROM r.xmox.nl/mox@sha256:831c6f11b3c2ee1633077052e6d4b7ae53f73972adf4bf08be0a740121d24cc7
+#6 ...
+
+#8 [stage-1 2/7] RUN apt-get update -qq && apt-get install -y --no-install-recommends python3 openssl  && rm -rf
+/var/lib/apt/lists/*
+#8 DONE 56.5s
+
+#6 [mox 1/1] FROM r.xmox.nl/mox@sha256:831c6f11b3c2ee1633077052e6d4b7ae53f73972adf4bf08be0a740121d24cc7
+#6 sha256:5432c20445e7803b6a0884739b26f299578483139bcab042fa221b2a504b09fa 10.49MB / 19.89MB 57.7s
+#6 sha256:5432c20445e7803b6a0884739b26f299578483139bcab042fa221b2a504b09fa 11.53MB / 19.89MB 60.3s
+#6 sha256:5432c20445e7803b6a0884739b26f299578483139bcab042fa221b2a504b09fa 11.53MB / 19.89MB 65.9s
+#6 sha256:5432c20445e7803b6a0884739b26f299578483139bcab042fa221b2a504b09fa 12.58MB / 19.89MB 70.0s
+#6 sha256:5432c20445e7803b6a0884739b26f299578483139bcab042fa221b2a504b09fa 13.63MB / 19.89MB 72.4s
+#6 sha256:5432c20445e7803b6a0884739b26f299578483139bcab042fa221b2a504b09fa 14.68MB / 19.89MB 73.6s
+#6 sha256:5432c20445e7803b6a0884739b26f299578483139bcab042fa221b2a504b09fa 15.73MB / 19.89MB 74.5s
+#6 sha256:5432c20445e7803b6a0884739b26f299578483139bcab042fa221b2a504b09fa 16.78MB / 19.89MB 75.6s
+#6 sha256:5432c20445e7803b6a0884739b26f299578483139bcab042fa221b2a504b09fa 17.83MB / 19.89MB 76.8s
+#6 sha256:5432c20445e7803b6a0884739b26f299578483139bcab042fa221b2a504b09fa 18.87MB / 19.89MB 77.5s
+#6 sha256:5432c20445e7803b6a0884739b26f299578483139bcab042fa221b2a504b09fa 19.89MB / 19.89MB 78.3s
+#6 sha256:5432c20445e7803b6a0884739b26f299578483139bcab042fa221b2a504b09fa 19.89MB / 19.89MB 83.4s
+#6 sha256:5432c20445e7803b6a0884739b26f299578483139bcab042fa221b2a504b09fa 19.89MB / 19.89MB 88.5s
+#6 sha256:5432c20445e7803b6a0884739b26f299578483139bcab042fa221b2a504b09fa 19.89MB / 19.89MB 91.6s done
+#6 DONE 93.3s
+
+#6 [mox 1/1] FROM r.xmox.nl/mox@sha256:831c6f11b3c2ee1633077052e6d4b7ae53f73972adf4bf08be0a740121d24cc7
+#6 extracting sha256:5432c20445e7803b6a0884739b26f299578483139bcab042fa221b2a504b09fa
+#6 extracting sha256:5432c20445e7803b6a0884739b26f299578483139bcab042fa221b2a504b09fa 5.2s done
+#6 DONE 98.6s
+
+#9 [stage-1 3/7] COPY --from=mox /bin/mox /release/mox
+#9 DONE 25.9s
+
+#10 [stage-1 4/7] COPY ops/selfhosted-mail /source/ops/selfhosted-mail
+#10 DONE 0.3s
+
+#11 [stage-1 5/7] COPY apps/server/test/support/launch_mailflows/protocol.py /source/protocol.py
+#11 DONE 0.4s
+
+#12 [stage-1 6/7] COPY ops/tests/completion/mox_protocol.py /source/mox_protocol.py
+#12 DONE 0.3s
+
+#13 [stage-1 7/7] RUN install -d -m 0755 /private
+#13 DONE 0.6s
+
+#14 exporting to image
+#14 exporting layers
+#14 exporting layers 3.8s done
+#14 exporting manifest sha256:54be5a89673130af5aca56fcba85b2493da76129777c928b142cf55666125960 0.1s done
+#14 exporting config sha256:f71e5f80a5f657b0804f10f6afb0cf18f4d29a8791c18994d81c7f9d5066d6a0 0.1s done
+#14 exporting attestation manifest sha256:da7aeb8a0ddd4134a4c039ac4c3f444ded18c18b86c0d4756c8b85af387ebaf9
+#14 exporting attestation manifest sha256:da7aeb8a0ddd4134a4c039ac4c3f444ded18c18b86c0d4756c8b85af387ebaf9 0.3s done
+#14 exporting manifest list sha256:ddff0a7ebf80a6eaa63c03b5579b1c961c715229e15e22c88107185534a8b324
+#14 exporting manifest list sha256:ddff0a7ebf80a6eaa63c03b5579b1c961c715229e15e22c88107185534a8b324 0.1s done
+#14 naming to docker.io/library/elevateo-schema-integrity:mox
+#14 naming to docker.io/library/elevateo-schema-integrity:mox 0.0s done
+#14 unpacking to docker.io/library/elevateo-schema-integrity:mox
+#14 unpacking to docker.io/library/elevateo-schema-integrity:mox 7.3s done
+#14 DONE 11.9s
+
+ [33m1 warning found (use docker --debug to expand):
+[0m - InvalidDefaultArgInFrom: Default value for ARG ${SERVER_IMAGE} results in empty or invalid base image name
+(line 4)

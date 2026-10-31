@@ -1,0 +1,242 @@
+api-1   | Started POST "/v1/auth/accept" for 172.22.0.7 at 2026-10-31 14:38:44 +0000
+api-1   | Processing by V1::AuthController#accept as */*
+auth-1  | {"action":"login","instance_id":"[opaque value redacted]","level":"info","login_method":"otp","metering":true,"msg":"Login","provider":"email","time":"2026-10-31T14:37:55Z","user_id":"[opaque value redacted]"}
+db-1    | ALTER ROLE
+auth-1  | {"auth_event":{"action":"user_signedup","actor_id":"[opaque value redacted]","actor_username":"be02-http-534b98026478fe13@example.invalid","actor_via_sso":false,"log_type":"team","traits":{"provider":"email"}},"component":"api","duration":100570706,"level":"info","method":"POST","msg":"request completed","path":"/verify","referer":"http://api:3000","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":200,"time":"2026-10-31T14:37:55Z"}
+auth-1  | {"component":"api","duration":58300210,"level":"info","method":"GET","msg":"request completed","path":"/user","referer":"http://api:3000","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":200,"time":"2026-10-31T14:37:55Z"}
+[credential-bearing line redacted]
+auth-1  | {"auth_audit_event":{"action":"user_modified","actor_id":"[opaque value redacted]","actor_username":"be02-http-534b98026478fe13@example.invalid","actor_via_sso":false,"audit_log_id":"[opaque value redacted]","created_at":"2026-10-31T14:37:55.764828313Z","ip_address":"","log_type":"user","request_id":"[opaque value redacted]","user_agent":"Ruby"},"level":"info","msg":"audit_event","time":"2026-10-31T14:37:55Z"}
+auth-1  | {"auth_event":{"action":"user_modified","actor_id":"[opaque value redacted]","actor_username":"be02-http-534b98026478fe13@example.invalid","actor_via_sso":false,"log_type":"user"},"component":"api","duration":195601784,"level":"info","method":"PUT","msg":"request completed","path":"/user","referer":"http://api:3000","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":200,"time":"2026-10-31T14:37:55Z"}
+auth-1  | {"component":"api","duration":59376585,"level":"info","method":"GET","msg":"request completed","path":"/user","referer":"http://api:3000","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":200,"time":"2026-10-31T14:37:55Z"}
+auth-1  | {"component":"api","duration":56110911,"level":"info","method":"GET","msg":"request completed","path":"/user","referer":"http://api:3000","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":200,"time":"2026-10-31T14:37:56Z"}
+auth-1  | {"component":"api","duration":56296335,"level":"info","method":"GET","msg":"request completed","path":"/user","referer":"http://api:3000","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":200,"time":"2026-10-31T14:37:57Z"}
+auth-1  | {"component":"api","duration":55583682,"level":"info","method":"GET","msg":"request completed","path":"/user","referer":"http://api:3000","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":200,"time":"2026-10-31T14:37:58Z"}
+auth-1  | {"component":"api","duration":55625257,"level":"info","method":"GET","msg":"request completed","path":"/user","referer":"http://api:3000","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":200,"time":"2026-10-31T14:37:59Z"}
+auth-1  | {"component":"api","duration":60017810,"level":"info","method":"GET","msg":"request completed","path":"/user","referer":"http://api:3000","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":200,"time":"2026-10-31T14:38:00Z"}
+auth-1  | {"component":"api","duration":52314521,"level":"info","method":"GET","msg":"request completed","path":"/user","referer":"http://api:3000","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":200,"time":"2026-10-31T14:38:01Z"}
+db-1    | ALTER ROLE
+auth-1  | {"component":"api","duration":56755627,"level":"info","method":"GET","msg":"request completed","path":"/user","referer":"http://api:3000","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":200,"time":"2026-10-31T14:38:02Z"}
+auth-1  | {"component":"api","duration":51705994,"level":"info","method":"GET","msg":"request completed","path":"/user","referer":"http://api:3000","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":200,"time":"2026-10-31T14:38:03Z"}
+api-1   |   Parameters: {controller: "v1/auth", action: "accept", "auth" => {}}
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | DO
+auth-1  | {"auth_audit_event":{"action":"token_refreshed","actor_id":"[opaque value redacted]","actor_username":"be02-http-534b98026478fe13@example.invalid","actor_via_sso":false,"audit_log_id":"[opaque value redacted]","created_at":"2026-10-31T14:38:05.173764302Z","ip_address":"","log_type":"token","request_id":"[opaque value redacted]","user_agent":"Ruby"},"level":"info","msg":"audit_event","time":"2026-10-31T14:38:05Z"}
+auth-1  | {"auth_audit_event":{"action":"token_revoked","actor_id":"[opaque value redacted]","actor_username":"be02-http-534b98026478fe13@example.invalid","actor_via_sso":false,"audit_log_id":"[opaque value redacted]","created_at":"2026-10-31T14:38:05.175214116Z","ip_address":"","log_type":"token","request_id":"[opaque value redacted]","user_agent":"Ruby"},"level":"info","msg":"audit_event","time":"2026-10-31T14:38:05Z"}
+auth-1  | {"action":"login","instance_id":"[opaque value redacted]","level":"info","login_method":"token","metering":true,"msg":"Login","time":"2026-10-31T14:38:05Z","user_id":"[opaque value redacted]"}
+[credential-bearing line redacted]
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+auth-1  | {"component":"api","duration":58452112,"level":"info","method":"GET","msg":"request completed","path":"/user","referer":"http://api:3000","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":200,"time":"2026-10-31T14:38:05Z"}
+api-1   | rescue_from handled Elevateo::AuthError (Authentication required) - lib/elevateo/auth_client.rb:89:in 'block in Elevateo::AuthClient#request'
+auth-1  | {"auth_audit_event":{"action":"login","actor_id":"[opaque value redacted]","actor_username":"be02-http-534b98026478fe13@example.invalid","actor_via_sso":false,"audit_log_id":"[opaque value redacted]","created_at":"2026-10-31T14:38:09.274274982Z","ip_address":"","log_type":"account","request_id":"[opaque value redacted]","traits":{"provider":"email"},"user_agent":"Ruby"},"level":"info","msg":"audit_event","time":"2026-10-31T14:38:09Z"}
+api-1   | Completed 401 Unauthorized in 20ms (Views: 0.1ms | ActiveRecord: 4.2ms (4 queries, 0 cached) | GC: 0.0ms)
+api-1   | Started GET "/v1/session" for 172.22.0.7 at 2026-10-31 14:38:45 +0000
+api-1   | Processing by V1::SessionsController#show as */*
+api-1   |   Parameters: {controller: "v1/sessions", action: "show"}
+api-1   | rescue_from handled Elevateo::AuthError (Authentication required) - lib/elevateo/session_crypto.rb:16:in 'Elevateo::SessionCrypto#digest'
+api-1   | Completed 401 Unauthorized in 1ms (Views: 0.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+api-1   | Started GET "/v1/auth/login-challenge" for 172.22.0.7 at 2026-10-31 14:38:45 +0000
+api-1   | Processing by V1::AuthController#challenge as */*
+[credential-bearing line redacted]
+[credential-bearing line redacted]
+auth-1  | {"component":"api","duration":53990964,"level":"info","method":"GET","msg":"request completed","path":"/user","referer":"http://api:3000","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":200,"time":"2026-10-31T14:38:09Z"}
+api-1   |   Parameters: {controller: "v1/auth", action: "challenge"}
+api-1   | Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+auth-1  | {"auth_audit_event":{"action":"logout","actor_id":"[opaque value redacted]","actor_username":"be02-http-2dfa2311beafd112@example.invalid","actor_via_sso":false,"audit_log_id":"[opaque value redacted]","created_at":"2026-10-31T14:38:18.851836252Z","ip_address":"","log_type":"account","request_id":"[opaque value redacted]","user_agent":"Ruby"},"level":"info","msg":"audit_event","time":"2026-10-31T14:38:18Z"}
+auth-1  | {"auth_event":{"action":"logout","actor_id":"[opaque value redacted]","actor_username":"be02-http-2dfa2311beafd112@example.invalid","actor_via_sso":false,"log_type":"account"},"component":"api","duration":78337122,"level":"info","method":"POST","msg":"request completed","path":"/logout","referer":"http://api:3000","remote_addr":"172.22.0.6","request_id":"[opaque value redacted]","status":204,"time":"2026-10-31T14:38:18Z"}
+api-1   | Started POST "/v1/auth/accept" for 172.22.0.7 at 2026-10-31 14:38:46 +0000
+api-1   | Processing by V1::AuthController#accept as */*
+auth-1  | {"auth_audit_event":{"action":"logout","actor_id":"[opaque value redacted]","actor_username":"be02-http-534b98026478fe13@example.invalid","actor_via_sso":false,"audit_log_id":"[opaque value redacted]","created_at":"2026-10-31T14:38:20.002404797Z","ip_address":"","log_type":"account","request_id":"[opaque value redacted]","user_agent":"Ruby"},"level":"info","msg":"audit_event","time":"2026-10-31T14:38:20Z"}
+auth-1  | {"auth_event":{"action":"logout","actor_id":"[opaque value redacted]","actor_username":"be02-http-534b98026478fe13@example.invalid","actor_via_sso":false,"log_type":"account"},"component":"api","duration":142247205,"level":"info","method":"POST","msg":"request completed","path":"/logout","referer":"http://api:3000","remote_addr":"172.22.0.6","request_id":"[opaque value redacted]","status":204,"time":"2026-10-31T14:38:20Z"}
+auth-1  | {"auth_audit_event":{"action":"logout","actor_id":"[opaque value redacted]","actor_username":"be02-http-534b98026478fe13@example.invalid","actor_via_sso":false,"audit_log_id":"[opaque value redacted]","created_at":"2026-10-31T14:38:21.093422037Z","ip_address":"","log_type":"account","request_id":"[opaque value redacted]","user_agent":"Ruby"},"level":"info","msg":"audit_event","time":"2026-10-31T14:38:21Z"}
+db-1    | DO
+auth-1  | {"auth_event":{"action":"logout","actor_id":"[opaque value redacted]","actor_username":"be02-http-534b98026478fe13@example.invalid","actor_via_sso":false,"log_type":"account"},"component":"api","duration":79359578,"level":"info","method":"POST","msg":"request completed","path":"/logout","referer":"http://api:3000","remote_addr":"172.22.0.6","request_id":"[opaque value redacted]","status":204,"time":"2026-10-31T14:38:21Z"}
+api-1   |   Parameters: {controller: "v1/auth", action: "accept", "auth" => {}}
+api-1   | Completed 200 OK in 299ms (Views: 0.1ms | ActiveRecord: 5.0ms (4 queries, 0 cached) | GC: 0.0ms)
+api-1   | Started GET "/v1/session" for 172.22.0.7 at 2026-10-31 14:38:47 +0000
+api-1   | Processing by V1::SessionsController#show as */*
+api-1   |   Parameters: {controller: "v1/sessions", action: "show"}
+api-1   | Completed 200 OK in 57ms (Views: 0.1ms | ActiveRecord: 5.8ms (8 queries, 0 cached) | GC: 0.0ms)
+api-1   | Started GET "/v1/auth/login-challenge" for 172.22.0.7 at 2026-10-31 14:38:48 +0000
+api-1   | Processing by V1::AuthController#challenge as */*
+auth-1  | {"auth_audit_event":{"action":"user_invited","actor_id":"[opaque value redacted]","actor_username":"service_role","actor_via_sso":false,"audit_log_id":"[opaque value redacted]","created_at":"2026-10-31T14:38:23.302350846Z","ip_address":"","log_type":"team","request_id":"[opaque value redacted]","traits":{"user_email":"be02-http-4f21a186d4a7f344@example.invalid","user_id":"[opaque value redacted]"},"user_agent":"Ruby"},"level":"info","msg":"audit_event","time":"2026-10-31T14:38:23Z"}
+api-1   |   Parameters: {controller: "v1/auth", action: "challenge"}
+api-1   | Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+api-1   | Started POST "/v1/auth/accept" for 172.22.0.7 at 2026-10-31 14:38:48 +0000
+api-1   | Processing by V1::AuthController#accept as */*
+auth-1  | {"auth_event":{"action":"user_invited","actor_id":"[opaque value redacted]","actor_username":"service_role","actor_via_sso":false,"log_type":"team","traits":{"user_email":"be02-http-4f21a186d4a7f344@example.invalid","user_id":"[opaque value redacted]"}},"component":"api","duration":39658893,"level":"info","method":"POST","msg":"request completed","path":"/invite","referer":"http://api:3000/auth/complete","remote_addr":"172.22.0.7","request_id":"[opaque value redacted]","status":200,"time":"2026-10-31T14:38:23Z"}
+auth-1  | {"auth_audit_event":{"action":"user_signedup","actor_id":"[opaque value redacted]","actor_username":"be02-http-4f21a186d4a7f344@example.invalid","actor_via_sso":false,"audit_log_id":"[opaque value redacted]","created_at":"2026-10-31T14:38:25.591589617Z","ip_address":"","log_type":"team","request_id":"[opaque value redacted]","traits":{"provider":"email"},"user_agent":"Ruby"},"level":"info","msg":"audit_event","time":"2026-10-31T14:38:25Z"}
+auth-1  | {"action":"login","instance_id":"[opaque value redacted]","level":"info","login_method":"otp","metering":true,"msg":"Login","provider":"email","time":"2026-10-31T14:38:25Z","user_id":"[opaque value redacted]"}
+auth-1  | {"auth_event":{"action":"user_signedup","actor_id":"[opaque value redacted]","actor_username":"be02-http-4f21a186d4a7f344@example.invalid","actor_via_sso":false,"log_type":"team","traits":{"provider":"email"}},"component":"api","duration":104598562,"level":"info","method":"POST","msg":"request completed","path":"/verify","referer":"http://api:3000","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":200,"time":"2026-10-31T14:38:25Z"}
+api-1   |   Parameters: {controller: "v1/auth", action: "accept", "auth" => {}}
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+api-1   | rescue_from handled Elevateo::AuthError (Authentication required) - lib/elevateo/session_store.rb:48:in 'Elevateo::SessionStore.check!'
+api-1   | Completed 401 Unauthorized in 5ms (Views: 0.1ms | ActiveRecord: 2.2ms (2 queries, 0 cached) | GC: 0.9ms)
+db-1    | CREATE FUNCTION
+api-1   | Started GET "/v1/session" for 172.22.0.7 at 2026-10-31 14:38:49 +0000
+api-1   | Processing by V1::SessionsController#show as */*
+auth-1  | {"component":"api","duration":53460020,"level":"info","method":"GET","msg":"request completed","path":"/user","referer":"http://api:3000","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":200,"time":"2026-10-31T14:38:25Z"}
+[credential-bearing line redacted]
+auth-1  | {"auth_audit_event":{"action":"user_modified","actor_id":"[opaque value redacted]","actor_username":"be02-http-4f21a186d4a7f344@example.invalid","actor_via_sso":false,"audit_log_id":"[opaque value redacted]","created_at":"2026-10-31T14:38:25.845361381Z","ip_address":"","log_type":"user","request_id":"[opaque value redacted]","user_agent":"Ruby"},"level":"info","msg":"audit_event","time":"2026-10-31T14:38:25Z"}
+auth-1  | {"auth_event":{"action":"user_modified","actor_id":"[opaque value redacted]","actor_username":"be02-http-4f21a186d4a7f344@example.invalid","actor_via_sso":false,"log_type":"user"},"component":"api","duration":178333468,"level":"info","method":"PUT","msg":"request completed","path":"/user","referer":"http://api:3000","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":200,"time":"2026-10-31T14:38:25Z"}
+db-1    | DO
+api-1   |   Parameters: {controller: "v1/sessions", action: "show"}
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+api-1   | rescue_from handled Elevateo::AuthError (Authentication required) - lib/elevateo/session_crypto.rb:16:in 'Elevateo::SessionCrypto#digest'
+api-1   | Completed 401 Unauthorized in 1ms (Views: 0.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+api-1   | Started GET "/auth/accept" for 172.22.0.7 at 2026-10-31 14:38:50 +0000
+api-1   | Processing by AuthEntriesController#stage as */*
+api-1   |   Parameters: {controller: "auth_entries", action: "stage"}
+api-1   | Completed 303 See Other in 4ms (ActiveRecord: 2.0ms (2 queries, 0 cached) | GC: 0.0ms)
+api-1   | Started GET "/v1/auth/login-challenge" for 172.22.0.7 at 2026-10-31 14:38:50 +0000
+auth-1  | {"component":"api","duration":45615765,"level":"info","method":"GET","msg":"request completed","path":"/user","referer":"http://api:3000","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":200,"time":"2026-10-31T14:38:25Z"}
+auth-1  | {"component":"api","duration":56488314,"level":"info","method":"GET","msg":"request completed","path":"/user","referer":"http://api:3000","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":200,"time":"2026-10-31T14:38:26Z"}
+auth-1  | {"component":"api","duration":9786171,"error":"One-time token not found","error_code":"otp_expired","level":"warning","method":"POST","msg":"request completed","path":"/verify","referer":"http://api:3000","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":403,"time":"2026-10-31T14:38:28Z"}
+db-1    | ALTER FUNCTION
+db-1    | GRANT
+auth-1  | {"auth_audit_event":{"action":"login","actor_id":"[opaque value redacted]","actor_username":"be02-http-4f21a186d4a7f344@example.invalid","actor_via_sso":false,"audit_log_id":"[opaque value redacted]","created_at":"2026-10-31T14:38:30.902834926Z","ip_address":"","log_type":"account","request_id":"[opaque value redacted]","traits":{"provider":"email"},"user_agent":"Ruby"},"level":"info","msg":"audit_event","time":"2026-10-31T14:38:30Z"}
+[credential-bearing line redacted]
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | DROP EVENT TRIGGER
+db-1    | ALTER FUNCTION
+[credential-bearing line redacted]
+auth-1  | {"component":"api","duration":43167468,"level":"info","method":"GET","msg":"request completed","path":"/user","referer":"http://api:3000","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":200,"time":"2026-10-31T14:38:30Z"}
+auth-1  | {"component":"api","duration":59991994,"level":"info","method":"GET","msg":"request completed","path":"/user","referer":"http://api:3000","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":200,"time":"2026-10-31T14:38:31Z"}
+db-1    | CREATE EVENT TRIGGER
+auth-1  | {"auth_audit_event":{"action":"user_invited","actor_id":"[opaque value redacted]","actor_username":"service_role","actor_via_sso":false,"audit_log_id":"[opaque value redacted]","created_at":"2026-10-31T14:38:31.776439261Z","ip_address":"","log_type":"team","request_id":"[opaque value redacted]","traits":{"user_email":"be02-http-d1401c0815251e02@example.invalid","user_id":"[opaque value redacted]"},"user_agent":"Ruby"},"level":"info","msg":"audit_event","time":"2026-10-31T14:38:31Z"}
+api-1   | Processing by V1::AuthController#challenge as */*
+api-1   |   Parameters: {controller: "v1/auth", action: "challenge"}
+api-1   | Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+auth-1  | {"auth_event":{"action":"user_invited","actor_id":"[opaque value redacted]","actor_username":"service_role","actor_via_sso":false,"log_type":"team","traits":{"user_email":"be02-http-d1401c0815251e02@example.invalid","user_id":"[opaque value redacted]"}},"component":"api","duration":61322901,"level":"info","method":"POST","msg":"request completed","path":"/invite","referer":"http://api:3000/auth/complete","remote_addr":"172.22.0.7","request_id":"[opaque value redacted]","status":200,"time":"2026-10-31T14:38:31Z"}
+api-1   | Started POST "/v1/auth/accept" for 172.22.0.7 at 2026-10-31 14:38:51 +0000
+api-1   | Processing by V1::AuthController#accept as */*
+api-1   |   Parameters: {controller: "v1/auth", action: "accept", "auth" => {}}
+auth-1  | {"auth_audit_event":{"action":"user_signedup","actor_id":"[opaque value redacted]","actor_username":"be02-http-d1401c0815251e02@example.invalid","actor_via_sso":false,"audit_log_id":"[opaque value redacted]","created_at":"2026-10-31T14:38:34.124561788Z","ip_address":"","log_type":"team","request_id":"[opaque value redacted]","traits":{"provider":"email"},"user_agent":"Ruby"},"level":"info","msg":"audit_event","time":"2026-10-31T14:38:34Z"}
+auth-1  | {"action":"login","instance_id":"[opaque value redacted]","level":"info","login_method":"otp","metering":true,"msg":"Login","provider":"email","time":"2026-10-31T14:38:34Z","user_id":"[opaque value redacted]"}
+auth-1  | {"auth_event":{"action":"user_signedup","actor_id":"[opaque value redacted]","actor_username":"be02-http-d1401c0815251e02@example.invalid","actor_via_sso":false,"log_type":"team","traits":{"provider":"email"}},"component":"api","duration":102990265,"level":"info","method":"POST","msg":"request completed","path":"/verify","referer":"http://api:3000","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":200,"time":"2026-10-31T14:38:34Z"}
+auth-1  | {"component":"api","duration":49608212,"level":"info","method":"GET","msg":"request completed","path":"/user","referer":"http://api:3000","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":200,"time":"2026-10-31T14:38:34Z"}
+[credential-bearing line redacted]
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+auth-1  | {"auth_audit_event":{"action":"user_modified","actor_id":"[opaque value redacted]","actor_username":"be02-http-d1401c0815251e02@example.invalid","actor_via_sso":false,"audit_log_id":"[opaque value redacted]","created_at":"2026-10-31T14:38:34.393389268Z","ip_address":"","log_type":"user","request_id":"[opaque value redacted]","user_agent":"Ruby"},"level":"info","msg":"audit_event","time":"2026-10-31T14:38:34Z"}
+auth-1  | {"auth_event":{"action":"user_modified","actor_id":"[opaque value redacted]","actor_username":"be02-http-d1401c0815251e02@example.invalid","actor_via_sso":false,"log_type":"user"},"component":"api","duration":198016172,"level":"info","method":"PUT","msg":"request completed","path":"/user","referer":"http://api:3000","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":200,"time":"2026-10-31T14:38:34Z"}
+auth-1  | {"component":"api","duration":48518493,"level":"info","method":"GET","msg":"request completed","path":"/user","referer":"http://api:3000","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":200,"time":"2026-10-31T14:38:34Z"}
+auth-1  | {"component":"api","duration":47860775,"level":"info","method":"GET","msg":"request completed","path":"/user","referer":"http://api:3000","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":200,"time":"2026-10-31T14:38:35Z"}
+db-1    | DO
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | CREATE FUNCTION
+db-1    | GRANT
+auth-1  | {"auth_audit_event":{"action":"user_recovery_requested","actor_id":"[opaque value redacted]","actor_username":"be02-http-d1401c0815251e02@example.invalid","actor_via_sso":false,"audit_log_id":"[opaque value redacted]","created_at":"2026-10-31T14:38:36.743730932Z","ip_address":"","log_type":"user","request_id":"[opaque value redacted]","user_agent":"Ruby"},"level":"info","msg":"audit_event","time":"2026-10-31T14:38:36Z"}
+auth-1  | {"auth_event":{"action":"user_recovery_requested","actor_id":"[opaque value redacted]","actor_username":"be02-http-d1401c0815251e02@example.invalid","actor_via_sso":false,"log_type":"user"},"component":"api","duration":62418085,"level":"info","method":"POST","msg":"request completed","path":"/recover","referer":"http://api:3000/auth/complete","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":200,"time":"2026-10-31T14:38:36Z"}
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | REVOKE ROLE
+auth-1  | {"component":"api","duration":11104585,"level":"info","method":"POST","msg":"request completed","path":"/recover","referer":"http://api:3000/auth/complete","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":200,"time":"2026-10-31T14:38:38Z"}
+api-1   | rescue_from handled Elevateo::AuthError (Authentication required) - lib/elevateo/auth_client.rb:89:in 'block in Elevateo::AuthClient#request'
+auth-1  | {"auth_audit_event":{"action":"login","actor_id":"[opaque value redacted]","actor_username":"be02-http-d1401c0815251e02@example.invalid","actor_via_sso":false,"audit_log_id":"[opaque value redacted]","created_at":"2026-10-31T14:38:41.792081975Z","ip_address":"","log_type":"account","request_id":"[opaque value redacted]","user_agent":"Ruby"},"level":"info","msg":"audit_event","time":"2026-10-31T14:38:41Z"}
+auth-1  | {"action":"login","instance_id":"[opaque value redacted]","level":"info","login_method":"otp","metering":true,"msg":"Login","provider":"email","time":"2026-10-31T14:38:41Z","user_id":"[opaque value redacted]"}
+api-1   | Completed 401 Unauthorized in 25ms (Views: 0.2ms | ActiveRecord: 4.5ms (4 queries, 0 cached) | GC: 1.1ms)
+api-1   | Started GET "/v1/session" for 172.22.0.7 at 2026-10-31 14:38:52 +0000
+api-1   | Processing by V1::SessionsController#show as */*
+db-1    | DO
+api-1   |   Parameters: {controller: "v1/sessions", action: "show"}
+db-1    | DO
+api-1   | rescue_from handled Elevateo::AuthError (Authentication required) - lib/elevateo/session_crypto.rb:16:in 'Elevateo::SessionCrypto#digest'
+api-1   | Completed 401 Unauthorized in 1ms (Views: 0.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+api-1   | Started GET "/v1/auth/login-challenge" for 172.22.0.7 at 2026-10-31 14:38:52 +0000
+auth-1  | {"auth_event":{"action":"login","actor_id":"[opaque value redacted]","actor_username":"be02-http-d1401c0815251e02@example.invalid","actor_via_sso":false,"log_type":"account"},"component":"api","duration":24686001,"level":"info","method":"POST","msg":"request completed","path":"/verify","referer":"http://api:3000","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":200,"time":"2026-10-31T14:38:41Z"}
+auth-1  | {"component":"api","duration":51410053,"level":"info","method":"GET","msg":"request completed","path":"/user","referer":"http://api:3000","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":200,"time":"2026-10-31T14:38:41Z"}
+db-1    | REVOKE ROLE
+api-1   | Processing by V1::AuthController#challenge as */*
+api-1   |   Parameters: {controller: "v1/auth", action: "challenge"}
+api-1   | Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+[credential-bearing line redacted]
+api-1   | Started POST "/v1/auth/login" for 172.22.0.7 at 2026-10-31 14:38:53 +0000
+api-1   | Processing by V1::AuthController#login as */*
+api-1   |   Parameters: {controller: "v1/auth", action: "login", "auth" => {}}
+auth-1  | {"component":"api","duration":12096230,"error":"One-time token not found","error_code":"otp_expired","level":"warning","method":"POST","msg":"request completed","path":"/verify","referer":"http://api:3000","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":403,"time":"2026-10-31T14:38:45Z"}
+db-1    | REVOKE
+db-1    | DO
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+auth-1  | {"component":"api","duration":43203618,"level":"info","method":"GET","msg":"request completed","path":"/user","referer":"http://api:3000","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":200,"time":"2026-10-31T14:38:46Z"}
+db-1    | DO
+[credential-bearing line redacted]
+auth-1  | {"auth_audit_event":{"action":"user_modified","actor_id":"[opaque value redacted]","actor_username":"be02-http-d1401c0815251e02@example.invalid","actor_via_sso":false,"audit_log_id":"[opaque value redacted]","created_at":"2026-10-31T14:38:47.165919491Z","ip_address":"","log_type":"user","request_id":"[opaque value redacted]","user_agent":"Ruby"},"level":"info","msg":"audit_event","time":"2026-10-31T14:38:47Z"}
+auth-1  | {"auth_event":{"action":"user_modified","actor_id":"[opaque value redacted]","actor_username":"be02-http-d1401c0815251e02@example.invalid","actor_via_sso":false,"log_type":"user"},"component":"api","duration":188961724,"level":"info","method":"PUT","msg":"request completed","path":"/user","referer":"http://api:3000","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":200,"time":"2026-10-31T14:38:47Z"}
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+auth-1  | {"component":"api","duration":52002770,"level":"info","method":"GET","msg":"request completed","path":"/user","referer":"http://api:3000","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":200,"time":"2026-10-31T14:38:47Z"}
+auth-1  | {"component":"api","duration":47050545,"level":"info","method":"GET","msg":"request completed","path":"/user","referer":"http://api:3000","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":200,"time":"2026-10-31T14:38:48Z"}
+auth-1  | {"component":"api","duration":13802915,"error":"One-time token not found","error_code":"otp_expired","level":"warning","method":"POST","msg":"request completed","path":"/verify","referer":"http://api:3000","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":403,"time":"2026-10-31T14:38:52Z"}
+[credential-bearing line redacted]
+auth-1  | {"auth_audit_event":{"action":"login","actor_id":"[opaque value redacted]","actor_username":"be02-http-d1401c0815251e02@example.invalid","actor_via_sso":false,"audit_log_id":"[opaque value redacted]","created_at":"2026-10-31T14:38:56.291985041Z","ip_address":"","log_type":"account","request_id":"[opaque value redacted]","traits":{"provider":"email"},"user_agent":"Ruby"},"level":"info","msg":"audit_event","time":"2026-10-31T14:38:56Z"}
+[credential-bearing line redacted]
+api-1   | rescue_from handled Elevateo::AuthError (Authentication required) - lib/elevateo/auth_client.rb:89:in 'block in Elevateo::AuthClient#request'
+[credential-bearing line redacted]
+auth-1  | {"component":"api","duration":45915523,"level":"info","method":"GET","msg":"request completed","path":"/user","referer":"http://api:3000","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":200,"time":"2026-10-31T14:38:56Z"}
+db-1    | DO
+auth-1  | {"component":"api","duration":44480632,"level":"info","method":"GET","msg":"request completed","path":"/user","referer":"http://api:3000","remote_addr":"172.22.0.5","request_id":"[opaque value redacted]","status":200,"time":"2026-10-31T14:38:57Z"}
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | DO
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | ALTER ROLE
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | GRANT ROLE
+api-1   | Completed 401 Unauthorized in 113ms (Views: 0.1ms | ActiveRecord: 1.8ms (2 queries, 0 cached) | GC: 0.0ms)
+api-1   | Started GET "/v1/session" for 172.22.0.7 at 2026-10-31 14:38:54 +0000
+api-1   | Processing by V1::SessionsController#show as */*
+api-1   |   Parameters: {controller: "v1/sessions", action: "show"}
+api-1   | rescue_from handled Elevateo::AuthError (Authentication required) - lib/elevateo/session_crypto.rb:16:in 'Elevateo::SessionCrypto#digest'
+db-1    | DO
+api-1   | Completed 401 Unauthorized in 1ms (Views: 0.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+api-1   | Started GET "/v1/auth/login-challenge" for 172.22.0.7 at 2026-10-31 14:38:54 +0000
+api-1   | Processing by V1::AuthController#challenge as */*
+api-1   |   Parameters: {controller: "v1/auth", action: "challenge"}
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | GRANT
+api-1   | Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+api-1   | Started POST "/v1/auth/login" for 172.22.0.7 at 2026-10-31 14:38:55 +0000
+db-1    | CREATE FUNCTION
+api-1   | Processing by V1::AuthController#login as */*
+db-1    | REVOKE
+db-1    | REVOKE
+api-1   |   Parameters: {controller: "v1/auth", action: "login", "auth" => {}}
+db-1    | GRANT
+api-1   | Completed 200 OK in 168ms (Views: 0.1ms | ActiveRecord: 3.9ms (4 queries, 0 cached) | GC: 0.0ms)
+api-1   | Started GET "/v1/session" for 172.22.0.7 at 2026-10-31 14:38:56 +0000
+api-1   | Processing by V1::SessionsController#show as */*
+api-1   |   Parameters: {controller: "v1/sessions", action: "show"}
+api-1   | Completed 200 OK in 55ms (Views: 0.1ms | ActiveRecord: 7.0ms (8 queries, 0 cached) | GC: 0.0ms)
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | DO
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | ALTER ROLE
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | DROP EXTENSION
+db-1    | /docker-entrypoint-initdb.d/migrate.sh: running /docker-entrypoint-initdb.[opaque value redacted]
+db-1    | CREATE FUNCTION
+db-1    | DROP EVENT TRIGGER
+db-1    | CREATE EVENT TRIGGER
+db-1    |    pg_stat_statements_reset
+db-1    | -------------------------------
+db-1    |  2026-10-31 14:23:23.570904+00
+db-1    | (1 row)
+db-1    |
+db-1    |  pg_stat_reset
+db-1    | ---------------
+db-1    |
+db-1    | (1 row)
+db-1    |
+db-1    |
+db-1    | [opaque value redacted]: ignoring /docker-entrypoint-initdb.d/migrations
+db-1    |
+db-1    | waiting for server to shut down.... 2026-10-31 14:23:23.573 UTC [58] LOG:  pg_cron scheduler shutting down
+db-1    |  done
+db-1    | server stopped
+db-1    |
+db-1    | PostgreSQL init process complete; ready for start up.
+db-1    |
+db-1    | 172.22.0.5 2026-10-31 14:29:12.428 UTC [2352] elevateo_api@postgres FATAL:  terminating connection due to transaction timeout
+db-1    | 172.22.0.5 2026-10-31 14:29:12.428 UTC [2352] elevateo_api@postgres STATEMENT:  SELECT pg_sleep(0.15)
+db-1    | 172.22.0.5 2026-10-31 14:29:13.528 UTC [2362] elevateo_api@postgres FATAL:  terminating connection due to transaction timeout
+db-1    | 172.22.0.5 2026-10-31 14:29:30.928 UTC [2614] elevateo_api@postgres FATAL:  terminating connection due to transaction timeout
+db-1    | 172.22.0.5 2026-10-31 14:29:31.459 UTC [2622] elevateo_api@postgres FATAL:  terminating connection due to transaction timeout
+
+exit=0 seconds=0.28

@@ -1,0 +1,10 @@
+{
+  "status": "FAILED",
+  "failure": "chain-create failed; see 047-chain-create.log",
+  "separate_gates": [
+    "historical BE01 R1 fixture",
+    "MCP",
+    "native bridge",
+    "restore drill"
+  ]
+}

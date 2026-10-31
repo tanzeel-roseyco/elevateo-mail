@@ -26,10 +26,15 @@ module Elevateo
       end
 
       def enqueue(org, user, kind, inputs)
-        items = inputs.each_with_index.map { |input, index| { "row" => index + 1, "input" => input } }
-        row = rows(<<~SQL, [org, user, kind, inputs.length, JSON.generate(items)]).fetch(0)
-          INSERT INTO app.email_finder_jobs(organization_id,user_id,kind,total,items)
-          VALUES($1::uuid,$2::uuid,$3,$4::integer,$5::jsonb) RETURNING *
+        # AIDEV-NOTE: The protected-write transaction commits the parent and child rows together.
+        row = rows(<<~SQL, [org, user, kind, inputs.length]).fetch(0)
+          INSERT INTO app.email_finder_jobs(organization_id,user_id,kind,total)
+          VALUES($1::uuid,$2::uuid,$3,$4::integer) RETURNING *
+        SQL
+        rows(<<~SQL, [org, row.fetch("id"), JSON.generate(inputs)])
+          INSERT INTO app.email_finder_job_items(organization_id,job_id,row_number,input)
+          SELECT $1::uuid,$2::uuid,item.ordinality,item.value
+          FROM jsonb_array_elements($3::jsonb) WITH ORDINALITY item
         SQL
         empty_items = [] # @type var empty_items: Array[object]
         row.slice("id", "kind", "status", "total", "completed").merge("created_at" => timestamp(row.fetch("created_at")), "items" => empty_items)
@@ -49,7 +54,14 @@ module Elevateo
 
       def project_job(row)
         org = row.fetch("organization_id").to_s
-        items = object(row.fetch("items"))
+        items = rows("SELECT row_number AS row,input,result FROM app.email_finder_job_items WHERE job_id=$1::uuid ORDER BY row_number", [row.fetch("id")]).map do |item|
+          # AIDEV-NOTE: PG worker rows are strings; preserve the integer API shape previously decoded from JSON.
+          item["row"] = item.fetch("row").to_i
+          item["input"] = object(item.fetch("input"))
+          item["result"] = object(item["result"]) if item["result"]
+          item.delete("result") unless item["result"]
+          item
+        end
         rules = suppression_rules(org)
         suppressed_names = rules.keys.filter_map { |key| key.delete_prefix("person:") if key.start_with?("person:") }
         unless suppressed_names.empty?

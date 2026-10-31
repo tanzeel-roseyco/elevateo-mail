@@ -18,6 +18,7 @@ module Elevateo
     LIST_SQL: String
     ORGANIZATION_LIST_SQL: String
     THREAD_SQL: String
+    ATTACHMENT_COUNT_SQL: String
     MESSAGES_SQL: String
     DIRECT_MESSAGE_SQL: String
     @connection: _ThreadConnection

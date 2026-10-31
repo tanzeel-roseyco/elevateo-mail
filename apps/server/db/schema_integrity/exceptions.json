@@ -1,0 +1,650 @@
+{
+    "indexes":  [
+                    {
+                        "evidence":  "test/sends/schema_integrity_database_test.rb",
+                        "reason":  "Composite UNIQUE target required by the tenant-scoped foreign key; a globally unique shorter identity cannot enforce matching organization and parent scope.",
+                        "index":  "app_drafts_private.attachment_stage_operations_organization_id_mailbox_id_draf_key"
+                    },
+                    {
+                        "evidence":  "test/sends/schema_integrity_database_test.rb",
+                        "reason":  "Composite UNIQUE target required by the tenant-scoped foreign key; a globally unique shorter identity cannot enforce matching organization and parent scope.",
+                        "index":  "app_send_private.attempt_send_identity"
+                    },
+                    {
+                        "evidence":  "test/sends/schema_integrity_database_test.rb",
+                        "reason":  "Composite UNIQUE target required by the tenant-scoped foreign key; a globally unique shorter identity cannot enforce matching organization and parent scope.",
+                        "index":  "app_send_private.intent_enrollment_identity"
+                    },
+                    {
+                        "evidence":  "test/sends/schema_integrity_database_test.rb",
+                        "reason":  "Composite UNIQUE target required by the tenant-scoped foreign key; a globally unique shorter identity cannot enforce matching organization and parent scope.",
+                        "index":  "app.campaign_accounts_organization_id_campaign_id_id_key"
+                    },
+                    {
+                        "evidence":  "test/sends/schema_integrity_database_test.rb",
+                        "reason":  "Composite UNIQUE target required by the tenant-scoped foreign key; a globally unique shorter identity cannot enforce matching organization and parent scope.",
+                        "index":  "app.campaign_leads_organization_id_campaign_id_id_key"
+                    },
+                    {
+                        "evidence":  "test/sends/schema_integrity_database_test.rb",
+                        "reason":  "Composite UNIQUE target required by the tenant-scoped foreign key; a globally unique shorter identity cannot enforce matching organization and parent scope.",
+                        "index":  "app.campaign_sequences_organization_id_campaign_id_id_key"
+                    },
+                    {
+                        "evidence":  "test/sends/schema_integrity_database_test.rb",
+                        "reason":  "Composite UNIQUE target required by the tenant-scoped foreign key; a globally unique shorter identity cannot enforce matching organization and parent scope.",
+                        "index":  "app.campaigns_organization_id_id_key"
+                    },
+                    {
+                        "evidence":  "test/sends/schema_integrity_database_test.rb",
+                        "reason":  "Composite UNIQUE target required by the tenant-scoped foreign key; a globally unique shorter identity cannot enforce matching organization and parent scope.",
+                        "index":  "app.draft_organization_identity"
+                    },
+                    {
+                        "evidence":  "test/sends/schema_integrity_database_test.rb",
+                        "reason":  "Composite UNIQUE target required by the tenant-scoped foreign key; a globally unique shorter identity cannot enforce matching organization and parent scope.",
+                        "index":  "app.drafts_organization_id_mailbox_id_id_key"
+                    },
+                    {
+                        "evidence":  "test/sends/schema_integrity_database_test.rb",
+                        "reason":  "Composite UNIQUE target required by the tenant-scoped foreign key; a globally unique shorter identity cannot enforce matching organization and parent scope.",
+                        "index":  "app.email_finder_jobs_organization_id_id_key"
+                    },
+                    {
+                        "evidence":  "test/sends/schema_integrity_database_test.rb",
+                        "reason":  "Composite UNIQUE target required by the tenant-scoped foreign key; a globally unique shorter identity cannot enforce matching organization and parent scope.",
+                        "index":  "app.imap_account_identity"
+                    },
+                    {
+                        "evidence":  "test/sends/schema_integrity_database_test.rb",
+                        "reason":  "Composite UNIQUE target required by the tenant-scoped foreign key; a globally unique shorter identity cannot enforce matching organization and parent scope.",
+                        "index":  "app.mailboxes_organization_id_id_key"
+                    },
+                    {
+                        "evidence":  "test/sends/schema_integrity_database_test.rb",
+                        "reason":  "Composite UNIQUE target required by the tenant-scoped foreign key; a globally unique shorter identity cannot enforce matching organization and parent scope.",
+                        "index":  "app.marketing_lead_org_identity"
+                    },
+                    {
+                        "evidence":  "test/sends/schema_integrity_database_test.rb",
+                        "reason":  "Composite UNIQUE target required by the tenant-scoped foreign key; a globally unique shorter identity cannot enforce matching organization and parent scope.",
+                        "index":  "app.marketing_runs_organization_id_id_key"
+                    },
+                    {
+                        "evidence":  "test/sends/schema_integrity_database_test.rb",
+                        "reason":  "Composite UNIQUE target required by the tenant-scoped foreign key; a globally unique shorter identity cannot enforce matching organization and parent scope.",
+                        "index":  "app.messages_organization_id_mailbox_id_thread_id_id_key"
+                    },
+                    {
+                        "evidence":  "test/sends/schema_integrity_database_test.rb",
+                        "reason":  "Composite UNIQUE target required by the tenant-scoped foreign key; a globally unique shorter identity cannot enforce matching organization and parent scope.",
+                        "index":  "app.threads_organization_id_mailbox_id_id_key"
+                    }
+                ],
+    "columns":  [
+                    {
+                        "rule":  "structured",
+                        "column":  "app.messages.sender",
+                        "evidence":  "lib/elevateo/thread_projection.rb",
+                        "reason":  "Message envelope address snapshot represents received content, not mutable contacts; sender/recipient values retain the original message identity."
+                    },
+                    {
+                        "rule":  "structured",
+                        "column":  "app.messages.recipients",
+                        "evidence":  "lib/elevateo/thread_projection.rb",
+                        "reason":  "Message envelope address snapshot represents received content, not mutable contacts; sender/recipient values retain the original message identity."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app_drafts_private.operations.mailbox_id",
+                        "evidence":  "db/draft_attachments/tables.sql",
+                        "reason":  "Durable operation replay record retains requested resource identities and response after draft or attachment deletion; a resource FK would erase or block replay history."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app_drafts_private.operations.draft_id",
+                        "evidence":  "db/draft_attachments/tables.sql",
+                        "reason":  "Durable operation replay record retains requested resource identities and response after draft or attachment deletion; a resource FK would erase or block replay history."
+                    },
+                    {
+                        "rule":  "structured",
+                        "column":  "app_drafts_private.operations.detail",
+                        "evidence":  "db/draft_attachments/tables.sql",
+                        "reason":  "Durable operation replay record retains requested resource identities and response after draft or attachment deletion; a resource FK would erase or block replay history."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app.thread_assignments.assignee_id",
+                        "evidence":  "db/be02_collaboration/tables.sql",
+                        "reason":  "Historical attribution UUID survives membership removal; current authorization is checked at mutation time, preserving assignment and note history."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app.thread_notes.author_id",
+                        "evidence":  "db/be02_collaboration/tables.sql",
+                        "reason":  "Historical attribution UUID survives membership removal; current authorization is checked at mutation time, preserving assignment and note history."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app.drafts.actor_id",
+                        "evidence":  "db/be03_send/approve.sql",
+                        "reason":  "Draft actor attribution and bounded address envelope are content snapshots; recipient addresses need not be stored contacts and actor membership is checked when writing."
+                    },
+                    {
+                        "rule":  "structured",
+                        "column":  "app.drafts.recipients",
+                        "evidence":  "db/be03_send/approve.sql",
+                        "reason":  "Draft actor attribution and bounded address envelope are content snapshots; recipient addresses need not be stored contacts and actor membership is checked when writing."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app_send_private.approval_operations.mailbox_id",
+                        "evidence":  "db/be03_send/approve.sql",
+                        "reason":  "Immutable send authorization or worker capability snapshot retained independently of the live actor/session; worker authority consumes this original evidence."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app_send_private.approval_operations.draft_id",
+                        "evidence":  "db/be03_send/approve.sql",
+                        "reason":  "Immutable send authorization or worker capability snapshot retained independently of the live actor/session; worker authority consumes this original evidence."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app_send_private.jobs.lease_id",
+                        "evidence":  "db/be03_send/tables.sql",
+                        "reason":  "Generated worker fencing token identifies the active lease generation, not another entity. Worker transitions verify lease identity before mutating durable send state."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app_send_private.attempts.attempt_id",
+                        "evidence":  "db/be03_send/tables.sql",
+                        "reason":  "Alternate globally unique attempt identity, independently UNIQUE and referenced by observations and budget rows; it is an entity key rather than an outgoing relationship."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app_send_private.audit_events.actor_id",
+                        "evidence":  "db/be03_send/approve.sql",
+                        "reason":  "Immutable send authorization or worker capability snapshot retained independently of the live actor/session; worker authority consumes this original evidence."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app.organization_role_audit.actor_user_id",
+                        "evidence":  "db/sec802/access.sql",
+                        "reason":  "Append-only role-change actor and target attribution must survive membership removal; audit history is not an active membership relationship."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app.organization_role_audit.target_user_id",
+                        "evidence":  "db/sec802/access.sql",
+                        "reason":  "Append-only role-change actor and target attribution must survive membership removal; audit history is not an active membership relationship."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app_send_private.intents.approved_by",
+                        "evidence":  "db/be03_send/approve.sql",
+                        "reason":  "Immutable send authorization or worker capability snapshot retained independently of the live actor/session; worker authority consumes this original evidence."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app_send_private.intents.approval_auth_session_id",
+                        "evidence":  "db/be03_send/approve.sql",
+                        "reason":  "Immutable send authorization or worker capability snapshot retained independently of the live actor/session; worker authority consumes this original evidence."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app_send_private.intents.approval_context_id",
+                        "evidence":  "db/be03_send/approve.sql",
+                        "reason":  "Immutable send authorization or worker capability snapshot retained independently of the live actor/session; worker authority consumes this original evidence."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app_send_private.intents.approval_epoch",
+                        "evidence":  "db/be03_send/approve.sql",
+                        "reason":  "Immutable send authorization or worker capability snapshot retained independently of the live actor/session; worker authority consumes this original evidence."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app.campaigns.operation_id",
+                        "evidence":  "lib/elevateo/campaigns/repository.rb",
+                        "reason":  "Campaign operation or consent history snapshot retained for idempotent replay and attribution independently of current actor membership or edited campaign steps."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app.campaign_leads.consent_recorded_by",
+                        "evidence":  "lib/elevateo/campaigns/repository.rb",
+                        "reason":  "Campaign operation or consent history snapshot retained for idempotent replay and attribution independently of current actor membership or edited campaign steps."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app.campaign_leads.consent_operation_id",
+                        "evidence":  "lib/elevateo/campaigns/repository.rb",
+                        "reason":  "Campaign operation or consent history snapshot retained for idempotent replay and attribution independently of current actor membership or edited campaign steps."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app.campaign_leads.operation_id",
+                        "evidence":  "lib/elevateo/campaigns/repository.rb",
+                        "reason":  "Campaign operation or consent history snapshot retained for idempotent replay and attribution independently of current actor membership or edited campaign steps."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app.campaign_accounts.operation_id",
+                        "evidence":  "lib/elevateo/campaigns/repository.rb",
+                        "reason":  "Campaign operation or consent history snapshot retained for idempotent replay and attribution independently of current actor membership or edited campaign steps."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app.campaign_mutations.resource_id",
+                        "evidence":  "lib/elevateo/campaigns/repository.rb",
+                        "reason":  "Campaign operation or consent history snapshot retained for idempotent replay and attribution independently of current actor membership or edited campaign steps."
+                    },
+                    {
+                        "rule":  "structured",
+                        "column":  "app.campaign_mutations.result",
+                        "evidence":  "lib/elevateo/campaigns/repository.rb",
+                        "reason":  "Campaign operation or consent history snapshot retained for idempotent replay and attribution independently of current actor membership or edited campaign steps."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app.campaign_consent_events.actor_id",
+                        "evidence":  "lib/elevateo/campaigns/repository.rb",
+                        "reason":  "Campaign operation or consent history snapshot retained for idempotent replay and attribution independently of current actor membership or edited campaign steps."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app.campaign_sequence_occurrences.step_id",
+                        "evidence":  "lib/elevateo/campaigns/repository.rb",
+                        "reason":  "Campaign operation or consent history snapshot retained for idempotent replay and attribution independently of current actor membership or edited campaign steps."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app.campaign_sequence_occurrences.claim_token",
+                        "evidence":  "lib/elevateo/campaigns/repository.rb",
+                        "reason":  "Campaign operation or consent history snapshot retained for idempotent replay and attribution independently of current actor membership or edited campaign steps."
+                    },
+                    {
+                        "rule":  "structured",
+                        "column":  "app.campaign_sequence_mutations.result",
+                        "evidence":  "lib/elevateo/campaigns/repository.rb",
+                        "reason":  "Campaign operation or consent history snapshot retained for idempotent replay and attribution independently of current actor membership or edited campaign steps."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app.inbox_attachments.scan_token",
+                        "evidence":  "db/migrate/attachment_replay_conflicts/up.sql",
+                        "reason":  "Original ingest account attribution and scanner lease capability remain after source account rotation; immutable source tuple prevents duplicate attachment ingestion."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app.inbox_attachments.source_account_id",
+                        "evidence":  "db/migrate/attachment_replay_conflicts/up.sql",
+                        "reason":  "Original ingest account attribution and scanner lease capability remain after source account rotation; immutable source tuple prevents duplicate attachment ingestion."
+                    },
+                    {
+                        "rule":  "structured",
+                        "column":  "app.inbound_receipts.attachments",
+                        "evidence":  "db/migrate/20261015000015_create_inbox_attachments.rb",
+                        "reason":  "Immutable ingest attachment manifest supports retry identity; materialized attachment rows are independently keyed and constrained."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app.inbound_imap_accounts.poll_lease_token",
+                        "evidence":  "db/migrate/20261015000017_add_imap_attachment_ingest.rb",
+                        "reason":  "Generated poll lease token fences competing pollers; it is a capability value, not an entity requiring a foreign key."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app_send_private.budget_routes.egress_id",
+                        "evidence":  "db/be03_send/budget_requirements.sql",
+                        "reason":  "Configured egress bucket identifier groups routes sharing an outbound resource. No egress entity table exists; budget_requirements derives a shared rate-limit key from this identifier."
+                    },
+                    {
+                        "rule":  "structured",
+                        "column":  "app_send_private.budget_limits.scope",
+                        "evidence":  "db/be03_send/budget_requirements.sql",
+                        "reason":  "Typed composite budget key uses a bounded JSON tuple for differing scope dimensions; budget_requirements emits the same tuple for atomic reservation across all required limits."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app_drafts_private.attachment_stage_operations.mailbox_id",
+                        "evidence":  "db/draft_attachments/tables.sql",
+                        "reason":  "Durable operation replay record retains requested resource identities and response after draft or attachment deletion; a resource FK would erase or block replay history."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app_drafts_private.attachment_stage_operations.draft_id",
+                        "evidence":  "db/draft_attachments/tables.sql",
+                        "reason":  "Durable operation replay record retains requested resource identities and response after draft or attachment deletion; a resource FK would erase or block replay history."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app_drafts_private.attachment_stage_operations.attachment_id",
+                        "evidence":  "db/draft_attachments/tables.sql",
+                        "reason":  "Durable operation replay record retains requested resource identities and response after draft or attachment deletion; a resource FK would erase or block replay history."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app_drafts_private.attachment_stage_operations.reservation_token",
+                        "evidence":  "db/draft_attachments/tables.sql",
+                        "reason":  "Durable operation replay record retains requested resource identities and response after draft or attachment deletion; a resource FK would erase or block replay history."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app.draft_attachments.scan_token",
+                        "evidence":  "db/draft_attachments/scan.sql",
+                        "reason":  "Generated scanner claim token is a fencing capability, not another stored entity; scan transitions compare this token before updating state."
+                    },
+                    {
+                        "rule":  "structured",
+                        "column":  "app.resend_webhook_events.payload",
+                        "evidence":  "db/resend_events/intake.sql",
+                        "reason":  "Authenticated provider event snapshot and generated lease capability support durable asynchronous processing; payload is validated before event application."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app.resend_webhook_events.lease",
+                        "evidence":  "db/resend_events/intake.sql",
+                        "reason":  "Authenticated provider event snapshot and generated lease capability support durable asynchronous processing; payload is validated before event application."
+                    },
+                    {
+                        "rule":  "structured",
+                        "column":  "app.email_finder_domains.data",
+                        "evidence":  "db/migrate/normalize_email_finder/up.sql",
+                        "reason":  "Finder request, observation, or resumable probe snapshot: repository and worker consume each value atomically; arbitrary provider evidence is not an independently mutable relational entity."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app_auth.revocation_intents.claim_id",
+                        "evidence":  "db/be02/revocation.sql",
+                        "reason":  "Generated fencing token for a revocation worker claim; completion requires matching token and unexpired deadline. Claim state must survive deletion of the provider session being revoked."
+                    },
+                    {
+                        "rule":  "structured",
+                        "column":  "app.email_finder_results.input",
+                        "evidence":  "db/migrate/normalize_email_finder/up.sql",
+                        "reason":  "Finder request, observation, or resumable probe snapshot: repository and worker consume each value atomically; arbitrary provider evidence is not an independently mutable relational entity."
+                    },
+                    {
+                        "rule":  "structured",
+                        "column":  "app.email_finder_results.result",
+                        "evidence":  "db/migrate/normalize_email_finder/up.sql",
+                        "reason":  "Finder request, observation, or resumable probe snapshot: repository and worker consume each value atomically; arbitrary provider evidence is not an independently mutable relational entity."
+                    },
+                    {
+                        "rule":  "structured",
+                        "column":  "app.email_finder_rate_state.value",
+                        "evidence":  "db/migrate/normalize_email_finder/up.sql",
+                        "reason":  "Finder request, observation, or resumable probe snapshot: repository and worker consume each value atomically; arbitrary provider evidence is not an independently mutable relational entity."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app_auth.pending_entries.claim_id",
+                        "evidence":  "db/be02/pending.sql",
+                        "reason":  "Generated fencing token for invite/recovery verification; verify_entry compares the claim and deadline before accepting provider credentials. It does not identify another entity."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app_auth.pending_entries.user_id",
+                        "evidence":  "db/be02/pending.sql",
+                        "reason":  "Invite/recovery workflow retains the verified provider principal and session until completion or uncertainty. verify_entry checks auth_deadline against auth.sessions; retaining failure evidence must not block provider session deletion."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app_auth.pending_entries.auth_session_id",
+                        "evidence":  "db/be02/pending.sql",
+                        "reason":  "Invite/recovery workflow retains the verified provider principal and session until completion or uncertainty. verify_entry checks auth_deadline against auth.sessions; retaining failure evidence must not block provider session deletion."
+                    },
+                    {
+                        "rule":  "structured",
+                        "column":  "app.email_finder_job_items.input",
+                        "evidence":  "db/migrate/normalize_email_finder/up.sql",
+                        "reason":  "Finder request, observation, or resumable probe snapshot: repository and worker consume each value atomically; arbitrary provider evidence is not an independently mutable relational entity."
+                    },
+                    {
+                        "rule":  "structured",
+                        "column":  "app.email_finder_job_items.work",
+                        "evidence":  "db/migrate/normalize_email_finder/up.sql",
+                        "reason":  "Finder request, observation, or resumable probe snapshot: repository and worker consume each value atomically; arbitrary provider evidence is not an independently mutable relational entity."
+                    },
+                    {
+                        "rule":  "structured",
+                        "column":  "app.email_finder_job_items.result",
+                        "evidence":  "db/migrate/normalize_email_finder/up.sql",
+                        "reason":  "Finder request, observation, or resumable probe snapshot: repository and worker consume each value atomically; arbitrary provider evidence is not an independently mutable relational entity."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app.email_finder_jobs.user_id",
+                        "evidence":  "lib/elevateo/email_finder/repository.rb",
+                        "reason":  "Owner is a Supabase/Auth principal supplied by the verified request context, not an application user row. Job history survives removal from organization_memberships; worker claims remain organization-scoped."
+                    },
+                    {
+                        "rule":  "structured",
+                        "column":  "app.email_finder_people.patterns",
+                        "evidence":  "db/migrate/normalize_email_finder/up.sql",
+                        "reason":  "Bounded observation set of ten known address-pattern names; not independent entities or mutable relationships. Migration validates the set against Core patterns."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app.marketing_runs.actor_id",
+                        "evidence":  "db/migrate/20261020000039_create_marketing_runs.rb",
+                        "reason":  "Run approval attribution and client operation identity are immutable replay evidence; membership revocation must not remove a previously approved run."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app.marketing_runs.operation_id",
+                        "evidence":  "db/migrate/20261020000039_create_marketing_runs.rb",
+                        "reason":  "Run approval attribution and client operation identity are immutable replay evidence; membership revocation must not remove a previously approved run."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app_connector_private.grants.user_id",
+                        "evidence":  "db/migrate/connector_grants/up.sql",
+                        "reason":  "Grant capability snapshot: issue and use recheck current session and mailbox membership; revocation retains the original subject and bounded scope set."
+                    },
+                    {
+                        "rule":  "structured",
+                        "column":  "app_connector_private.grants.scopes",
+                        "evidence":  "db/migrate/connector_grants/up.sql",
+                        "reason":  "Grant capability snapshot: issue and use recheck current session and mailbox membership; revocation retains the original subject and bounded scope set."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app_auth.sessions.user_id",
+                        "evidence":  "db/be02/helpers.sql",
+                        "reason":  "Cookie stores provider identity/session attribution. session_status checks auth.sessions through auth_deadline on every authorization; missing or expired provider sessions are unauthorized. Retaining revoked local cookie state must not block provider cleanup."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app_auth.sessions.auth_session_id",
+                        "evidence":  "db/be02/helpers.sql",
+                        "reason":  "Cookie stores provider identity/session attribution. session_status checks auth.sessions through auth_deadline on every authorization; missing or expired provider sessions are unauthorized. Retaining revoked local cookie state must not block provider cleanup."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app_auth.sessions.organization_id",
+                        "evidence":  "db/be02/helpers.sql",
+                        "reason":  "Selected organization is a revocable session-context snapshot. session_status checks current membership; keeping an invalidated cookie for revocation must not preserve or prevent deleting organization membership."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app_auth.sessions.context_id",
+                        "evidence":  "db/be02/entry.sql",
+                        "reason":  "Generated session-context nonce rotates when the selected organization changes. switch-context logic rejects reuse; no separate context entity exists."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app_auth.sessions.refresh_claim_id",
+                        "evidence":  "db/be02/refresh.sql",
+                        "reason":  "Generated refresh fencing token protects credential rotation from competing requests. refresh functions compare the token and deadline; it is not an entity reference."
+                    },
+                    {
+                        "rule":  "structured",
+                        "column":  "app_auth.sessions.write_guard_users",
+                        "evidence":  "db/be02_writes/assertions.sql",
+                        "reason":  "Transaction-local authorization proof records the users locked by the protected-write guard; assertions verify current transaction identity and required actors before writes."
+                    },
+                    {
+                        "rule":  "derived",
+                        "column":  "app.messages.attachment_count",
+                        "evidence":  "lib/elevateo/thread_reads.rb",
+                        "reason":  "Provider-reported attachment metadata is an immutable message snapshot, not the number of downloaded rows. Reads use greatest(snapshot, materialized count); attachment authority bounds actual rows to 1000."
+                    },
+                    {
+                        "rule":  "derived",
+                        "column":  "app.email_finder_jobs.completed",
+                        "evidence":  "db/migrate/normalize_email_finder/up.sql",
+                        "reason":  "Progress cursor avoids counting up to 5000 work rows on every claim and poll. Atomic row completion advances it in the same transaction; migration rejects inconsistent legacy progress."
+                    },
+                    {
+                        "rule":  "derived",
+                        "column":  "app_send_private.resend_events.delivery_state",
+                        "evidence":  "db/migrate/20261101000115_enforce_schema_values.rb",
+                        "reason":  "Legacy event projection retained for stored-function compatibility; integrity_resend_delivery_state CHECK enforces exact agreement with the immutable event_type."
+                    },
+                    {
+                        "rule":  "derived",
+                        "column":  "app_send_private.resend_delivery.severity",
+                        "evidence":  "db/resend_events/delivery.sql",
+                        "reason":  "Materialized delivery precedence makes out-of-order provider event reduction atomic. CHECK enforces the exact kind-to-severity mapping used by the reducer."
+                    },
+                    {
+                        "rule":  "derived",
+                        "column":  "app.campaign_leads.consent_status",
+                        "evidence":  "db/migrate/20261013000009_create_campaign_foundation.rb",
+                        "reason":  "Current consent projection supports indexed lead eligibility without scanning event history on each send; deferred foundation trigger requires the corresponding immutable consent event in the same transaction."
+                    },
+                    {
+                        "rule":  "derived",
+                        "column":  "app.campaign_leads.consent_recorded_at",
+                        "evidence":  "db/migrate/20261013000009_create_campaign_foundation.rb",
+                        "reason":  "Current consent projection supports indexed lead eligibility without scanning event history on each send; deferred foundation trigger requires the corresponding immutable consent event in the same transaction."
+                    },
+                    {
+                        "rule":  "derived",
+                        "column":  "app.campaign_leads.consent_source",
+                        "evidence":  "db/migrate/20261013000009_create_campaign_foundation.rb",
+                        "reason":  "Current consent projection supports indexed lead eligibility without scanning event history on each send; deferred foundation trigger requires the corresponding immutable consent event in the same transaction."
+                    },
+                    {
+                        "rule":  "derived",
+                        "column":  "app.email_finder_jobs.total",
+                        "evidence":  "db/migrate/normalize_email_finder/up.sql",
+                        "reason":  "Immutable validated input cardinality supports frequent job progress reads without counting up to 5000 item rows; normalization validates legacy totals before splitting input and new jobs create items transactionally."
+                    },
+                    {
+                        "rule":  "derived",
+                        "column":  "app.campaign_sequence_occurrences.local_at",
+                        "evidence":  "db/migrate/20261013000016_create_outreach_sequences.rb",
+                        "reason":  "Scheduling-version snapshot preserves the computed local/UTC occurrence even after sequence timezone or step edits; pending due_at is indexed for worker claims and old versions retain cancellation history."
+                    },
+                    {
+                        "rule":  "derived",
+                        "column":  "app.campaign_sequence_occurrences.timezone",
+                        "evidence":  "db/migrate/20261013000016_create_outreach_sequences.rb",
+                        "reason":  "Scheduling-version snapshot preserves the computed local/UTC occurrence even after sequence timezone or step edits; pending due_at is indexed for worker claims and old versions retain cancellation history."
+                    },
+                    {
+                        "rule":  "derived",
+                        "column":  "app.campaign_sequence_occurrences.due_at",
+                        "evidence":  "db/migrate/20261013000016_create_outreach_sequences.rb",
+                        "reason":  "Scheduling-version snapshot preserves the computed local/UTC occurrence even after sequence timezone or step edits; pending due_at is indexed for worker claims and old versions retain cancellation history."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app.campaign_consent_events.operation_id",
+                        "evidence":  "lib/elevateo/campaigns/repository.rb",
+                        "reason":  "Client-generated operation UUID identifies this event or replay record within its scoped composite primary key; it is not a reference to an operation entity."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app_auth.authorization_generations.organization_id",
+                        "evidence":  "db/be02/generations.sql",
+                        "reason":  "Authorization generation tombstone survives removal of the organization or membership so an old cookie cannot regain authority if an identity is reused."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app_send_private.approval_operations.organization_id",
+                        "evidence":  "db/draft_attachments/tables.sql",
+                        "reason":  "Durable idempotency key includes original organization, actor and operation UUIDs. Replay records survive deleted resources or membership to prevent replay from creating a second operation."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app_send_private.approval_operations.operation_id",
+                        "evidence":  "db/draft_attachments/tables.sql",
+                        "reason":  "Durable idempotency key includes original organization, actor and operation UUIDs. Replay records survive deleted resources or membership to prevent replay from creating a second operation."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app.campaign_sequence_mutations.operation_id",
+                        "evidence":  "lib/elevateo/campaigns/repository.rb",
+                        "reason":  "Client-generated operation UUID identifies this event or replay record within its scoped composite primary key; it is not a reference to an operation entity."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app_send_private.approval_operations.actor_id",
+                        "evidence":  "db/draft_attachments/tables.sql",
+                        "reason":  "Durable idempotency key includes original organization, actor and operation UUIDs. Replay records survive deleted resources or membership to prevent replay from creating a second operation."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app_drafts_private.attachment_stage_operations.actor_id",
+                        "evidence":  "db/draft_attachments/tables.sql",
+                        "reason":  "Durable idempotency key includes original organization, actor and operation UUIDs. Replay records survive deleted resources or membership to prevent replay from creating a second operation."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app_drafts_private.attachment_stage_operations.organization_id",
+                        "evidence":  "db/draft_attachments/tables.sql",
+                        "reason":  "Durable idempotency key includes original organization, actor and operation UUIDs. Replay records survive deleted resources or membership to prevent replay from creating a second operation."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app_drafts_private.operations.actor_id",
+                        "evidence":  "db/draft_attachments/tables.sql",
+                        "reason":  "Durable idempotency key includes original organization, actor and operation UUIDs. Replay records survive deleted resources or membership to prevent replay from creating a second operation."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app_drafts_private.operations.organization_id",
+                        "evidence":  "db/draft_attachments/tables.sql",
+                        "reason":  "Durable idempotency key includes original organization, actor and operation UUIDs. Replay records survive deleted resources or membership to prevent replay from creating a second operation."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app.organization_memberships.user_id",
+                        "evidence":  "db/be02/entry.sql",
+                        "reason":  "Provider-owned auth.sessions supplies the attested user principal; create_session validates auth_deadline before selecting membership. A same-database FK to auth.users is technically possible, but provider lifecycle is independently managed and authorization checks live provider session validity."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app_auth.authorization_generations.user_id",
+                        "evidence":  "db/be02/generations.sql",
+                        "reason":  "Authorization generation tombstone survives removal of the user membership so an old cookie cannot regain authority if the same identity is reenrolled."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app_drafts_private.attachment_stage_operations.operation_id",
+                        "evidence":  "db/draft_attachments/tables.sql",
+                        "reason":  "Durable idempotency key includes original organization, actor and operation UUIDs. Replay records survive deleted resources or membership to prevent replay from creating a second operation."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app_drafts_private.operations.operation_id",
+                        "evidence":  "db/draft_attachments/tables.sql",
+                        "reason":  "Durable idempotency key includes original organization, actor and operation UUIDs. Replay records survive deleted resources or membership to prevent replay from creating a second operation."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app.thread_notes.id",
+                        "evidence":  "db/be02_collaboration/tables.sql",
+                        "reason":  "Locally generated note identity is scoped by organization in the composite primary key; it is the entity identifier, not an outgoing relationship."
+                    },
+                    {
+                        "rule":  "identity",
+                        "column":  "app.campaign_mutations.operation_id",
+                        "evidence":  "lib/elevateo/campaigns/repository.rb",
+                        "reason":  "Client-generated operation UUID identifies this event or replay record within its scoped composite primary key; it is not a reference to an operation entity."
+                    }
+                ]
+}

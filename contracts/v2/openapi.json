@@ -2416,6 +2416,7 @@
             "type": "boolean"
           },
           "attachment_count": {
+            "description": "Maximum of provider-reported attachment metadata and currently materialized local attachment rows.",
             "type": "integer",
             "minimum": 0,
             "maximum": 1000
