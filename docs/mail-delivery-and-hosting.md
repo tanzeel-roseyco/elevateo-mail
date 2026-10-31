@@ -1,3 +1,5 @@
+> **Historical design proposal, superseded as a deployment guide.** The Resend-selected baseline below predates the held self-hosted Mox production tooling. Resend remains an optional transport. Do not use this proposal to infer current infrastructure, implemented features or authorization. See the [handoff](handoff/README.md), [mail development account](handoff/mail-server-development.md), and [production Compose](../ops/production/compose.yaml).
+
 # Mail delivery, inbox setup, and efficient hosting
 
 Status: design proposal for approximately 10 company users. Resend and self-hosted Supabase are user-selected. Infrastructure sizes, operating targets, and implementation details below remain proposed; no accounts, DNS records, credentials, servers, or mailboxes were changed. Provider documentation checked **11 October 2026**.

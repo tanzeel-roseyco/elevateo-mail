@@ -1,5 +1,7 @@
 # Financial planning
 
+> Historical financial scenarios, including `cost-model.csv`. Provider prices, Gmail mailbox counts, Resend-first delivery and fleet build/cohosting assumptions below are dated planning inputs, not current procurement advice or measured capacity. Production now assembles Mox with optional Resend (`ops/production/compose.yaml`). No prices were revalidated in this documentation audit. Fleet hosts are not authorized deployment targets. Use the [handoff](../../handoff/README.md); Jeison and Tanzeel must confirm infrastructure and costs for Callum to approve.
+
 Cost estimates for running Elevateo Mail as a Resend-first private pilot, then at growth, then with enterprise controls. Every price was checked live on 2026-10-18; `cost-model.csv` holds the line items, source URLs, check dates and a `verified` or `estimate` flag. Prices labelled `estimate` could not be read from an official page (Hetzner renders prices client-side and lists the CX/CAX lines as unavailable; Microsoft and Cloudflare pages print no figure) or come from vendor quotes and salary guides.
 
 Scenarios: [pilot.md](pilot.md), [growth.md](growth.md), [enterprise-readiness.md](enterprise-readiness.md).

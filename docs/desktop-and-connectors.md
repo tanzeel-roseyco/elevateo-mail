@@ -1,5 +1,7 @@
 # Desktop clients and Claude / Codex connectors
 
+> Historical desktop and connector proposal. Native client source and mailbox MCP now exist under `apps/native`, `apps/windows`, `apps/ios` and `apps/mailbox-mcp`; the statements below that these are unbuilt are superseded. This does not establish working native sign-in, integrated assistant UI or signed releases. See [contract requests](contract-requests.md), [backend completion design](backend-completion-design.md) and the [handoff](handoff/README.md) for remaining integration and release gates.
+
 Status: proposed design, updated 2026-10-12. The expanded [client/CLI plan](../.planning/CLIENTS_AND_CLI_CONNECTORS.md), [polyglot proposal](../.planning/POLYGLOT_ARCHITECTURE.md) and [agent workflow](../.planning/AGENT_ORCHESTRATION.md) supersede the earlier Tauri-for-both/Node proposal. Codex must finish the research/adoption gate first; Astra MAX must synthesize independent Fable 5, Opus 5.5 and Fable 5.1 opinions before accepting each task's implementation approach. All three initial Claude consultations failed before inference because authentication expired; those opinions and the final architecture remain pending. No installer, connector, OAuth server or application configuration has been implemented by this document. Keep actual provider/signing credentials and activation last; no live sends or warmup.
 
 ## 1. One application, three ways to open it

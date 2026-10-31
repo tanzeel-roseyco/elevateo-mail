@@ -1,5 +1,7 @@
 # Backend and database tutorial: a shared company mailbox
 
+> Historical conceptual tutorial. The schema examples and Resend-only delivery assumptions below predate the implemented system; they are not a migration specification or current table inventory. Current migrations are under `apps/server/db/migrate`; transport assembly is in `ops/production/compose.yaml`. Use the [handoff](handoff/README.md) and [backend completion design](backend-completion-design.md) for implementation and verification status.
+
 > **Design only — not implemented or approved.** This tutorial proposes a system for about ten colleagues, using the requested self-hosted Supabase and Resend direction. It does not approve standards, select final deployment technology, create database migrations, or establish an SLA. The root documentation now records the shift from an outreach-first tool to a company mailbox. Nothing here implies that SMTP/IMAP hosting, desktop packaging, or connectors already exist.
 
 ## 1. Start with a conversation, not a server

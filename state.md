@@ -10,6 +10,12 @@ Docker up/down/up and the full backend gate passed: 1,399 standard tests / 15,90
 plus dedicated database, mail, API and contract checks; Steep and RuboCop (542 files) passed. Four standard protocol
 skips are tracked separately in the receipt. No deployment, push, merge or live mail occurred.
 Evidence and exact scope: [schema integrity](docs/completion/schema-integrity-20261101/).
+Documentation-only handoff: [Jeison guide](docs/handoff/README.md), [mail-server development](docs/handoff/mail-server-development.md)
+and [per-document audit](docs/completion/handoff-20261101/audit.md). No application suites or infrastructure actions ran.
+Tanzeel did the bulk of development; Jeison implements company setup; both maintain it. Callum decides updates,
+reviews and approves. The guide records fresh-host enrollment, Mox activation/update wiring, isolated full-production
+restore configuration, finder routing, native exchange and client release blockers. Other worktrees retain uncommitted
+Windows work (`feature/final-readiness`); schema-integrity and modular-boundary branches remain in progress.
 
 ## Summary
 
@@ -48,7 +54,7 @@ See [the module map and schema follow-up](docs/modular-architecture.md).
 | Contracts | 50 Node + 19 Ruby tests | same |
 | MCP / operations / native bridge | 11 / 62 tests; 8 Rust + 15 Python tests | same |
 | Restore and deployment | Encrypted six-volume restore drill; deploy dry run accepts valid and rejects missing configuration | same |
-| Email finder (on `feature/email-finder`) | 53 backend tests, 12 browser cases, 1,131 web unit tests, build, `deploy.sh config` | [finder receipt](docs/completion/email-finder-20261029.md) |
+| Email finder (on `feature/email-finder`) | 53 backend tests, 12 browser cases, 1,131 web unit tests and build; recorded deploy-config result is historical, since current deploy accepts only `--dry-run` or no arguments | [finder receipt](docs/completion/email-finder-20261029.md) |
 
 | Web gate (merged `main`, `feature/final-readiness`) | Contract checks, lint, typecheck, 1,190 unit tests, build, bundle budget and fixture-marker check pass; Vitest capped at two workers after one default-worker timeout | `apps/web/docker/test.Dockerfile`, scratchpad `unit-two-workers.log`, 2026-10-31 |
 | Fixture Playwright (`feature/final-readiness`) | Each of desktop, desktop-1440, narrow-390 and reduced-motion: 44 passed, 0 failed, 86 skipped; total 176 passed / 344 skipped. Production URL absent; production and visual QA remain unverified | Docker, network disabled, two workers; scratchpad `full-e2e.log` and `e2e-results/full-report.json`, 2026-10-31 |

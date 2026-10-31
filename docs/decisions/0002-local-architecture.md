@@ -1,5 +1,7 @@
 # ADR 0002: accepted local architecture and execution boundaries
 
+> Implementation update: this is a historical local architecture decision, not a current release inventory. Rails remains the backend. Windows source now uses Avalonia (`apps/windows`), and the Android shell uses Tauri (`apps/native`); the WPF/WebView2 and Java platform choices below are superseded. Source presence does not prove signed releases or native authentication integration. See the [handoff](../handoff/README.md).
+
 Status: accepted local direction, 2026-10-12. Production activation is not authorized. Application implementation is not yet complete.
 
 Astra MAX (`gpt-6-astra`, effort `max`, `/root/plan_synthesis`) synthesized three independent exact-model initial opinions at base `103baeb042925badbbc50dc0d3d3bfbf09ce8344`. The [decision record](../../.planning/consultations/results/initial-plan/accepted-decisions.md) is incorporated here as the normative set D-01 through D-10. [Synthesis and retained dissent](../../.planning/consultations/results/initial-plan/synthesis.md) and [runtime evidence](../../.planning/consultations/results/initial-plan/metadata.json) establish scope and provenance.

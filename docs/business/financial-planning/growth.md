@@ -1,5 +1,7 @@
 # Growth scenario: 50 users, 500 Gmail mailboxes, 15,000 sends per day
 
+> Historical growth cost scenario. Mailbox counts, Gmail pricing and host sizing below are planning estimates, not current provider quotes or measured capacity. The production assembly uses Mox with optional Resend (`ops/production/compose.yaml`). See the [financial planning index](README.md) and [handoff](../../handoff/README.md) before using any cost or topology assumption.
+
 Scales the pilot by five: 50 users, up to 500 mailboxes, 15,000 sends per day (about 450,000 per month), two sending domains, and a second person able to operate the stack. Line item IDs refer to `cost-model.csv`.
 
 ## Hosting only

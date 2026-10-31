@@ -1,8 +1,11 @@
 # Completion operations
 
 These Python 3.12+ operations run in the final Docker operations environment with Docker CLI/Compose,
-`age`, `age-keygen`, and OpenSSH `sftp`. They never contact a mail provider. No tests or restore drill have
-been executed during source implementation; results must be recorded by the final container gate.
+`age`, `age-keygen`, and OpenSSH `sftp`. They never contact a mail provider. The
+[backend completion receipt](../../../docs/completion/backend-20261030-receipt.md) records local Docker
+verification and a six-volume encrypted restore drill. Live off-host SFTP and existing Authentik integration
+remain unverified. Follow the [handoff approval gates](../../../docs/handoff/README.md) before production
+execution. Fleet-01 is read-only and off limits.
 
 `python3 -m unittest discover -s ops/production/completion -p 'test_*.py'` runs the admission and archive
 unit cases. These mocks do not substitute for the real database restore drill described below.
@@ -31,7 +34,10 @@ Required env: `ELEVATEO_MOX_HOSTNAME`, `ELEVATEO_MOX_IPV4`, `ELEVATEO_MAIL_DOMAI
 DNS changes or sends are performed. Preflight bounds and parses the PEM certificate chain and private key,
 verifies their match, and rejects invalid material before either volume is written. The host-networked
 `mox-readiness` service verifies the live IMAPS certificate/hostname and SMTP/submission greetings;
-isolated restore definitions must omit both Mox and its host-networked readiness service.
+isolated restore definitions must retain both service names and images to match the snapshot manifest,
+while removing host networking and published ports and using only internal networks. Removing either
+service fails the exact image-roster comparison in `recovery.py`. A compatible full-production restore
+definition has not been verified and is a go-live blocker; the local drill does not establish that recipe.
 
 ## Backup and recovery
 
@@ -65,3 +71,5 @@ and acceptance entirely in the DB, restores, and asserts old access is revoked a
 It performs no real send or off-host upload. The same production restore path verifies every volume byte,
 including storage objects and Mox ingestion state. The source fixture state is deliberately changed and
 all target volumes remain for explicit, task-scoped cleanup by the verification harness.
+
+Every deployment stops `mox` before running the initializer. Activation or TLS/configuration changes can make the existing files differ from the generated held configuration, causing initialization to fail before the final service start and leaving Mox stopped. Jeison and Tanzeel must develop and verify a post-activation update/rotation procedure, including recovery from that stop, before Callum approves such an update. Do not reuse initial deployment as an assumed safe live update command.

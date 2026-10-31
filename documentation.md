@@ -4,6 +4,11 @@ This is an orientation to how the system works end to end. Detailed designs are 
 [docs/README.md](docs/README.md) indexes every document. Earlier milestone notes are preserved in
 [docs/history/logs/documentation-log.md](docs/history/logs/documentation-log.md).
 
+For company setup and ongoing ownership, use the [engineering handoff](docs/handoff/README.md).
+Jeison implements setup; Jeison and Tanzeel share maintenance; Callum decides updates and approves releases.
+The [2026-11-01 audit](docs/completion/handoff-20261101/audit.md) distinguishes current procedures from historical
+design snapshots. No deployment or new application test pass is claimed by this documentation change.
+
 ## 1. Authority and boundaries
 
 Database invariants and evidence-backed normalization exceptions are recorded in
@@ -55,8 +60,9 @@ rendered as plain text only.
 2. Send review creates an **immutable approved snapshot** of sender, recipients, subject, text and attachments.
 3. The worker **atomically reserves budget** before any external I/O: 30 per mailbox and 300 per user per UTC day
    (`ELEVATEO_MAILBOX_DAILY_SEND_LIMIT`, `ELEVATEO_USER_DAILY_SEND_LIMIT`). Suppressed and non-consented recipients are rejected.
-4. The transport runs under a lease, through Mox SMTP or Resend depending on `ELEVATEO_OUTBOUND_MODE`
-   (`held` by default, which sends nothing). An unknown outcome never triggers an automatic resend.
+4. The transport runs under a lease. Mox SMTP and Resend adapters exist, but production deployment currently accepts
+   held/Resend mode and forces outbound hold. Mox application wiring/activation is a separate rollout blocker;
+   `ELEVATEO_OUTBOUND_MODE` alone cannot enable it. An unknown outcome never triggers an automatic resend.
 5. Resend events arrive at `/v2/provider-events/resend`. The Svix signature is verified before parsing. Events are
    idempotent and may arrive out of order. Bounces and complaints create permanent suppressions.
 

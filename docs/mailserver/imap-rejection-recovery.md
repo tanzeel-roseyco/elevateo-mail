@@ -1,3 +1,5 @@
+> **Historical implementation and evidence snapshot.** This page records source-specific October research and test gates, not current deployment instructions or completion status. Later work supersedes its open-item lists, Resend-first decisions and fleet execution instructions. Use the [current handoff](../handoff/README.md), [mail development account](../handoff/mail-server-development.md) and [backend receipt](../completion/backend-20261030-receipt.md). Do not execute historical fleet commands; fleet-01 is off limits.
+
 # Durable IMAP rejection recovery
 
 A deterministic MIME rejection now records account, credential version, UID validity, UID, SHA256 and one of five bounded reasons, then advances the cursor in the same transaction. The worker continues with later messages. Parser errors only use this path: transient storage/network errors are retried.

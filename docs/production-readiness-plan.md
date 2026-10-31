@@ -1,5 +1,7 @@
 # Production readiness plan
 
+> **Historical; superseded.** Historical readiness assessment at 712a3cbf (18 October 2026). Its Gmail/Resend-first pilot, fleet instructions, backend gaps and verdict counts are not current release status. Mox is the self-hosted mail path; Resend is optional. Use [the handoff](handoff/README.md), [current state](../state.md) and [backend receipt](completion/backend-20261030-receipt.md). Do not execute this plan as a deployment runbook.
+
 A numbered plan built from the owner's readiness checklist and judged against this repository on 2026-10-18 at `712a3cbf`. Verdicts were decided by reading `apps/server`, `apps/web`, `ops`, `tests` and the recorded gate evidence in `state.md` and `docs/completion/`, not by assumption; each row cites the file, test or receipt that supports it.
 
 Verdicts:

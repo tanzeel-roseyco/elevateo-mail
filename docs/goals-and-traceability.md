@@ -1,5 +1,7 @@
 # Goals, scope and traceability
 
+> Historical requirements map. Statuses and proposed implementation paths below were recorded before the current Rails, client and Mox implementation. Resend is optional, not the selected mandatory transport. This table does not establish present completion or deployment readiness. Use the [handoff](handoff/README.md), root README Current state and `docs/completion` receipts for current evidence.
+
 This is the acceptance map for Elevateo Mail. User-selected requirements, implementation proposals, imported evidence and working software are different states. The source intake is complete; the application remains a proposed implementation. Every dossier maps its contributions to these same identifiers.
 
 ## Product goal

@@ -1,3 +1,5 @@
+> **Historical implementation and evidence snapshot.** This page records source-specific October research and test gates, not current deployment instructions or completion status. Later work supersedes its open-item lists, Resend-first decisions and fleet execution instructions. Use the [current handoff](../handoff/README.md), [mail development account](../handoff/mail-server-development.md) and [backend receipt](../completion/backend-20261030-receipt.md). Do not execute historical fleet commands; fleet-01 is off limits.
+
 # Draft attachment staging
 
 This database slice prepares attachments for a future upload endpoint. It does not yet expose uploads to the UI or send attachments through SMTP.

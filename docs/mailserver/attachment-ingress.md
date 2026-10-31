@@ -1,3 +1,5 @@
+> **Historical implementation and evidence snapshot.** This page records source-specific October research and test gates, not current deployment instructions or completion status. Later work supersedes its open-item lists, Resend-first decisions and fleet execution instructions. Use the [current handoff](../handoff/README.md), [mail development account](../handoff/mail-server-development.md) and [backend receipt](../completion/backend-20261030-receipt.md). Do not execute historical fleet commands; fleet-01 is off limits.
+
 # Private Mox attachment ingress
 
 The held mox-imap-test-v1 worker accepts optional ELEVATEO_INBOUND_STORAGE_TOKEN_PATH and ELEVATEO_INBOUND_STORAGE_BUCKET. Configure both or neither. The token must be a regular single-link file, mode0600, owned by root or the worker UID, opened without following symlinks and read once with a4096-byte limit. The endpoint remains the internal http://storage:5000 service. This is not public deployment configuration.

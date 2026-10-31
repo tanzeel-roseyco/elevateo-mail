@@ -1,5 +1,7 @@
 # Pilot scenario: 10 users, 100 Gmail mailboxes, 3,000 sends per day
 
+> Historical cost scenario. Gmail and Resend-first assumptions, deferred self-hosted mail and fleet build/cohosting guidance below are superseded by the Mox production assembly (`ops/production/compose.yaml`). Prices and capacity are estimates from the planning date, not verified purchasing or deployment guidance. See the [financial planning index](README.md) and [handoff](../../handoff/README.md).
+
 Fixed facts: ten users, up to ten Gmail mailboxes each, at most 30 sends per mailbox per day (300 per user, 3,000 in total, about 90,000 per month). Launch is Resend-first; the self-hosted mailserver is deferred. Users bring their own provider keys and local Codex or Claude accounts. Clients: web, Windows .exe, Mac .dmg and Android. Builds run on fleet-02.
 
 Line item IDs refer to `cost-model.csv`.

@@ -1,3 +1,5 @@
+> **Historical implementation and evidence snapshot.** This page records source-specific October research and test gates, not current deployment instructions or completion status. Later work supersedes its open-item lists, Resend-first decisions and fleet execution instructions. Use the [current handoff](../handoff/README.md), [mail development account](../handoff/mail-server-development.md) and [backend receipt](../completion/backend-20261030-receipt.md). Do not execute historical fleet commands; fleet-01 is off limits.
+
 # Scheduled held IMAP ingestion and worker runtime
 
 MAIL1024 / MAIL1025 prepare automatic mailbox discovery and a separate worker process for the

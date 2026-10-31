@@ -1,5 +1,7 @@
 # Enterprise readiness scenario
 
+> Historical enterprise cost scenario. Prices and readiness recommendations below do not establish implemented compliance, production recovery or current provider costs. Current recovery evidence is limited as recorded in the [backend completion design](../../backend-completion-design.md); use the [handoff](../../handoff/README.md) for approval gates and remaining work.
+
 Costs added on top of the growth scenario when a customer or auditor requires formal controls: an independent penetration test, SOC 2, error tracking with SLAs, external uptime monitoring with a status page, tested backups with point-in-time recovery, a second region and on-call coverage. Line item IDs refer to `cost-model.csv`. All figures are estimates from vendor guides and quotes; none are fixed prices.
 
 ## One-off
