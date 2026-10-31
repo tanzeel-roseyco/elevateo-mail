@@ -13,10 +13,14 @@ public sealed class StubHandler : HttpMessageHandler
 
     public HttpRequestMessage? LastRequest { get; private set; }
 
-    protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+    public string? LastRequestBody { get; private set; }
+
+    protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         LastRequest = request;
-        return Task.FromResult(_responder(request));
+        // AIDEV-NOTE: request ownership ends at SendAsync's caller; capture content before disposal.
+        LastRequestBody = request.Content is null ? null : await request.Content.ReadAsStringAsync(cancellationToken);
+        return _responder(request);
     }
 
     public static HttpResponseMessage Json(HttpStatusCode status, string body) => new(status)

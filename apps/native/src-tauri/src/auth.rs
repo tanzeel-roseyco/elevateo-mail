@@ -32,7 +32,10 @@ pub fn new_pkce() -> PkcePair {
     let mut bytes = [0u8; 32];
     rand::thread_rng().fill_bytes(&mut bytes);
     let verifier = URL_SAFE_NO_PAD.encode(bytes);
-    PkcePair { challenge: challenge_for(&verifier), verifier }
+    PkcePair {
+        challenge: challenge_for(&verifier),
+        verifier,
+    }
 }
 
 pub fn challenge_for(verifier: &str) -> String {
@@ -83,14 +86,22 @@ pub struct LoginBroker {
 
 impl Default for LoginBroker {
     fn default() -> Self {
-        Self { pending: Mutex::new(None), listener: Mutex::new(None) }
+        Self {
+            pending: Mutex::new(None),
+            listener: Mutex::new(None),
+        }
     }
 }
 
 impl LoginBroker {
     /// Attaches the listener serving the current login; any previous listener is cancelled.
     pub fn attach_listener(&self, handle: ListenerHandle) {
-        if let Some(previous) = self.listener.lock().expect("login broker lock poisoned").replace(handle) {
+        if let Some(previous) = self
+            .listener
+            .lock()
+            .expect("login broker lock poisoned")
+            .replace(handle)
+        {
             previous.cancel();
         }
     }
@@ -116,7 +127,12 @@ impl LoginBroker {
     }
 
     /// Clock-injected variant so expiry is deterministic under test.
-    pub fn complete_at(&self, callback_state: &str, code: &str, now: Instant) -> Result<AuthorizedGrant, AuthError> {
+    pub fn complete_at(
+        &self,
+        callback_state: &str,
+        code: &str,
+        now: Instant,
+    ) -> Result<AuthorizedGrant, AuthError> {
         let pending = self
             .pending
             .lock()
@@ -130,7 +146,9 @@ impl LoginBroker {
             return Err(AuthError::Expired);
         }
         if code.is_empty() {
-            return Err(AuthError::ProviderError("authorization code missing".into()));
+            return Err(AuthError::ProviderError(
+                "authorization code missing".into(),
+            ));
         }
         Ok(AuthorizedGrant {
             code: code.to_owned(),
@@ -142,7 +160,12 @@ impl LoginBroker {
     /// Drops any pending login and stops its loopback listener (sign-out, window close, timeout).
     pub fn abandon(&self) {
         *self.pending.lock().expect("login broker lock poisoned") = None;
-        if let Some(handle) = self.listener.lock().expect("login broker lock poisoned").take() {
+        if let Some(handle) = self
+            .listener
+            .lock()
+            .expect("login broker lock poisoned")
+            .take()
+        {
             handle.cancel();
         }
     }
@@ -159,9 +182,16 @@ pub enum AuthConfigError {
 ///
 /// AIDEV-NOTE: Authentik serves one authorize endpoint per host (`/application/o/authorize/`); the
 /// issuer's per-application path must not prefix it, so the URL is built from the issuer origin.
-pub fn authorize_url(issuer: &str, client_id: &str, pending: &PendingLogin) -> Result<url::Url, AuthConfigError> {
-    let origin = crate::navigation::identity_provider_origin(Some(issuer)).ok_or(AuthConfigError::InvalidIssuer)?;
-    let mut authorize = origin.join("application/o/authorize/").map_err(|_| AuthConfigError::InvalidIssuer)?;
+pub fn authorize_url(
+    issuer: &str,
+    client_id: &str,
+    pending: &PendingLogin,
+) -> Result<url::Url, AuthConfigError> {
+    let origin = crate::navigation::identity_provider_origin(Some(issuer))
+        .ok_or(AuthConfigError::InvalidIssuer)?;
+    let mut authorize = origin
+        .join("application/o/authorize/")
+        .map_err(|_| AuthConfigError::InvalidIssuer)?;
     authorize
         .query_pairs_mut()
         .append_pair("response_type", "code")
@@ -288,7 +318,9 @@ impl ListenerHandle {
 /// Binds 127.0.0.1 on an OS-assigned port and serves exactly one callback request, then stops.
 /// The listener also stops at `deadline` or when its handle is cancelled; the receiver then
 /// reports disconnection instead of waiting forever.
-pub fn spawn_callback_listener(deadline: Duration) -> std::io::Result<(u16, mpsc::Receiver<CallbackQuery>, ListenerHandle)> {
+pub fn spawn_callback_listener(
+    deadline: Duration,
+) -> std::io::Result<(u16, mpsc::Receiver<CallbackQuery>, ListenerHandle)> {
     // AIDEV-NOTE: loopback-only bind per RFC 8252 §7.3; a random port avoids squatting conflicts.
     let listener = TcpListener::bind(("127.0.0.1", 0))?;
     let port = listener.local_addr()?.port();
@@ -311,7 +343,9 @@ pub fn spawn_callback_listener(deadline: Duration) -> std::io::Result<(u16, mpsc
                         return;
                     }
                 }
-                Err(e) if e.kind() == std::io::ErrorKind::WouldBlock => std::thread::sleep(ACCEPT_POLL),
+                Err(e) if e.kind() == std::io::ErrorKind::WouldBlock => {
+                    std::thread::sleep(ACCEPT_POLL)
+                }
                 Err(e) => {
                     eprintln!("loopback callback listener stopped: {e}");
                     return;
@@ -326,20 +360,25 @@ pub fn spawn_callback_listener(deadline: Duration) -> std::io::Result<(u16, mpsc
 fn handle_callback_request(mut stream: TcpStream) -> Option<CallbackQuery> {
     // Accepted sockets inherit non-blocking mode on some platforms; reads here must block, bounded.
     stream.set_nonblocking(false).ok()?;
-    stream.set_read_timeout(Some(CONNECTION_READ_TIMEOUT)).ok()?;
+    stream
+        .set_read_timeout(Some(CONNECTION_READ_TIMEOUT))
+        .ok()?;
     let mut reader = BufReader::new(stream.try_clone().ok()?.take(MAX_REQUEST_LINE + 1));
     let mut request_line = String::new();
     // A stalled client hits the read timeout and errors here; it never blocks the listener for long.
     reader.read_line(&mut request_line).ok()?;
     if !request_line.ends_with('\n') {
         // Oversized (no newline within the limit) or truncated request line.
-        let _ = stream.write_all(b"HTTP/1.1 400 Bad Request\r\nContent-Length: 0\r\nConnection: close\r\n\r\n");
+        let _ = stream.write_all(
+            b"HTTP/1.1 400 Bad Request\r\nContent-Length: 0\r\nConnection: close\r\n\r\n",
+        );
         return None;
     }
     let path = request_line.strip_prefix("GET ")?.split(' ').next()?;
     let parsed = url::Url::parse(&format!("http://127.0.0.1{path}")).ok()?;
     if parsed.path() != "/callback" {
-        let _ = stream.write_all(b"HTTP/1.1 404 Not Found\r\nContent-Length: 0\r\nConnection: close\r\n\r\n");
+        let _ = stream
+            .write_all(b"HTTP/1.1 404 Not Found\r\nContent-Length: 0\r\nConnection: close\r\n\r\n");
         return None;
     }
     let mut state = String::new();
@@ -372,22 +411,31 @@ mod tests {
 
     /// apps/shared/auth-conformance-vectors.json: the same file the Windows and iOS suites read.
     fn shared_vectors() -> serde_json::Value {
-        serde_json::from_str(include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/../../shared/auth-conformance-vectors.json")))
-            .expect("shared auth vectors parse")
+        serde_json::from_str(include_str!(concat!(
+            env!("CARGO_MANIFEST_DIR"),
+            "/../../shared/auth-conformance-vectors.json"
+        )))
+        .expect("shared auth vectors parse")
     }
 
     #[test]
     fn conforms_to_shared_auth_vectors() {
         let vectors = shared_vectors();
         for case in vectors["pkce_s256"].as_array().unwrap() {
-            assert_eq!(challenge_for(case["verifier"].as_str().unwrap()), case["challenge"].as_str().unwrap());
+            assert_eq!(
+                challenge_for(case["verifier"].as_str().unwrap()),
+                case["challenge"].as_str().unwrap()
+            );
         }
         for case in vectors["identity_provider_endpoints"].as_array().unwrap() {
             let url = case["url"].as_str().unwrap();
             let accepted = crate::navigation::identity_provider_origin(Some(url)).is_some();
             assert_eq!(accepted, case["accepted"].as_bool().unwrap(), "{url}");
         }
-        assert_eq!(vectors["native_session_exchange"]["path"], NATIVE_SESSIONS_PATH);
+        assert_eq!(
+            vectors["native_session_exchange"]["path"],
+            NATIVE_SESSIONS_PATH
+        );
     }
 
     #[test]
@@ -417,16 +465,25 @@ mod tests {
         let broker = LoginBroker::default();
         let pending = broker.begin("http://127.0.0.1:49152/callback".into());
         broker.complete(&pending.state, "auth-code-1").unwrap();
-        assert_eq!(broker.complete(&pending.state, "auth-code-1"), Err(AuthError::NoPendingLogin));
+        assert_eq!(
+            broker.complete(&pending.state, "auth-code-1"),
+            Err(AuthError::NoPendingLogin)
+        );
     }
 
     #[test]
     fn state_mismatch_is_rejected_and_burns_the_pending_login() {
         let broker = LoginBroker::default();
         let pending = broker.begin("http://127.0.0.1:49152/callback".into());
-        assert_eq!(broker.complete("wrong-state", "auth-code-1"), Err(AuthError::StateMismatch));
+        assert_eq!(
+            broker.complete("wrong-state", "auth-code-1"),
+            Err(AuthError::StateMismatch)
+        );
         // The genuine callback can no longer complete either; the login must restart.
-        assert_eq!(broker.complete(&pending.state, "auth-code-1"), Err(AuthError::NoPendingLogin));
+        assert_eq!(
+            broker.complete(&pending.state, "auth-code-1"),
+            Err(AuthError::NoPendingLogin)
+        );
     }
 
     #[test]
@@ -434,7 +491,10 @@ mod tests {
         let broker = LoginBroker::default();
         let pending = broker.begin("http://127.0.0.1:49152/callback".into());
         let late = Instant::now() + LOGIN_WINDOW + Duration::from_secs(1);
-        assert_eq!(broker.complete_at(&pending.state, "auth-code-1", late), Err(AuthError::Expired));
+        assert_eq!(
+            broker.complete_at(&pending.state, "auth-code-1", late),
+            Err(AuthError::Expired)
+        );
     }
 
     #[test]
@@ -442,9 +502,15 @@ mod tests {
         let broker = LoginBroker::default();
         let old = broker.begin("http://127.0.0.1:49152/callback".into());
         let new = broker.begin("http://127.0.0.1:49153/callback".into());
-        assert_eq!(broker.complete(&old.state, "auth-code-old"), Err(AuthError::StateMismatch));
+        assert_eq!(
+            broker.complete(&old.state, "auth-code-old"),
+            Err(AuthError::StateMismatch)
+        );
         // Mismatch burned the newer pending login too (documented availability tradeoff).
-        assert_eq!(broker.complete(&new.state, "auth-code-new"), Err(AuthError::NoPendingLogin));
+        assert_eq!(
+            broker.complete(&new.state, "auth-code-new"),
+            Err(AuthError::NoPendingLogin)
+        );
     }
 
     #[test]
@@ -453,22 +519,36 @@ mod tests {
         let pending = broker.begin("http://127.0.0.1:49152/callback".into());
         assert_eq!(
             broker.complete(&pending.state, ""),
-            Err(AuthError::ProviderError("authorization code missing".into()))
+            Err(AuthError::ProviderError(
+                "authorization code missing".into()
+            ))
         );
     }
 
     #[test]
     fn exchange_port_reports_contract_unavailable() {
-        let grant = AuthorizedGrant { code: "c".into(), verifier: "v".into(), redirect_uri: "r".into() };
+        let grant = AuthorizedGrant {
+            code: "c".into(),
+            verifier: "v".into(),
+            redirect_uri: "r".into(),
+        };
         // TokenSet has no PartialEq (it holds secrets); match the error instead of comparing Results.
-        assert!(matches!(ContractPendingExchange.exchange(&grant), Err(ExchangeError::ContractUnavailable)));
+        assert!(matches!(
+            ContractPendingExchange.exchange(&grant),
+            Err(ExchangeError::ContractUnavailable)
+        ));
     }
 
     #[test]
     fn authorize_url_ignores_the_issuer_application_path() {
         let broker = LoginBroker::default();
         let pending = broker.begin("http://127.0.0.1:49152/callback".into());
-        let url = authorize_url("https://auth.company.org/application/o/elevateo/", "desktop-client", &pending).unwrap();
+        let url = authorize_url(
+            "https://auth.company.org/application/o/elevateo/",
+            "desktop-client",
+            &pending,
+        )
+        .unwrap();
         assert_eq!(url.path(), "/application/o/authorize/");
         assert_eq!(url.host_str(), Some("auth.company.org"));
     }
@@ -477,9 +557,18 @@ mod tests {
     fn authorize_url_rejects_cleartext_and_credential_issuers() {
         let broker = LoginBroker::default();
         let pending = broker.begin("http://127.0.0.1:49152/callback".into());
-        assert_eq!(authorize_url("http://auth.company.org/", "c", &pending), Err(AuthConfigError::InvalidIssuer));
-        assert_eq!(authorize_url("https://u:p@auth.company.org/", "c", &pending), Err(AuthConfigError::InvalidIssuer));
-        assert_eq!(authorize_url("not a url", "c", &pending), Err(AuthConfigError::InvalidIssuer));
+        assert_eq!(
+            authorize_url("http://auth.company.org/", "c", &pending),
+            Err(AuthConfigError::InvalidIssuer)
+        );
+        assert_eq!(
+            authorize_url("https://u:p@auth.company.org/", "c", &pending),
+            Err(AuthConfigError::InvalidIssuer)
+        );
+        assert_eq!(
+            authorize_url("not a url", "c", &pending),
+            Err(AuthConfigError::InvalidIssuer)
+        );
     }
 
     #[test]
@@ -507,38 +596,66 @@ mod tests {
     #[test]
     fn loopback_listener_parses_one_callback() {
         let (port, receiver, _handle) = spawn_callback_listener(Duration::from_secs(10)).unwrap();
-        send_request(port, b"GET /callback?state=abc&code=xyz HTTP/1.1\r\nHost: 127.0.0.1\r\n\r\n");
+        send_request(
+            port,
+            b"GET /callback?state=abc&code=xyz HTTP/1.1\r\nHost: 127.0.0.1\r\n\r\n",
+        );
         let query = receiver.recv_timeout(Duration::from_secs(5)).unwrap();
-        assert_eq!(query, CallbackQuery { state: "abc".into(), code: "xyz".into(), error: None });
+        assert_eq!(
+            query,
+            CallbackQuery {
+                state: "abc".into(),
+                code: "xyz".into(),
+                error: None
+            }
+        );
     }
 
     #[test]
     fn stray_request_gets_404_and_does_not_consume_the_listener() {
         let (port, receiver, _handle) = spawn_callback_listener(Duration::from_secs(10)).unwrap();
-        assert!(send_request(port, b"GET /favicon.ico HTTP/1.1\r\n\r\n").starts_with("HTTP/1.1 404"));
+        assert!(
+            send_request(port, b"GET /favicon.ico HTTP/1.1\r\n\r\n").starts_with("HTTP/1.1 404")
+        );
         send_request(port, b"GET /callback?state=s&code=c HTTP/1.1\r\n\r\n");
-        assert_eq!(receiver.recv_timeout(Duration::from_secs(5)).unwrap().code, "c");
+        assert_eq!(
+            receiver.recv_timeout(Duration::from_secs(5)).unwrap().code,
+            "c"
+        );
     }
 
     #[test]
     fn provider_error_callback_keeps_state_and_error_without_a_code() {
         let (port, receiver, _handle) = spawn_callback_listener(Duration::from_secs(10)).unwrap();
-        send_request(port, b"GET /callback?state=s&error=access_denied HTTP/1.1\r\n\r\n");
+        send_request(
+            port,
+            b"GET /callback?state=s&error=access_denied HTTP/1.1\r\n\r\n",
+        );
         let query = receiver.recv_timeout(Duration::from_secs(5)).unwrap();
-        assert_eq!(query, CallbackQuery { state: "s".into(), code: String::new(), error: Some("access_denied".into()) });
+        assert_eq!(
+            query,
+            CallbackQuery {
+                state: "s".into(),
+                code: String::new(),
+                error: Some("access_denied".into())
+            }
+        );
     }
 
     #[test]
     fn oversized_request_line_is_rejected_and_listener_keeps_serving() {
         let (port, receiver, _handle) = spawn_callback_listener(Duration::from_secs(10)).unwrap();
         let mut huge = b"GET /callback?state=".to_vec();
-        huge.extend(std::iter::repeat(b'a').take(MAX_REQUEST_LINE as usize + 10));
+        huge.extend(std::iter::repeat_n(b'a', MAX_REQUEST_LINE as usize + 10));
         huge.extend_from_slice(b" HTTP/1.1\r\n\r\n");
         // The 400 itself may be lost to a TCP reset (unread bytes at close); what matters is that
         // the oversized line yields no callback, so the first one delivered is the genuine one.
         send_request(port, &huge);
         send_request(port, b"GET /callback?state=s&code=c HTTP/1.1\r\n\r\n");
-        assert_eq!(receiver.recv_timeout(Duration::from_secs(5)).unwrap().state, "s");
+        assert_eq!(
+            receiver.recv_timeout(Duration::from_secs(5)).unwrap().state,
+            "s"
+        );
     }
 
     #[test]
@@ -555,9 +672,16 @@ mod tests {
     fn cancelled_or_expired_listener_stops_and_disconnects_the_receiver() {
         let (_port, receiver, handle) = spawn_callback_listener(Duration::from_secs(10)).unwrap();
         handle.cancel();
-        assert_eq!(receiver.recv_timeout(Duration::from_secs(2)), Err(mpsc::RecvTimeoutError::Disconnected));
-        let (_port, receiver, _handle) = spawn_callback_listener(Duration::from_millis(100)).unwrap();
-        assert_eq!(receiver.recv_timeout(Duration::from_secs(2)), Err(mpsc::RecvTimeoutError::Disconnected));
+        assert_eq!(
+            receiver.recv_timeout(Duration::from_secs(2)),
+            Err(mpsc::RecvTimeoutError::Disconnected)
+        );
+        let (_port, receiver, _handle) =
+            spawn_callback_listener(Duration::from_millis(100)).unwrap();
+        assert_eq!(
+            receiver.recv_timeout(Duration::from_secs(2)),
+            Err(mpsc::RecvTimeoutError::Disconnected)
+        );
     }
 
     #[test]
@@ -567,6 +691,9 @@ mod tests {
         broker.attach_listener(handle);
         broker.begin("http://127.0.0.1:49152/callback".into());
         broker.abandon();
-        assert_eq!(receiver.recv_timeout(Duration::from_secs(2)), Err(mpsc::RecvTimeoutError::Disconnected));
+        assert_eq!(
+            receiver.recv_timeout(Duration::from_secs(2)),
+            Err(mpsc::RecvTimeoutError::Disconnected)
+        );
     }
 }

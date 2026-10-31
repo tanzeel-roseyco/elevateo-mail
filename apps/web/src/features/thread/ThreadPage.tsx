@@ -366,10 +366,10 @@ function ConversationReader({ mailboxId, threadId, readDirectMessage, attachment
                   directResult?.status === 'error' ? (
                     <div role="alert"><Callout variant="danger" actions={<Button size="sm" onClick={() => setDirectRetry((count) => count + 1)}>Retry message</Button>}>The message could not be loaded.</Callout></div>
                   ) : (
-                    <p role="status"><Callout variant="neutral">{directResult?.status === 'unavailable' ? 'This message is unavailable in this conversation.' : 'Loading selected message…'}</Callout></p>
+                    <div role="status"><Callout variant="neutral">{directResult?.status === 'unavailable' ? 'This message is unavailable in this conversation.' : 'Loading selected message…'}</Callout></div>
                   )
                 ) : (
-                  <p role="status"><Callout variant="neutral">{state.nextCursor === null ? 'This message is unavailable in this conversation.' : 'This message is on a later page. Show more messages to find it.'}</Callout></p>
+                  <div role="status"><Callout variant="neutral">{state.nextCursor === null ? 'This message is unavailable in this conversation.' : 'This message is on a later page. Show more messages to find it.'}</Callout></div>
                 )}
               </div>
             )}

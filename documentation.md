@@ -90,3 +90,29 @@ Detail: [docs/desktop-and-connectors.md](docs/desktop-and-connectors.md).
 
 All tests run in Docker; commands are in the README "Testing" table. Verification receipts per milestone are in
 [docs/completion/](docs/completion/). Review records and defect density are in [code-reviews.md](code-reviews.md).
+
+## Client verification checkpoint — 2026-11-01
+
+Windows: Docker Release build passes with 0 warnings/errors; 93 tests pass (0 failed/skipped),
+7 installer regressions pass, and the unsigned win-x64 self-contained NSIS installer builds.
+The installer is retained locally in apps/windows/artifacts (not committed). Actual Avalonia views
+were rendered and inspected at 960/1280 px. Native Windows launch exposes the sign-in UI, but the
+computer-use provider captured an overlapping window; those captures were discarded and native
+screenshot verification remains limited. No live authentication was performed.
+P24–P34 and dedicated design reviews ran in bounded packets; repairs and exact coverage are in
+[review evidence](docs/completion/final-readiness-20261101/reviews.md). Web repairs await their Docker gate.
+Cargo.lock regeneration, remaining client gates and web visual/backend browser coverage remain in progress.
+Evidence: [Windows receipt](docs/completion/final-readiness-20261101/windows-receipt.md).
+
+## Client web verification checkpoint — 2026-11-01
+
+Docker Desktop final web gate passed: lint, typecheck, 1,195 tests / 99 files, production build and bundle budget. Five product defects repaired with regressions; browser visual verification remains pending. See docs/completion/final-readiness-20261101/web-receipt.md. Native/Android/iOS verification remains in progress; no deployment.
+
+
+Android resource-limit repair — 2026-11-01: the APK entrypoint now preserves caller Cargo/Gradle limits with conservative defaults. Docker tests: 42 package + 26 build/helper tests pass, including three executable configuration regressions. APK/emulator results remain pending/not run respectively. See November 1 evidence.
+
+
+iOS Core verification — 2026-11-01: Linux Swift build and 36 tests pass; three signing-helper tests pass separately in the Python-capable Docker image. Fixed the Linux FoundationNetworking import. The first combined wrapper exited 127 after Swift passed because Python was absent; the recorded recipe now runs Swift only. iOS app packaging remains macOS-only. See docs/completion/final-readiness-20261101/ios-receipt.md.
+
+
+Native verification — 2026-11-01: Cargo.lock regenerated. Docker formatting, compile check, Clippy rules, 40 Rust tests, 14 macOS helper tests and one wrapper regression pass. Eight compiler dead-code warnings remain; strict -D warnings failed and is not claimed passing. macOS packaging/signing remains unavailable. See docs/completion/final-readiness-20261101/native-receipt.md.

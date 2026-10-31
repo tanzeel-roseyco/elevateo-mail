@@ -4,4 +4,7 @@
     <RootNamespace>Elevateo.Client.Core</RootNamespace>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="Elevateo.Client.Core.Tests" />
+  </ItemGroup>
 </Project>

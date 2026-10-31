@@ -69,7 +69,10 @@ fn apply_post_launch_action(app: &tauri::App) -> Result<(), Box<dyn std::error::
         Err(e) => {
             // A corrupt or unreadable marker must not block startup or be read as "healthy":
             // report it, drop the marker, and keep the archive for a manual restore (README).
-            eprintln!("update launch marker unusable ({e}); keeping {} for manual restore", archive.display());
+            eprintln!(
+                "update launch marker unusable ({e}); keeping {} for manual restore",
+                archive.display()
+            );
             update::clear_marker(&data_dir)?;
             return Ok(());
         }
@@ -112,7 +115,7 @@ pub fn run() {
         option_env!("ELEVATEO_WEB_ORIGIN").unwrap_or(""),
         option_env!("ELEVATEO_NATIVE_ARTIFACT").unwrap_or(""),
     )
-        .expect("ELEVATEO_WEB_ORIGIN must be one approved HTTPS web origin");
+    .expect("ELEVATEO_WEB_ORIGIN must be one approved HTTPS web origin");
 
     let builder = tauri::Builder::default();
     #[cfg(desktop)]
@@ -141,62 +144,77 @@ pub fn run() {
         .setup(move |app| {
             #[cfg(desktop)]
             {
-            // Post-update health verdict from earlier launches, before any window exists.
-            apply_post_launch_action(app)?;
+                // Post-update health verdict from earlier launches, before any window exists.
+                apply_post_launch_action(app)?;
 
-            // App + Edit menus. Edit's predefined items give the WebView standard clipboard keys.
-            let app_menu = SubmenuBuilder::new(app, "Elevateo Mail")
-                .about(Some(AboutMetadata::default()))
-                .separator()
-                .text("check-updates", "Check for Updates…")
-                .text("sign-out", "Sign Out")
-                .separator()
-                .quit()
-                .build()?;
-            let edit_menu = SubmenuBuilder::new(app, "Edit")
-                .undo()
-                .redo()
-                .separator()
-                .cut()
-                .copy()
-                .paste()
-                .select_all()
-                .build()?;
-            let menu = MenuBuilder::new(app).items(&[&app_menu, &edit_menu]).build()?;
-            app.set_menu(menu)?;
-            app.on_menu_event(|app, event| match event.id().as_ref() {
-                "check-updates" => host::check_for_updates(app.clone()),
-                "sign-out" => {
-                    // Clear native credentials, then let the web app run its own sign-out flow.
-                    let broker = app.state::<auth::LoginBroker>();
-                    broker.abandon();
-                    if let Err(e) = auth::CredentialStore::clear(&auth::KeychainStore) {
-                        eprintln!("keychain clear on sign-out failed: {e:?}");
+                // App + Edit menus. Edit's predefined items give the WebView standard clipboard keys.
+                let app_menu = SubmenuBuilder::new(app, "Elevateo Mail")
+                    .about(Some(AboutMetadata::default()))
+                    .separator()
+                    .text("check-updates", "Check for Updates…")
+                    .text("sign-out", "Sign Out")
+                    .separator()
+                    .quit()
+                    .build()?;
+                let edit_menu = SubmenuBuilder::new(app, "Edit")
+                    .undo()
+                    .redo()
+                    .separator()
+                    .cut()
+                    .copy()
+                    .paste()
+                    .select_all()
+                    .build()?;
+                let menu = MenuBuilder::new(app)
+                    .items(&[&app_menu, &edit_menu])
+                    .build()?;
+                app.set_menu(menu)?;
+                app.on_menu_event(|app, event| match event.id().as_ref() {
+                    "check-updates" => host::check_for_updates(app.clone()),
+                    "sign-out" => {
+                        // Clear native credentials, then let the web app run its own sign-out flow.
+                        let broker = app.state::<auth::LoginBroker>();
+                        broker.abandon();
+                        if let Err(e) = auth::CredentialStore::clear(&auth::KeychainStore) {
+                            eprintln!("keychain clear on sign-out failed: {e:?}");
+                        }
+                        // apps/web desktopHost.ts useDesktopSignOut runs the web cookie sign-out on this.
+                        if let Err(e) = app.emit("host://sign-out", ()) {
+                            eprintln!("sign-out could not reach the web app: {e}");
+                        }
                     }
-                    // apps/web desktopHost.ts useDesktopSignOut runs the web cookie sign-out on this.
-                    if let Err(e) = app.emit("host://sign-out", ()) {
-                        eprintln!("sign-out could not reach the web app: {e}");
-                    }
+                    _ => {}
+                });
+
+                if let (Some(hostname), Some(port)) =
+                    (approved.host_str(), approved.port_or_known_default())
+                {
+                    host::spawn_network_probe(app.handle().clone(), hostname.to_owned(), port);
                 }
-                _ => {}
-            });
-
-            if let (Some(hostname), Some(port)) = (approved.host_str(), approved.port_or_known_default()) {
-                host::spawn_network_probe(app.handle().clone(), hostname.to_owned(), port);
-            }
             }
 
             let navigation_origin = approved.clone();
             // Web-session SSO leaves the app origin for the configured IdP and returns via its callback.
-            let identity_provider = navigation::identity_provider_origin(option_env!("ELEVATEO_OIDC_ISSUER"));
-            tauri::WebviewWindowBuilder::new(app, "main", tauri::WebviewUrl::External(approved.clone()))
-                .title("Elevateo Mail")
-                .inner_size(1120.0, 760.0)
-                .initialization_script(&init_script(&approved.origin().ascii_serialization()))
-                .on_navigation(move |url| navigation::is_approved_navigation(&navigation_origin, identity_provider.as_ref(), url))
-                .on_new_window(|_, _| tauri::webview::NewWindowResponse::Deny)
-                .on_permission_request(|_, _| tauri::webview::PermissionResponse::Deny)
-                .build()?;
+            let identity_provider =
+                navigation::identity_provider_origin(option_env!("ELEVATEO_OIDC_ISSUER"));
+            tauri::WebviewWindowBuilder::new(
+                app,
+                "main",
+                tauri::WebviewUrl::External(approved.clone()),
+            )
+            .title("Elevateo Mail")
+            .inner_size(1120.0, 760.0)
+            .initialization_script(init_script(&approved.origin().ascii_serialization()))
+            .on_navigation(move |url| {
+                navigation::is_approved_navigation(
+                    &navigation_origin,
+                    identity_provider.as_ref(),
+                    url,
+                )
+            })
+            .on_new_window(|_, _| tauri::webview::NewWindowResponse::Deny)
+            .on_permission_request(|_, _| tauri::webview::PermissionResponse::Deny)
+            .build()?;
             Ok(())
         })
         .run(tauri::generate_context!())

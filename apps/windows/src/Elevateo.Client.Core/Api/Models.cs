@@ -2,8 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Elevateo.Client.Core.Api;
 
-// AIDEV-NOTE: shapes mirror contracts/v1/openapi.json. `required` + source-gen makes missing fields
-// a JsonException, which the client maps to ApiErrorKind.InvalidResponse — never a silently-null field.
+// AIDEV-NOTE: shapes mirror contracts/v1/openapi.json; ApiResponseValidation rejects explicit nulls and bounds.
 
 public sealed record Address(
     [property: JsonPropertyName("display_name")] string? DisplayName,

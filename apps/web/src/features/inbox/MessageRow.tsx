@@ -113,8 +113,9 @@ export function MessageRow({ thread, to, mailboxName, selected, onSelect, onStar
           {date}
         </span>
       </Link>
+      {/* AIDEV-NOTE: Scope action reveal to desktop so hover/focus cannot cover the phone conversation link. */}
       {hasActions && (
-        <span className="absolute end-2 top-1/2 hidden -translate-y-1/2 items-center gap-0.5 bg-inherit group-focus-within:flex group-hover:flex max-md:hidden">
+        <span className="absolute end-2 top-1/2 hidden -translate-y-1/2 items-center gap-0.5 bg-inherit md:group-focus-within:flex md:group-hover:flex">
           {onAction && actions.map((action) => (
             <IconButton key={action.key} label={`${action.label} ${name}`} onClick={() => onAction(action)} disabled={busy}>
               <action.Icon className="size-5" />

@@ -1,0 +1,620 @@
+docker : Fetching https://github.com/apple/swift-crypto.git
+At line:2 char:400
++ ... TEXITCODE}; docker run --name elevateo-client-ios-core-20261101 --mem ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Fetching https:...wift-crypto.git:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[1/18869] Fetching swift-crypto
+Fetched https://github.com/apple/swift-crypto.git from cache (9.34s)
+Computing version for https://github.com/apple/swift-crypto.git
+Computed https://github.com/apple/swift-crypto.git at 3.9.1 (4.12s)
+Fetching https://github.com/apple/swift-asn1.git
+[1/2051] Fetching swift-asn1
+Fetched https://github.com/apple/swift-asn1.git from cache (1.70s)
+Computing version for https://github.com/apple/swift-asn1.git
+Computed https://github.com/apple/swift-asn1.git at 1.6.0 (3.16s)
+Creating working copy for https://github.com/apple/swift-asn1.git
+Working copy of https://github.com/apple/swift-asn1.git resolved at 1.6.0
+Creating working copy for https://github.com/apple/swift-crypto.git
+Working copy of https://github.com/apple/swift-crypto.git resolved at 3.9.1
+Building for debugging...
+[0/370] Write swift-version-24593BA9C3E375BF.txt
+[1/370] Write sources
+[4/370] Compiling CCryptoBoringSSLShims shims.c
+[5/370] Compiling fiat_p256_adx_sqr.S
+[6/370] Compiling fiat_p256_adx_mul.S
+[7/370] Compiling fiat_curve25519_adx_square.S
+[8/370] Compiling fiat_curve25519_adx_mul.S
+[9/370] Compiling md5-x86_64-linux.S
+[10/370] Compiling md5-x86_64-apple.S
+[11/370] Compiling md5-586-linux.S
+[12/370] Compiling md5-586-apple.S
+[13/370] Compiling err_data.c
+[14/370] Compiling chacha20_poly1305_x86_64-linux.S
+[15/370] Compiling chacha20_poly1305_x86_64-apple.S
+[16/370] Compiling chacha20_poly1305_armv8-win.S
+[17/370] Compiling chacha20_poly1305_armv8-linux.S
+[18/370] Compiling chacha20_poly1305_armv8-apple.S
+[19/370] Compiling chacha-x86_64-linux.S
+[20/370] Compiling chacha-x86_64-apple.S
+[21/370] Compiling chacha-x86-linux.S
+[22/370] Compiling chacha-x86-apple.S
+[23/370] Compiling chacha-armv8-win.S
+[24/370] Compiling chacha-armv8-linux.S
+[25/370] Compiling chacha-armv8-apple.S
+[26/370] Compiling chacha-armv4-linux.S
+[27/370] Compiling aes128gcmsiv-x86_64-linux.S
+[28/370] Compiling aes128gcmsiv-x86_64-apple.S
+[29/370] Compiling x86_64-mont5-linux.S
+[30/370] Compiling x86_64-mont5-apple.S
+[31/370] Compiling x86_64-mont-linux.S
+[32/370] Compiling x86_64-mont-apple.S
+[33/370] Compiling x86-mont-linux.S
+[34/370] Compiling x86-mont-apple.S
+[35/370] Compiling vpaes-x86_64-linux.S
+[36/370] Compiling vpaes-x86_64-apple.S
+[37/370] Compiling vpaes-x86-linux.S
+[38/370] Compiling vpaes-x86-apple.S
+[39/370] Compiling vpaes-armv8-win.S
+[40/370] Compiling vpaes-armv8-linux.S
+[41/370] Compiling vpaes-armv8-apple.S
+[42/370] Compiling vpaes-armv7-linux.S
+[43/370] Compiling sha512-x86_64-linux.S
+[44/370] Compiling sha512-x86_64-apple.S
+[45/370] Compiling sha512-armv8-win.S
+[46/370] Compiling sha512-armv8-linux.S
+[47/370] Compiling sha512-armv8-apple.S
+[48/370] Compiling sha512-armv4-linux.S
+[49/370] Compiling sha512-586-linux.S
+[50/370] Compiling sha512-586-apple.S
+[51/370] Compiling sha256-x86_64-linux.S
+[52/370] Compiling sha256-x86_64-apple.S
+[53/370] Compiling sha256-armv8-win.S
+[54/370] Compiling sha256-armv8-linux.S
+[55/370] Compiling sha256-armv8-apple.S
+[56/370] Compiling sha256-armv4-linux.S
+[57/370] Compiling sha256-586-linux.S
+[58/370] Compiling sha256-586-apple.S
+[59/370] Compiling sha1-x86_64-linux.S
+[60/370] Compiling sha1-x86_64-apple.S
+[61/370] Compiling sha1-armv8-win.S
+[62/370] Compiling sha1-armv8-linux.S
+[63/370] Compiling sha1-armv8-apple.S
+[64/370] Compiling sha1-armv4-large-linux.S
+[65/370] Compiling sha1-586-linux.S
+[66/370] Compiling sha1-586-apple.S
+[67/370] Compiling rsaz-avx2-linux.S
+[68/370] Compiling rsaz-avx2-apple.S
+[69/370] Compiling rdrand-x86_64-linux.S
+[70/370] Compiling rdrand-x86_64-apple.S
+[71/370] Compiling p256_beeu-x86_64-asm-linux.S
+[72/370] Compiling p256_beeu-x86_64-asm-apple.S
+[73/370] Compiling p256_beeu-armv8-asm-win.S
+[74/370] Compiling p256_beeu-armv8-asm-linux.S
+[75/370] Compiling p256_beeu-armv8-asm-apple.S
+[76/370] Compiling p256-x86_64-asm-linux.S
+[77/370] Compiling p256-x86_64-asm-apple.S
+[78/370] Compiling p256-armv8-asm-win.S
+[79/370] Compiling p256-armv8-asm-linux.S
+[80/370] Compiling p256-armv8-asm-apple.S
+[81/370] Compiling ghashv8-armv8-win.S
+[82/370] Compiling ghashv8-armv8-linux.S
+[83/370] Compiling ghashv8-armv8-apple.S
+[84/370] Compiling ghashv8-armv7-linux.S
+[85/370] Compiling ghash-x86_64-linux.S
+[86/370] Compiling ghash-x86_64-apple.S
+[87/370] Compiling ghash-x86-linux.S
+[88/370] Compiling ghash-x86-apple.S
+[89/370] Compiling ghash-ssse3-x86_64-linux.S
+[90/370] Compiling ghash-ssse3-x86_64-apple.S
+[91/370] Compiling ghash-ssse3-x86-linux.S
+[92/370] Compiling ghash-ssse3-x86-apple.S
+[93/370] Compiling ghash-neon-armv8-win.S
+[94/370] Compiling ghash-neon-armv8-linux.S
+[95/370] Compiling ghash-neon-armv8-apple.S
+[96/370] Compiling ghash-armv4-linux.S
+[97/370] Compiling co-586-linux.S
+[98/370] Compiling co-586-apple.S
+[99/370] Compiling bsaes-armv7-linux.S
+[100/370] Compiling bn-armv8-win.S
+[101/370] Compiling bn-armv8-linux.S
+[102/370] Compiling bn-armv8-apple.S
+[103/370] Compiling bn-586-linux.S
+[104/370] Compiling bn-586-apple.S
+[105/370] Compiling armv8-mont-win.S
+[106/370] Compiling armv8-mont-linux.S
+[107/370] Compiling armv8-mont-apple.S
+[108/370] Compiling armv4-mont-linux.S
+[109/370] Compiling aesv8-gcm-armv8-win.S
+[110/370] Compiling aesv8-gcm-armv8-linux.S
+[111/370] Compiling aesv8-gcm-armv8-apple.S
+[112/370] Compiling aesv8-armv8-win.S
+[113/370] Compiling aesv8-armv8-linux.S
+[114/370] Compiling aesv8-armv8-apple.S
+[115/370] Compiling aesv8-armv7-linux.S
+[116/370] Compiling aesni-x86_64-linux.S
+[117/370] Compiling aesni-x86_64-apple.S
+[118/370] Compiling aesni-x86-linux.S
+[119/370] Compiling aesni-x86-apple.S
+[120/370] Compiling aesni-gcm-x86_64-linux.S
+[121/370] Compiling aesni-gcm-x86_64-apple.S
+[122/370] Compiling x_x509a.c
+[123/370] Compiling x_x509.c
+[124/370] Compiling x_val.c
+[125/370] Compiling x_spki.c
+[126/370] Compiling x_sig.c
+[127/370] Compiling x_req.c
+[128/370] Compiling x_pubkey.c
+[129/370] Compiling x_name.c
+[130/370] Compiling x_exten.c
+[131/370] Compiling x_crl.c
+[132/370] Compiling x_attrib.c
+[133/370] Compiling x_all.c
+[134/370] Compiling x_algor.c
+[135/370] Compiling x509spki.c
+[136/370] Compiling x509rset.c
+[137/370] Compiling x509name.c
+[138/370] Compiling x509cset.c
+[139/370] Compiling x509_vpm.c
+[140/370] Compiling x509_vfy.c
+[141/370] Compiling x509_v3.c
+[142/370] Compiling x509_txt.c
+[143/370] Compiling x509_trs.c
+[144/370] Compiling x509_set.c
+[145/370] Compiling x509_req.c
+[146/370] Compiling x509_obj.c
+[147/370] Compiling x509_lu.c
+[148/370] Compiling x509_ext.c
+[149/370] Compiling x509_def.c
+[150/370] Compiling x509_d2.c
+[151/370] Compiling x509_cmp.c
+[152/370] Compiling x509_att.c
+[153/370] Compiling x509.c
+[154/370] Compiling v3_utl.c
+[155/370] Compiling v3_skey.c
+[156/370] Compiling v3_purp.c
+[157/370] Compiling v3_prn.c
+[158/370] Compiling v3_pmaps.c
+[159/370] Compiling v3_pcons.c
+[160/370] Compiling v3_ocsp.c
+[161/370] Compiling v3_ncons.c
+[162/370] Compiling v3_lib.c
+[163/370] Compiling v3_int.c
+[164/370] Compiling v3_info.c
+[165/370] Compiling v3_ia5.c
+[166/370] Compiling v3_genn.c
+[167/370] Compiling v3_extku.c
+[168/370] Compiling v3_enum.c
+[169/370] Compiling v3_crld.c
+[170/370] Compiling v3_cpols.c
+[171/370] Compiling v3_conf.c
+[172/370] Compiling v3_bitst.c
+[173/370] Compiling v3_bcons.c
+[174/370] Compiling v3_alt.c
+[175/370] Compiling v3_akeya.c
+[176/370] Compiling v3_akey.c
+[177/370] Compiling t_x509a.c
+[178/370] Compiling t_x509.c
+[179/370] Compiling t_req.c
+[180/370] Compiling t_crl.c
+[181/370] Compiling rsa_pss.c
+[182/370] Compiling policy.c
+[183/370] Compiling name_print.c
+[184/370] Compiling i2d_pr.c
+[185/370] Compiling by_file.c
+[186/370] Compiling by_dir.c
+[187/370] Compiling asn1_gen.c
+[188/370] Compiling algorithm.c
+[189/370] Compiling a_verify.c
+[190/370] Compiling a_sign.c
+[191/370] Compiling a_digest.c
+[192/370] Compiling voprf.c
+[193/370] Compiling trust_token.c
+[194/370] Compiling pmbtoken.c
+[195/370] Compiling thread_win.c
+[196/370] Compiling thread_pthread.c
+[197/370] Compiling thread_none.c
+[198/370] Compiling thread.c
+[199/370] Compiling stack.c
+[200/370] Compiling spx_wots.c
+[201/370] Compiling spx_util.c
+[202/370] Compiling spx_thash.c
+[203/370] Compiling spx_merkle.c
+[204/370] Compiling spx_fors.c
+[205/370] Compiling spx_address.c
+[206/370] Compiling spx.c
+[207/370] Compiling wots.c
+[208/370] Compiling thash.c
+[209/370] Compiling slhdsa.c
+[210/370] Compiling merkle.c
+[211/370] Compiling fors.c
+[212/370] Compiling siphash.c
+[213/370] Compiling sha512.c
+[214/370] Compiling sha256.c
+[215/370] Compiling sha1.c
+[216/370] Compiling rsa_print.c
+[217/370] Compiling rsa_extra.c
+[218/370] Compiling rsa_crypt.c
+[219/370] Compiling rsa_asn1.c
+[220/370] Compiling refcount.c
+[221/370] Compiling rc4.c
+[222/370] Compiling windows.c
+[223/370] Compiling urandom.c
+[224/370] Compiling trusty.c
+[225/370] Compiling rand_extra.c
+[226/370] Compiling passive.c
+[227/370] Compiling ios.c
+[228/370] Compiling getentropy.c
+[229/370] Compiling forkunsafe.c
+[230/370] Compiling fork_detect.c
+[231/370] Compiling deterministic.c
+[232/370] Compiling pool.c
+[233/370] Compiling poly1305_vec.c
+[234/370] Compiling poly1305_arm_asm.S
+[235/370] Compiling poly1305_arm.c
+[236/370] Compiling poly1305.c
+[237/370] Compiling pkcs8_x509.c
+[238/370] Compiling pkcs8.c
+[239/370] Compiling p5_pbev2.c
+[240/370] Compiling pkcs7_x509.c
+[241/370] Compiling pkcs7.c
+[242/370] Compiling pem_xaux.c
+[243/370] Compiling pem_x509.c
+[244/370] Compiling pem_pkey.c
+[245/370] Compiling pem_pk8.c
+[246/370] Compiling pem_oth.c
+[247/370] Compiling pem_lib.c
+[248/370] Compiling pem_info.c
+[249/370] Compiling pem_all.c
+[250/370] Compiling obj_xref.c
+[251/370] Compiling obj.c
+[252/370] Compiling mldsa.c
+[253/370] Compiling mem.c
+[254/370] Compiling md5.c
+[255/370] Compiling md4.c
+[256/370] Compiling lhash.c
+[257/370] Compiling kyber.c
+[258/370] Compiling keccak.c
+[259/370] Compiling hrss.c
+[260/370] Compiling poly_rq_mul.S
+[261/370] Compiling hpke.c
+[262/370] Compiling fips_shared_support.c
+[263/370] Compiling bcm.c
+[264/370] Compiling ex_data.c
+[265/370] Compiling sign.c
+[266/370] Compiling scrypt.c
+[267/370] Compiling print.c
+[268/370] Compiling pbkdf.c
+[269/370] Compiling p_x25519_asn1.c
+[270/370] Compiling p_x25519.c
+[271/370] Compiling p_rsa_asn1.c
+[272/370] Compiling p_rsa.c
+[273/370] Compiling p_hkdf.c
+[274/370] Compiling p_ed25519_asn1.c
+[275/370] Compiling p_ed25519.c
+[276/370] Compiling p_ec_asn1.c
+[277/370] Compiling p_ec.c
+[278/370] Compiling p_dsa_asn1.c
+[279/370] Compiling p_dh_asn1.c
+[280/370] Compiling p_dh.c
+[281/370] Compiling evp_ctx.c
+[282/370] Compiling evp_asn1.c
+[283/370] Compiling evp.c
+[284/370] Compiling err.c
+[285/370] Compiling engine.c
+[286/370] Compiling ecdsa_asn1.c
+[287/370] Compiling ecdh_extra.c
+[288/370] Compiling hash_to_curve.c
+[289/370] Compiling ec_derive.c
+[290/370] Compiling ec_asn1.c
+[291/370] Compiling dsa_asn1.c
+[292/370] Compiling dsa.c
+[293/370] Compiling dilithium.c
+[294/370] Compiling digest_extra.c
+[295/370] Compiling params.c
+[296/370] Compiling dh_asn1.c
+[297/370] Compiling des.c
+[298/370] Compiling spake25519.c
+[299/370] Compiling curve25519_64_adx.c
+[300/370] Compiling curve25519.c
+[301/370] Compiling x25519-asm-arm.S
+[302/370] Compiling crypto.c
+[303/370] Compiling cpu_intel.c
+[304/370] Compiling cpu_arm_linux.c
+[305/370] Compiling cpu_arm_freebsd.c
+[306/370] Compiling cpu_aarch64_win.c
+[307/370] Compiling cpu_aarch64_sysreg.c
+[308/370] Compiling cpu_aarch64_openbsd.c
+[309/370] Compiling cpu_aarch64_linux.c
+[310/370] Compiling cpu_aarch64_fuchsia.c
+[311/370] Compiling cpu_aarch64_apple.c
+[312/370] Compiling conf.c
+[313/370] Compiling tls_cbc.c
+[314/370] Compiling e_tls.c
+[315/370] Compiling e_rc4.c
+[316/370] Compiling e_rc2.c
+[317/370] Compiling e_null.c
+[318/370] Compiling e_des.c
+[319/370] Compiling e_chacha20poly1305.c
+[320/370] Compiling e_aesgcmsiv.c
+[321/370] Compiling e_aesctrhmac.c
+[322/370] Compiling derive_key.c
+[323/370] Compiling cipher_extra.c
+[324/370] Compiling chacha.c
+[325/370] Compiling unicode.c
+[326/370] Compiling cbs.c
+[327/370] Compiling cbb.c
+[328/370] Compiling ber.c
+[329/370] Compiling asn1_compat.c
+[330/370] Compiling buf.c
+[331/370] Compiling convert.c
+[332/370] Compiling bn_asn1.c
+[333/370] Compiling blake2.c
+[334/370] Compiling printf.c
+[335/370] Compiling pair.c
+[336/370] Compiling hexdump.c
+[337/370] Compiling file.c
+[338/370] Compiling fd.c
+[339/370] Compiling errno.c
+[340/370] Compiling bio_mem.c
+[341/370] Compiling bio.c
+[342/370] Compiling base64.c
+[343/370] Compiling tasn_utl.c
+[344/370] Compiling tasn_typ.c
+[345/370] Compiling tasn_new.c
+[346/370] Compiling tasn_fre.c
+[347/370] Compiling tasn_enc.c
+[348/370] Compiling tasn_dec.c
+[349/370] Compiling posix_time.c
+[350/370] Compiling f_string.c
+[351/370] Compiling f_int.c
+[352/370] Compiling asn_pack.c
+[353/370] Compiling asn1_par.c
+[354/370] Compiling asn1_lib.c
+[355/370] Compiling a_utctm.c
+[356/370] Compiling a_type.c
+[357/370] Compiling a_time.c
+[358/370] Compiling a_strnid.c
+[359/370] Compiling a_strex.c
+[360/370] Compiling a_octet.c
+[361/370] Compiling a_object.c
+[362/370] Compiling a_mbstr.c
+[363/370] Compiling a_int.c
+[364/370] Compiling a_i2d_fp.c
+[365/370] Compiling a_gentm.c
+[366/370] Compiling a_dup.c
+[367/370] Compiling a_d2i_fp.c
+[368/370] Compiling a_bool.c
+[369/370] Compiling a_bitstr.c
+[371/371] Emitting module CryptoBoringWrapper
+[372/378] Compiling CryptoBoringWrapper BoringSSLAEAD.swift
+[373/378] Compiling CryptoBoringWrapper CryptoKitErrors_boring.swift
+[374/378] Compiling CryptoBoringWrapper EllipticCurve.swift
+[375/378] Compiling CryptoBoringWrapper EllipticCurvePoint.swift
+[376/378] Compiling CryptoBoringWrapper ArbitraryPrecisionInteger.swift
+[377/378] Compiling CryptoBoringWrapper FiniteFieldArithmeticContext.swift
+[378/378] Compiling CryptoBoringWrapper RandomBytes.swift
+[380/380] Emitting module Crypto
+[381/400] Compiling Crypto AES-GCM.swift
+[382/400] Compiling Crypto AES-GCM_boring.swift
+[383/400] Compiling Crypto ChaChaPoly_boring.swift
+[384/400] Compiling Crypto ChaChaPoly.swift
+[385/400] Compiling Crypto Cipher.swift
+[386/400] Compiling Crypto Nonces.swift
+[387/400] Compiling Crypto ASN1.swift
+[388/400] Compiling Crypto ASN1Any.swift
+[389/400] Compiling Crypto ASN1BitString.swift
+[390/400] Compiling Crypto ASN1Boolean.swift
+[391/400] Compiling Crypto ASN1Identifier.swift
+[392/400] Compiling Crypto ASN1Integer.swift
+[393/400] Compiling Crypto ASN1Null.swift
+[394/400] Compiling Crypto ASN1OctetString.swift
+[395/400] Compiling Crypto ASN1Strings.swift
+[396/400] Compiling Crypto ArraySliceBigint.swift
+[397/400] Compiling Crypto GeneralizedTime.swift
+[398/400] Compiling Crypto ObjectIdentifier.swift
+[399/400] Compiling Crypto ECDSASignature.swift
+[400/400] Compiling Crypto PEMDocument.swift
+[401/420] Compiling Crypto PKCS8PrivateKey.swift
+[402/420] Compiling Crypto SEC1PrivateKey.swift
+[403/420] Compiling Crypto SubjectPublicKeyInfo.swift
+[404/420] Compiling Crypto CryptoKitErrors.swift
+[405/420] Compiling Crypto Digest_boring.swift
+[406/420] Compiling Crypto Digest.swift
+[407/420] Compiling Crypto Digests.swift
+[408/420] Compiling Crypto HashFunctions.swift
+[409/420] Compiling Crypto HashFunctions_SHA2.swift
+[410/420] Compiling Crypto HPKE-AEAD.swift
+[411/420] Compiling Crypto HPKE-Ciphersuite.swift
+[412/420] Compiling Crypto HPKE-KDF.swift
+[413/420] Compiling Crypto HPKE-KexKeyDerivation.swift
+[414/420] Compiling Crypto HPKE-LabeledExtract.swift
+[415/420] Compiling Crypto HPKE-Utils.swift
+[416/420] Compiling Crypto DHKEM.swift
+[417/420] Compiling Crypto HPKE-KEM-Curve25519.swift
+[418/420] Compiling Crypto HPKE-NIST-EC-KEMs.swift
+[419/420] Compiling Crypto HPKE-KEM.swift
+[420/420] Compiling Crypto HPKE-Errors.swift
+[421/440] Compiling Crypto HPKE.swift
+[422/440] Compiling Crypto HPKE-Context.swift
+[423/440] Compiling Crypto HPKE-KeySchedule.swift
+[424/440] Compiling Crypto HPKE-Modes.swift
+[425/440] Compiling Crypto Insecure.swift
+[426/440] Compiling Crypto Insecure_HashFunctions.swift
+[427/440] Compiling Crypto KEM.swift
+[428/440] Compiling Crypto ECDH_boring.swift
+[429/440] Compiling Crypto DH.swift
+[430/440] Compiling Crypto ECDH.swift
+[431/440] Compiling Crypto HKDF.swift
+[432/440] Compiling Crypto AESWrap.swift
+[433/440] Compiling Crypto AESWrap_boring.swift
+[434/440] Compiling Crypto Ed25519_boring.swift
+[435/440] Compiling Crypto NISTCurvesKeys_boring.swift
+[436/440] Compiling Crypto X25519Keys_boring.swift
+[437/440] Compiling Crypto Curve25519.swift
+[438/440] Compiling Crypto Ed25519Keys.swift
+[439/440] Compiling Crypto NISTCurvesKeys.swift
+[440/440] Compiling Crypto X25519Keys.swift
+[441/459] Compiling Crypto SymmetricKeys.swift
+[442/459] Compiling Crypto HMAC.swift
+[443/459] Compiling Crypto MACFunctions.swift
+[444/459] Compiling Crypto MessageAuthenticationCode.swift
+[445/459] Compiling Crypto AES.swift
+[446/459] Compiling Crypto ECDSASignature_boring.swift
+[447/459] Compiling Crypto ECDSA_boring.swift
+[448/459] Compiling Crypto EdDSA_boring.swift
+[449/459] Compiling Crypto ECDSA.swift
+[450/459] Compiling Crypto Ed25519.swift
+[451/459] Compiling Crypto Signature.swift
+[452/459] Compiling Crypto CryptoKitErrors_boring.swift
+[453/459] Compiling Crypto RNG_boring.swift
+[454/459] Compiling Crypto SafeCompare_boring.swift
+[455/459] Compiling Crypto Zeroization_boring.swift
+[456/459] Compiling Crypto PrettyBytes.swift
+[457/459] Compiling Crypto SafeCompare.swift
+[458/459] Compiling Crypto SecureBytes.swift
+[459/459] Compiling Crypto Zeroization.swift
+[461/461] Emitting module ElevateoCore
+[462/470] Compiling ElevateoCore APIClient.swift
+[463/470] Compiling ElevateoCore OIDCAuthFlow.swift
+[464/470] Compiling ElevateoCore PKCE.swift
+[465/470] Compiling ElevateoCore TokenExchangePort.swift
+[466/470] Compiling ElevateoCore TokenStore.swift
+[467/470] Compiling ElevateoCore Models.swift
+[468/470] Compiling ElevateoCore CursorPager.swift
+[469/470] Compiling ElevateoCore DraftSaveCoordinator.swift
+[470/470] Compiling ElevateoCore SessionLifecycle.swift
+Build complete! (85.07s)
+[0/1] Planning build
+Building for debugging...
+[0/13] Write sources
+[1/14] Write swift-version-24593BA9C3E375BF.txt
+[2/14] Wrapping AST for ElevateoCore for debugging
+error: emit-module command failed with exit code 1 (use -v to see invocation)
+[4/15] Emitting module ElevateoCoreTests
+/workspace/ios/ElevateoCore/Tests/ElevateoCoreTests/APIClientTests.swift:118:34: error: cannot find type 'URLRequest' 
+in scope
+116 |     func testRejectedRedirectIsTyped() async throws {
+117 |         struct RedirectingTransport: HTTPTransport {
+118 |             func send(_ request: URLRequest, limits: ResponseLimits) async throws -> (Data, HTTPURLResponse) {
+    |                                  `- error: cannot find type 'URLRequest' in scope
+119 |                 throw TransportRejection.redirectRejected
+120 |             }
+
+/workspace/ios/ElevateoCore/Tests/ElevateoCoreTests/APIClientTests.swift:118:93: error: 'HTTPURLResponse' is 
+unavailable: This type has moved to the FoundationNetworking module. Import that module to use it.
+116 |     func testRejectedRedirectIsTyped() async throws {
+117 |         struct RedirectingTransport: HTTPTransport {
+118 |             func send(_ request: URLRequest, limits: ResponseLimits) async throws -> (Data, HTTPURLResponse) {
+    |                                                                                             `- error: 
+'HTTPURLResponse' is unavailable: This type has moved to the FoundationNetworking module. Import that module to use it.
+119 |                 throw TransportRejection.redirectRejected
+120 |             }
+
+Foundation.HTTPURLResponse:2:18: note: 'HTTPURLResponse' has been explicitly marked unavailable here
+1 | @available(*, unavailable, message: "This type has moved to the FoundationNetworking module. Import that module to 
+use it.")
+2 | public typealias HTTPURLResponse = AnyObject
+  |                  `- note: 'HTTPURLResponse' has been explicitly marked unavailable here
+[5/19] Compiling ElevateoCoreTests APIClientTests.swift
+/workspace/ios/ElevateoCore/Tests/ElevateoCoreTests/APIClientTests.swift:118:34: error: cannot find type 'URLRequest' 
+in scope
+116 |     func testRejectedRedirectIsTyped() async throws {
+117 |         struct RedirectingTransport: HTTPTransport {
+118 |             func send(_ request: URLRequest, limits: ResponseLimits) async throws -> (Data, HTTPURLResponse) {
+    |                                  `- error: cannot find type 'URLRequest' in scope
+119 |                 throw TransportRejection.redirectRejected
+120 |             }
+
+/workspace/ios/ElevateoCore/Tests/ElevateoCoreTests/APIClientTests.swift:118:93: error: 'HTTPURLResponse' is 
+unavailable: This type has moved to the FoundationNetworking module. Import that module to use it.
+116 |     func testRejectedRedirectIsTyped() async throws {
+117 |         struct RedirectingTransport: HTTPTransport {
+118 |             func send(_ request: URLRequest, limits: ResponseLimits) async throws -> (Data, HTTPURLResponse) {
+    |                                                                                             `- error: 
+'HTTPURLResponse' is unavailable: This type has moved to the FoundationNetworking module. Import that module to use it.
+119 |                 throw TransportRejection.redirectRejected
+120 |             }
+
+Foundation.HTTPURLResponse:2:18: note: 'HTTPURLResponse' has been explicitly marked unavailable here
+1 | @available(*, unavailable, message: "This type has moved to the FoundationNetworking module. Import that module to 
+use it.")
+2 | public typealias HTTPURLResponse = AnyObject
+  |                  `- note: 'HTTPURLResponse' has been explicitly marked unavailable here
+[6/19] Compiling ElevateoCoreTests AuthFlowTests.swift
+/workspace/ios/ElevateoCore/Tests/ElevateoCoreTests/APIClientTests.swift:118:34: error: cannot find type 'URLRequest' 
+in scope
+116 |     func testRejectedRedirectIsTyped() async throws {
+117 |         struct RedirectingTransport: HTTPTransport {
+118 |             func send(_ request: URLRequest, limits: ResponseLimits) async throws -> (Data, HTTPURLResponse) {
+    |                                  `- error: cannot find type 'URLRequest' in scope
+119 |                 throw TransportRejection.redirectRejected
+120 |             }
+
+/workspace/ios/ElevateoCore/Tests/ElevateoCoreTests/APIClientTests.swift:118:93: error: 'HTTPURLResponse' is 
+unavailable: This type has moved to the FoundationNetworking module. Import that module to use it.
+116 |     func testRejectedRedirectIsTyped() async throws {
+117 |         struct RedirectingTransport: HTTPTransport {
+118 |             func send(_ request: URLRequest, limits: ResponseLimits) async throws -> (Data, HTTPURLResponse) {
+    |                                                                                             `- error: 
+'HTTPURLResponse' is unavailable: This type has moved to the FoundationNetworking module. Import that module to use it.
+119 |                 throw TransportRejection.redirectRejected
+120 |             }
+
+Foundation.HTTPURLResponse:2:18: note: 'HTTPURLResponse' has been explicitly marked unavailable here
+1 | @available(*, unavailable, message: "This type has moved to the FoundationNetworking module. Import that module to 
+use it.")
+2 | public typealias HTTPURLResponse = AnyObject
+  |                  `- note: 'HTTPURLResponse' has been explicitly marked unavailable here
+[7/19] Compiling ElevateoCoreTests DraftTests.swift
+/workspace/ios/ElevateoCore/Tests/ElevateoCoreTests/APIClientTests.swift:118:34: error: cannot find type 'URLRequest' 
+in scope
+116 |     func testRejectedRedirectIsTyped() async throws {
+117 |         struct RedirectingTransport: HTTPTransport {
+118 |             func send(_ request: URLRequest, limits: ResponseLimits) async throws -> (Data, HTTPURLResponse) {
+    |                                  `- error: cannot find type 'URLRequest' in scope
+119 |                 throw TransportRejection.redirectRejected
+120 |             }
+
+/workspace/ios/ElevateoCore/Tests/ElevateoCoreTests/APIClientTests.swift:118:93: error: 'HTTPURLResponse' is 
+unavailable: This type has moved to the FoundationNetworking module. Import that module to use it.
+116 |     func testRejectedRedirectIsTyped() async throws {
+117 |         struct RedirectingTransport: HTTPTransport {
+118 |             func send(_ request: URLRequest, limits: ResponseLimits) async throws -> (Data, HTTPURLResponse) {
+    |                                                                                             `- error: 
+'HTTPURLResponse' is unavailable: This type has moved to the FoundationNetworking module. Import that module to use it.
+119 |                 throw TransportRejection.redirectRejected
+120 |             }
+
+Foundation.HTTPURLResponse:2:18: note: 'HTTPURLResponse' has been explicitly marked unavailable here
+1 | @available(*, unavailable, message: "This type has moved to the FoundationNetworking module. Import that module to 
+use it.")
+2 | public typealias HTTPURLResponse = AnyObject
+  |                  `- note: 'HTTPURLResponse' has been explicitly marked unavailable here
+[8/19] Compiling ElevateoCoreTests TestSupport.swift
+/workspace/ios/ElevateoCore/Tests/ElevateoCoreTests/APIClientTests.swift:118:34: error: cannot find type 'URLRequest' 
+in scope
+116 |     func testRejectedRedirectIsTyped() async throws {
+117 |         struct RedirectingTransport: HTTPTransport {
+118 |             func send(_ request: URLRequest, limits: ResponseLimits) async throws -> (Data, HTTPURLResponse) {
+    |                                  `- error: cannot find type 'URLRequest' in scope
+119 |                 throw TransportRejection.redirectRejected
+120 |             }
+
+/workspace/ios/ElevateoCore/Tests/ElevateoCoreTests/APIClientTests.swift:118:93: error: 'HTTPURLResponse' is 
+unavailable: This type has moved to the FoundationNetworking module. Import that module to use it.
+116 |     func testRejectedRedirectIsTyped() async throws {
+117 |         struct RedirectingTransport: HTTPTransport {
+118 |             func send(_ request: URLRequest, limits: ResponseLimits) async throws -> (Data, HTTPURLResponse) {
+    |                                                                                             `- error: 
+'HTTPURLResponse' is unavailable: This type has moved to the FoundationNetworking module. Import that module to use it.
+119 |                 throw TransportRejection.redirectRejected
+120 |             }
+
+Foundation.HTTPURLResponse:2:18: note: 'HTTPURLResponse' has been explicitly marked unavailable here
+1 | @available(*, unavailable, message: "This type has moved to the FoundationNetworking module. Import that module to 
+use it.")
+2 | public typealias HTTPURLResponse = AnyObject
+  |                  `- note: 'HTTPURLResponse' has been explicitly marked unavailable here
+error: fatalError

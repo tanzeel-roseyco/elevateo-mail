@@ -2,7 +2,7 @@
 // sharing notice, granting shows the one-time secret once, a failed revoke surfaces an error while
 // leaving the connection listed, and a failed list load offers a retry. The grant data comes through
 // an in-test ConnectorGrantsGateway fake so no network or real client is involved.
-import { fireEvent, render, screen, waitFor, within } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router'
 import { describe, expect, it, vi } from 'vitest'
 import { createFixtureGateway } from '@/data/fixtures/fixtureGateway'
@@ -54,6 +54,29 @@ function renderConnections(connectorGrants: ConnectorGrantsGateway) {
 }
 
 describe('Connections screen', () => {
+  it('ignores an older list response after a grant reload has completed', async () => {
+    let resolveOlder!: (value: { items: ConnectorGrant[] }) => void
+    const older = new Promise<{ items: ConnectorGrant[] }>((resolve) => { resolveOlder = resolve })
+    const current = { ...GRANT, client_name: 'New connection' }
+    const list = vi.fn<ConnectorGrantsGateway['listConnectorGrants']>()
+      .mockImplementationOnce(() => older)
+      .mockResolvedValue({ items: [current] })
+    renderConnections(fakeGateway({ listConnectorGrants: list }))
+    const grant = await screen.findByRole('button', { name: 'Grant access' })
+    await waitFor(() => expect((grant as HTMLButtonElement).disabled).toBe(false))
+    fireEvent.click(grant)
+    const dialog = await screen.findByRole('dialog', { name: 'Grant a connection' })
+    fireEvent.change(within(dialog).getByLabelText('Connection name'), { target: { value: 'New connection' } })
+    fireEvent.click(within(dialog).getByLabelText('C/D fixture mailbox'))
+    fireEvent.click(within(dialog).getByRole('button', { name: 'Grant access' }))
+    await screen.findByRole('dialog', { name: 'Copy the connection secret' })
+    await waitFor(() => expect(screen.getByRole('heading', { name: 'New connection', hidden: true })).toBeTruthy())
+    // AIDEV-NOTE: the older pre-write snapshot must not erase a newly granted connection.
+    await act(async () => { resolveOlder({ items: [] }); await older })
+    expect(screen.getByRole('heading', { name: 'New connection', hidden: true })).toBeTruthy()
+    expect(list).toHaveBeenCalledTimes(2)
+  })
+
   it('lists each connection with the external-AI sharing notice (happy path)', async () => {
     renderConnections(fakeGateway({ listConnectorGrants: async () => ({ items: [GRANT] }) }))
     // The connection and its client kind are shown, flagged as an external AI.

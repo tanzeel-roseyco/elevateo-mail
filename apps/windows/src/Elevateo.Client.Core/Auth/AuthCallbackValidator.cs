@@ -46,6 +46,7 @@ public sealed class AuthCallbackValidator
         {
             if (_clock.GetUtcNow() > _expiresAt)
             {
+                _consumed = true; // expiry remains terminal even if the wall clock later moves backward
                 return new CallbackResult(CallbackOutcome.Expired, null);
             }
 

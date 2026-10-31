@@ -132,11 +132,14 @@ for (const theme of ['light', 'dark'] as const) {
       document.documentElement.setAttribute('data-theme', t)
     }, theme)
     await openMailbox(page, 'Fixture inbox')
-    // exact: a substring 'Unread' would also match conversation rows carrying the Unread badge.
-    await expect(page.getByRole('link', { name: 'Unread', exact: true })).toBeVisible()
+    const filters = page.getByRole('navigation', { name: 'Filter', exact: true })
+    const hasFilterTabs = (page.viewportSize()?.width ?? 1280) >= 768
+    // Phones intentionally omit the desktop filter tabs; never measure their hidden copy.
+    if (hasFilterTabs) await expect(filters.getByRole('link', { name: 'Unread', exact: true })).toBeVisible()
+    else await expect(filters).not.toBeVisible()
     // Below md the rail copy of the sidebar is display:none, so the active-link measurement must
     // come from the reopened drawer's visible copy — measuring the hidden rail is not evidence of
-    // what the viewer sees. The filter pill stays rendered beneath the modal and measures as-is.
+    // what the viewer sees. Phone layouts omit the filter tabs altogether.
     const trigger = page.getByRole('button', { name: 'Open navigation' })
     const drawerPresentation = await trigger.isVisible()
     if (drawerPresentation) {
@@ -238,11 +241,26 @@ for (const theme of ['light', 'dark'] as const) {
         return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05)
       }
       const surfaceBehind = (el: Element): string => {
+        // AIDEV-NOTE: Composite actual ancestor backgrounds; dark sidebar selection uses translucent white.
+        const layers: string[] = []
         for (let node: Element | null = el; node; node = node.parentElement) {
-          const bg = getComputedStyle(node).backgroundColor
-          if (bg && !bg.includes('rgba(0, 0, 0, 0)') && bg !== 'transparent') return bg
+          const style = getComputedStyle(node)
+          if (style.backgroundImage !== 'none' || style.opacity !== '1') {
+            throw new Error('Contrast oracle does not support background images or element opacity')
+          }
+          layers.unshift(style.backgroundColor)
         }
-        return getComputedStyle(document.body).backgroundColor
+        const canvas = document.createElement('canvas')
+        canvas.width = canvas.height = 1
+        const ctx = canvas.getContext('2d', { colorSpace: 'srgb', willReadFrequently: true })
+        if (!ctx) throw new Error('no 2d canvas context for background composition')
+        for (const layer of layers) {
+          ctx.fillStyle = layer
+          ctx.fillRect(0, 0, 1, 1)
+        }
+        const [r, g, b, alpha] = ctx.getImageData(0, 0, 1, 1).data
+        if (alpha !== 255) throw new Error('No opaque ancestor background; refusing an assumed backdrop')
+        return `rgb(${r}, ${g}, ${b})`
       }
       const results: Record<string, number> = {}
       // Raw computed serializations per surface: the evidence record of what the browser actually
@@ -252,19 +270,19 @@ for (const theme of ['light', 'dark'] as const) {
         raws[key] = `${fg} on ${bg}`
         results[key] = contrast(fg, bg)
       }
-      // Active sidebar item: accent text over the accent-soft tint, measured only on a RENDERED
+      // Active sidebar item: accent text over its current background, measured only on a RENDERED
       // copy (the drawer's below md, the rail's otherwise) — a display:none rail copy has no
       // client rects and is skipped, so a missing visible copy fails the must-measure check below.
       const active = Array.from(
-        document.querySelectorAll('nav[aria-label="Mailboxes"] a[aria-current="page"]'),
+        document.querySelectorAll('nav[aria-labelledby="sidebar-mail"] a[aria-current="page"]'),
       ).find((el) => el.getClientRects().length > 0)
       if (active) measure('sidebar-active', getComputedStyle(active).color, surfaceBehind(active))
       // Active filter pill in the content area.
       const pill = document.querySelector('nav[aria-label="Filter"] a[aria-current="page"]')
-      if (pill) measure('filter-active', getComputedStyle(pill).color, surfaceBehind(pill))
-      // Focus indicator color against the panel surface.
+      if (pill && pill.getClientRects().length > 0) measure('filter-active', getComputedStyle(pill).color, surfaceBehind(pill))
+      // Current accent text token against both panel surfaces.
       const probe = document.createElement('span')
-      probe.style.color = 'var(--accent-text)'
+      probe.style.color = 'var(--color-accent-content)'
       probe.style.backgroundColor = 'var(--surface)'
       document.body.append(probe)
       measure('accent-on-surface', getComputedStyle(probe).color, getComputedStyle(probe).backgroundColor)
@@ -290,7 +308,7 @@ for (const theme of ['light', 'dark'] as const) {
     test.info().annotations.push({ type: `computed-colors-${theme}`, description: JSON.stringify(raws) })
     // Every measured surface must actually be present: a missing active-sidebar or active-filter
     // selector is a failure, not a silent skip of that contrast measurement.
-    for (const key of ['sidebar-active', 'filter-active', 'accent-on-surface', 'accent-on-surface-2']) {
+    for (const key of ['sidebar-active', ...(hasFilterTabs ? ['filter-active'] : []), 'accent-on-surface', 'accent-on-surface-2']) {
       expect(Object.keys(ratios), `surface not found/measured: ${key}`).toContain(key)
     }
     for (const [surface, ratio] of Object.entries(ratios)) {
@@ -307,12 +325,18 @@ for (const theme of ['light', 'dark'] as const) {
 test('animations respect the reduced-motion preference (FE-R16)', async ({ page }) => {
   await page.goto(ENTRY)
   await expect(page.getByText('Simulated local mail')).toBeVisible()
+  await page.goto(`${ENTRY}#/settings/tags`)
+  const tagHeader = page.getByRole('heading', { name: 'Tags', exact: true }).locator('..')
+  await tagHeader.getByRole('button', { name: 'Add New Tag', exact: true }).click()
+  const swatch = page.getByRole('radio', { checked: true })
+  await expect(swatch).toBeVisible()
+  await swatch.hover()
   const probe = await page.evaluate(() => {
     const pulse = document.createElement('div')
-    pulse.className = 'animate-pulse' // the skeleton animation class actually shipped in the bundle
+    pulse.className = 'animate-pulse' // the same class the real Skeleton uses
     document.body.append(pulse)
     const pulseStyle = getComputedStyle(pulse)
-    const transitioned = document.querySelector('.transition') // e.g. the drawer trigger button
+    const transitioned = document.querySelector('[role="radio"][aria-checked="true"]')
     const result = {
       reduce: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
       animationName: pulseStyle.animationName,
@@ -332,7 +356,8 @@ test('animations respect the reduced-motion preference (FE-R16)', async ({ page 
     expect(seconds(probe.transitionDuration!), `transition-duration ${probe.transitionDuration}`).toBeLessThanOrEqual(0.001)
   } else {
     expect(seconds(probe.animationDuration), `animation-duration ${probe.animationDuration}`).toBeGreaterThanOrEqual(1)
-    expect(seconds(probe.transitionDuration!), `transition-duration ${probe.transitionDuration}`).toBeGreaterThanOrEqual(0.1)
+    // The real tag swatch specifies duration-75; verify that exact non-reduced duration.
+    expect(seconds(probe.transitionDuration!), `transition-duration ${probe.transitionDuration}`).toBeCloseTo(0.075, 5)
   }
 })
 
@@ -344,8 +369,16 @@ test('no request leaves for remote hosts while reading hostile content', async (
   })
   await page.goto(ENTRY)
   await openMailbox(page, 'Fixture inbox')
-  await page.locator('a[data-thread]').first().click()
+  const hostileThread = page.getByRole('link', { name: /\(no subject\)/ })
+  // AIDEV-NOTE: Hover/focus must not reveal desktop actions over the phone link before the security check.
+  await hostileThread.hover()
+  await hostileThread.focus()
+  if ((page.viewportSize()?.width ?? 1280) < 768) {
+    await expect(hostileThread.locator('..').getByRole('button', { name: /^Mark .* as (unread|read)$/ })).toHaveCount(0)
+  }
+  await hostileThread.click()
   await expect(page.getByText('alert(1)', { exact: false })).toBeVisible()
+  await expect(page.locator('article script, article img, article iframe')).toHaveCount(0)
   expect(external).toEqual([])
 })
 

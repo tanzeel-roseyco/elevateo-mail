@@ -33,6 +33,17 @@ public sealed class AppServices
         AgentsBridge = new UnavailableAgentsBridge();
     }
 
+    // AIDEV-NOTE: explicit dependencies let UI regressions exercise delayed API results without live endpoints.
+    public AppServices(ClientConfiguration configuration, AuthSession session, IElevateoApiClient api,
+        LoopbackAuthenticator authenticator, IAgentsBridge agentsBridge)
+    {
+        Configuration = configuration;
+        Session = session;
+        Api = api;
+        Authenticator = authenticator;
+        AgentsBridge = agentsBridge;
+    }
+
     public static AppServices Create()
     {
         var settingsPath = Path.Combine(AppContext.BaseDirectory, "appsettings.json");

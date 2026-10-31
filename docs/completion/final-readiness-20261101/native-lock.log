@@ -1,0 +1,18 @@
+docker :     Updating crates.io index
+At line:2 char:38
++ ... top-linux'; docker run --rm --memory=512m --cpus=1 --mount "type=bind ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Updating crates.io index:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+     Locking 514 packages to latest compatible versions
+      Adding base64 v0.22.1 (available: v0.23.1)
+      Adding generic-array v0.14.7 (available: v0.14.9)
+      Adding keyring v3.6.3 (available: v4.2.0)
+      Adding rand v0.8.8 (available: v0.10.3)
+      Adding sha2 v0.10.9 (available: v0.11.1)
+      Adding tauri v2.12.3 (available: v2.12.5)
+      Adding tauri-build v2.7.2 (available: v2.7.4)
+      Adding toml v0.8.2 (available: v0.8.23)
+      Adding toml_datetime v0.6.3 (available: v0.6.11)
+      Adding toml_edit v0.20.2 (available: v0.20.7)

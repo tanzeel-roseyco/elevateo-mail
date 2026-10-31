@@ -39,6 +39,8 @@ import {
   type ThreadSummary,
 } from '../contract'
 import type { MailroomGateway } from '../gateway'
+import type { AssigneeOptionsReadPort } from '../v2AssigneeOptionsGateway'
+import { MailboxAssigneeOptionPageSchema } from '../v2Contract'
 import { CD_FIXTURE, CollaborationState, type ThreadSeed } from './collaborationState'
 
 type Operation =
@@ -254,7 +256,7 @@ export function createCollaborationState(): CollaborationState {
   return new CollaborationState({ threads: threadSeeds() })
 }
 
-export function createFixtureGateway(script: FixtureScript = {}, options: FixtureGatewayOptions = {}): MailroomGateway {
+export function createFixtureGateway(script: FixtureScript = {}, options: FixtureGatewayOptions = {}): MailroomGateway & AssigneeOptionsReadPort {
   const state = options.state ?? createCollaborationState()
   const envelope = () => ({ context_id: CD_FIXTURE.contextId, authorization_version: state.authorizationVersion })
   /** Scripted C/D operations answer from the example; otherwise the state decides. */
@@ -268,7 +270,7 @@ export function createFixtureGateway(script: FixtureScript = {}, options: Fixtur
   }
 
   // Named so composed methods (the organization list) can reuse the per-mailbox adapters.
-  const gateway: MailroomGateway = {
+  const gateway: MailroomGateway & AssigneeOptionsReadPort = {
     // BE03 has no implicit synthetic success: tests explicitly supply send methods.
     getSendReview: async (_ctx, _draftId, _mailboxId, signal) => { throwIfAborted(signal); throw new GatewayError('api', 'temporarily_unavailable', 'Send review is unavailable in this fixture.', { status: 503 }) },
     approveDraftSend: async (_ctx, _proof, _draftId, _input, signal) => { throwIfAborted(signal); throw new GatewayError('api', 'temporarily_unavailable', 'Send approval is unavailable in this fixture.', { status: 503 }) },
@@ -411,6 +413,30 @@ export function createFixtureGateway(script: FixtureScript = {}, options: Fixtur
     setThreadStar: async (_ctx, _proof, threadId, input, signal) => {
       throwIfAborted(signal)
       return scripted('setThreadStar', ThreadStarStateSchema) ?? validated(ThreadStarStateSchema, state.setStar(threadId, input.mailbox_id, input.starred))
+    },
+    // AIDEV-NOTE: This fixture-only V2 port exposes the same eligible targets accepted by assignment writes.
+    listMailboxAssigneeOptions: async (ctx, mailboxId, query, signal) => {
+      throwIfAborted(signal)
+      if (ctx.contextId !== CD_FIXTURE.contextId || ctx.authorizationVersion !== state.authorizationVersion) {
+        throw new GatewayError('api', 'context_changed', 'The fixture context changed.', { status: 409 })
+      }
+      const mailboxes = await gateway.listMailboxes(ctx, {}, signal)
+      throwIfAborted(signal)
+      if (!mailboxes.items.some((mailbox) => mailbox.id === mailboxId)) {
+        throw new GatewayError('api', 'not_available', 'This mailbox is unavailable.', { status: 404 })
+      }
+      const limit = query.limit ?? 50
+      const ids = state.assigneeIds()
+      if (!Number.isInteger(limit) || limit < 1 || limit > 50 ||
+          (query.cursor !== undefined && !ids.includes(query.cursor))) {
+        throw new GatewayError('transport', 'malformed', 'Invalid assignee option pagination.')
+      }
+      const start = query.cursor === undefined ? 0 : ids.indexOf(query.cursor) + 1
+      const items = ids.slice(start, start + limit).map((user_id) => ({ user_id }))
+      return validated(MailboxAssigneeOptionPageSchema, {
+        ...envelope(), mailbox_id: mailboxId, items,
+        next_cursor: start + limit < ids.length ? items.at(-1)?.user_id : null,
+      })
     },
     getThreadAssignment: async (_ctx, threadId, mailboxId, signal) => {
       throwIfAborted(signal)

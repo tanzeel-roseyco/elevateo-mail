@@ -95,7 +95,8 @@ describe('BE03 saved review and approval', () => {
     await screen.findByRole('heading', { name: 'Send intent: queued' })
     expect(g.approveDraftSend).toHaveBeenCalledWith(expect.anything(), expect.objectContaining({ csrfToken: expect.any(String) }), CD.draftId, expect.objectContaining({ mailbox_id: CD.mailboxId, expected_version: 1, review_digest: REVIEW.review_digest, correspondence_confirmed: true }), expect.any(AbortSignal))
     expect(g.getSendStatus).toHaveBeenCalledWith(expect.anything(), APPROVAL.send_id, CD.mailboxId, expect.any(AbortSignal))
-    expect(screen.getByText(/durably queued/)).not.toBeNull()
+    // Exact sentence: the status timeline repeats "durably queued" in its Queued step.
+    expect(screen.getByText('The approved intent is durably queued. No delivery is established.')).not.toBeNull()
   })
   it('requires explicit live approval and preserves live status wording', async () => {
     const g = gateway({ getSendReview: async () => ({ ...REVIEW, simulated: false, outbound_mode: 'resend' as const, recipient_checks: [{ index: 0, status: 'ok' as const, consent_evidence: true }] }), approveDraftSend: vi.fn(async () => ({ ...APPROVAL, simulated: false })), getSendStatus: async () => ({ ...STATUS, simulated: false }) })
