@@ -27,9 +27,11 @@ if [[ $signing_set -ne 0 && $signing_set -ne ${#signing_vars[@]} ]]; then
 fi
 
 export CARGO_HOME="$APK_BUILD_ROOT/cargo-home"
-export CARGO_TARGET_DIR="$APK_BUILD_ROOT/cargo-target" CARGO_BUILD_JOBS=4
+export CARGO_TARGET_DIR="$APK_BUILD_ROOT/cargo-target"
+# AIDEV-NOTE: Preserve caller throttling; Docker Desktop is shared with other verification workers.
+export CARGO_BUILD_JOBS="${CARGO_BUILD_JOBS:-1}"
 export GRADLE_USER_HOME="$APK_BUILD_ROOT/gradle"
-export GRADLE_OPTS='-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dorg.gradle.jvmargs=-Xmx2048m'
+export GRADLE_OPTS="${GRADLE_OPTS:--Dorg.gradle.daemon=false -Dorg.gradle.workers.max=1 -Dorg.gradle.jvmargs=-Xmx1024m}"
 export ELEVATEO_WEB_ORIGIN=https://elevateo.qa.internal ELEVATEO_NATIVE_ARTIFACT=isolated-qa
 mkdir -p "$CARGO_HOME" "$CARGO_TARGET_DIR" "$GRADLE_USER_HOME"
 

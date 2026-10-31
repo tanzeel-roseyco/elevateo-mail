@@ -2697,3 +2697,5 @@ argument error and two test compile/analyzer errors; all repaired before the pas
 Coverage denominators overlap; do not sum them as unique code coverage. Obsidian tools were
 unavailable; design scenarios were analytical, not Obsidian-backed. Web runtime verification is pending.
 Web runtime follow-up: one invalid status-wrapper nesting defect repaired. Bounded repair review: 106 LOC, zero residual defects (0/KLOC). Batched boundary-test fixture follow-up: 36 LOC, zero defects (0/KLOC). Full Docker rerun: 1,195 tests pass. See the November 1 web receipt and review table.
+
+Android resource-control review: 163 LOC, one defect (6.13/KLOC): APK entrypoint overrode caller limits. Repair review: 80 LOC, zero residual defects (0/KLOC). Three script-execution regressions pass in Docker; no actual OOM or APK success claimed.

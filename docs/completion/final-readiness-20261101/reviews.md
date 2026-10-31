@@ -76,3 +76,5 @@ Runtime HTML nesting repair: ThreadPage.tsx:350-380 (31), ThreadPage.test.tsx:16
 Browser design review: playwright.config.ts:1-28, production.spec.ts:1-100, launch-visual-capture.cjs:1-72: 200 LOC, zero defects, 0/KLOC. Production URL tests mock APIs and do not establish backend integration. Operational follow-up: acceptance_runtime.py:39-110, run.py:115-175, run_focused_acceptance.py:1-50: 183 LOC, zero product defects, 0/KLOC; the existing backend browser harness rejects Windows paths and requires POSIX ownership.
 
 Batched boundary-test fixture follow-up: ConnectionsReadiness.test.tsx:1-36, 36 LOC, zero defects, 0/KLOC. Event-driven selection still distinguishes accepted 50 and rejected 51 selections. Full Docker runtime passes.
+
+Android resource-control review: 163 LOC, one defect (6.13/KLOC): APK entrypoint overrode caller limits. Repair review: 80 LOC, zero residual defects (0/KLOC). Three script-execution regressions pass in Docker; no actual OOM or APK success claimed.

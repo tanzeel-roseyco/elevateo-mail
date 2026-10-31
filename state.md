@@ -73,3 +73,6 @@ Evidence: [Windows receipt](docs/completion/final-readiness-20261101/windows-rec
 ## Client web verification checkpoint — 2026-11-01
 
 Docker Desktop final web gate passed: lint, typecheck, 1,195 tests / 99 files, production build and bundle budget. Five product defects repaired with regressions; browser visual verification remains pending. See docs/completion/final-readiness-20261101/web-receipt.md. Native/Android/iOS verification remains in progress; no deployment.
+
+
+Android resource-limit repair — 2026-11-01: the APK entrypoint now preserves caller Cargo/Gradle limits with conservative defaults. Docker tests: 42 package + 26 build/helper tests pass, including three executable configuration regressions. APK/emulator results remain pending/not run respectively. See November 1 evidence.
