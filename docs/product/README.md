@@ -18,7 +18,7 @@ The product is not deployed yet. Some client apps have not completed their final
 
 Sign in with your company account through Authentik, the company's single sign-on service. You see only the mailboxes your organization has given you access to.
 
-Clients exist for web, macOS, Windows, Android and iOS. They all connect to the same server.
+Clients exist for web, macOS, Windows, Android and iOS. They all connect to the same server. To add the web app to your device, read [Install the app](install-app.md). For the look of the app, read [Appearance](appearance.md).
 
 ## Read mail
 
