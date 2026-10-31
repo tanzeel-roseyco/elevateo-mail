@@ -7,14 +7,17 @@ require_relative "../../lib/elevateo/email_finder/worker"
 class EmailFinderWorkerTest < Minitest::Test
   class MemoryRepository
     attr_reader :states, :writes
+    attr_accessor :current_item
     def initialize
       @states = {}
       @writes = []
+      @current_item = nil
     end
     def state_get(key) = @states.fetch(key, {})
     def state_put(key, value) = @states[key] = value
     def rows(sql, args = [])
       @writes << [sql, args]
+      return [@current_item] if sql.include?("SELECT row_number AS row,input,work,result") && @current_item
       if sql.include?("VALUES('smtp'")
         @states["smtp"] = JSON.parse(args[0])
         @states[args[1]] = JSON.parse(args[2])
@@ -55,7 +58,7 @@ class EmailFinderWorkerTest < Minitest::Test
     @repository.state_put("health", { "available" => true })
     work = { "candidates" => [{ "email" => "jane@example.com", "pattern" => "first" }], "index" => 0,
       "attempts" => 3, "catch_attempts" => 1, "catch_all" => false, "host" => "mx.example.com", "sources" => [] }
-    result = @worker.verify({}, [], work, "org", {})
+    result = @worker.verify({}, {}, work, "org", {})
     assert_equal "unknown", result.fetch("status")
     assert_empty @repository.writes
   end
@@ -64,7 +67,7 @@ class EmailFinderWorkerTest < Minitest::Test
     @repository.state_put("health", { "available" => true })
     work = { "candidates" => [{ "email" => "jane@example.com", "pattern" => "first" }], "index" => 0,
       "catch_all" => true, "host" => "mx.example.com", "sources" => [], "patterns" => { "first" => 4 }, "emails" => [] }
-    result = @worker.verify({}, [], work, "org", {})
+    result = @worker.verify({}, {}, work, "org", {})
     assert_equal "risky", result.fetch("status")
     assert_empty @repository.writes
   end
@@ -100,14 +103,33 @@ class EmailFinderWorkerTest < Minitest::Test
       "attempts" => 0, "catch_attempts" => 1, "catch_all" => true, "host" => "mx.example.com", "sources" => [], "patterns" => {}, "emails" => [] }
     items = [{ "row" => 1, "input" => { "email" => "old@example.com" }, "result" => prior },
       { "row" => 2, "input" => { "email" => "jane@example.com" }, "work" => work }]
-    job = { "id" => "job", "organization_id" => "org", "kind" => "verify", "completed" => 1, "total" => 2, "items" => JSON.generate(items) }
+    @repository.current_item = items.last
+    job = { "id" => "job", "organization_id" => "org", "kind" => "verify", "completed" => 1, "total" => 2 }
     @worker.process(job)
     completion = @repository.writes.find { |sql, _| sql.include?("SET completed=") }.last
     assert_equal ["job", 2, "completed"], completion.first(3)
-    resumed = JSON.parse(completion.fetch(3))
-    assert_equal prior, resumed.first.fetch("result")
-    assert_equal "risky", resumed.last.fetch("result").fetch("status")
-    refute resumed.last.key?("work")
+    assert_equal "risky", JSON.parse(completion.fetch(3)).fetch("status")
+    assert_equal prior, items.first.fetch("result")
+    refute items.last.key?("work")
+    assert(@repository.writes.any? { |sql, args| sql.include?("row_number=$2::integer") && args == ["job", 2] })
+  end
+
+  def test_save_writes_only_current_work_and_scheduling_in_one_statement
+    @worker.save({ "id" => "job" }, { "row" => 5000, "work" => { "attempts" => 2 } }, 60)
+    sql, args = @repository.writes.last
+    assert_includes sql, "UPDATE app.email_finder_job_items"
+    assert_includes sql, "WHERE id IN (SELECT job_id FROM saved)"
+    assert_equal ["job", 5000, '{"attempts":2}', 60], args
+  end
+
+  def test_pattern_lookup_has_indexable_domain_predicate_and_no_nullable_or
+    @worker.pattern_counts("org", "example.com")
+    sql, args = @repository.writes.last
+    assert_includes sql, "split_part(email,'@',2)=$2"
+    refute_includes sql, " OR "
+    assert_equal ["org", "example.com"], args
+    @worker.pattern_counts("org", nil)
+    assert_equal ["org"], @repository.writes.last.last
   end
 
   def test_person_opt_out_covers_unconfirmed_predictable_emails_but_not_unrelated_people

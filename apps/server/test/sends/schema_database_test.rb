@@ -109,16 +109,21 @@ class SendSchemaDatabaseTest < SendDatabaseTestCase
   end
   def test_empty_down_removes_only_send_objects_and_transaction_rollback_restores_them
     @admin.exec("BEGIN")
-    # AIDEV-NOTE: Detach later typed-function/FK dependencies, including Mox; rollback restores exact definitions.
+    # AIDEV-NOTE: Detach later typed-function/FK dependencies, including enrollment; rollback restores definitions.
     dependencies = @admin.exec(<<~SQL).to_a
       SELECT conrelid::regclass::text AS relation,conname,pg_get_constraintdef(oid) AS definition
         FROM pg_constraint WHERE contype='f'
           AND conrelid IN ('app_send_private.resend_events'::regclass,
-            'app_send_private.resend_delivery'::regclass,'app_send_private.resend_acceptance'::regclass)
+            'app_send_private.resend_delivery'::regclass,'app_send_private.resend_acceptance'::regclass,
+            'app.marketing_enrollments'::regclass)
           AND confrelid IN ('app_send_private.intents'::regclass,'app_send_private.attempts'::regclass)
         ORDER BY conrelid,conname
     SQL
-    assert_equal 3, dependencies.length
+    assert_equal 4, dependencies.length
+    enrollment = dependencies.find { |dependency| dependency.fetch("relation") == "app.marketing_enrollments" }
+    refute_nil enrollment
+    assert_equal "enrollment_intent_identity_fk", enrollment.fetch("conname")
+    assert_equal "FOREIGN KEY (organization_id, draft_id, send_id) REFERENCES app_send_private.intents(organization_id, draft_id, send_id)", enrollment.fetch("definition")
     dependencies.each do |dependency|
       @admin.exec("ALTER TABLE #{dependency.fetch("relation")} DROP CONSTRAINT #{PG::Connection.quote_ident(dependency.fetch("conname"))}")
     end

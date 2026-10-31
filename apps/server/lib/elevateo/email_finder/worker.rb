@@ -42,34 +42,34 @@ module Elevateo
 
       def process(job)
         org = job.fetch("organization_id").to_s
-        items = @repository.object(job.fetch("items"))
-        index = job.fetch("completed").to_i
-        item = items.fetch(index)
+        # AIDEV-NOTE: Resume one child row; retries never rewrite the other 4,999 inputs/results.
+        item = @repository.rows("SELECT row_number AS row,input,work,result FROM app.email_finder_job_items WHERE job_id=$1::uuid AND row_number=$2::integer", [job.fetch("id"), job.fetch("completed").to_i + 1]).fetch(0)
+        %w[input work result].each { |key| item[key] = @repository.object(item[key]) if item[key] }
         input = item.fetch("input")
         if @repository.suppressed?(org, input)
-          return finish(job, items, @repository.suppressed_result)
+          return finish(job, item, @repository.suppressed_result)
         end
         key = Digest::SHA256.hexdigest(JSON.generate([job.fetch("kind"), input.sort.to_h]))
         cached = @repository.rows("SELECT result FROM app.email_finder_results WHERE organization_id=$1::uuid AND cache_key=$2 AND checked_at>now()-interval '30 days'", [org, key]).first
-        return finish(job, items, @repository.object(cached.fetch("result"))) if cached
+        return finish(job, item, @repository.object(cached.fetch("result"))) if cached
         work = item["work"]
         unless work
           work = discover(job.fetch("kind"), input, org)
           item["work"] = work
-          save(job, items)
+          save(job, item)
         end
-        result = work["result"] || verify(job, items, work, org, input)
+        result = work["result"] || verify(job, item, work, org, input)
         return unless result
         result = @repository.suppressed_result if @repository.suppressed?(org, input.merge("email" => result["email"], "name" => result["name"] || input["name"]))
         @repository.rows(<<~SQL, [org, key, JSON.generate(input), JSON.generate(result)])
           INSERT INTO app.email_finder_results(organization_id,cache_key,input,result) VALUES($1::uuid,$2,$3::jsonb,$4::jsonb)
           ON CONFLICT(organization_id,cache_key) DO UPDATE SET result=EXCLUDED.result,input=EXCLUDED.input,checked_at=now()
         SQL
-        finish(job, items, result)
+        finish(job, item, result)
       rescue StandardError => error
         # AIDEV-NOTE: Persist a safe per-row failure, not scraped content or exception messages containing addresses.
-        raise unless items && job
-        finish(job, items, result("unknown", reasons: ["Worker error: #{error.class.name}"]))
+        raise unless item && job
+        finish(job, item, result("unknown", reasons: ["Worker error: #{error.class.name}"]))
       end
 
       def discover(kind, input, org)
@@ -111,13 +111,18 @@ module Elevateo
       end
 
       def pattern_counts(org, domain)
-        rows = @repository.rows("SELECT patterns FROM app.email_finder_people WHERE organization_id=$1::uuid AND ($2::text IS NULL OR domain=$2)", [org, domain])
+        # AIDEV-NOTE: Separate predicates let the expression index serve domain-specific learning.
+        rows = if domain
+          @repository.rows("SELECT patterns FROM app.email_finder_people WHERE organization_id=$1::uuid AND split_part(email,'@',2)=$2", [org, domain])
+        else
+          @repository.rows("SELECT patterns FROM app.email_finder_people WHERE organization_id=$1::uuid", [org])
+        end
         counts = {} # @type var counts: Hash[String, Integer]
         rows.each { |row| @repository.object(row.fetch("patterns")).each { |pattern| counts[pattern] = counts.fetch(pattern, 0) + 1 } }
         counts
       end
 
-      def verify(job, items, work, org, input)
+      def verify(job, item, work, org, input)
         candidates = work.fetch("candidates")
         candidate = candidates[work.fetch("index")]
         return result("unknown", reasons: ["Candidate probe limit reached"], sources: work.fetch("sources")) unless candidate
@@ -138,13 +143,13 @@ module Elevateo
         end
         delay = reserve_probe(work.fetch("host"))
         if delay
-          save(job, items, delay)
+          save(job, item, delay)
           return nil
         end
         email = catch_probe ? "#{SecureRandom.hex(10)}@#{work.fetch('domain')}" : candidate.fetch("email")
         counter = catch_probe ? "catch_attempts" : "attempts"
         work[counter] += 1
-        save(job, items)
+        save(job, item)
         smtp = @smtp || raise("SMTP startup required")
         reply = smtp.probe(host: work.fetch("host"), email: email)
         apply_backoff(work.fetch("host"), reply)
@@ -152,7 +157,7 @@ module Elevateo
           if work[counter] >= 3
             return decorate(result("unknown", reasons: ["SMTP did not provide a conclusive answer"]), work)
           end
-          save(job, items, reply["blocklisted"] ? 86_400 : 3600)
+          save(job, item, reply["blocklisted"] ? 86_400 : 3600)
           return nil
         end
         if catch_probe
@@ -161,7 +166,7 @@ module Elevateo
             INSERT INTO app.email_finder_domains(organization_id,domain,data) VALUES($1::uuid,$2,$3::jsonb)
             ON CONFLICT(organization_id,domain) DO UPDATE SET data=EXCLUDED.data,checked_at=now()
           SQL
-          save(job, items, 60)
+          save(job, item, 60)
           return nil
         end
         if reply["status"] == "valid"
@@ -170,7 +175,7 @@ module Elevateo
         end
         return decorate(result("invalid", email: candidate["email"], reasons: ["SMTP recipient rejected"]), work) if job["kind"] == "verify"
         work["index"] += 1
-        save(job, items, 60)
+        save(job, item, 60)
         nil
       end
 
@@ -203,8 +208,8 @@ module Elevateo
         return if name.empty?
         patterns = Core.patterns_for(name, candidate.fetch("email"))
         name = Input.suppression("person", name)
-        @repository.rows(<<~SQL, [org, candidate.fetch("email"), name, work.fetch("domain"), JSON.generate(patterns)])
-          INSERT INTO app.email_finder_people(organization_id,email,name,domain,patterns) VALUES($1::uuid,$2,$3,$4,$5::jsonb)
+        @repository.rows(<<~SQL, [org, Input.email(candidate.fetch("email")), name, JSON.generate(patterns)])
+          INSERT INTO app.email_finder_people(organization_id,email,name,patterns) VALUES($1::uuid,$2,$3,$4::jsonb)
           ON CONFLICT(organization_id,email) DO UPDATE SET name=EXCLUDED.name,patterns=EXCLUDED.patterns,checked_at=now()
         SQL
       end
@@ -222,17 +227,29 @@ module Elevateo
         value
       end
 
-      def save(job, items, delay = 0)
-        @repository.rows("UPDATE app.email_finder_jobs SET status='running',items=$2::jsonb,next_at=now()+($3::integer*interval '1 second') WHERE id=$1::uuid", [job.fetch("id"), JSON.generate(items), delay])
+      def save(job, item, delay = 0)
+        # AIDEV-NOTE: Child state and scheduling commit together, including pre-probe reservations.
+        @repository.rows(<<~SQL, [job.fetch("id"), item.fetch("row"), JSON.generate(item.fetch("work")), delay])
+          WITH saved AS (
+            UPDATE app.email_finder_job_items SET work=$3::jsonb
+            WHERE job_id=$1::uuid AND row_number=$2::integer RETURNING job_id
+          ) UPDATE app.email_finder_jobs SET status='running',next_at=now()+($4::integer*interval '1 second')
+            WHERE id IN (SELECT job_id FROM saved)
+        SQL
         nil
       end
 
-      def finish(job, items, value)
+      def finish(job, item, value)
         completed = job.fetch("completed").to_i + 1
-        item = items.fetch(completed - 1)
         item["result"] = value
         item.delete("work")
-        @repository.rows("UPDATE app.email_finder_jobs SET completed=$2::integer,status=$3,items=$4::jsonb,next_at=now() WHERE id=$1::uuid", [job.fetch("id"), completed, completed == job.fetch("total").to_i ? "completed" : "running", JSON.generate(items)])
+        @repository.rows(<<~SQL, [job.fetch("id"), completed, completed == job.fetch("total").to_i ? "completed" : "running", JSON.generate(value)])
+          WITH finished AS (
+            UPDATE app.email_finder_job_items SET result=$4::jsonb,work=NULL
+            WHERE job_id=$1::uuid AND row_number=$2::integer RETURNING job_id
+          ) UPDATE app.email_finder_jobs SET completed=$2::integer,status=$3,next_at=now()
+            WHERE id IN (SELECT job_id FROM finished)
+        SQL
         nil
       end
     end

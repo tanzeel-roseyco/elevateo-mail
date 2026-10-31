@@ -79,10 +79,12 @@ module Elevateo
         org = WriteInput.uuid(organization_id)
         address = Input.email(email)
         WriteInput.invalid! unless %w[unsubscribe bounce manual].include?(reason)
+        # AIDEV-NOTE: A later bounce must strengthen an existing marketing opt-out; never downgrade delivery safety.
         rows(<<~SQL, [org, address, reason])
           INSERT INTO app.campaign_suppressions(organization_id,email,reason)
           VALUES ($1::uuid,$2,$3)
-          ON CONFLICT (organization_id,email) DO NOTHING
+          ON CONFLICT (organization_id,email) DO UPDATE SET reason='bounce'
+            WHERE EXCLUDED.reason='bounce' AND campaign_suppressions.reason<>'bounce'
           RETURNING email
         SQL
         address
@@ -98,7 +100,7 @@ module Elevateo
               AND s.email IS NULL)::integer AS consented_count
           FROM app.campaigns c
           LEFT JOIN app.campaign_leads l ON l.organization_id=c.organization_id AND l.campaign_id=c.id
-          LEFT JOIN app.campaign_suppressions s ON s.organization_id=c.organization_id AND s.email=l.email
+          LEFT JOIN app.campaign_suppressions s ON s.organization_id=c.organization_id AND s.email=lower(l.email)
           WHERE c.organization_id=$1::uuid AND c.id=$2::uuid
           GROUP BY c.id
         SQL
@@ -210,7 +212,8 @@ module Elevateo
 
       def selection_for(kind)
         return "*" unless kind == "lead"
-        "*, EXISTS (SELECT 1 FROM app.campaign_suppressions s WHERE s.organization_id=campaign_leads.organization_id AND s.email=campaign_leads.email) AS globally_suppressed"
+        # AIDEV-NOTE: Only the lead snapshot is folded; the persisted suppression key uses its primary-key index.
+        "*, EXISTS (SELECT 1 FROM app.campaign_suppressions s WHERE s.organization_id=campaign_leads.organization_id AND s.email=lower(campaign_leads.email)) AS globally_suppressed"
       end
 
       def account_mailbox_visible

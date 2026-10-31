@@ -1,0 +1,81 @@
+[
+    {
+        "Name": "[opaque value redacted]",
+        "Id": "[opaque value redacted]",
+        "Created": "2026-10-31T14:30:15.365559538Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv4": true,
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": null,
+            "Config": [
+                {
+                    "Subnet": "172.23.0.0/16",
+                    "Gateway": "172.23.0.1"
+                }
+            ]
+        },
+        "Internal": true,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Options": {
+            "com.docker.network.enable_ipv4": "true",
+            "com.docker.network.enable_ipv6": "false"
+        },
+        "Labels": {
+            "com.docker.compose.config-hash": "[opaque value redacted]",
+            "com.docker.compose.network": "isolated",
+            "com.docker.compose.project": "elevateo-final-5aae5c14372a",
+            "com.docker.compose.version": "5.3.1",
+            "elevateo.be02.project": "elevateo-final-5aae5c14372a"
+        },
+        "Containers": {
+            "[opaque value redacted]": {
+                "Name": "[opaque value redacted]",
+                "EndpointID": "[opaque value redacted]",
+                "MacAddress": "de:ad:80:26:eb:b0",
+                "IPv4Address": "172.23.0.3/16",
+                "IPv6Address": ""
+            },
+            "[opaque value redacted]": {
+                "Name": "[opaque value redacted]",
+                "EndpointID": "[opaque value redacted]",
+                "MacAddress": "4a:e1:35:60:86:88",
+                "IPv4Address": "172.23.0.4/16",
+                "IPv6Address": ""
+            },
+            "[opaque value redacted]": {
+                "Name": "[opaque value redacted]",
+                "EndpointID": "[opaque value redacted]",
+                "MacAddress": "4a:3b:41:7a:f7:e6",
+                "IPv4Address": "172.23.0.5/16",
+                "IPv6Address": ""
+            },
+            "[opaque value redacted]": {
+                "Name": "[opaque value redacted]",
+                "EndpointID": "[opaque value redacted]",
+                "MacAddress": "f6:fe:84:e5:82:05",
+                "IPv4Address": "172.23.0.2/16",
+                "IPv6Address": ""
+            }
+        },
+        "Status": {
+            "IPAM": {
+                "Subnets": {
+                    "172.23.0.0/16": {
+                        "IPsInUse": 7,
+                        "DynamicIPsAvailable": 65529
+                    }
+                }
+            }
+        }
+    }
+]
+
+exit=0 seconds=0.10

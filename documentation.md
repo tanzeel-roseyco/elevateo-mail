@@ -6,6 +6,13 @@ This is an orientation to how the system works end to end. Detailed designs are 
 
 ## 1. Authority and boundaries
 
+Database invariants and evidence-backed normalization exceptions are recorded in
+[database design](docs/database-design.md). The schema integrity catalog tests inspect the migrated PostgreSQL
+catalog, including private schemas and later ALTER statements. Finder jobs store one work item per child row;
+delivery suppression keys are canonical lowercase while approved address snapshots retain their original semantics.
+Migrations 111?117 passed Docker up/down/up and the full backend gate; exact counts and retained exceptions are
+recorded in the [schema verification receipt](docs/completion/schema-integrity-20261101/).
+
 The Rails application in `apps/server` and its PostgreSQL database are the only authority for users, mailbox access,
 drafts, send approval and delivery state. Every other component is an adapter:
 

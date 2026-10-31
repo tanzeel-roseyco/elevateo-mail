@@ -21,11 +21,13 @@ class ImapRejectionMigrationTest < ImapRejectionDatabaseTestCase
 
   def test_empty_roundtrip_and_existing_evidence_refusal
     object = migration
+    # AIDEV-NOTE: Roll back historical DDL so newer FK and index migrations survive this lifecycle probe.
+    @admin.exec("BEGIN")
     object.down
-    dropped = true
     assert_nil @admin.exec("SELECT to_regclass('app.inbound_imap_rejections')").getvalue(0, 0)
     object.up
-    dropped = false
+    assert @admin.exec("SELECT to_regclass('app.inbound_imap_rejections')").getvalue(0, 0)
+    @admin.exec("ROLLBACK")
     token = lease.fetch("lease_token")
     assert_equal "rejected", reject_mail(token).fetch("result")
     before = rejections
@@ -33,7 +35,7 @@ class ImapRejectionMigrationTest < ImapRejectionDatabaseTestCase
     assert_equal before, rejections
     assert_equal "duplicate_rejection", reject_mail(token).fetch("result")
   ensure
-    object.up if dropped
+    @admin.exec("ROLLBACK") if @admin.transaction_status != PG::PQTRANS_IDLE
   end
 
   def test_rollback_waits_for_uncommitted_receipt_and_preserves_it

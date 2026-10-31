@@ -7,12 +7,12 @@ class MailboxRotationLoadTest < MailboxRotationTestCase
   def test_712_mailboxes_with_uneven_backlog_history_and_eight_selectors
     template = enqueue
     fixture_change do
-      # AIDEV-NOTE: Only fixture seeding gets a larger timeout; all worker queries retain 3s statement/1s lock limits.
+      # AIDEV-NOTE: Bulk seeding and statistics get 90s; worker queries retain 3s statement/1s lock limits.
       @admin.exec("SET LOCAL statement_timeout='90s'")
       @admin.exec_params("SELECT set_config('test.rotation_template',$1,true)", [template])
       @admin.exec(File.read(File.join(__dir__, "mailbox_rotation_load.sql")))
+      @admin.exec("ANALYZE app_send_private.intents; ANALYZE app_send_private.jobs; ANALYZE app_send_private.mailbox_policy")
     end
-    @admin.exec("ANALYZE app_send_private.intents; ANALYZE app_send_private.jobs; ANALYZE app_send_private.mailbox_policy")
     boxes = @admin.exec_params("SELECT send_id,mailbox_id FROM app_send_private.intents WHERE organization_id=$1", [@org])
       .to_h { |row| [row.fetch("send_id"), row.fetch("mailbox_id")] }
     active = @admin.exec_params("SELECT count(*) FROM app_send_private.jobs j JOIN app_send_private.intents i USING(send_id) WHERE i.organization_id=$1 AND j.state='queued'", [@org]).getvalue(0, 0)
@@ -34,6 +34,16 @@ class MailboxRotationLoadTest < MailboxRotationTestCase
       terminal_history: 14_241, lookups: elapsed.length, p95_ms: (elapsed.sort.fetch(676) * 1000).round(2),
       max_ms: (elapsed.max * 1000).round(2), concurrent_lookups: concurrent.length,
       concurrent_max_ms: (concurrent.max * 1000).round(2), worker_statement_timeout_ms: 3000, worker_lock_timeout_ms: 1000)
+  end
+
+  def teardown
+    # AIDEV-NOTE: Bulk fixture disposal needs its seeding budget; parent teardown closes this admin-only connection.
+    if @admin
+      @admin.exec("ROLLBACK") if @admin.transaction_status != PG::PQTRANS_IDLE
+      @admin.exec("SET statement_timeout='90s'")
+    end
+  ensure
+    super
   end
 
   def concurrent_selections

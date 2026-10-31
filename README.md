@@ -100,7 +100,13 @@ Fill values in the order of [docs/credentials-last.md](docs/credentials-last.md)
 Before deploying, give the email-finder worker (`ELEVATEO_FINDER_PUBLIC_IP`) a different public IP from Mox.
 Its port-25 checks can get an IP blocklisted.
 
-## Current state (2026-10-30)
+## Current state (2026-11-01)
+
+Schema integrity work on this branch covers the complete server DDL and query surface. New reversible migrations
+add relationship indexes and constraints, unify delivery suppression lookup, normalize finder work items, and
+bound materialized attachments. Docker up/down/up and the full backend gate passed: 1,399 standard tests /
+15,907 assertions, dedicated database/mail/API/contracts checks, Steep and RuboCop. See [database design](docs/database-design.md)
+and [schema evidence](docs/completion/schema-integrity-20261101/).
 
 | Area | State |
 | --- | --- |

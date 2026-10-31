@@ -54,7 +54,8 @@ for test_file in "${tests[@]}"; do
   fi
 done
 echo 'RUN Steep'
-if ! timeout -k 3s 180s bundle exec steep check; then
+# AIDEV-NOTE: One worker fits this gate's 1 CPU/768 MiB budget; Steep's eight-worker default exceeds it.
+if ! timeout -k 3s 180s bundle exec steep check --jobs=1; then
   failed=$((failed + 1))
 fi
 echo 'RUN RuboCop lint'

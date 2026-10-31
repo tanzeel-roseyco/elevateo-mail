@@ -92,7 +92,7 @@ module Elevateo
         leads = @repository.rows("SELECT l.id,l.email FROM app.campaign_leads l WHERE l.organization_id=$1::uuid " \
           "AND l.campaign_id=$2::uuid AND l.id=ANY($3::uuid[]) AND l.consent_status='granted' AND l.suppressed_at IS NULL " \
           "AND l.consent_recorded_at IS NOT NULL AND l.consent_source IS NOT NULL AND l.consent_recorded_by IS NOT NULL " \
-          "AND NOT EXISTS(SELECT 1 FROM app.campaign_suppressions s WHERE s.organization_id=l.organization_id AND lower(s.email)=lower(l.email)) " \
+          "AND NOT EXISTS(SELECT 1 FROM app.campaign_suppressions s WHERE s.organization_id=l.organization_id AND s.email=lower(l.email)) " \
           "ORDER BY l.id FOR SHARE OF l", [@identity.org_id, campaign_id, "{#{ids.join(',')}}"])
         raise CollaborationError.new("not_available") unless leads.map { |lead| lead.fetch("id") } == ids
         leads

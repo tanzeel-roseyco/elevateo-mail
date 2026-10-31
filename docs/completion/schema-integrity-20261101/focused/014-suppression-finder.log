@@ -1,0 +1,73 @@
+RUN:[opaque value redacted]
+Run options: --seed 12176
+
+# Running:
+
+.......
+
+Finished in 1.018737s, 6.8713 runs/s, 45.1540 assertions/s.
+
+7 runs, 46 assertions, 0 failures, 0 errors, 0 skips
+RUN:[opaque value redacted]
+Run options: --seed 35795
+
+# Running:
+
+.EE
+
+Finished in 0.094514s, 31.7412 runs/s, 42.3216 assertions/s.
+
+  1) Error:
+[opaque value redacted]#[opaque value redacted]:
+PG::ForeignKeyViolation: ERROR:  insert or update on table "recipient_suppressions" violates foreign key constraint "[opaque value redacted]"
+DETAIL:  Key (organization_id)=([opaque value redacted]) is not present in table "organization_policy".
+
+    [opaque value redacted]:27:in 'PG::Connection#exec_params'
+    [opaque value redacted]:27:in '[opaque value redacted]#insert_recipient'
+    [opaque value redacted]:48:in '[opaque value redacted]#[opaque value redacted]'
+
+  2) Error:
+[opaque value redacted]#[opaque value redacted]:
+PG::ForeignKeyViolation: ERROR:  insert or update on table "recipient_suppressions" violates foreign key constraint "[opaque value redacted]"
+DETAIL:  Key (organization_id)=([opaque value redacted]) is not present in table "organization_policy".
+
+    [opaque value redacted]:27:in 'PG::Connection#exec_params'
+    [opaque value redacted]:27:in '[opaque value redacted]#insert_recipient'
+    [opaque value redacted]:60:in '[opaque value redacted]#[opaque value redacted]'
+
+3 runs, 4 assertions, 0 failures, 2 errors, 0 skips
+RUN:[opaque value redacted]
+Run options: --seed 64454
+
+# Running:
+
+....
+
+Finished in 0.002675s, 1495.5653 runs/s, 5234.4785 assertions/s.
+
+4 runs, 14 assertions, 0 failures, 0 errors, 0 skips
+RUN:test/email_finder/worker_test.rb
+Run options: --seed 37459
+
+# Running:
+
+............
+
+Finished in 0.027226s, 440.7550 runs/s, 3526.0396 assertions/s.
+
+12 runs, 96 assertions, 0 failures, 0 errors, 0 skips
+RUN:[opaque value redacted]
+Run options: --seed 45889
+
+# Running:
+
+.
+
+Finished in 0.075941s, 13.1682 runs/s, 105.3453 assertions/s.
+
+1 runs, 8 assertions, 0 failures, 0 errors, 0 skips
+ Container [opaque value redacted] Creating
+ Container [opaque value redacted] Created
+
+
+exit=1 seconds=5.54

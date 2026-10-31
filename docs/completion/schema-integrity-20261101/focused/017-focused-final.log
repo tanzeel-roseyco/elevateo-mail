@@ -1,0 +1,54 @@
+RUN:[opaque value redacted]
+Run options: --seed 8025
+
+# Running:
+
+......
+
+Finished in 0.686872s, 8.7352 runs/s, 397.4538 assertions/s.
+
+6 runs, 273 assertions, 0 failures, 0 errors, 0 skips
+RUN:[opaque value redacted]
+Run options: --seed 24351
+
+# Running:
+
+....
+
+Finished in 1.884571s, 2.1225 runs/s, 14.3269 assertions/s.
+
+4 runs, 27 assertions, 0 failures, 0 errors, 0 skips
+RUN:[opaque value redacted]
+Run options: --seed 51499
+
+# Running:
+
+...
+
+Finished in 0.229157s, 13.0915 runs/s, 52.3659 assertions/s.
+
+3 runs, 12 assertions, 0 failures, 0 errors, 0 skips
+RUN:[opaque value redacted]
+Run options: --seed 7954
+
+# Running:
+
+.
+
+Finished in 0.023253s, 43.0051 runs/s, 301.0360 assertions/s.
+
+1 runs, 7 assertions, 0 failures, 0 errors, 0 skips
+RUN:test/attachments/database_test.rb
+Run options: --seed 5866
+
+# Running:
+
+............
+
+Finished in 6.627877s, 1.8105 runs/s, 10.2597 assertions/s.
+
+12 runs, 68 assertions, 0 failures, 0 errors, 0 skips
+ Container [opaque value redacted] Creating
+ Container [opaque value redacted] Created
+
+exit=0 seconds=17.63

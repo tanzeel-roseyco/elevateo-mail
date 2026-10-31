@@ -34,6 +34,10 @@ describe earlier stages. They are kept for context and do not describe the curre
 | [history/mailserver-rd/](history/mailserver-rd/) | Mail-server R&D team notes and coordination records (14 Oct 2026) |
 | [operations/email-warmup-strategy.md](operations/email-warmup-strategy.md) | Warm-up strategy (warm-up is currently disabled) |
 
+## Database
+
+[Database design and integrity exceptions](database-design.md) records normalized entities, justified snapshots, identity boundaries and constraint-support indexes.
+
 ## Operations
 
 | Document | What it covers |

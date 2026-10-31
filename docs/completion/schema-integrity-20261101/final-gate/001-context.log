@@ -1,0 +1,25 @@
+[
+    {
+        "Name": "desktop-linux",
+        "Metadata": {
+            "Description": "Docker Desktop",
+            "GODEBUG": "x509negativeserial=1",
+            "otel": {
+                "OTEL_EXPORTER_OTLP_ENDPOINT": "unix:////./c:[opaque value redacted]"
+            }
+        },
+        "Endpoints": {
+            "docker": {
+                "Host": "npipe:////./pipe/dockerDesktopLinuxEngine",
+                "SkipTLSVerify": false
+            }
+        },
+        "TLSMaterial": {},
+        "Storage": {
+            "MetadataPath": "C:\\Users\\Tanzeel\\.docker\\contexts\\meta\\[opaque value redacted]",
+            "TLSPath": "C:\\Users\\Tanzeel\\.docker\\contexts\\tls\\[opaque value redacted]"
+        }
+    }
+]
+
+exit=0 seconds=0.06

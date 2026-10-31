@@ -1,0 +1,33 @@
+RUN:[opaque value redacted]
+Run options: --seed 58752
+
+# Running:
+
+............................
+
+Finished in 0.726809s, 38.5246 runs/s, 612.2655 assertions/s.
+
+28 runs, 445 assertions, 0 failures, 0 errors, 0 skips
+RUN:[opaque value redacted]
+Run options: --seed 1554
+
+# Running:
+
+.E..
+
+Finished in 0.710482s, 5.6300 runs/s, 35.1874 assertions/s.
+
+  1) Error:
+SchemaRelationshipDatabaseTest#[opaque value redacted]:
+PG::CheckViolation: ERROR:  incomplete send intent
+CONTEXT:  PL/pgSQL function app_send_private.assert_complete_intent() line 13 at RAISE
+
+    [opaque value redacted]:15:in 'PG::Connection#exec_params'
+    [opaque value redacted]:15:in 'SchemaRelationshipDatabaseTest#[opaque value redacted]'
+
+4 runs, 25 assertions, 0 failures, 1 errors, 0 skips
+ Container [opaque value redacted] Creating
+ Container [opaque value redacted] Created
+
+
+exit=1 seconds=6.50

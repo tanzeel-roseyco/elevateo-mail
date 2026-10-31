@@ -34,12 +34,14 @@ class EmailFinderMigrationTest < Minitest::Test
 
   def test_reverse_reapply_restores_tables_permissions_and_policies
     before = snapshot
-    assert_equal 6, before.first.length
+    assert_equal 7, before.first.length
     assert(before.first.all? { |row| row[1, 3] == ["true", "true", "elevateo_owner"] })
     @connection.exec("BEGIN")
+    @connection.exec(File.read(File.expand_path("../../db/migrate/normalize_email_finder/down.sql", __dir__)))
     @connection.exec(File.read(File.expand_path("../../db/email_finder/down.sql", __dir__)))
     assert_equal [[], []], snapshot
     @connection.exec(File.read(File.expand_path("../../db/email_finder/up.sql", __dir__)))
+    @connection.exec(File.read(File.expand_path("../../db/migrate/normalize_email_finder/up.sql", __dir__)))
     assert_equal before, snapshot
     @connection.exec("ROLLBACK")
     assert_equal before, snapshot

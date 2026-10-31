@@ -1,0 +1,74 @@
+docker : 2026/11/01 01:13:08 http2: server: error reading preface from client //./pipe/dockerDesktopLinuxEngine: file
+has already been closed
+At line:3 char:1
++ docker build --pull=false -t elevateo-schema-integrity:server apps/se ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (2026/11/01 01:1...ady been closed:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 767B 0.0s done
+#1 DONE 0.1s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#2 DONE 2.2s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#3 resolve docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e 0.1s
+done
+#3 CACHED
+
+#4 [internal] load metadata for
+docker.io/library/ruby:3.4.11-slim-bookworm@sha256:22165c5f904d76a8a02fbdd419d0269481369523fd66978232d16c88099730e2
+#4 DONE 1.5s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 63B done
+#5 DONE 0.1s
+
+#6 [1/7] FROM
+docker.io/library/ruby:3.4.11-slim-bookworm@sha256:22165c5f904d76a8a02fbdd419d0269481369523fd66978232d16c88099730e2
+#6 resolve
+docker.io/library/ruby:3.4.11-slim-bookworm@sha256:22165c5f904d76a8a02fbdd419d0269481369523fd66978232d16c88099730e2
+0.1s done
+#6 DONE 0.1s
+
+#7 [internal] load build context
+#7 transferring context: 3.11MB 0.3s done
+#7 DONE 0.3s
+
+#8 [2/7] RUN apt-get update -qq  && apt-get install -y --no-install-recommends build-essential libpq-dev libyaml-dev
+pkg-config poppler-utils  && rm -rf /var/lib/apt/lists/*
+#8 CACHED
+
+#9 [3/7] WORKDIR /app
+#9 CACHED
+
+#10 [4/7] COPY Gemfile Gemfile.lock* ./
+#10 CACHED
+
+#11 [5/7] RUN bundle install --jobs 4
+#11 CACHED
+
+#12 [6/7] COPY . .
+#12 DONE 0.5s
+
+#13 [7/7] RUN useradd --system --uid 10001 --home /app elevateo  && install -d -o elevateo -g elevateo /app/tmp
+/app/log
+#13 0.648 useradd warning: elevateo's uid 10001 is greater than SYS_UID_MAX 999
+#13 DONE 0.9s
+
+#14 exporting to image
+#14 exporting layers
+#14 exporting layers 0.5s done
+#14 exporting manifest sha256:fc22d45fc0211a9980467b1a273bedf06723e9ae73688e5fa181519e26283b6e 0.1s done
+#14 exporting config sha256:6643c31a3ab2eca2414e8e44d60eef4ea4c23018690451825eb077a362b5e9fb 0.1s done
+#14 exporting attestation manifest sha256:c60422b2514d897254225d729ca5c79c185fcd1637ea549b551a3489109ba7b3 0.1s done
+#14 exporting manifest list sha256:c389685887159893729080275537b7aa79965962f26b093ca02455d5aac1aae2
+#14 exporting manifest list sha256:c389685887159893729080275537b7aa79965962f26b093ca02455d5aac1aae2 0.1s done
+#14 naming to docker.io/library/elevateo-schema-integrity:server done
+#14 unpacking to docker.io/library/elevateo-schema-integrity:server
+#14 unpacking to docker.io/library/elevateo-schema-integrity:server 0.2s done
+#14 DONE 1.2s

@@ -1,0 +1,291 @@
+[
+    {
+        "Id": "[opaque value redacted]",
+        "Created": "2026-10-31T14:30:31.756661271Z",
+        "Path": "auth",
+        "Args": [],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 21668,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2026-10-31T14:30:31.95014915Z",
+            "FinishedAt": "0001-01-01T00:00:00Z",
+            "Health": {
+                "Status": "healthy",
+                "FailingStreak": 0,
+                "Log": [
+                    {
+                        "Start": "2026-10-31T14:40:49.385619663Z",
+                        "End": "2026-10-31T14:40:49.446165617Z",
+                        "ExitCode": 0,
+                        "Output": "Connecting to 127.0.0.1:9999 (127.0.0.1:9999)\nremote file exists\n"
+                    },
+                    {
+                        "Start": "2026-10-31T14:40:51.447890597Z",
+                        "End": "2026-10-31T14:40:51.505892279Z",
+                        "ExitCode": 0,
+                        "Output": "Connecting to 127.0.0.1:9999 (127.0.0.1:9999)\nremote file exists\n"
+                    },
+                    {
+                        "Start": "2026-10-31T14:40:53.504231666Z",
+                        "End": "2026-10-31T14:40:53.564092815Z",
+                        "ExitCode": 0,
+                        "Output": "Connecting to 127.0.0.1:9999 (127.0.0.1:9999)\nremote file exists\n"
+                    },
+                    {
+                        "Start": "2026-10-31T14:40:55.56470269Z",
+                        "End": "2026-10-31T14:40:55.645827598Z",
+                        "ExitCode": 0,
+                        "Output": "Connecting to 127.0.0.1:9999 (127.0.0.1:9999)\nremote file exists\n"
+                    },
+                    {
+                        "Start": "2026-10-31T14:40:57.646449485Z",
+                        "End": "2026-10-31T14:40:57.716400309Z",
+                        "ExitCode": 0,
+                        "Output": "Connecting to 127.0.0.1:9999 (127.0.0.1:9999)\nremote file exists\n"
+                    }
+                ]
+            }
+        },
+        "Image": "sha256:[opaque value redacted]",
+        "ResolvConfPath": "[opaque value redacted]",
+        "HostnamePath": "[opaque value redacted]",
+        "HostsPath": "[opaque value redacted]",
+        "LogPath": "[opaque value redacted]",
+        "Name": "[opaque value redacted]",
+        "RestartCount": 0,
+        "Driver": "overlayfs",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": null,
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {}
+            },
+            "NetworkMode": "[opaque value redacted]",
+            "PortBindings": {},
+            "RestartPolicy": {
+                "Name": "no",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "CapAdd": null,
+            "CapDrop": null,
+            "CgroupnsMode": "private",
+            "Dns": null,
+            "DnsOptions": null,
+            "DnsSearch": null,
+            "ExtraHosts": [],
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": false,
+            "SecurityOpt": null,
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 268435456,
+            "NanoCpus": 1000000000,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": null,
+            "BlkioDeviceReadBps": null,
+            "BlkioDeviceWriteBps": null,
+            "BlkioDeviceReadIOps": null,
+            "BlkioDeviceWriteIOps": null,
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": null,
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 536870912,
+            "MemorySwappiness": null,
+            "OomKillDisable": null,
+            "PidsLimit": null,
+            "Ulimits": null,
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "MaskedPaths": [
+                "/proc/acpi",
+                "/proc/asound",
+                "/proc/interrupts",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/sys/devices/virtual/powercap",
+                "/sys/firmware"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "Storage": {
+            "RootFS": {
+                "Snapshot": {
+                    "Name": "overlayfs"
+                }
+            }
+        },
+        "Mounts": [],
+        "Config": {
+            "Hostname": "9d2bc6431af8",
+            "Domainname": "",
+            "User": "supabase",
+            "AttachStdin": false,
+            "AttachStdout": true,
+            "AttachStderr": true,
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "[opaque value redacted]",
+                "GOTRUE_JWT_EXP=3600",
+                "[opaque value redacted]",
+                "GOTRUE_SMTP_PASS=",
+                "GOTRUE_SMTP_HOST=mailpit",
+                "GOTRUE_SESSIONS_TIMEBOX=12h",
+                "[opaque value redacted]",
+                "[opaque value redacted]",
+                "GOTRUE_API_HOST=0.0.0.0",
+                "API_EXTERNAL_URL=http://api:3000",
+                "[opaque value redacted]",
+                "[opaque value redacted]",
+                "GOTRUE_MAILER_AUTOCONFIRM=false",
+                "GOTRUE_DB_DRIVER=postgres",
+                "GOTRUE_JWT_AUD=authenticated",
+                "GOTRUE_SMTP_PORT=1025",
+                "[opaque value redacted]",
+                "[opaque value redacted]",
+                "GOTRUE_API_PORT=9999",
+                "GOTRUE_SITE_URL=http://api:3000",
+                "GOTRUE_JWT_SECRET=[REDACTED]",
+                "[opaque value redacted]",
+                "GOTRUE_URI_ALLOW_LIST=http://api:3000/auth/complete",
+                "GOTRUE_JWT_ISSUER=http://auth:9999",
+                "GOTRUE_SMTP_USER=",
+                "GOTRUE_DB_DATABASE_URL=postgres://supabase_auth_admin:[REDACTED]@db:5432/postgres",
+                "[opaque value redacted] BE02 Isolated Auth",
+                "GOTRUE_DISABLE_SIGNUP=true",
+                "[opaque value redacted]",
+                "GOTRUE_SMTP_ADMIN_EMAIL=auth@elevateo.invalid",
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "[opaque value redacted]"
+            ],
+            "Cmd": [
+                "auth"
+            ],
+            "Healthcheck": {
+                "Test": [
+                    "CMD",
+                    "wget",
+                    "--no-verbose",
+                    "--tries=1",
+                    "--spider",
+                    "http://127.0.0.1:9999/health"
+                ],
+                "Interval": 2000000000,
+                "Timeout": 3000000000,
+                "Retries": 50
+            },
+            "Image": "supabase/gotrue:v2.196.0@sha256:[opaque value redacted]",
+            "Volumes": null,
+            "WorkingDir": "/",
+            "Entrypoint": null,
+            "Labels": {
+                "com.docker.compose.config-hash": "[opaque value redacted]",
+                "com.docker.compose.container-number": "1",
+                "com.docker.compose.depends_on": "",
+                "com.docker.compose.image": "sha256:[opaque value redacted]",
+                "com.docker.compose.oneoff": "False",
+                "com.docker.compose.project": "elevateo-final-5aae5c14372a",
+                "com.docker.compose.project.config_files": "C:\\Users\\Tanzeel\\orca\\workspaces\\Elevateo Mail Monorepo\\bugfix-schema-integrity\\ops\\compose.be02-test.yaml,C:\\Users\\Tanzeel\\AppData\\Local\\Temp\\elevateo-local-backend-qmt6u8hi\\local.compose.json",
+                "com.docker.compose.project.environment_file": "C:\\Users\\Tanzeel\\AppData\\Local\\Temp\\elevateo-local-backend-qmt6u8hi\\.env.runtime",
+                "com.docker.compose.project.working_dir": "C:\\Users\\Tanzeel\\orca\\workspaces\\Elevateo Mail Monorepo\\bugfix-schema-integrity\\ops",
+                "com.docker.compose.service": "auth",
+                "com.docker.compose.version": "5.3.1"
+            }
+        },
+        "NetworkSettings": {
+            "SandboxID": "[opaque value redacted]",
+            "SandboxKey": "[opaque value redacted]",
+            "Ports": {},
+            "Networks": {
+                "[opaque value redacted]": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": [
+                        "[opaque value redacted]",
+                        "auth"
+                    ],
+                    "DriverOpts": null,
+                    "GwPriority": 0,
+                    "NetworkID": "[opaque value redacted]",
+                    "EndpointID": "[opaque value redacted]",
+                    "Gateway": "",
+                    "IPAddress": "172.23.0.4",
+                    "MacAddress": "4a:e1:35:60:86:88",
+                    "IPPrefixLen": 16,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DNSNames": [
+                        "[opaque value redacted]",
+                        "auth",
+                        "9d2bc6431af8"
+                    ]
+                }
+            }
+        },
+        "ImageManifestDescriptor": {
+            "mediaType": "application/vnd.oci.image.manifest.v1+json",
+            "digest": "sha256:[opaque value redacted]",
+            "size": 1431,
+            "platform": {
+                "architecture": "amd64",
+                "os": "linux"
+            }
+        }
+    }
+]
+
+exit=0 seconds=0.08

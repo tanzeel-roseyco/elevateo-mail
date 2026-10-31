@@ -1,0 +1,14 @@
+Run options: --seed 11364
+
+# Running:
+
+.........
+
+Finished in 8.832980s, 1.0189 runs/s, 5.3210 assertions/s.
+
+9 runs, 47 assertions, 0 failures, 0 errors, 0 skips
+ Container [opaque value redacted] Creating
+ Container [opaque value redacted] Created
+unknown OID 2278: failed to recognize type of 'pg_advisory_xact_lock'. It will be treated as String.
+
+exit=0 seconds=16.01

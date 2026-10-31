@@ -1,0 +1,8 @@
+docker.io/library/ruby@sha256:[opaque value redacted]: Pulling from library/ruby
+d47539ed6e9a: Download complete
+53fd365ff2c8: Download complete
+Digest: sha256:[opaque value redacted]
+Status: Downloaded newer image for ruby@sha256:[opaque value redacted]
+docker.io/library/ruby:3.4.11-slim-bookworm@sha256:[opaque value redacted]
+
+exit=0 seconds=12.56

@@ -1,0 +1,650 @@
+Migrating to IndexSchemaRelationships (20261101000111)
+== 20261101000111 IndexSchemaRelationships: migrating =========================
+-- execute("SET ROLE elevateo_owner")
+   -> 0.0012s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app.membership_user_lookup')\n")
+   -> 0.0022s
+-- execute("CREATE INDEX CONCURRENTLY membership_user_lookup ON app.mailbox_memberships(user_id,organization_id)")
+   -> 0.0085s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app.membership_mailbox_fk')\n")
+   -> 0.0017s
+-- execute("CREATE INDEX CONCURRENTLY membership_mailbox_fk ON app.mailbox_memberships(organization_id,mailbox_id)")
+   -> 0.0027s
+-- execute("SET ROLE elevateo_owner")
+   -> 0.0007s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app.membership_revision_mailbox_fk')\n")
+   -> 0.0008s
+-- execute("CREATE INDEX CONCURRENTLY membership_revision_mailbox_fk ON app.mailbox_membership_revisions(organization_id,mailbox_id)")
+   -> 0.0019s
+-- execute("SET ROLE elevateo_owner")
+   -> 0.0005s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app.security_mailbox_fk')\n")
+   -> 0.0006s
+-- execute("CREATE INDEX CONCURRENTLY security_mailbox_fk ON app.mailbox_security(organization_id,mailbox_id)")
+   -> 0.0020s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app.security_owner_fk')\n")
+   -> 0.0009s
+-- execute("CREATE INDEX CONCURRENTLY security_owner_fk ON app.mailbox_security(organization_id,personal_owner_id)")
+   -> 0.0053s
+-- execute("SET ROLE elevateo_owner")
+   -> 0.0037s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app.ceiling_mailbox_fk')\n")
+   -> 0.0011s
+-- execute("CREATE INDEX CONCURRENTLY ceiling_mailbox_fk ON app.mailbox_grant_ceilings(organization_id,mailbox_id)")
+   -> 0.0028s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app.ceiling_actor_fk')\n")
+   -> 0.0012s
+-- execute("CREATE INDEX CONCURRENTLY ceiling_actor_fk ON app.mailbox_grant_ceilings(organization_id,user_id)")
+   -> 0.0021s
+-- execute("SET ROLE elevateo_owner")
+   -> 0.0006s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app.draft_reply_fk')\n")
+   -> 0.0008s
+-- execute("CREATE INDEX CONCURRENTLY draft_reply_fk ON app.drafts(organization_id,mailbox_id,reply_to_thread_id)")
+   -> 0.0038s
+-- execute("SET ROLE elevateo_owner")
+   -> 0.0006s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app.consent_lead_fk')\n")
+   -> 0.0008s
+-- execute("CREATE INDEX CONCURRENTLY consent_lead_fk ON app.campaign_consent_events(organization_id,campaign_id,lead_id)")
+   -> 0.0029s
+-- execute("SET ROLE elevateo_owner")
+   -> 0.0008s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app.campaign_account_mailbox_fk')\n")
+   -> 0.0012s
+-- execute("CREATE INDEX CONCURRENTLY campaign_account_mailbox_fk ON app.campaign_accounts(organization_id,mailbox_id)")
+   -> 0.0039s
+-- execute("SET ROLE elevateo_owner")
+   -> 0.0005s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app.sequence_mutation_sequence_fk')\n")
+   -> 0.0010s
+-- execute("CREATE INDEX CONCURRENTLY sequence_mutation_sequence_fk ON app.campaign_sequence_mutations(organization_id,campaign_id,sequence_id)")
+   -> 0.0022s
+-- execute("SET ROLE elevateo_owner")
+   -> 0.0006s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app.occurrence_sequence_fk')\n")
+   -> 0.0007s
+-- execute("CREATE INDEX CONCURRENTLY occurrence_sequence_fk ON app.campaign_sequence_occurrences(organization_id,campaign_id,sequence_id)")
+   -> 0.0020s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app.occurrence_account_fk')\n")
+   -> 0.0014s
+-- execute("CREATE INDEX CONCURRENTLY occurrence_account_fk ON app.campaign_sequence_occurrences(organization_id,campaign_id,account_id)")
+   -> 0.0027s
+-- execute("SET ROLE elevateo_owner")
+   -> 0.0006s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app.inbound_account_fk')\n")
+   -> 0.0008s
+-- execute("CREATE INDEX CONCURRENTLY inbound_account_fk ON app.inbound_receipts(organization_id,mailbox_id,provider_account_id)")
+   -> 0.0053s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app.inbound_message_fk')\n")
+   -> 0.0016s
+-- execute("CREATE INDEX CONCURRENTLY inbound_message_fk ON app.inbound_receipts(organization_id,mailbox_id,thread_id,message_id)")
+   -> 0.0055s
+-- execute("SET ROLE elevateo_owner")
+   -> 0.0032s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app.imap_receipt_message_fk')\n")
+   -> 0.0012s
+-- execute("CREATE INDEX CONCURRENTLY imap_receipt_message_fk ON app.inbound_imap_receipts(organization_id,mailbox_id,thread_id,message_id)")
+   -> 0.0018s
+-- execute("SET ROLE elevateo_owner")
+   -> 0.0007s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app.resend_route_mailbox_fk')\n")
+   -> 0.0008s
+-- execute("CREATE INDEX CONCURRENTLY resend_route_mailbox_fk ON app.resend_inbound_routes(organization_id,mailbox_id)")
+   -> 0.0024s
+-- execute("SET ROLE elevateo_owner")
+   -> 0.0010s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app.resend_receipt_message_fk')\n")
+   -> 0.0018s
+-- execute("CREATE INDEX CONCURRENTLY resend_receipt_message_fk ON app.resend_inbound_receipts(organization_id,mailbox_id,thread_id,message_id)")
+   -> 0.0040s
+-- execute("SET ROLE elevateo_owner")
+   -> 0.0006s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app.attachment_stage_fk')\n")
+   -> 0.0009s
+-- execute("CREATE INDEX CONCURRENTLY attachment_stage_fk ON app.draft_attachments(organization_id,mailbox_id,draft_id,actor_id,id)")
+   -> 0.0020s
+-- execute("SET ROLE elevateo_owner")
+   -> 0.0005s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app.marketing_run_campaign_fk')\n")
+   -> 0.0008s
+-- execute("CREATE INDEX CONCURRENTLY marketing_run_campaign_fk ON app.marketing_runs(organization_id,campaign_id)")
+   -> 0.0046s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app.marketing_run_mailbox_fk')\n")
+   -> 0.0011s
+-- execute("CREATE INDEX CONCURRENTLY marketing_run_mailbox_fk ON app.marketing_runs(organization_id,mailbox_id)")
+   -> 0.0041s
+-- execute("SET ROLE elevateo_owner")
+   -> 0.0006s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app.enrollment_run_fk')\n")
+   -> 0.0008s
+-- execute("CREATE INDEX CONCURRENTLY enrollment_run_fk ON app.marketing_enrollments(organization_id,run_id)")
+   -> 0.0032s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app.enrollment_lead_fk')\n")
+   -> 0.0009s
+-- execute("CREATE INDEX CONCURRENTLY enrollment_lead_fk ON app.marketing_enrollments(organization_id,lead_id)")
+   -> 0.0049s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app.enrollment_send_fk')\n")
+   -> 0.0015s
+-- execute("CREATE INDEX CONCURRENTLY enrollment_send_fk ON app.marketing_enrollments(send_id)")
+   -> 0.0053s
+-- execute("SET ROLE elevateo_owner")
+   -> 0.0006s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app.finder_owner_page')\n")
+   -> 0.0007s
+-- execute("CREATE INDEX CONCURRENTLY finder_owner_page ON app.email_finder_jobs(organization_id,user_id,created_at DESC,id DESC)")
+   -> 0.0020s
+-- execute("SET ROLE elevateo_owner")
+   -> 0.0004s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app.finder_domain_patterns')\n")
+   -> 0.0007s
+-- execute("CREATE INDEX CONCURRENTLY finder_domain_patterns ON app.email_finder_people(organization_id,(split_part(email,'@',2)))")
+   -> 0.0062s
+-- execute("SET ROLE elevateo_owner")
+   -> 0.0006s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app.inbox_attachments_message_page')\n")
+   -> 0.0008s
+-- execute("CREATE INDEX CONCURRENTLY inbox_attachments_message_page ON app.inbox_attachments(organization_id,mailbox_id,thread_id,message_id,id)")
+   -> 0.0037s
+-- execute("SET ROLE elevateo_owner")
+   -> 0.0007s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app_connector_private.connector_mailbox_fk')\n")
+   -> 0.0008s
+-- execute("CREATE INDEX CONCURRENTLY connector_mailbox_fk ON app_connector_private.grants(organization_id,mailbox_id)")
+   -> 0.0018s
+-- execute("SET ROLE elevateo_send_owner")
+   -> 0.0006s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app_send_private.approval_send_fk')\n")
+   -> 0.0009s
+-- execute("CREATE INDEX CONCURRENTLY approval_send_fk ON app_send_private.approval_operations(send_id)")
+   -> 0.0022s
+-- execute("SET ROLE elevateo_send_owner")
+   -> 0.0028s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app_send_private.attempt_smtp_fk')\n")
+   -> 0.0025s
+-- execute("CREATE INDEX CONCURRENTLY attempt_smtp_fk ON app_send_private.attempts(smtp_account_id)")
+   -> 0.0022s
+-- execute("SET ROLE elevateo_send_owner")
+   -> 0.0005s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app_send_private.reconciliation_send_fk')\n")
+   -> 0.0006s
+-- execute("CREATE INDEX CONCURRENTLY reconciliation_send_fk ON app_send_private.reconciliation_checks(send_id,attempt_id)")
+   -> 0.0017s
+-- execute("SET ROLE elevateo_send_owner")
+   -> 0.0006s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app_send_private.attempt_budget_limit_fk')\n")
+   -> 0.0008s
+-- execute("CREATE INDEX CONCURRENTLY attempt_budget_limit_fk ON app_send_private.attempt_budgets(limit_id)")
+   -> 0.0023s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app_send_private.attempt_budget_route_fk')\n")
+   -> 0.0008s
+-- execute("CREATE INDEX CONCURRENTLY attempt_budget_route_fk ON app_send_private.attempt_budgets(route_id)")
+   -> 0.0036s
+-- execute("SET ROLE elevateo_send_owner")
+   -> 0.0006s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app_send_private.resend_event_send_fk')\n")
+   -> 0.0008s
+-- execute("CREATE INDEX CONCURRENTLY resend_event_send_fk ON app_send_private.resend_events(send_id)")
+   -> 0.0027s
+-- execute("SET ROLE elevateo_owner")
+   -> 0.0009s
+-- execute("DROP INDEX CONCURRENTLY IF EXISTS app.threads_mailbox_order")
+   -> 0.0071s
+-- execute("DROP INDEX CONCURRENTLY IF EXISTS app.inbox_attachments_message_idx")
+   -> 0.0027s
+-- execute("RESET ROLE")
+   -> 0.0006s
+== 20261101000111 IndexSchemaRelationships: migrated (0.1953s) ================
+
+Migrating to CanonicalDeliverySuppressions (20261101000112)
+== 20261101000112 CanonicalDeliverySuppressions: migrating ====================
+-- execute("-- AIDEV-NOTE: Owner-only preflight is transactional; locks prevent concurrent normalization collisions.\nSET LOCAL ROLE elevateo_owner;\nALTER TABLE app.campaign_suppressions NO FORCE ROW LEVEL SECURITY;\nLOCK TABLE app.campaign_suppressions IN SHARE ROW EXCLUSIVE MODE;\nDO $$ BEGIN\n  IF EXISTS(SELECT 1 FROM app.campaign_suppressions\n    GROUP BY organization_id,lower(email) HAVING count(*)>1) THEN\n    RAISE EXCEPTION 'campaign suppression normalization collision: preserve and resolve duplicate evidence';\n  END IF;\nEND $$;\nUPDATE app.campaign_suppressions SET email=lower(email) WHERE email<>lower(email);\nALTER TABLE app.campaign_suppressions ADD CONSTRAINT campaign_suppressions_lowercase\n  CHECK(email=lower(email)) NOT VALID;\nALTER TABLE app.campaign_suppressions VALIDATE CONSTRAINT campaign_suppressions_lowercase;\nALTER TABLE app.campaign_suppressions FORCE ROW LEVEL SECURITY;\nGRANT SELECT(reason),TRIGGER ON app.campaign_suppressions TO elevateo_send_owner;\n-- AIDEV-NOTE: Only monotonic bounce promotion is writable; existing tenant and protected-write guards still apply.\nGRANT UPDATE(reason) ON app.campaign_suppressions TO elevateo_app_read;\nCREATE POLICY campaign_suppression_promote ON app.campaign_suppressions FOR UPDATE TO elevateo_app_read\n  USING (organization_id=app.context_uuid('app.org_id') AND EXISTS(\n    SELECT 1 FROM app.organization_memberships m WHERE m.[opaque value redacted]\n      AND m.user_id=app.context_uuid('app.user_id'))\n    AND (app.authorize_outreach_draft_write(NULLIF(current_setting('app.outreach_digest',true),''))->>'status')='ok')\n  WITH CHECK (reason='bounce' AND organization_id=app.context_uuid('app.org_id')\n    AND (app.authorize_outreach_draft_write(NULLIF(current_setting('app.outreach_digest',true),''))->>'status')='ok');\nSET LOCAL ROLE elevateo_send_owner;\nLOCK TABLE app_send_private.recipient_suppressions IN SHARE ROW EXCLUSIVE MODE;\nDO $$ BEGIN\n  IF EXISTS(SELECT 1 FROM app_send_private.recipient_suppressions\n    GROUP BY organization_id,lower(canonical_address) HAVING count(*)>1) THEN\n    RAISE EXCEPTION 'recipient suppression normalization collision: preserve and resolve duplicate evidence';\n  END IF;\nEND $$;\nUPDATE app_send_private.recipient_suppressions SET canonical_address=lower(canonical_address)\n  WHERE canonical_address<>lower(canonical_address);\nALTER TABLE app_send_private.recipient_suppressions ADD CONSTRAINT [opaque value redacted]\n  CHECK(canonical_address=lower(canonical_address)) NOT VALID;\nALTER TABLE app_send_private.recipient_suppressions VALIDATE CONSTRAINT [opaque value redacted];\nSET LOCAL ROLE elevateo_send_owner;\nCREATE FUNCTION app_send_private.normalize_suppression() RETURNS trigger\nLANGUAGE plpgsql SET search_path=pg_catalog AS $$\nBEGIN\n  IF TG_TABLE_NAME='recipient_suppressions' THEN NEW.canonical_address:=lower(NEW.canonical_address);\n  ELSE NEW.email:=lower(NEW.email); END IF;\n  RETURN NEW;\nEND $$;\nCREATE FUNCTION app_send_private.delivery_suppressed(p_org uuid,p_address text) RETURNS boolean\nLANGUAGE sql STABLE SET search_path=pg_catalog AS $$\n  SELECT EXISTS(SELECT 1 FROM app_send_private.recipient_suppressions\n    WHERE organization_id=p_org AND canonical_address=lower(p_address))\n    OR EXISTS(SELECT 1 FROM app.campaign_suppressions\n      WHERE organization_id=p_org AND email=lower(p_address) AND reason='bounce')\n$$;\n-- AIDEV-NOTE: Campaign writes run as the application role; definer rights serialize against worker policy locks.\nCREATE FUNCTION app_send_private.[opaque value redacted]() RETURNS trigger\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog AS $$\nBEGIN\n  UPDATE app_send_private.organization_policy SET revision=revision+1,updated_at=clock_timestamp()\n    WHERE organization_id=COALESCE(NEW.organization_id,OLD.organization_id);\n  IF TG_OP='UPDATE' AND NEW.organization_id IS DISTINCT FROM OLD.organization_id THEN\n    UPDATE app_send_private.organization_policy SET revision=revision+1,updated_at=clock_timestamp()\n      WHERE organization_id=OLD.organization_id;\n  END IF;\n  RETURN COALESCE(NEW,OLD);\nEND $$;\nREVOKE ALL ON FUNCTION app_send_private.normalize_suppression(),\n  app_send_private.delivery_suppressed(uuid,text),app_send_private.[opaque value redacted]()\n  FROM PUBLIC,elevateo_api,elevateo_app_read,elevateo_worker;\n\nCREATE TRIGGER normalize_recipient_suppression BEFORE INSERT OR UPDATE\n  ON app_send_private.recipient_suppressions FOR EACH ROW EXECUTE FUNCTION app_send_private.normalize_suppression();\nCREATE TRIGGER normalize_campaign_suppression BEFORE INSERT OR UPDATE\n  ON app.campaign_suppressions FOR EACH ROW EXECUTE FUNCTION app_send_private.normalize_suppression();\nCREATE TRIGGER [opaque value redacted] AFTER INSERT OR UPDATE OR DELETE\n  ON app.campaign_suppressions FOR EACH ROW EXECUTE FUNCTION app_send_private.[opaque value redacted]();\n\nSET LOCAL ROLE elevateo_owner;\nREVOKE TRIGGER ON app.campaign_suppressions FROM elevateo_send_owner;\nRESET ROLE;\n")
+   -> 0.0181s
+-- execute("SET LOCAL ROLE elevateo_send_owner")
+   -> 0.0006s
+-- select_value("SELECT pg_get_functiondef(p.oid) FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace WHERE n.nspname='app_send_private' AND p.proname='review_policy'")
+   -> 0.0014s
+-- execute("CREATE OR REPLACE FUNCTION app_send_private.review_policy(p_binding jsonb)\n RETURNS jsonb\n LANGUAGE sql\n STABLE\n SET search_path TO 'pg_catalog'\nAS $function$\n  SELECT p_binding || jsonb_build_object(\n    'purpose',CASE WHEN EXISTS (SELECT 1 FROM app.marketing_enrollments e WHERE e.draft_id=(p_binding->>'draft_id')::uuid AND e.organization_id=(p_binding->>'organization_id')::uuid) THEN 'marketing' ELSE 'correspondence' END,\n    'attachment_binding',app_send_private.draft_attachment_binding((p_binding->>'organization_id')::uuid,(p_binding->>'mailbox_id')::uuid,(p_binding->>'draft_id')::uuid),\n    'policy_revision',(SELECT revision::text FROM app_send_private.organization_policy\n      WHERE organization_id = (p_binding->>'organization_id')::uuid),\n    'mailbox_enabled',COALESCE((SELECT enabled FROM app_send_private.mailbox_policy\n      WHERE organization_id = (p_binding->>'organization_id')::uuid AND mailbox_id = (p_binding->>'mailbox_id')::uuid),false),\n    'suppressed_addresses',COALESCE((SELECT jsonb_agg(address ORDER BY address) FROM\n      (SELECT DISTINCT app_send_private.canonical_address(value->>'address') AS address\n       FROM jsonb_array_elements(p_binding->'recipients')) recipients\n      WHERE app_send_private.delivery_suppressed((p_binding->>'organization_id')::uuid,address)),'[]'::jsonb),\n    'consented_addresses',COALESCE((SELECT jsonb_agg(DISTINCT app_send_private.canonical_address(email) ORDER BY app_send_private.canonical_address(email))\n      FROM app.campaign_leads WHERE organization_id=(p_binding->>'organization_id')::uuid\n      AND consent_status='granted' AND consent_recorded_at IS NOT NULL AND consent_source IS NOT NULL\n      AND consent_recorded_by IS NOT NULL\n      AND (NOT EXISTS(SELECT 1 FROM app.marketing_enrollments e WHERE e.draft_id=(p_binding->>'draft_id')::uuid)\n        OR EXISTS(SELECT 1 FROM app.marketing_enrollments e JOIN app.marketing_runs r ON r.id=e.run_id\n          JOIN app.campaigns c ON c.id=r.campaign_id AND c.organization_id=r.organization_id\n          WHERE e.draft_id=(p_binding->>'draft_id')::uuid AND e.lead_id=campaign_leads.id\n            AND r.organization_id=campaign_leads.organization_id AND r.campaign_id=campaign_leads.campaign_id\n            AND r.state='queued' AND c.status='draft' AND campaign_leads.suppressed_at IS NULL\n            AND NOT EXISTS(SELECT 1 FROM app.campaign_suppressions cs\n              WHERE cs.organization_id=r.organization_id AND cs.email=lower(campaign_leads.email))))\n      AND app_send_private.canonical_address(email) IN\n        (SELECT app_send_private.canonical_address(value->>'address')\n          FROM jsonb_array_elements(p_binding->'recipients'))),'[]'::jsonb))\n$function$\n")
+   -> 0.0044s
+-- select_value("SELECT pg_get_functiondef(p.oid) FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace WHERE n.nspname='app_send_private' AND p.proname='authorize_attempt_legacy_v1'")
+   -> 0.0016s
+-- execute("CREATE OR REPLACE FUNCTION app_send_private.authorize_attempt_legacy_v1(p_send uuid, p_lease uuid, p_generation bigint, p_attempt uuid, p_epoch uuid, p_capability_hash bytea, p_profile text, p_deadline_seconds integer)\n RETURNS jsonb\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO 'pg_catalog'\nAS $function$\nDECLARE j app_send_private.jobs; i app_send_private.intents; g jsonb; n timestamptz := clock_timestamp();\n  pol bigint; mailbox_on boolean; snap jsonb; recipient jsonb; address text; suppressed boolean := false;\n  account app_send_private.smtp_accounts; budgets_ok boolean := true;\nBEGIN\n  IF p_send IS NULL OR p_lease IS NULL OR p_generation IS NULL OR p_attempt IS NULL OR p_epoch IS NULL\n    OR p_capability_hash IS NULL OR octet_length(p_capability_hash) <> 32\n    OR p_profile IS NULL OR p_profile NOT IN ('synthetic-v1','mailpit-smtp-test-v1','mox-smtp-test-v1','mox-smtp-v1','resend-v1')\n    OR p_deadline_seconds IS NULL OR p_deadline_seconds NOT BETWEEN 1 AND 60 THEN RETURN '{\"code\":\"request_invalid\"}'::jsonb; END IF;\n  -- AIDEV-NOTE: Lock session, generation, policy, mailbox, SMTP account, job, route, then sorted limits. Cancel locks job.\n  SELECT * INTO i FROM app_send_private.intents WHERE send_id=p_send;\n  IF NOT FOUND THEN RETURN '{\"code\":\"not_available\"}'::jsonb; END IF;\n  g := app_auth.send_worker_guard(i.approval_session_digest,i.approved_by,i.organization_id);\n  SELECT revision INTO pol FROM app_send_private.organization_policy\n    WHERE organization_id=i.organization_id FOR SHARE;\n  SELECT enabled INTO mailbox_on FROM app_send_private.mailbox_policy\n    WHERE organization_id=i.organization_id AND mailbox_id=i.mailbox_id FOR SHARE;\n  SELECT * INTO account FROM app_send_private.smtp_accounts\n    WHERE organization_id=i.organization_id AND mailbox_id=i.mailbox_id FOR SHARE;\n  snap := convert_from(i.snapshot_bytes,'UTF8')::jsonb;\n  IF jsonb_typeof(snap)='array' AND jsonb_array_length(snap)=14\n      AND jsonb_typeof(snap->6)='array' THEN\n    FOR recipient IN SELECT value FROM jsonb_array_elements(snap->6) LOOP\n      address := app_send_private.canonical_address(recipient->>1);\n      IF address IS NULL OR app_send_private.delivery_suppressed(i.organization_id,address) THEN\n        suppressed := true;\n      END IF;\n    END LOOP;\n  ELSE\n    suppressed := true;\n  END IF;\n  SELECT * INTO j FROM app_send_private.jobs WHERE send_id=p_send FOR UPDATE;\n  IF NOT FOUND THEN RETURN '{\"code\":\"not_available\"}'::jsonb; END IF;\n  n := clock_timestamp();\n  IF j.lease_id IS DISTINCT FROM p_lease OR j.lease_generation <> p_generation OR j.lease_expires_at <= n\n    OR j.state <> 'queued' OR j.next_action <> 'submit' OR j.cancel_requested_at IS NOT NULL\n    OR i.approval_epoch <> p_epoch THEN RETURN '{\"code\":\"dispatch_held\"}'::jsonb; END IF;\n  IF j.attempt_count >= 3 OR (j.retry_deadline_at IS NOT NULL AND n >= j.retry_deadline_at) THEN\n    UPDATE app_send_private.jobs SET state='needs_review',next_action='none',next_check_at=NULL,\n      lease_id=NULL,lease_expires_at=NULL,hold_reason=CASE WHEN j.attempt_count>=3 THEN 'attempt_limit' ELSE 'retry_expired' END,\n      updated_at=n WHERE send_id=p_send;\n    RETURN '{\"code\":\"dispatch_held\"}'::jsonb;\n  END IF;\n  IF g->>'status' <> 'ok' OR (g->>'organization_id')::uuid IS DISTINCT FROM i.organization_id\n    OR (g->>'auth_session_id')::uuid IS DISTINCT FROM i.approval_auth_session_id\n    OR (g->>'context_id')::uuid IS DISTINCT FROM i.approval_context_id\n    OR (g->>'authorization_generation')::bigint IS DISTINCT FROM i.approval_generation\n    OR pol IS DISTINCT FROM i.approval_policy_revision OR mailbox_on IS DISTINCT FROM true\n    OR NOT ((snap->>10='correspondence' AND snap->>11='[opaque value redacted]') OR (snap->>10='marketing' AND snap->>11='recorded_marketing_consent'))\n    OR (p_profile IN ('mox-smtp-test-v1','mox-smtp-v1') AND (account.id IS NULL OR NOT account.active\n      OR account.sender IS DISTINCT FROM (snap->5->>1)))\n    OR (p_profile='mox-smtp-test-v1' AND account.credential_ref NOT LIKE 'test:%')\n    OR (p_profile='mox-smtp-v1' AND NOT app_send_private.mox_dispatch_allowed(i))\n    OR suppressed OR NOT app_send_private.current_capability(i)\n    OR NOT ((p_profile='synthetic-v1'\n      AND p_capability_hash=sha256(convert_to('local:synthetic-v1','UTF8')))\n      OR (p_profile='mailpit-smtp-test-v1'\n        AND p_capability_hash=sha256(convert_to('local:mailpit-smtp-test-v1','UTF8')))\n      OR (p_profile='mox-smtp-test-v1'\n        AND p_capability_hash=sha256(convert_to('local:mox-smtp-test-v1','UTF8')))\n      OR (p_profile='mox-smtp-v1' AND p_capability_hash=sha256(convert_to('provider:mox-smtp-v1','UTF8')))\n      OR (p_profile='resend-v1'\n        AND p_capability_hash=sha256(convert_to('provider:resend-v1','UTF8')))) THEN\n    UPDATE app_send_private.jobs SET state='needs_review',next_action='none',next_check_at=NULL,\n      lease_id=NULL,lease_expires_at=NULL,hold_reason='authorization_changed',updated_at=n WHERE send_id=p_send;\n    RETURN '{\"code\":\"dispatch_held\"}'::jsonb;\n  END IF;\n  BEGIN\n    INSERT INTO app_send_private.attempts(send_id,attempt_no,attempt_id,lease_generation,authorized_at,\n      call_deadline_at,capability_hash,profile,smtp_account_id,smtp_credential_version,smtp_credential_ref,smtp_sender)\n      VALUES(p_send,j.attempt_count+1,p_attempt,p_generation,n,n+make_interval(secs=>p_deadline_seconds),p_capability_hash,p_profile,\n        CASE WHEN p_profile IN ('mox-smtp-test-v1','mox-smtp-v1') THEN account.id END,\n        CASE WHEN p_profile IN ('mox-smtp-test-v1','mox-smtp-v1') THEN account.credential_version END,\n        CASE WHEN p_profile IN ('mox-smtp-test-v1','mox-smtp-v1') THEN account.credential_ref END,\n        CASE WHEN p_profile IN ('mox-smtp-test-v1','mox-smtp-v1') THEN account.sender END);\n    IF p_profile IN ('mox-smtp-test-v1','mox-smtp-v1','resend-v1') THEN\n      PERFORM app_send_private.reserve_budget(p_send,p_attempt);\n      -- AIDEV-NOTE: Quota contention consumes the existing call window; expired authority rolls the entire attempt back.\n      IF clock_timestamp()>=j.lease_expires_at OR clock_timestamp()>=n+make_interval(secs=>p_deadline_seconds)\n        OR (j.retry_deadline_at IS NOT NULL AND clock_timestamp()>=j.retry_deadline_at) THEN\n        RAISE EXCEPTION 'budget wait expired authority' USING ERRCODE='PZ003';\n      END IF;\n    END IF;\n    UPDATE app_send_private.jobs SET state='dispatching',attempt_count=j.attempt_count+1,\n      first_possible_at=COALESCE(j.first_possible_at,n),retry_deadline_at=COALESCE(j.retry_deadline_at,n+interval '24 hours'),\n      next_action='reconcile',next_check_at=n+make_interval(secs=>p_deadline_seconds),updated_at=n WHERE send_id=p_send;\n    INSERT INTO app_send_private.audit_events(send_id,event_key,kind,lease_generation,from_state,to_state,recorded_at)\n      VALUES(p_send,'attempt:'||(j.attempt_count+1),'attempt_authorized',p_generation,j.state,'dispatching',n);\n    RETURN jsonb_build_object('attempt_id',p_attempt,'attempt_no',j.attempt_count+1,\n      'call_deadline_at',n+make_interval(secs=>p_deadline_seconds),'simulated',p_profile NOT IN ('resend-v1','mox-smtp-v1'))\n      || CASE WHEN p_profile IN ('mox-smtp-test-v1','mox-smtp-v1') THEN jsonb_build_object('credential_binding',\n        jsonb_build_object('organization_id',i.organization_id,'mailbox_id',i.mailbox_id,'account_id',account.id,\n          'credential_version',account.credential_version,'credential_ref',account.credential_ref,'protocol','smtp'))\n        ELSE '{}'::jsonb END;\n  EXCEPTION WHEN SQLSTATE 'PZ001' OR SQLSTATE 'PZ002' OR SQLSTATE 'PZ003' THEN\n    -- AIDEV-NOTE: The subtransaction erased partial reservations and attempts; persist only a bounded queued retry.\n    n := clock_timestamp();\n    UPDATE app_send_private.jobs SET next_check_at=CASE SQLSTATE\n      WHEN 'PZ002' THEN greatest(((n AT TIME ZONE 'UTC')::date+1)::timestamp AT TIME ZONE 'UTC',n+interval '15 minutes')\n      WHEN 'PZ003' THEN n+interval '15 seconds' ELSE n+interval '15 minutes' END,\n      hold_reason=CASE WHEN SQLSTATE='PZ002' THEN 'counter_exhausted' ELSE 'control_unavailable' END,\n      lease_id=NULL,lease_expires_at=NULL,updated_at=n WHERE send_id=p_send;\n    RETURN '{\"code\":\"dispatch_held\"}'::jsonb;\n  END;\nEND $function$\n")
+   -> 0.0028s
+-- select_value("SELECT pg_get_functiondef(p.oid) FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace WHERE n.nspname='app_send_private' AND p.proname='final_attempt_check_legacy_v1'")
+   -> 0.0009s
+-- execute("CREATE OR REPLACE FUNCTION app_send_private.final_attempt_check_legacy_v1(p_send uuid, p_lease uuid, p_generation bigint, p_attempt uuid, p_epoch uuid)\n RETURNS jsonb\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO 'pg_catalog'\nAS $function$\nDECLARE i app_send_private.intents; j app_send_private.jobs; a app_send_private.attempts;\n  g jsonb; pol bigint; mailbox_on boolean; snap jsonb; recipient jsonb; address text; suppressed boolean := false;\n  account app_send_private.smtp_accounts; budgets_ok boolean := true;\nBEGIN\n  IF p_send IS NULL OR p_lease IS NULL OR p_generation IS NULL OR p_attempt IS NULL OR p_epoch IS NULL THEN\n    RETURN '{\"allowed\":false}'::jsonb; END IF;\n  SELECT * INTO i FROM app_send_private.intents WHERE send_id=p_send;\n  IF NOT FOUND THEN RETURN '{\"allowed\":false}'::jsonb; END IF;\n  g := app_auth.send_worker_guard(i.approval_session_digest,i.approved_by,i.organization_id);\n  SELECT revision INTO pol FROM app_send_private.organization_policy\n    WHERE organization_id=i.organization_id FOR SHARE;\n  SELECT enabled INTO mailbox_on FROM app_send_private.mailbox_policy\n    WHERE organization_id=i.organization_id AND mailbox_id=i.mailbox_id FOR SHARE;\n  SELECT * INTO account FROM app_send_private.smtp_accounts\n    WHERE organization_id=i.organization_id AND mailbox_id=i.mailbox_id FOR SHARE;\n  snap := convert_from(i.snapshot_bytes,'UTF8')::jsonb;\n  IF jsonb_typeof(snap)='array' AND jsonb_array_length(snap)=14\n    AND jsonb_typeof(snap->6)='array' THEN\n    FOR recipient IN SELECT value FROM jsonb_array_elements(snap->6) LOOP\n      address := app_send_private.canonical_address(recipient->>1);\n      IF address IS NULL OR app_send_private.delivery_suppressed(i.organization_id,address) THEN suppressed := true; END IF;\n    END LOOP;\n  ELSE suppressed := true;\n  END IF;\n  SELECT * INTO j FROM app_send_private.jobs WHERE send_id=p_send FOR UPDATE;\n  SELECT * INTO a FROM app_send_private.attempts WHERE send_id=p_send AND attempt_id=p_attempt;\n  IF a.profile IN ('mox-smtp-test-v1','mox-smtp-v1','resend-v1') THEN\n    budgets_ok := app_send_private.check_budget(p_send,p_attempt);\n  END IF;\n  RETURN jsonb_build_object('allowed',COALESCE(j.send_id IS NOT NULL AND a.attempt_id IS NOT NULL AND budgets_ok\n    AND j.lease_id=p_lease AND j.lease_generation=p_generation AND j.lease_expires_at>clock_timestamp()\n    AND j.state='dispatching' AND j.cancel_requested_at IS NULL AND i.approval_epoch=p_epoch\n    AND a.lease_generation=p_generation AND a.call_deadline_at>clock_timestamp()\n    AND ((a.profile='synthetic-v1' AND a.capability_hash=sha256(convert_to('local:synthetic-v1','UTF8')))\n      OR (a.profile='mailpit-smtp-test-v1' AND a.capability_hash=sha256(convert_to('local:mailpit-smtp-test-v1','UTF8')))\n      OR (a.profile='mox-smtp-test-v1' AND a.capability_hash=sha256(convert_to('local:mox-smtp-test-v1','UTF8')))\n      OR (a.profile='mox-smtp-v1' AND a.capability_hash=sha256(convert_to('provider:mox-smtp-v1','UTF8')))\n      OR (a.profile='resend-v1' AND a.capability_hash=sha256(convert_to('provider:resend-v1','UTF8'))))\n    AND g->>'status'='ok' AND (g->>'organization_id')::uuid=i.organization_id\n    AND (g->>'auth_session_id')::uuid=i.approval_auth_session_id\n    AND (g->>'context_id')::uuid=i.approval_context_id\n    AND (g->>'authorization_generation')::bigint=i.approval_generation\n    AND pol=i.approval_policy_revision AND mailbox_on=true\n    AND ((snap->>10='correspondence' AND snap->>11='[opaque value redacted]') OR (snap->>10='marketing' AND snap->>11='recorded_marketing_consent'))\n    AND (a.profile NOT IN ('mox-smtp-test-v1','mox-smtp-v1') OR (account.active=true AND account.id=a.smtp_account_id\n      AND account.credential_version=a.smtp_credential_version AND account.credential_ref=a.smtp_credential_ref\n      AND account.sender=a.smtp_sender AND account.sender=snap->5->>1))\n    AND (a.profile<>'mox-smtp-v1' OR app_send_private.mox_dispatch_allowed(i))\n    AND (a.profile<>'mox-smtp-test-v1' OR account.credential_ref LIKE 'test:%')\n    AND NOT suppressed AND app_send_private.current_capability(i),false));\nEND $function$\n")
+   -> 0.0020s
+-- select_value("SELECT pg_get_functiondef(p.oid) FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace WHERE n.nspname='app_send_private' AND p.proname='marketing_dispatch_allowed'")
+   -> 0.0016s
+-- execute("CREATE OR REPLACE FUNCTION app_send_private.marketing_dispatch_allowed(i app_send_private.intents)\n RETURNS boolean\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog'\nAS $function$\nDECLARE snap jsonb := convert_from(i.snapshot_bytes,'UTF8')::jsonb; r app.marketing_runs; l record;\nBEGIN\n  IF snap->>10='correspondence' THEN RETURN true; END IF;\n  IF snap->>10 IS DISTINCT FROM 'marketing' OR snap->>11 IS DISTINCT FROM 'recorded_marketing_consent'\n    OR jsonb_array_length(snap->6)<>1 THEN RETURN false; END IF;\n  SELECT run.* INTO r FROM app.marketing_runs run JOIN app.marketing_enrollments e\n    ON e.organization_id=run.organization_id AND e.run_id=run.id\n    WHERE e.draft_id=i.draft_id AND run.organization_id=i.organization_id AND run.mailbox_id=i.mailbox_id;\n  IF NOT FOUND OR r.state<>'queued' OR snap->>7 IS DISTINCT FROM r.subject OR snap->>8 IS DISTINCT FROM r.body_text THEN RETURN false; END IF;\n  PERFORM 1 FROM app.campaigns c WHERE c.organization_id=r.organization_id AND c.id=r.campaign_id AND c.status='draft' FOR SHARE;\n  IF NOT FOUND THEN RETURN false; END IF;\n  SELECT lead.email,lead.consent_status,lead.consent_recorded_at,lead.consent_source,lead.consent_recorded_by,lead.suppressed_at INTO l FROM app.campaign_leads lead JOIN app.marketing_enrollments e\n    ON e.organization_id=lead.organization_id AND e.lead_id=lead.id\n    WHERE e.run_id=r.id AND e.draft_id=i.draft_id AND lead.campaign_id=r.campaign_id FOR SHARE OF lead;\n  RETURN FOUND AND l.consent_status='granted' AND l.consent_recorded_at IS NOT NULL\n    AND l.consent_source IS NOT NULL AND l.consent_recorded_by IS NOT NULL AND l.suppressed_at IS NULL\n    AND app_send_private.canonical_address(l.email)=snap->6->0->>1\n    AND NOT EXISTS (SELECT 1 FROM app.campaign_suppressions s WHERE s.organization_id=r.organization_id\n      AND s.email=lower(snap->6->0->>1));\nEND $function$\n")
+   -> 0.0014s
+-- execute("RESET ROLE")
+   -> 0.0005s
+== 20261101000112 CanonicalDeliverySuppressions: migrated (0.0416s) ===========
+
+Migrating to NormalizeEmailFinder (20261101000113)
+== 20261101000113 NormalizeEmailFinder: migrating =============================
+-- execute("SET LOCAL ROLE elevateo_owner;\n-- AIDEV-NOTE: Transactional owner backfill bypasses tenant filtering, restored before commit; no rows are discarded.\nALTER TABLE app.email_finder_jobs NO FORCE ROW LEVEL SECURITY;\nALTER TABLE app.email_finder_people NO FORCE ROW LEVEL SECURITY;\nDO $$\nBEGIN\n  IF EXISTS (SELECT 1 FROM app.email_finder_jobs WHERE jsonb_typeof(items) IS DISTINCT FROM 'array') THEN\n    RAISE EXCEPTION 'Finder normalization requires array job items';\n  END IF;\n  IF EXISTS (SELECT 1 FROM app.email_finder_jobs j WHERE jsonb_array_length(items)<>total\n    OR EXISTS (SELECT 1 FROM jsonb_array_elements(items) WITH ORDINALITY i(value,n)\n      WHERE jsonb_typeof(value) IS DISTINCT FROM 'object' OR value->>'row' IS DISTINCT FROM n::text\n        OR jsonb_typeof(value->'input') IS DISTINCT FROM 'object'\n        OR (value - ARRAY['row','input','work','result'])<>'{}'::jsonb\n        OR (value ? 'work' AND jsonb_typeof(value->'work') IS DISTINCT FROM 'object')\n        OR (value ? 'result' AND jsonb_typeof(value->'result') IS DISTINCT FROM 'object')\n        OR (value ? 'result') IS DISTINCT FROM (n<=j.completed))) THEN\n    RAISE EXCEPTION 'Finder normalization requires contiguous rows and consistent progress; repair source data first';\n  END IF;\n  IF EXISTS (SELECT 1 FROM app.email_finder_people WHERE domain IS DISTINCT FROM split_part(email,'@',2)) THEN\n    RAISE EXCEPTION 'Finder person domain disagrees with email; repair source data first';\n  END IF;\nEND $$;\n\nCREATE TABLE app.email_finder_job_items (\n  organization_id uuid NOT NULL,\n  job_id uuid NOT NULL,\n  row_number smallint NOT NULL CHECK(row_number BETWEEN 1 AND 5000),\n  input jsonb NOT NULL CHECK(jsonb_typeof(input)='object'),\n  work jsonb CHECK(jsonb_typeof(work)='object'),\n  result jsonb CHECK(jsonb_typeof(result)='object'),\n  PRIMARY KEY(job_id,row_number),\n  FOREIGN KEY(organization_id,job_id) REFERENCES app.email_finder_jobs(organization_id,id) ON DELETE CASCADE,\n  CHECK(work IS NULL OR result IS NULL)\n);\nCREATE INDEX [opaque value redacted] ON app.email_finder_job_items(organization_id,job_id);\nINSERT INTO app.email_finder_job_items(organization_id,job_id,row_number,input,work,result)\nSELECT j.organization_id,j.id,i.n,i.value->'input',i.value->'work',i.value->'result'\nFROM app.email_finder_jobs j CROSS JOIN LATERAL jsonb_array_elements(j.items) WITH ORDINALITY i(value,n);\nALTER TABLE app.email_finder_jobs DROP COLUMN items;\nALTER TABLE app.email_finder_people DROP COLUMN domain;\n\n-- AIDEV-NOTE: Domain is derived at read time; canonical email keeps the expression index and lookup identical.\nALTER TABLE app.email_finder_people ADD CONSTRAINT finder_people_email CHECK(\n  octet_length(email) BETWEEN 3 AND 254 AND email=lower(btrim(email))\n  AND email ~ '^[a-z0-9][a-z0-9.!\#$%&''*+/=?^_`{|}~-]{0,63}@[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?(\\.[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)+$'\n  AND split_part(email,'@',1) NOT LIKE '%..%' AND split_part(email,'@',1) NOT LIKE '%.') NOT VALID;\nALTER TABLE app.email_finder_people ADD CONSTRAINT finder_people_name CHECK(\n  octet_length(name) BETWEEN 1 AND 200 AND name=btrim(name) AND name !~ '[[:cntrl:]]') NOT VALID;\n-- AIDEV-NOTE: Pattern names mirror Core::PATTERNS; the bounded set is evidence, not independently mutable entities.\nALTER TABLE app.email_finder_people ADD CONSTRAINT finder_people_patterns CHECK(jsonb_typeof(patterns)='array'\n  AND patterns <@ '[\"first.last\",\"firstlast\",\"flast\",\"f.last\",\"first\",\"firstl\",\"last.first\",\"last\",\"first_last\",\"first-last\"]'::jsonb\n  AND jsonb_array_length(patterns)<=10) NOT VALID;\nALTER TABLE app.email_finder_domains ADD CONSTRAINT finder_domain_name CHECK(\n  octet_length(domain) BETWEEN 3 AND 253 AND domain ~ '^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?(\\.[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)+$') NOT VALID;\nALTER TABLE app.email_finder_domains ADD CONSTRAINT finder_domain_data CHECK(jsonb_typeof(data)='object') NOT VALID;\nALTER TABLE app.email_finder_results ADD CONSTRAINT finder_result_shape CHECK(\n  cache_key ~ '^[0-9a-f]{64}$' AND jsonb_typeof(input)='object' AND jsonb_typeof(result)='object') NOT VALID;\nALTER TABLE app.email_finder_rate_state ADD CONSTRAINT finder_rate_shape CHECK(\n  octet_length(key) BETWEEN 1 AND 258 AND key=btrim(key) AND key !~ '[[:cntrl:]]'\n  AND jsonb_typeof(value)='object') NOT VALID;\nALTER TABLE app.email_finder_people VALIDATE CONSTRAINT finder_people_email;\nALTER TABLE app.email_finder_people VALIDATE CONSTRAINT finder_people_name;\nALTER TABLE app.email_finder_people VALIDATE CONSTRAINT finder_people_patterns;\nALTER TABLE app.email_finder_domains VALIDATE CONSTRAINT finder_domain_name;\nALTER TABLE app.email_finder_domains VALIDATE CONSTRAINT finder_domain_data;\nALTER TABLE app.email_finder_results VALIDATE CONSTRAINT finder_result_shape;\nALTER TABLE app.email_finder_rate_state VALIDATE CONSTRAINT finder_rate_shape;\n\nALTER TABLE app.email_finder_job_items ENABLE ROW LEVEL SECURITY;\nALTER TABLE app.email_finder_job_items FORCE ROW LEVEL SECURITY;\nCREATE POLICY worker ON app.email_finder_job_items TO elevateo_worker USING(true) WITH CHECK(true);\nCREATE POLICY tenant_read ON app.email_finder_job_items FOR SELECT TO elevateo_app_read USING(\n  EXISTS (SELECT 1 FROM app.email_finder_jobs j WHERE j.id=job_id AND j.[opaque value redacted]));\nCREATE POLICY tenant_insert ON app.email_finder_job_items FOR INSERT TO elevateo_api WITH CHECK(\n  organization_id=app.context_uuid('app.org_id') AND\n  (app.authorize_outreach_draft_write(NULLIF(current_setting('app.outreach_digest',true),''))->>'status')='ok'\n  AND EXISTS (SELECT 1 FROM app.email_finder_jobs j WHERE j.id=job_id AND j.user_id=app.context_uuid('app.user_id')\n    AND j.[opaque value redacted]));\nREVOKE ALL ON app.email_finder_job_items FROM PUBLIC;\nGRANT SELECT ON app.email_finder_job_items TO elevateo_app_read;\nGRANT INSERT ON app.email_finder_job_items TO elevateo_api;\nGRANT SELECT,INSERT,UPDATE,DELETE ON app.email_finder_job_items TO elevateo_worker;\nALTER TABLE app.email_finder_jobs FORCE ROW LEVEL SECURITY;\nALTER TABLE app.email_finder_people FORCE ROW LEVEL SECURITY;\n\n-- AIDEV-NOTE: Cached progress avoids hot-path aggregates; deferred checks prove it matches children at commit.\nCREATE FUNCTION app.[opaque value redacted]() RETURNS trigger\nLANGUAGE plpgsql SET search_path=pg_catalog AS $$\nDECLARE ids uuid[]; target uuid; expected_total integer; expected_completed integer;\n  actual_total integer; actual_completed integer; invalid_rows integer;\nBEGIN\n  -- AIDEV-NOTE: Advisory waits require fresh snapshots, matching the existing protected-write transaction guard.\n  IF current_setting('transaction_isolation') <> 'read committed' THEN\n    RAISE EXCEPTION 'finder writes require read committed' USING ERRCODE='25001';\n  END IF;\n  IF TG_TABLE_NAME='email_finder_jobs' THEN\n    IF TG_OP='UPDATE' AND NEW.total=OLD.total AND NEW.completed=OLD.completed THEN RETURN NULL; END IF;\n    ids:=ARRAY[NEW.id];\n  ELSE\n    IF TG_OP='UPDATE' AND NEW.organization_id=OLD.organization_id AND NEW.job_id=OLD.job_id\n      AND NEW.row_number=OLD.row_number AND NEW.result IS NOT DISTINCT FROM OLD.result THEN\n      RETURN NULL;\n    END IF;\n    IF TG_OP='INSERT' THEN ids:=ARRAY[NEW.job_id];\n    ELSIF TG_OP='DELETE' THEN ids:=ARRAY[OLD.job_id];\n    ELSE ids:=ARRAY[OLD.job_id,NEW.job_id]; END IF;\n  END IF;\n  FOREACH target IN ARRAY ids LOOP\n    -- AIDEV-NOTE: API has no UPDATE grant; an advisory lock serializes counts without granting parent mutation.\n    PERFORM pg_advisory_xact_lock(hashtextextended('finder-progress:'||target::text,0));\n    SELECT total,completed INTO expected_total,expected_completed FROM app.email_finder_jobs WHERE id=target;\n    CONTINUE WHEN NOT FOUND;\n    SELECT count(*),count(result),count(*) FILTER(WHERE row_number>expected_total\n      OR (result IS NOT NULL) IS DISTINCT FROM (row_number<=expected_completed))\n      INTO actual_total,actual_completed,invalid_rows FROM app.email_finder_job_items WHERE job_id=target;\n    IF actual_total<>expected_total OR actual_completed<>expected_completed OR invalid_rows<>0 THEN\n      RAISE EXCEPTION 'Finder progress must match contiguous child rows' USING ERRCODE='23514';\n    END IF;\n  END LOOP;\n  RETURN NULL;\nEND $$;\nREVOKE ALL ON FUNCTION app.[opaque value redacted]() FROM PUBLIC;\nCREATE CONSTRAINT TRIGGER finder_job_progress AFTER INSERT OR UPDATE ON app.email_finder_jobs\n  DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION app.[opaque value redacted]();\nCREATE CONSTRAINT TRIGGER finder_item_progress AFTER INSERT OR UPDATE OR DELETE ON app.email_finder_job_items\n  DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION app.[opaque value redacted]();\n")
+   -> 0.0320s
+== 20261101000113 NormalizeEmailFinder: migrated (0.0376s) ====================
+
+Migrating to IndexIntegrityReferences (20261101000114)
+== 20261101000114 IndexIntegrityReferences: migrating =========================
+-- execute("SET ROLE elevateo_owner")
+   -> 0.0010s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app.imap_account_identity')\n")
+   -> 0.0009s
+-- execute("CREATE UNIQUE INDEX CONCURRENTLY imap_account_identity ON app.inbound_imap_accounts(organization_id,mailbox_id,id)")
+   -> 0.0022s
+-- execute("SET ROLE elevateo_owner")
+   -> 0.0006s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app.imap_receipt_account_identity')\n")
+   -> 0.0007s
+-- execute("CREATE INDEX CONCURRENTLY imap_receipt_account_identity ON app.inbound_imap_receipts(organization_id,mailbox_id,account_id)")
+   -> 0.0016s
+-- execute("SET ROLE elevateo_owner")
+   -> 0.0005s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app.imap_rejection_account_identity')\n")
+   -> 0.0007s
+-- execute("CREATE INDEX CONCURRENTLY imap_rejection_account_identity ON app.inbound_imap_rejections(organization_id,mailbox_id,account_id)")
+   -> 0.0020s
+-- execute("SET ROLE elevateo_owner")
+   -> 0.0006s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app.draft_organization_identity')\n")
+   -> 0.0007s
+-- execute("CREATE UNIQUE INDEX CONCURRENTLY draft_organization_identity ON app.drafts(organization_id,id)")
+   -> 0.0020s
+-- execute("SET ROLE elevateo_owner")
+   -> 0.0005s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app.enrollment_draft_identity')\n")
+   -> 0.0005s
+-- execute("CREATE INDEX CONCURRENTLY enrollment_draft_identity ON app.marketing_enrollments(organization_id,draft_id,send_id)")
+   -> 0.0068s
+-- execute("SET ROLE elevateo_send_owner")
+   -> 0.0005s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app_send_private.intent_enrollment_identity')\n")
+   -> 0.0008s
+-- execute("CREATE UNIQUE INDEX CONCURRENTLY intent_enrollment_identity ON app_send_private.intents(organization_id,draft_id,send_id)")
+   -> 0.0022s
+-- execute("SET ROLE elevateo_send_owner")
+   -> 0.0005s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app_send_private.attempt_send_identity')\n")
+   -> 0.0006s
+-- execute("CREATE UNIQUE INDEX CONCURRENTLY attempt_send_identity ON app_send_private.attempts(send_id,attempt_id)")
+   -> 0.0013s
+-- execute("SET ROLE elevateo_send_owner")
+   -> 0.0005s
+-- execute("ALTER TABLE app_send_private.resend_events DROP CONSTRAINT IF EXISTS [opaque value redacted]")
+   -> 0.0013s
+-- execute("RESET ROLE")
+   -> 0.0004s
+== 20261101000114 IndexIntegrityReferences: migrated (0.0311s) ================
+
+Migrating to EnforceSchemaValues (20261101000115)
+== 20261101000115 EnforceSchemaValues: migrating ==============================
+-- execute("SET LOCAL ROLE elevateo_send_owner")
+   -> 0.0009s
+-- execute("GRANT REFERENCES ON app_send_private.intents TO elevateo_owner")
+   -> 0.0119s
+-- execute("SET LOCAL ROLE elevateo_owner")
+   -> 0.0007s
+-- execute("ALTER TABLE app.inbound_imap_accounts ADD CONSTRAINT imap_account_uid_range CHECK (uidvalidity <= 4294967295 AND last_uid <= 4294967295) NOT VALID")
+   -> 0.0013s
+-- execute("ALTER TABLE app.inbound_imap_accounts VALIDATE CONSTRAINT imap_account_uid_range")
+   -> 0.0009s
+-- execute("SET LOCAL ROLE elevateo_owner")
+   -> 0.0005s
+-- execute("ALTER TABLE app.inbound_imap_receipts ADD CONSTRAINT imap_receipt_uid_range CHECK (uidvalidity <= 4294967295 AND uid <= 4294967295) NOT VALID")
+   -> 0.0009s
+-- execute("ALTER TABLE app.inbound_imap_receipts VALIDATE CONSTRAINT imap_receipt_uid_range")
+   -> 0.0006s
+-- execute("SET LOCAL ROLE elevateo_owner")
+   -> 0.0003s
+-- execute("ALTER TABLE app.resend_webhook_events ADD CONSTRAINT webhook_digest_shape CHECK (body_digest ~ '^[0-9a-f]{64}$') NOT VALID")
+   -> 0.0007s
+-- execute("ALTER TABLE app.resend_webhook_events VALIDATE CONSTRAINT webhook_digest_shape")
+   -> 0.0005s
+-- execute("SET LOCAL ROLE elevateo_owner")
+   -> 0.0002s
+-- execute("ALTER TABLE app.resend_webhook_events ADD CONSTRAINT webhook_payload_shape CHECK (jsonb_typeof(payload)='object' AND (payload->>'type' ~ '^email[.][a-z_]{1,40}$') IS TRUE AND (payload#>>'{data,email_id}' ~ '^[A-Za-z0-9_-]{1,128}$') IS TRUE) NOT VALID")
+   -> 0.0007s
+-- execute("ALTER TABLE app.resend_webhook_events VALIDATE CONSTRAINT webhook_payload_shape")
+   -> 0.0005s
+-- execute("SET LOCAL ROLE elevateo_owner")
+   -> 0.0003s
+-- execute("ALTER TABLE app.resend_webhook_events ADD CONSTRAINT webhook_lease_state CHECK ((lease IS NULL)=(lease_until IS NULL) AND (status='pending' OR lease IS NULL) AND (status='pending')=(completed_at IS NULL)) NOT VALID")
+   -> 0.0006s
+-- execute("ALTER TABLE app.resend_webhook_events VALIDATE CONSTRAINT webhook_lease_state")
+   -> 0.0005s
+-- execute("SET LOCAL ROLE elevateo_owner")
+   -> 0.0002s
+-- execute("ALTER TABLE app.resend_webhook_events ADD CONSTRAINT webhook_attempt_range CHECK (attempts >= 0) NOT VALID")
+   -> 0.0004s
+-- execute("ALTER TABLE app.resend_webhook_events VALIDATE CONSTRAINT webhook_attempt_range")
+   -> 0.0003s
+-- execute("SET LOCAL ROLE elevateo_send_owner")
+   -> 0.0001s
+-- execute("ALTER TABLE app_send_private.resend_events ADD CONSTRAINT resend_state_matches_type CHECK (delivery_state=substring(event_type FROM 7)) NOT VALID")
+   -> 0.0006s
+-- execute("ALTER TABLE app_send_private.resend_events VALIDATE CONSTRAINT resend_state_matches_type")
+   -> 0.0003s
+-- execute("SET LOCAL ROLE elevateo_send_owner")
+   -> 0.0001s
+-- execute("ALTER TABLE app_send_private.resend_delivery ADD CONSTRAINT resend_delivery_severity CHECK (severity=CASE kind WHEN 'email.sent' THEN 1 WHEN 'email.delivery_delayed' THEN 2 WHEN 'email.delivered' THEN 3 WHEN 'email.failed' THEN 4 WHEN 'email.bounced' THEN 5 WHEN 'email.suppressed' THEN 6 WHEN 'email.complained' THEN 7 ELSE 0 END AND severity BETWEEN 1 AND 7) NOT VALID")
+   -> 0.0005s
+-- execute("ALTER TABLE app_send_private.resend_delivery VALIDATE CONSTRAINT resend_delivery_severity")
+   -> 0.0004s
+-- execute("SET LOCAL ROLE elevateo_send_owner")
+   -> 0.0003s
+-- execute("ALTER TABLE app_send_private.resend_acceptance ADD CONSTRAINT resend_acceptance_receipt_shape CHECK (receipt_ref ~ '^resend:[A-Za-z0-9_-]{1,128}$') NOT VALID")
+   -> 0.0005s
+-- execute("ALTER TABLE app_send_private.resend_acceptance VALIDATE CONSTRAINT resend_acceptance_receipt_shape")
+   -> 0.0005s
+-- execute("SET LOCAL ROLE elevateo_send_owner")
+   -> 0.0003s
+-- execute("ALTER TABLE app_send_private.attempts ADD CONSTRAINT attempt_sender_shape CHECK (smtp_sender IS NULL OR (octet_length(smtp_sender) BETWEEN 1 AND 254 AND app_send_private.canonical_address(smtp_sender) IS NOT NULL AND smtp_sender=app_send_private.canonical_address(smtp_sender))) NOT VALID")
+   -> 0.0033s
+-- execute("ALTER TABLE app_send_private.attempts VALIDATE CONSTRAINT attempt_sender_shape")
+   -> 0.0011s
+-- execute("SET LOCAL ROLE elevateo_send_owner")
+   -> 0.0005s
+-- execute("ALTER TABLE app_send_private.mox_domains ADD CONSTRAINT mox_domain_labels CHECK (domain ~ '^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?([.][a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)*$' AND octet_length(domain)<=253) NOT VALID")
+   -> 0.0012s
+-- execute("ALTER TABLE app_send_private.mox_domains VALIDATE CONSTRAINT mox_domain_labels")
+   -> 0.0008s
+-- execute("SET LOCAL ROLE elevateo_send_owner")
+   -> 0.0004s
+-- execute("ALTER TABLE app_send_private.mox_domains ADD CONSTRAINT mox_evidence_shape CHECK (evidence_ref IS NULL OR evidence_ref ~ '^[0-9a-f]{64}$') NOT VALID")
+   -> 0.0011s
+-- execute("ALTER TABLE app_send_private.mox_domains VALIDATE CONSTRAINT mox_evidence_shape")
+   -> 0.0010s
+-- execute("SET LOCAL ROLE elevateo_owner")
+   -> 0.0004s
+-- execute("ALTER TABLE app_connector_private.grants ADD CONSTRAINT connector_scope_set CHECK (CASE WHEN array_ndims(scopes)=1 THEN array_position(scopes,NULL) IS NULL AND cardinality(scopes)=(CASE WHEN 'search'=ANY(scopes) THEN 1 ELSE 0 END + CASE WHEN 'read'=ANY(scopes) THEN 1 ELSE 0 END + CASE WHEN 'draft'=ANY(scopes) THEN 1 ELSE 0 END) ELSE false END) NOT VALID")
+   -> 0.0012s
+-- execute("ALTER TABLE app_connector_private.grants VALIDATE CONSTRAINT connector_scope_set")
+   -> 0.0007s
+-- execute("SET LOCAL ROLE elevateo_session_owner")
+   -> 0.0004s
+-- execute("ALTER TABLE app_auth.revocation_intents ADD CONSTRAINT revocation_generation_range CHECK (credential_generation >= 0) NOT VALID")
+   -> 0.0009s
+-- execute("ALTER TABLE app_auth.revocation_intents VALIDATE CONSTRAINT revocation_generation_range")
+   -> 0.0008s
+-- execute("SET LOCAL ROLE elevateo_session_owner")
+   -> 0.0003s
+-- execute("ALTER TABLE app_auth.revocation_intents ADD CONSTRAINT revocation_claim_pair CHECK ((claim_id IS NULL)=(claim_deadline IS NULL) AND (state<>'claimed' OR claim_id IS NOT NULL)) NOT VALID")
+   -> 0.0011s
+-- execute("ALTER TABLE app_auth.revocation_intents VALIDATE CONSTRAINT revocation_claim_pair")
+   -> 0.0008s
+-- execute("SET LOCAL ROLE elevateo_session_owner")
+   -> 0.0003s
+-- execute("ALTER TABLE app_auth.pending_entries ADD CONSTRAINT pending_claim_pair CHECK ((claim_id IS NULL)=(claim_deadline IS NULL)) NOT VALID")
+   -> 0.0006s
+-- execute("ALTER TABLE app_auth.pending_entries VALIDATE CONSTRAINT pending_claim_pair")
+   -> 0.0006s
+-- execute("SET LOCAL ROLE elevateo_session_owner")
+   -> 0.0003s
+[credential-bearing line redacted]
+   -> 0.0008s
+-- execute("ALTER TABLE app_auth.pending_entries VALIDATE CONSTRAINT pending_access_ciphertext_bound")
+   -> 0.0011s
+-- execute("SET LOCAL ROLE elevateo_session_owner")
+   -> 0.0004s
+[credential-bearing line redacted]
+   -> 0.0037s
+-- execute("ALTER TABLE app_auth.pending_entries VALIDATE CONSTRAINT [opaque value redacted]")
+   -> 0.0011s
+-- execute("SET LOCAL ROLE elevateo_owner")
+   -> 0.0004s
+-- execute("ALTER TABLE app.organization_role_audit ADD CONSTRAINT audit_old_role_value CHECK (old_role IN ('owner','admin','operator','sales_manager','sales','auditor','associate')) NOT VALID")
+   -> 0.0008s
+-- execute("ALTER TABLE app.organization_role_audit VALIDATE CONSTRAINT audit_old_role_value")
+   -> 0.0005s
+-- execute("SET LOCAL ROLE elevateo_owner")
+   -> 0.0003s
+-- execute("ALTER TABLE app.organization_role_audit ADD CONSTRAINT audit_new_role_value CHECK (new_role IN ('owner','admin','operator','sales_manager','sales','auditor','associate')) NOT VALID")
+   -> 0.0007s
+-- execute("ALTER TABLE app.organization_role_audit VALIDATE CONSTRAINT audit_new_role_value")
+   -> 0.0008s
+-- execute("SET LOCAL ROLE elevateo_owner")
+   -> 0.0004s
+-- execute("ALTER TABLE app.[opaque value redacted] ADD CONSTRAINT enrollment_role_value CHECK (role IN ('owner','admin','operator','sales_manager','sales','auditor','associate')) NOT VALID")
+   -> 0.0010s
+-- execute("ALTER TABLE app.[opaque value redacted] VALIDATE CONSTRAINT enrollment_role_value")
+   -> 0.0008s
+-- execute("SET LOCAL ROLE elevateo_owner")
+   -> 0.0004s
+-- execute("ALTER TABLE app.[opaque value redacted] ADD CONSTRAINT enrollment_receipt_shape CHECK (receipt_ref ~ '^[A-Za-z0-9._:/-]+$') NOT VALID")
+   -> 0.0007s
+-- execute("ALTER TABLE app.[opaque value redacted] VALIDATE CONSTRAINT enrollment_receipt_shape")
+   -> 0.0008s
+-- execute("SET LOCAL ROLE elevateo_owner")
+   -> 0.0004s
+-- execute("ALTER TABLE app.mailbox_policy_receipts ADD CONSTRAINT mailbox_receipt_shape CHECK (receipt_ref ~ '^[A-Za-z0-9._:/-]+$') NOT VALID")
+   -> 0.0009s
+-- execute("ALTER TABLE app.mailbox_policy_receipts VALIDATE CONSTRAINT mailbox_receipt_shape")
+   -> 0.0033s
+-- execute("SET LOCAL ROLE elevateo_owner")
+   -> 0.0007s
+-- execute("ALTER TABLE app.resend_webhook_events ADD CONSTRAINT integrity_finite_lease_until CHECK (isfinite(lease_until)) NOT VALID")
+   -> 0.0011s
+-- execute("ALTER TABLE app.resend_webhook_events VALIDATE CONSTRAINT integrity_finite_lease_until")
+   -> 0.0015s
+-- execute("SET LOCAL ROLE elevateo_owner")
+   -> 0.0005s
+-- execute("ALTER TABLE app.resend_webhook_events ADD CONSTRAINT [opaque value redacted] CHECK (isfinite(next_attempt_at)) NOT VALID")
+   -> 0.0013s
+-- execute("ALTER TABLE app.resend_webhook_events VALIDATE CONSTRAINT [opaque value redacted]")
+   -> 0.0009s
+-- execute("SET LOCAL ROLE elevateo_owner")
+   -> 0.0004s
+-- execute("ALTER TABLE app.resend_webhook_events ADD CONSTRAINT integrity_finite_received_at CHECK (isfinite(received_at)) NOT VALID")
+   -> 0.0010s
+-- execute("ALTER TABLE app.resend_webhook_events VALIDATE CONSTRAINT integrity_finite_received_at")
+   -> 0.0007s
+-- execute("SET LOCAL ROLE elevateo_owner")
+   -> 0.0003s
+-- execute("ALTER TABLE app.resend_webhook_events ADD CONSTRAINT integrity_finite_completed_at CHECK (isfinite(completed_at)) NOT VALID")
+   -> 0.0007s
+-- execute("ALTER TABLE app.resend_webhook_events VALIDATE CONSTRAINT integrity_finite_completed_at")
+   -> 0.0008s
+-- execute("SET LOCAL ROLE elevateo_owner")
+   -> 0.0004s
+-- execute("ALTER TABLE app.inbound_imap_rejections ADD CONSTRAINT integrity_finite_recorded_at CHECK (isfinite(recorded_at)) NOT VALID")
+   -> 0.0008s
+-- execute("ALTER TABLE app.inbound_imap_rejections VALIDATE CONSTRAINT integrity_finite_recorded_at")
+   -> 0.0007s
+-- execute("SET LOCAL ROLE elevateo_owner")
+   -> 0.0003s
+-- execute("ALTER TABLE app.marketing_runs ADD CONSTRAINT integrity_finite_created_at CHECK (isfinite(created_at)) NOT VALID")
+   -> 0.0009s
+-- execute("ALTER TABLE app.marketing_runs VALIDATE CONSTRAINT integrity_finite_created_at")
+   -> 0.0009s
+-- execute("SET LOCAL ROLE elevateo_send_owner")
+   -> 0.0004s
+-- execute("ALTER TABLE app_send_private.resend_events ADD CONSTRAINT integrity_finite_recorded_at CHECK (isfinite(recorded_at)) NOT VALID")
+   -> 0.0010s
+-- execute("ALTER TABLE app_send_private.resend_events VALIDATE CONSTRAINT integrity_finite_recorded_at")
+   -> 0.0006s
+-- execute("SET LOCAL ROLE elevateo_send_owner")
+   -> 0.0003s
+-- execute("ALTER TABLE app_send_private.resend_delivery ADD CONSTRAINT integrity_finite_occurred_at CHECK (isfinite(occurred_at)) NOT VALID")
+   -> 0.0008s
+-- execute("ALTER TABLE app_send_private.resend_delivery VALIDATE CONSTRAINT integrity_finite_occurred_at")
+   -> 0.0006s
+-- execute("SET LOCAL ROLE elevateo_send_owner")
+   -> 0.0003s
+-- execute("ALTER TABLE app_send_private.mox_domains ADD CONSTRAINT integrity_finite_verified_at CHECK (isfinite(verified_at)) NOT VALID")
+   -> 0.0006s
+-- execute("ALTER TABLE app_send_private.mox_domains VALIDATE CONSTRAINT integrity_finite_verified_at")
+   -> 0.0004s
+-- execute("SET LOCAL ROLE elevateo_owner")
+   -> 0.0003s
+-- execute("ALTER TABLE app_connector_private.grants ADD CONSTRAINT integrity_finite_created_at CHECK (isfinite(created_at)) NOT VALID")
+   -> 0.0007s
+-- execute("ALTER TABLE app_connector_private.grants VALIDATE CONSTRAINT integrity_finite_created_at")
+   -> 0.0005s
+-- execute("SET LOCAL ROLE elevateo_session_owner")
+   -> 0.0003s
+-- execute("ALTER TABLE app_auth.sessions ADD CONSTRAINT integrity_finite_created_at CHECK (isfinite(created_at)) NOT VALID")
+   -> 0.0010s
+-- execute("ALTER TABLE app_auth.sessions VALIDATE CONSTRAINT integrity_finite_created_at")
+   -> 0.0008s
+-- execute("SET LOCAL ROLE elevateo_session_owner")
+   -> 0.0004s
+-- execute("ALTER TABLE app_auth.sessions ADD CONSTRAINT [opaque value redacted] CHECK (isfinite(absolute_expires_at)) NOT VALID")
+   -> 0.0009s
+-- execute("ALTER TABLE app_auth.sessions VALIDATE CONSTRAINT [opaque value redacted]")
+   -> 0.0009s
+-- execute("SET LOCAL ROLE elevateo_session_owner")
+   -> 0.0004s
+-- execute("ALTER TABLE app_auth.sessions ADD CONSTRAINT [opaque value redacted] CHECK (isfinite(idle_expires_at)) NOT VALID")
+   -> 0.0007s
+-- execute("ALTER TABLE app_auth.sessions VALIDATE CONSTRAINT [opaque value redacted]")
+   -> 0.0007s
+-- execute("SET LOCAL ROLE elevateo_session_owner")
+   -> 0.0004s
+-- execute("ALTER TABLE app_auth.sessions ADD CONSTRAINT [opaque value redacted] CHECK (isfinite(refresh_claim_deadline)) NOT VALID")
+   -> 0.0007s
+-- execute("ALTER TABLE app_auth.sessions VALIDATE CONSTRAINT [opaque value redacted]")
+   -> 0.0007s
+-- execute("SET LOCAL ROLE elevateo_session_owner")
+   -> 0.0004s
+-- execute("ALTER TABLE app_auth.sessions ADD CONSTRAINT integrity_finite_revoked_at CHECK (isfinite(revoked_at)) NOT VALID")
+   -> 0.0012s
+-- execute("ALTER TABLE app_auth.sessions VALIDATE CONSTRAINT integrity_finite_revoked_at")
+   -> 0.0011s
+-- execute("SET LOCAL ROLE elevateo_session_owner")
+   -> 0.0004s
+-- execute("ALTER TABLE app_auth.revocation_intents ADD CONSTRAINT integrity_finite_claim_deadline CHECK (isfinite(claim_deadline)) NOT VALID")
+   -> 0.0007s
+-- execute("ALTER TABLE app_auth.revocation_intents VALIDATE CONSTRAINT integrity_finite_claim_deadline")
+   -> 0.0007s
+-- execute("SET LOCAL ROLE elevateo_session_owner")
+   -> 0.0004s
+-- execute("ALTER TABLE app_auth.revocation_intents ADD CONSTRAINT [opaque value redacted] CHECK (isfinite(next_attempt_at)) NOT VALID")
+   -> 0.0006s
+-- execute("ALTER TABLE app_auth.revocation_intents VALIDATE CONSTRAINT [opaque value redacted]")
+   -> 0.0006s
+-- execute("SET LOCAL ROLE elevateo_session_owner")
+   -> 0.0003s
+-- execute("ALTER TABLE app_auth.revocation_intents ADD CONSTRAINT integrity_finite_created_at CHECK (isfinite(created_at)) NOT VALID")
+   -> 0.0006s
+-- execute("ALTER TABLE app_auth.revocation_intents VALIDATE CONSTRAINT integrity_finite_created_at")
+   -> 0.0007s
+-- execute("SET LOCAL ROLE elevateo_session_owner")
+   -> 0.0004s
+-- execute("ALTER TABLE app_auth.pending_entries ADD CONSTRAINT integrity_finite_expires_at CHECK (isfinite(expires_at)) NOT VALID")
+   -> 0.0009s
+-- execute("ALTER TABLE app_auth.pending_entries VALIDATE CONSTRAINT integrity_finite_expires_at")
+   -> 0.0008s
+-- execute("SET LOCAL ROLE elevateo_session_owner")
+   -> 0.0003s
+-- execute("ALTER TABLE app_auth.pending_entries ADD CONSTRAINT integrity_finite_claim_deadline CHECK (isfinite(claim_deadline)) NOT VALID")
+   -> 0.0005s
+-- execute("ALTER TABLE app_auth.pending_entries VALIDATE CONSTRAINT integrity_finite_claim_deadline")
+   -> 0.0004s
+-- execute("SET LOCAL ROLE elevateo_session_owner")
+   -> 0.0004s
+-- execute("ALTER TABLE app_auth.pending_entries ADD CONSTRAINT [opaque value redacted] CHECK (isfinite(access_expires_at)) NOT VALID")
+   -> 0.0012s
+-- execute("ALTER TABLE app_auth.pending_entries VALIDATE CONSTRAINT [opaque value redacted]")
+   -> 0.0007s
+-- execute("SET LOCAL ROLE elevateo_session_owner")
+   -> 0.0004s
+-- execute("ALTER TABLE app_auth.rate_limits ADD CONSTRAINT integrity_finite_window_start CHECK (isfinite(window_start)) NOT VALID")
+   -> 0.0011s
+-- execute("ALTER TABLE app_auth.rate_limits VALIDATE CONSTRAINT integrity_finite_window_start")
+   -> 0.0009s
+-- execute("SET LOCAL ROLE elevateo_owner")
+   -> 0.0005s
+-- execute("ALTER TABLE app.organization_role_audit ADD CONSTRAINT integrity_finite_occurred_at CHECK (isfinite(occurred_at)) NOT VALID")
+   -> 0.0009s
+-- execute("ALTER TABLE app.organization_role_audit VALIDATE CONSTRAINT integrity_finite_occurred_at")
+   -> 0.0006s
+-- execute("SET LOCAL ROLE elevateo_owner")
+   -> 0.0003s
+-- execute("ALTER TABLE app.[opaque value redacted] ADD CONSTRAINT integrity_finite_recorded_at CHECK (isfinite(recorded_at)) NOT VALID")
+   -> 0.0005s
+-- execute("ALTER TABLE app.[opaque value redacted] VALIDATE CONSTRAINT integrity_finite_recorded_at")
+   -> 0.0005s
+-- execute("SET LOCAL ROLE elevateo_owner")
+   -> 0.0003s
+-- execute("ALTER TABLE app.mailbox_policy_receipts ADD CONSTRAINT integrity_finite_recorded_at CHECK (isfinite(recorded_at)) NOT VALID")
+   -> 0.0005s
+-- execute("ALTER TABLE app.mailbox_policy_receipts VALIDATE CONSTRAINT integrity_finite_recorded_at")
+   -> 0.0004s
+-- execute("SET LOCAL ROLE elevateo_owner")
+   -> 0.0003s
+-- execute("ALTER TABLE app.inbound_imap_receipts ADD CONSTRAINT [opaque value redacted] FOREIGN KEY (organization_id,mailbox_id,account_id) REFERENCES app.inbound_imap_accounts(organization_id,mailbox_id,id) NOT VALID")
+   -> 0.0022s
+-- execute("ALTER TABLE app.inbound_imap_receipts VALIDATE CONSTRAINT [opaque value redacted]")
+   -> 0.0023s
+-- execute("SET LOCAL ROLE elevateo_owner")
+   -> 0.0005s
+-- execute("ALTER TABLE app.inbound_imap_rejections ADD CONSTRAINT [opaque value redacted] FOREIGN KEY (organization_id,mailbox_id,account_id) REFERENCES app.inbound_imap_accounts(organization_id,mailbox_id,id) NOT VALID")
+   -> 0.0018s
+-- execute("ALTER TABLE app.inbound_imap_rejections VALIDATE CONSTRAINT [opaque value redacted]")
+   -> 0.0015s
+-- execute("SET LOCAL ROLE elevateo_send_owner")
+   -> 0.0006s
+-- execute("ALTER TABLE app_send_private.reconciliation_checks ADD CONSTRAINT [opaque value redacted] FOREIGN KEY (send_id,attempt_id) REFERENCES app_send_private.attempts(send_id,attempt_id) NOT VALID")
+   -> 0.0012s
+-- execute("ALTER TABLE app_send_private.reconciliation_checks VALIDATE CONSTRAINT [opaque value redacted]")
+   -> 0.0013s
+-- execute("SET LOCAL ROLE elevateo_owner")
+   -> 0.0004s
+-- execute("ALTER TABLE app.marketing_enrollments ADD CONSTRAINT enrollment_intent_identity_fk FOREIGN KEY (organization_id,draft_id,send_id) REFERENCES app_send_private.intents(organization_id,draft_id,send_id) NOT VALID")
+   -> 0.0024s
+-- execute("ALTER TABLE app.marketing_enrollments VALIDATE CONSTRAINT enrollment_intent_identity_fk")
+   -> 0.0012s
+-- execute("SET LOCAL ROLE elevateo_owner")
+   -> 0.0004s
+-- execute("ALTER TABLE app.marketing_enrollments ADD CONSTRAINT enrollment_draft_identity_fk FOREIGN KEY (organization_id,draft_id) REFERENCES app.drafts(organization_id,id) NOT VALID")
+   -> 0.0021s
+-- execute("ALTER TABLE app.marketing_enrollments VALIDATE CONSTRAINT enrollment_draft_identity_fk")
+   -> 0.0055s
+-- execute("SET LOCAL ROLE elevateo_send_owner")
+   -> 0.0006s
+-- execute("REVOKE REFERENCES ON app_send_private.intents FROM elevateo_owner")
+   -> 0.0011s
+-- execute("RESET ROLE")
+   -> 0.0005s
+== 20261101000115 EnforceSchemaValues: migrated (0.1455s) =====================
+
+Migrating to BoundMaterializedAttachments (20261101000116)
+== 20261101000116 BoundMaterializedAttachments: migrating =====================
+-- execute("SET LOCAL ROLE elevateo_owner;\nLOCK TABLE app.inbox_attachments IN SHARE ROW EXCLUSIVE MODE;\nDO $$ BEGIN\n  IF EXISTS (SELECT message_id FROM app.inbox_attachments GROUP BY message_id HAVING count(*)>1000) THEN\n    RAISE EXCEPTION 'message exceeds 1000 materialized attachments';\n  END IF;\nEND $$;\nCOMMENT ON COLUMN app.messages.attachment_count IS\n  'Provider-reported attachment snapshot; read projections also count locally materialized inbox_attachments.';\nCREATE FUNCTION app.bound_message_attachments() RETURNS trigger\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog AS $$\nDECLARE previous_org text:=current_setting('app.org_id',true);\nBEGIN\n  -- AIDEV-NOTE: Restore caller scope; FORCE RLS otherwise silently hides the serialization parent.\n  PERFORM set_config('app.org_id',NEW.organization_id::text,true);\n  -- AIDEV-NOTE: A tuple write also rejects stale repeatable-read snapshots, unlike a row lock alone.\n  UPDATE app.messages SET [opaque value redacted]\n    WHERE organization_id=NEW.organization_id AND mailbox_id=NEW.mailbox_id\n    AND thread_id=NEW.thread_id AND id=NEW.message_id;\n  IF NOT FOUND THEN\n    RAISE EXCEPTION 'attachment parent message not found' USING ERRCODE='23503';\n  END IF;\n  IF (SELECT count(*) FROM app.inbox_attachments WHERE organization_id=NEW.organization_id\n    AND mailbox_id=NEW.mailbox_id AND thread_id=NEW.thread_id AND message_id=NEW.message_id)>1000 THEN\n    RAISE EXCEPTION 'message exceeds 1000 materialized attachments' USING ERRCODE='23514';\n  END IF;\n  PERFORM set_config('app.org_id',coalesce(previous_org,''),true);\n  RETURN NEW;\nEXCEPTION WHEN OTHERS THEN\n  PERFORM set_config('app.org_id',coalesce(previous_org,''),true);\n  RAISE;\nEND $$;\nREVOKE ALL ON FUNCTION app.bound_message_attachments() FROM PUBLIC;\n-- AIDEV-NOTE: AFTER ignores ON CONFLICT DO NOTHING replays; count includes the successfully inserted row.\nCREATE TRIGGER bound_message_attachments AFTER INSERT OR UPDATE OF\n  organization_id,mailbox_id,thread_id,message_id,id ON app.inbox_attachments\n  FOR EACH ROW EXECUTE FUNCTION app.bound_message_attachments();\nRESET ROLE;\n")
+   -> 0.0037s
+== 20261101000116 BoundMaterializedAttachments: migrated (0.0039s) ============
+
+Migrating to RemoveRedundantUniqueIndexes (20261101000117)
+== 20261101000117 RemoveRedundantUniqueIndexes: migrating =====================
+-- execute("SET ROLE elevateo_send_owner")
+   -> 0.0008s
+-- select_one("SELECT pg_get_indexdef(i.indexrelid) AS definition,i.indisvalid AND i.indisready AS ready\nFROM pg_index i WHERE i.indexrelid=to_regclass('app_send_private.intent_draft_fk')\n")
+   -> 0.0008s
+-- execute("CREATE INDEX CONCURRENTLY intent_draft_fk ON app_send_private.intents(organization_id,mailbox_id,draft_id)")
+   -> 0.0025s
+-- execute("SET ROLE elevateo_send_owner")
+   -> 0.0006s
+-- execute("ALTER TABLE app_send_private.intents DROP CONSTRAINT IF EXISTS [opaque value redacted]")
+   -> 0.0015s
+-- execute("SET ROLE elevateo_owner")
+   -> 0.0005s
+-- execute("ALTER TABLE app.campaign_sequence_steps DROP CONSTRAINT IF EXISTS [opaque value redacted]")
+   -> 0.0017s
+-- execute("SET ROLE elevateo_owner")
+   -> 0.0005s
+-- execute("ALTER TABLE app.draft_attachments DROP CONSTRAINT IF EXISTS [opaque value redacted]")
+   -> 0.0014s
+-- execute("RESET ROLE")
+   -> 0.0006s
+== 20261101000117 RemoveRedundantUniqueIndexes: migrated (0.0116s) ============
+
+ Container [opaque value redacted] Creating
+ Container [opaque value redacted] Created
+`/app` is not writable.
+Bundler will use `/tmp/bundler20261031-7-vxucem7' as your home directory temporarily.
+
+exit=0 seconds=31.44

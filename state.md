@@ -1,6 +1,15 @@
 # Project state
 
-Updated 2026-10-30. Earlier entries are preserved verbatim in [docs/history/logs/state-log.md](docs/history/logs/state-log.md).
+Updated 2026-11-01. Earlier entries are preserved verbatim in [docs/history/logs/state-log.md](docs/history/logs/state-log.md).
+
+## Schema integrity branch
+
+Completed schema integrity audit and migrations 20261101000111?117: relationship indexes/constraints,
+canonical delivery suppressions, normalized finder items, value checks, attachment concurrency and redundant-index removal.
+Docker up/down/up and the full backend gate passed: 1,399 standard tests / 15,907 assertions, zero failures/errors,
+plus dedicated database, mail, API and contract checks; Steep and RuboCop (542 files) passed. Four standard protocol
+skips are tracked separately in the receipt. No deployment, push, merge or live mail occurred.
+Evidence and exact scope: [schema integrity](docs/completion/schema-integrity-20261101/).
 
 ## Summary
 

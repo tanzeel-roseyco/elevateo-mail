@@ -16,9 +16,16 @@ class OrganizationAccessMigrationTest < Minitest::Test
     assert_equal ["elevateo_migrator", ENV.fetch("BE02_TASK_DATABASE_NAME")],
       connection.select_rows("SELECT session_user,current_database()").first
     before = snapshot(connection)
+    finder_policies = dependent_finder_policies(connection)
+    assert_equal 11, finder_policies.length
     assert_equal ["elevateo_owner", "true", "true", "false", "false", "false"], before[1, 6]
     assert_includes before.last, "app.mailbox_security"
     connection.transaction do
+      # AIDEV-NOTE: Later finder policies depend on historical outreach functions; rollback restores their exact identities.
+      connection.execute("SET LOCAL ROLE elevateo_owner")
+      finder_policies.each do |row|
+        connection.execute("DROP POLICY #{connection.quote_column_name(row[2])} ON app.#{connection.quote_table_name(row[1])}")
+      end
       # AIDEV-NOTE: Reverse marketing FKs and campaign policies first; the outer rollback restores all fixture tables.
       CreateMarketingRuns.new.down
       CreateOutreachSequences.new.down
@@ -37,9 +44,27 @@ class OrganizationAccessMigrationTest < Minitest::Test
       raise ActiveRecord::Rollback
     end
     assert_equal before, snapshot(connection)
+    assert_equal finder_policies, dependent_finder_policies(connection)
   end
 
   private
+
+  def dependent_finder_policies(connection)
+    connection.select_rows(<<~SQL)
+      SELECT DISTINCT p.oid::text,c.relname,p.polname,p.polcmd,p.polroles::text,
+        pg_get_expr(p.polqual,p.polrelid),pg_get_expr(p.polwithcheck,p.polrelid)
+      FROM pg_policy p JOIN pg_class c ON c.oid=p.polrelid
+      JOIN pg_namespace n ON n.oid=c.relnamespace
+      JOIN pg_depend d ON d.classid='pg_policy'::regclass AND d.objid=p.oid
+      WHERE n.nspname='app' AND c.relname IN ('email_finder_jobs','email_finder_domains',
+        'email_finder_people','email_finder_results','email_finder_suppressions','email_finder_rate_state',
+        'email_finder_job_items')
+        AND d.refclassid='pg_proc'::regclass AND d.refobjid IN (
+          'app.authorize_outreach_content_read(text)'::regprocedure,
+          'app.authorize_outreach_draft_write(text)'::regprocedure)
+      ORDER BY c.relname,p.polname
+    SQL
+  end
 
   def assert_invalid_input_rejected(connection)
     # AIDEV-NOTE: Recover the expected SQL failure within a savepoint, so the outer migration transaction stays usable.

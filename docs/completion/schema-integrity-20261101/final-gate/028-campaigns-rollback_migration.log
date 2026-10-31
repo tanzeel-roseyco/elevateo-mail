@@ -1,0 +1,135 @@
+Run options: --seed 54499
+
+# Running:
+
+-- execute("ALTER TABLE app.campaign_sequence_mutations NO FORCE ROW LEVEL SECURITY")
+   -> 0.0013s
+-- execute("ALTER TABLE app.campaign_sequence_occurrences NO FORCE ROW LEVEL SECURITY")
+   -> 0.0006s
+-- execute("ALTER TABLE app.campaign_sequence_steps NO FORCE ROW LEVEL SECURITY")
+   -> 0.0006s
+-- execute("ALTER TABLE app.campaign_sequences NO FORCE ROW LEVEL SECURITY")
+   -> 0.0006s
+-- select_value("SELECT EXISTS (SELECT 1 FROM app.campaign_sequence_mutations LIMIT 1)")
+   -> 0.0006s
+-- select_value("SELECT EXISTS (SELECT 1 FROM app.campaign_sequence_occurrences LIMIT 1)")
+   -> 0.0005s
+-- select_value("SELECT EXISTS (SELECT 1 FROM app.campaign_sequence_steps LIMIT 1)")
+   -> 0.0004s
+-- select_value("SELECT EXISTS (SELECT 1 FROM app.campaign_sequences LIMIT 1)")
+   -> 0.0005s
+-- execute("DROP TABLE app.campaign_sequence_mutations, app.campaign_sequence_occurrences, app.campaign_sequence_steps, app.campaign_sequences")
+.-- execute("ALTER TABLE app.campaign_sequence_mutations NO FORCE ROW LEVEL SECURITY")
+   -> 0.0008s
+-- execute("ALTER TABLE app.campaign_sequence_occurrences NO FORCE ROW LEVEL SECURITY")
+   -> 0.0005s
+-- execute("ALTER TABLE app.campaign_sequence_steps NO FORCE ROW LEVEL SECURITY")
+   -> 0.0005s
+-- execute("ALTER TABLE app.campaign_sequences NO FORCE ROW LEVEL SECURITY")
+   -> 0.0005s
+-- select_value("SELECT EXISTS (SELECT 1 FROM app.campaign_sequence_mutations LIMIT 1)")
+   -> 0.0004s
+-- select_value("SELECT EXISTS (SELECT 1 FROM app.campaign_sequence_occurrences LIMIT 1)")
+   -> 0.0005s
+-- select_value("SELECT EXISTS (SELECT 1 FROM app.campaign_sequence_steps LIMIT 1)")
+   -> 0.0004s
+-- select_value("SELECT EXISTS (SELECT 1 FROM app.campaign_sequences LIMIT 1)")
+   -> 0.0004s
+.-- execute("ALTER TABLE app.campaign_mutations NO FORCE ROW LEVEL SECURITY")
+   -> 0.0010s
+-- execute("ALTER TABLE app.campaign_suppressions NO FORCE ROW LEVEL SECURITY")
+   -> 0.0010s
+-- execute("ALTER TABLE app.campaign_accounts NO FORCE ROW LEVEL SECURITY")
+   -> 0.0011s
+-- execute("ALTER TABLE app.campaign_consent_events NO FORCE ROW LEVEL SECURITY")
+   -> 0.0006s
+-- execute("ALTER TABLE app.campaign_leads NO FORCE ROW LEVEL SECURITY")
+   -> 0.0013s
+-- execute("ALTER TABLE app.campaigns NO FORCE ROW LEVEL SECURITY")
+   -> 0.0011s
+-- select_value("SELECT EXISTS (SELECT 1 FROM app.campaign_mutations LIMIT 1)")
+   -> 0.0006s
+-- select_value("SELECT EXISTS (SELECT 1 FROM app.campaign_suppressions LIMIT 1)")
+   -> 0.0008s
+-- select_value("SELECT EXISTS (SELECT 1 FROM app.campaign_accounts LIMIT 1)")
+   -> 0.0005s
+-- select_value("SELECT EXISTS (SELECT 1 FROM app.campaign_consent_events LIMIT 1)")
+   -> 0.0004s
+-- select_value("SELECT EXISTS (SELECT 1 FROM app.campaign_leads LIMIT 1)")
+   -> 0.0009s
+-- select_value("SELECT EXISTS (SELECT 1 FROM app.campaigns LIMIT 1)")
+   -> 0.0005s
+.-- execute("ALTER TABLE app.campaign_sequence_mutations NO FORCE ROW LEVEL SECURITY")
+   -> 0.0010s
+-- execute("ALTER TABLE app.campaign_sequence_occurrences NO FORCE ROW LEVEL SECURITY")
+   -> 0.0005s
+-- execute("ALTER TABLE app.campaign_sequence_steps NO FORCE ROW LEVEL SECURITY")
+   -> 0.0005s
+-- execute("ALTER TABLE app.campaign_sequences NO FORCE ROW LEVEL SECURITY")
+   -> 0.0005s
+-- select_value("SELECT EXISTS (SELECT 1 FROM app.campaign_sequence_mutations LIMIT 1)")
+   -> 0.0005s
+-- select_value("SELECT EXISTS (SELECT 1 FROM app.campaign_sequence_occurrences LIMIT 1)")
+   -> 0.0005s
+-- select_value("SELECT EXISTS (SELECT 1 FROM app.campaign_sequence_steps LIMIT 1)")
+   -> 0.0004s
+-- select_value("SELECT EXISTS (SELECT 1 FROM app.campaign_sequences LIMIT 1)")
+   -> 0.0004s
+-- execute("DROP TABLE app.campaign_sequence_mutations, app.campaign_sequence_occurrences, app.campaign_sequence_steps, app.campaign_sequences")
+   -> 0.0065s
+-- execute("CREATE TABLE app.campaign_sequences (\n  id uuid PRIMARY KEY,\n  organization_id uuid NOT NULL,\n  campaign_id uuid NOT NULL,\n  status text NOT NULL CHECK (status IN ('draft','held')),\n  timezone text NOT NULL CHECK (octet_length(timezone) BETWEEN 1 AND 128),\n  version integer NOT NULL CHECK (version BETWEEN 1 AND 2147483647),\n  created_at timestamptz NOT NULL DEFAULT now(),\n  updated_at timestamptz NOT NULL DEFAULT now(),\n  UNIQUE (organization_id,campaign_id),\n  UNIQUE (organization_id,campaign_id,id),\n  FOREIGN KEY (organization_id,campaign_id) REFERENCES app.campaigns(organization_id,id)\n);\nCREATE TABLE app.campaign_sequence_steps (\n  id uuid PRIMARY KEY,\n  organization_id uuid NOT NULL,\n  campaign_id uuid NOT NULL,\n  sequence_id uuid NOT NULL,\n  position integer NOT NULL CHECK (position BETWEEN 1 AND 20),\n  delay_seconds integer NOT NULL CHECK (delay_seconds BETWEEN 0 AND 2592000),\n  local_time time(0) without time zone NOT NULL,\n  label text NOT NULL CHECK (length(label) BETWEEN 1 AND 120 AND octet_length(label) <= 480),\n  UNIQUE (organization_id,campaign_id,sequence_id,position),\n  UNIQUE (organization_id,campaign_id,sequence_id,id),\n  FOREIGN KEY (organization_id,campaign_id,sequence_id)\n    REFERENCES app.campaign_sequences(organization_id,campaign_id,id)\n);\nCREATE TABLE app.campaign_sequence_occurrences (\n  id uuid PRIMARY KEY,\n  organization_id uuid NOT NULL,\n  campaign_id uuid NOT NULL,\n  sequence_id uuid NOT NULL,\n  draft_version integer NOT NULL CHECK (draft_version BETWEEN 1 AND 2147483647),\n  lead_id uuid NOT NULL,\n  step_id uuid NOT NULL,\n  account_id uuid NOT NULL,\n  anchor_at timestamptz NOT NULL,\n  local_at timestamp(0) without time zone NOT NULL,\n  timezone text NOT NULL CHECK (octet_length(timezone) BETWEEN 1 AND 128),\n  due_at timestamptz NOT NULL,\n  state text NOT NULL CHECK (state IN ('pending','cancelled','claimed')),\n  claim_token uuid,\n  claimed_at timestamptz,\n  stop_reason text CHECK (stop_reason IS NULL OR stop_reason IN ('reply','unsubscribe','suppressed','revoked','rescheduled')),\n  created_at timestamptz NOT NULL DEFAULT now(),\n  UNIQUE (organization_id,campaign_id,lead_id,step_id,draft_version),\n  FOREIGN KEY (organization_id,campaign_id,sequence_id)\n    REFERENCES app.campaign_sequences(organization_id,campaign_id,id),\n  FOREIGN KEY (organization_id,campaign_id,lead_id)\n    REFERENCES app.campaign_leads(organization_id,campaign_id,id),\n  FOREIGN KEY (organization_id,campaign_id,account_id)\n    REFERENCES app.campaign_accounts(organization_id,campaign_id,id),\n  CHECK ((state = 'cancelled') = (stop_reason IS NOT NULL)),\n  CHECK ((state = 'claimed' AND claim_token IS NOT NULL AND claimed_at IS NOT NULL)\n    OR (state <> 'claimed' AND claim_token IS NULL AND claimed_at IS NULL)),\n  CHECK (due_at >= anchor_at)\n);\nCREATE INDEX campaign_sequence_due_idx ON app.campaign_sequence_occurrences(due_at,id) WHERE state='pending';\nCREATE TABLE app.campaign_sequence_mutations (\n  organization_id uuid NOT NULL,\n  campaign_id uuid NOT NULL,\n  sequence_id uuid NOT NULL,\n  operation_id uuid NOT NULL,\n  fingerprint text NOT NULL CHECK (fingerprint ~ '^[0-9a-f]{64}$'),\n  result jsonb NOT NULL,\n  created_at timestamptz NOT NULL DEFAULT now(),\n  PRIMARY KEY (organization_id,campaign_id,operation_id),\n  FOREIGN KEY (organization_id,campaign_id,sequence_id)\n    REFERENCES app.campaign_sequences(organization_id,campaign_id,id)\n);\n")
+   -> 0.0094s
+-- execute("ALTER TABLE app.campaign_sequence_mutations ENABLE ROW LEVEL SECURITY")
+   -> 0.0006s
+-- execute("ALTER TABLE app.campaign_sequence_mutations FORCE ROW LEVEL SECURITY")
+   -> 0.0007s
+-- execute("REVOKE ALL ON app.campaign_sequence_mutations FROM PUBLIC")
+   -> 0.0005s
+-- execute("ALTER TABLE app.campaign_sequence_occurrences ENABLE ROW LEVEL SECURITY")
+   -> 0.0006s
+-- execute("ALTER TABLE app.campaign_sequence_occurrences FORCE ROW LEVEL SECURITY")
+   -> 0.0005s
+-- execute("REVOKE ALL ON app.campaign_sequence_occurrences FROM PUBLIC")
+   -> 0.0004s
+-- execute("ALTER TABLE app.campaign_sequence_steps ENABLE ROW LEVEL SECURITY")
+   -> 0.0007s
+-- execute("ALTER TABLE app.campaign_sequence_steps FORCE ROW LEVEL SECURITY")
+   -> 0.0005s
+-- execute("REVOKE ALL ON app.campaign_sequence_steps FROM PUBLIC")
+   -> 0.0006s
+-- execute("ALTER TABLE app.campaign_sequences ENABLE ROW LEVEL SECURITY")
+   -> 0.0008s
+-- execute("ALTER TABLE app.campaign_sequences FORCE ROW LEVEL SECURITY")
+   -> 0.0006s
+-- execute("REVOKE ALL ON app.campaign_sequences FROM PUBLIC")
+   -> 0.0005s
+-- execute("CREATE POLICY sequence_reader ON app.campaign_sequences FOR SELECT TO elevateo_app_read\n  USING (organization_id=app.context_uuid('app.org_id')\n    AND NULLIF(current_setting('app.outreach_digest',true),'') IS NOT NULL\n    AND (app.authorize_outreach_content_read(current_setting('app.outreach_digest',true))->>'status')='ok');\nCREATE POLICY sequence_insert ON app.campaign_sequences FOR INSERT TO elevateo_app_read\n  WITH CHECK (organization_id=app.context_uuid('app.org_id')\n    AND NULLIF(current_setting('app.outreach_digest',true),'') IS NOT NULL\n    AND (app.authorize_outreach_draft_write(current_setting('app.outreach_digest',true))->>'status')='ok');\n")
+   -> 0.0009s
+-- execute("CREATE POLICY sequence_reader ON app.campaign_sequence_steps FOR SELECT TO elevateo_app_read\n  USING (organization_id=app.context_uuid('app.org_id')\n    AND NULLIF(current_setting('app.outreach_digest',true),'') IS NOT NULL\n    AND (app.authorize_outreach_content_read(current_setting('app.outreach_digest',true))->>'status')='ok');\nCREATE POLICY sequence_insert ON app.campaign_sequence_steps FOR INSERT TO elevateo_app_read\n  WITH CHECK (organization_id=app.context_uuid('app.org_id')\n    AND NULLIF(current_setting('app.outreach_digest',true),'') IS NOT NULL\n    AND (app.authorize_outreach_draft_write(current_setting('app.outreach_digest',true))->>'status')='ok');\n")
+   -> 0.0006s
+-- execute("CREATE POLICY sequence_reader ON app.campaign_sequence_mutations FOR SELECT TO elevateo_app_read\n  USING (organization_id=app.context_uuid('app.org_id')\n    AND NULLIF(current_setting('app.outreach_digest',true),'') IS NOT NULL\n    AND (app.authorize_outreach_content_read(current_setting('app.outreach_digest',true))->>'status')='ok');\nCREATE POLICY sequence_insert ON app.campaign_sequence_mutations FOR INSERT TO elevateo_app_read\n  WITH CHECK (organization_id=app.context_uuid('app.org_id')\n    AND NULLIF(current_setting('app.outreach_digest',true),'') IS NOT NULL\n    AND (app.authorize_outreach_draft_write(current_setting('app.outreach_digest',true))->>'status')='ok');\n")
+   -> 0.0006s
+-- execute("CREATE POLICY sequence_update ON app.campaign_sequences FOR UPDATE TO elevateo_app_read\n  USING (organization_id=app.context_uuid('app.org_id')\n    AND (app.authorize_outreach_draft_write(current_setting('app.outreach_digest',true))->>'status')='ok')\n  WITH CHECK (organization_id=app.context_uuid('app.org_id')\n    AND (app.authorize_outreach_draft_write(current_setting('app.outreach_digest',true))->>'status')='ok');\nCREATE POLICY sequence_delete ON app.campaign_sequence_steps FOR DELETE TO elevateo_app_read\n  USING (organization_id=app.context_uuid('app.org_id')\n    AND (app.authorize_outreach_draft_write(current_setting('app.outreach_digest',true))->>'status')='ok');\n")
+   -> 0.0007s
+-- execute("CREATE POLICY sequence_occurrence_read ON app.campaign_sequence_occurrences FOR SELECT TO elevateo_app_read\n  USING (organization_id=app.context_uuid('app.org_id')\n    AND NULLIF(current_setting('app.outreach_digest',true),'') IS NOT NULL\n    AND (app.authorize_outreach_content_read(current_setting('app.outreach_digest',true))->>'status')='ok');\n")
+   -> 0.0004s
+-- execute("GRANT SELECT ON app.campaign_sequence_occurrences TO elevateo_app_read")
+   -> 0.0004s
+-- execute("GRANT SELECT,INSERT,UPDATE ON app.campaign_sequences TO elevateo_app_read")
+   -> 0.0005s
+-- execute("GRANT SELECT,INSERT,DELETE ON app.campaign_sequence_steps TO elevateo_app_read")
+   -> 0.0006s
+-- execute("GRANT SELECT,INSERT ON app.campaign_sequence_mutations TO elevateo_app_read")
+   -> 0.0005s
+.
+
+Finished in 0.670249s, 5.9679 runs/s, 71.6152 assertions/s.
+
+4 runs, 48 assertions, 0 failures, 0 errors, 0 skips
+ Container [opaque value redacted] Creating
+ Container [opaque value redacted] Created
+`/app` is not writable.
+Bundler will use `/tmp/bundler20261031-7-m66dkq7' as your home directory temporarily.
+unknown OID 2205: failed to recognize type of 'to_regclass'. It will be treated as String.
+
+exit=0 seconds=4.24
