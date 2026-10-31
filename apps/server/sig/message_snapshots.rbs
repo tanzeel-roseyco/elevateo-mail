@@ -1,0 +1,14 @@
+module Elevateo
+  module Mailbox
+    class MessageSnapshots
+      SELECT: String
+      @connection: _ThreadConnection
+      def initialize: (connection: _ThreadConnection) -> void
+      def search: (WriteInput::object) -> ReadResponse::item
+      def read: (WriteInput::object) -> ReadResponse::item
+      private
+      def message: (ReadResponse::item, String) -> ReadResponse::item
+      def rows: (String, Array[String?]) -> Array[ReadResponse::item]
+    end
+  end
+end

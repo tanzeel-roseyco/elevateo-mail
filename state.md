@@ -18,6 +18,17 @@ self-hosted mail server, email finder, and web, macOS, Windows, Android and iOS 
 The backend and the email finder have passed their Docker gates. The client work and the merged `main` have not
 been built or tested yet.
 
+## Modular-boundaries branch
+
+Explicit ownership covers backend runtime sources, public constants, SQL tables and routine callers.
+Connector mailbox reads now use a mailbox-owned snapshot API on the existing guarded connection.
+The standard Docker gate includes architecture tests with deliberate boundary violations.
+Legacy send/auth/ingest transactions and database integrity remain intact through documented exceptions.
+Full gate verification, the existing finder-policy rollback failure and isolated mailflow failures are recorded in
+[the receipt](docs/completion/modular-monolith-20261101/receipt.md); this is not a green full-gate claim.
+No database files or campaign/finder suppression SQL were changed. No push or deployment occurred.
+See [the module map and schema follow-up](docs/modular-architecture.md).
+
 ## How main was assembled
 
 1. `Tanzeel/elevateo-emailguard-fable` was the authoritative line (Authentik SSO, threads, IMAP, send review,

@@ -38,7 +38,7 @@ for test_file in test/**/*_test.rb; do
       deferred+=("$test_file: dedicated isolated Mox app-chain harness") ;;
     test/support/launch_mailflows/cleanup_test.rb|test/v2_attachment_error_test.rb|test/v2_route_registry_test.rb)
       tests+=("$test_file") ;;
-    test/email_finder/*|test/administration/*|test/attachment_gateway/*|test/attachments/*|test/be_02/*|test/campaigns/*|test/inbound/*|test/resend_events/*|test/outreach_sequence/*|test/qa817/*|test/requests/*|test/send_worker/*|test/sends/*)
+    test/architecture/*|test/email_finder/*|test/administration/*|test/attachment_gateway/*|test/attachments/*|test/be_02/*|test/campaigns/*|test/inbound/*|test/resend_events/*|test/outreach_sequence/*|test/qa817/*|test/requests/*|test/send_worker/*|test/sends/*)
       tests+=("$test_file") ;;
     *) echo "Unclassified test suite: $test_file" >&2; exit 1 ;;
   esac

@@ -1,0 +1,13 @@
+Run options: --name [opaque value redacted] --seed 6549
+
+# Running:
+
+.
+
+Finished in 58.642701s, 0.0171 runs/s, 1.5006 assertions/s.
+
+1 runs, 88 assertions, 0 failures, 0 errors, 0 skips
+Warning: no type cast defined for type "uuid" format 0 with oid 2950. Please cast this type explicitly to TEXT to be safe for future changes.
+Warning: no type cast defined for type "uuid" format 0 with oid 2950. Please cast this type explicitly to TEXT to be safe for future changes.
+
+exit=0 seconds=61.12

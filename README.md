@@ -110,6 +110,7 @@ and [schema evidence](docs/completion/schema-integrity-20261101/).
 
 | Area | State |
 | --- | --- |
+| Backend module boundaries | Explicit capability/API/table contracts and Docker architecture regressions added on this branch. Safety exceptions and verification limits: [modular architecture](docs/modular-architecture.md), [receipt](docs/completion/modular-monolith-20261101/receipt.md) |
 | Backend, contracts, Mox, MCP, native bridge | Implemented. Full local Docker gate passed on `feature/backend-completion`: 1,285 tests / 14,595 assertions, 412-assertion Mox protocol suite, real SMTP→IMAP application chain, encrypted restore, deploy dry run |
 | Email finder | Implemented. Module gates passed (53 backend tests, 12 browser cases) |
 | Clients | Windows Docker build: 0 warnings/errors, 93 tests and 7 installer regressions pass; unsigned installer built, Avalonia views inspected at 960/1280 px. P24–P34 and design reviews completed with repairs. Web lint/types, 1,195 unit tests, production build and bundle budget pass. Android helper tests: 68 pass; build resource limits repaired. iOS Core: Swift build and 36 tests pass, plus 3 signing-helper tests. Native Linux: fmt/check/Clippy rules, 40 Rust and 14 helper tests pass; 8 compiler warnings remain. Browser QA and Android APK are in progress. [Evidence](docs/completion/final-readiness-20261101/windows-receipt.md) |

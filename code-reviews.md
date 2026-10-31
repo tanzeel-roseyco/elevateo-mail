@@ -2727,3 +2727,28 @@ Additional historical rollback coverage: organization-access95 LOC/1 missing fin
 Final fixture follow-up: organization-access96 LOC exposed one additional child-policy dependency (10.42 defects/KLOC), now included with exact rollback restoration. Frozen-v1 contract review72 LOC found one description edit invalidating preservation seals (13.89/KLOC); restored the sealed contract, retained current semantics in v2/design documentation. Four ambiguous-block test lint offenses were corrected; lint results are recorded in the completion receipt.
 
 Final executed acceptance: standard1,399/15,907, dedicated33/228, boot2/12, Mox protocol4/406, app-chain1/88, HTTP1/33, Mailpit2/107, contracts19/264, Resend3/26; zero failures/errors. Four standard skips covered by isolated protocol gate. Steep clean; RuboCop542 files clean. Full migration down/up and focused87/1,155 passed. See schema receipt for commands, failures superseded, exceptions and cleanup.
+
+## Modular monolith - 2026-11-01
+
+Adversarial agents used the repository review prompt. Formatting was left to RuboCop.
+Each packet covered at most 200 lines. Density = defects / reviewed LOC * 1,000.
+
+| Packet | LOC | Defects | Density / KLOC | Disposition |
+| --- | ---: | ---: | ---: | --- |
+| Connector + drafts adapter design | 128 | 2 | 15.63 | Foreign SQL and adapter reuse extracted into mailbox API |
+| Initial scanner + tests | 184 | 3 | 16.30 | Spaced/unqualified SQL, dynamic relations, foreign reopening rejected |
+| Scanner second pass | 128 | 3 | 23.44 | Projection bypass, schema-fragment concatenation, foreign child namespace rejected |
+| Snapshot, RBS, suite wiring | 139 | 2 | 14.39 | Shell LF restored; SELECT private |
+| Public exports + context | 199 | 2 | 10.05 | Arbitrary-query repositories removed from exports; exact entrypoint exceptions |
+| Dedicated design/exception packet | 164 | 0 | 0 | Safety paths preserved; exact SQL caller contracts |
+| Final scanner dispositions | 135 | 1 | 7.41 | INSERT column list bypass fixed with regression |
+| Final snapshot/tests/inventory | 183 | 0 | 0 | Privacy and rejection fixtures reviewed |
+| Exact SQL caller contracts | 71 | 0 | 0 | Dedicated design review confirmed private routine caller boundaries |
+| File ownership manifest | 196 | 0 | 0 | Capability classification reviewed |
+| Architecture documentation/design | 190 | 1 | 5.26 | Ambiguous empty matrix cells replaced with zero and defined |
+
+Findings are discovery counts, not unresolved defect counts. Scanner findings have regression coverage.
+The design review simulated revocation, concurrent edits, ingest replay and new illegal dependencies
+analytically. No Obsidian connector was available; no external simulation is claimed.
+Accepted safety exceptions and guard limits are in docs/modular-architecture.md; Docker verification
+and the unrelated schema rollback follow-up are in docs/completion/modular-monolith-20261101/receipt.md.
