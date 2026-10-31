@@ -7,11 +7,11 @@ import { cx } from '@/lib/format'
 export type Tone = 'neutral' | 'success' | 'warn' | 'danger' | 'accent'
 
 const TONES: Record<Tone, string> = {
-  neutral: 'bg-zinc-400/15 text-zinc-700 dark:bg-zinc-400/40 dark:text-zinc-200',
-  success: 'bg-green-400/15 text-green-800 dark:bg-green-400/40 dark:text-green-200',
-  warn: 'bg-amber-400/15 text-amber-800 dark:bg-amber-400/40 dark:text-amber-200',
-  danger: 'bg-red-400/15 text-red-800 dark:bg-red-400/40 dark:text-red-200',
-  accent: 'bg-gold-400/15 text-gold-800 dark:bg-gold-400/40 dark:text-gold-200',
+  neutral: 'bg-surface-2 text-fg  ',
+  success: 'bg-success-soft text-success  ',
+  warn: 'bg-warn-soft text-warn  ',
+  danger: 'bg-danger-soft text-danger  ',
+  accent: 'bg-surface text-fg  ',
 }
 
 interface BadgeProps {
@@ -25,16 +25,15 @@ interface BadgeProps {
 }
 
 export function Badge({ tone = 'neutral', color, size = 'md', pill = false, children, className }: BadgeProps) {
-  // Tag colours are tinted the way Flux tints its named colours: 15% background and text mixed
-  // towards the surface's ink (black on light, white on dark via --badge-ink) so it stays readable.
+  // AIDEV-NOTE: User tag colours tint backgrounds only; fixed ink keeps arbitrary swatches readable.
   const style: CSSProperties | undefined = color
-    ? { backgroundColor: `color-mix(in oklab, ${color} 15%, transparent)`, color: `color-mix(in oklab, ${color} 55%, var(--badge-ink))` }
+    ? { backgroundColor: `color-mix(in oklab, ${color} 15%, transparent)`, color: `var(--color-fg)` }
     : undefined
   return (
     <span
       style={style}
       className={cx(
-        'inline-flex items-center gap-1 whitespace-nowrap font-medium [--badge-ink:black] dark:[--badge-ink:white]',
+        'inline-flex items-center gap-1 whitespace-nowrap font-medium  ',
         pill ? 'rounded-full' : 'rounded-md',
         size === 'sm' ? 'px-1.5 py-0.5 text-xs' : 'px-2 py-1 text-sm',
         color ? undefined : TONES[tone],

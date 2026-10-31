@@ -1,0 +1,125 @@
+docker : test_arm64_arch_selects_the_aarch64_target
+(test_macos_release.MacReleaseTest.test_arm64_arch_selects_the_aarch64_target) ... FAIL
+At line:3 char:1
++ docker run --rm --name elevateo-white-gold-native-python --mount "typ ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (test_arm64_arch...arget) ... FAIL:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+test_full_env_dry_run_prints_codesign_notarytool_stapler_in_order
+(test_macos_release.MacReleaseTest.test_full_env_dry_run_prints_codesign_notarytool_stapler_in_order) ... FAIL
+test_missing_python3_fails_before_validation_or_build
+(test_macos_release.MacReleaseTest.test_missing_python3_fails_before_validation_or_build) ... FAIL
+test_no_credentials_is_an_unsigned_dry_run_that_passes
+(test_macos_release.MacReleaseTest.test_no_credentials_is_an_unsigned_dry_run_that_passes) ... FAIL
+test_non_mac_without_dry_run_stops_before_cargo
+(test_macos_release.MacReleaseTest.test_non_mac_without_dry_run_stops_before_cargo) ... FAIL
+test_partial_credentials_fail_with_the_missing_names
+(test_macos_release.MacReleaseTest.test_partial_credentials_fail_with_the_missing_names) ... ok
+test_partial_notarization_api_key_trio_fails
+(test_macos_release.MacReleaseTest.test_partial_notarization_api_key_trio_fails) ... ok
+test_signed_run_sets_launch_marker_and_locked_build
+(test_macos_release.MacReleaseTest.test_signed_run_sets_launch_marker_and_locked_build) ...
+  test_signed_run_sets_launch_marker_and_locked_build
+(test_macos_release.MacReleaseTest.test_signed_run_sets_launch_marker_and_locked_build) (inherited='') ... FAIL
+  test_signed_run_sets_launch_marker_and_locked_build
+(test_macos_release.MacReleaseTest.test_signed_run_sets_launch_marker_and_locked_build)
+(inherited='compile-only-fixture') ... FAIL
+  test_signed_run_sets_launch_marker_and_locked_build
+(test_macos_release.MacReleaseTest.test_signed_run_sets_launch_marker_and_locked_build)
+(inherited='unsigned-candidate') ... FAIL
+test_rejects_global_bridge (test_validate_macos_config.MacConfigTest.test_rejects_global_bridge) ... ok
+test_rejects_second_capability_file (test_validate_macos_config.MacConfigTest.test_rejects_second_capability_file) ...
+ok
+test_rejects_unreviewed_capability_permission
+(test_validate_macos_config.MacConfigTest.test_rejects_unreviewed_capability_permission) ... ok
+test_rejects_widened_remote_context (test_validate_macos_config.MacConfigTest.test_rejects_widened_remote_context) ...
+ok
+test_unapproved_callback_registration (test_validate_macos_config.MacConfigTest.test_unapproved_callback_registration)
+... ok
+test_valid_overlay (test_validate_macos_config.MacConfigTest.test_valid_overlay) ... ok
+
+======================================================================
+FAIL: test_arm64_arch_selects_the_aarch64_target
+(test_macos_release.MacReleaseTest.test_arm64_arch_selects_the_aarch64_target)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/source/test_macos_release.py", line 135, in test_arm64_arch_selects_the_aarch64_target
+    self.assertEqual(0, result.returncode, result.stderr)
+AssertionError: 0 != 2 : FC-MAC requires reviewed Cargo.lock
+
+
+======================================================================
+FAIL: test_full_env_dry_run_prints_codesign_notarytool_stapler_in_order
+(test_macos_release.MacReleaseTest.test_full_env_dry_run_prints_codesign_notarytool_stapler_in_order)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/source/test_macos_release.py", line 80, in test_full_env_dry_run_prints_codesign_notarytool_stapler_in_order
+    self.assertEqual(0, result.returncode, result.stderr)
+AssertionError: 0 != 2 : FC-MAC requires reviewed Cargo.lock
+
+
+======================================================================
+FAIL: test_missing_python3_fails_before_validation_or_build
+(test_macos_release.MacReleaseTest.test_missing_python3_fails_before_validation_or_build)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/source/test_macos_release.py", line 128, in test_missing_python3_fails_before_validation_or_build
+    self.assertIn("requires python3", result.stderr)
+AssertionError: 'requires python3' not found in 'FC-MAC requires reviewed Cargo.lock\n'
+
+======================================================================
+FAIL: test_no_credentials_is_an_unsigned_dry_run_that_passes
+(test_macos_release.MacReleaseTest.test_no_credentials_is_an_unsigned_dry_run_that_passes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/source/test_macos_release.py", line 55, in test_no_credentials_is_an_unsigned_dry_run_that_passes
+    self.assertEqual(0, result.returncode, result.stderr)
+AssertionError: 0 != 2 : FC-MAC requires reviewed Cargo.lock
+
+
+======================================================================
+FAIL: test_non_mac_without_dry_run_stops_before_cargo
+(test_macos_release.MacReleaseTest.test_non_mac_without_dry_run_stops_before_cargo)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/source/test_macos_release.py", line 108, in test_non_mac_without_dry_run_stops_before_cargo
+    self.assertIn("requires a macOS runner", result.stderr)
+AssertionError: 'requires a macOS runner' not found in 'FC-MAC requires reviewed Cargo.lock\n'
+
+======================================================================
+FAIL: test_signed_run_sets_launch_marker_and_locked_build
+(test_macos_release.MacReleaseTest.test_signed_run_sets_launch_marker_and_locked_build) (inherited='')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/source/test_macos_release.py", line 97, in test_signed_run_sets_launch_marker_and_locked_build
+    self.assertEqual(71, result.returncode, result.stderr)
+AssertionError: 71 != 2 : FC-MAC requires reviewed Cargo.lock
+
+
+======================================================================
+FAIL: test_signed_run_sets_launch_marker_and_locked_build
+(test_macos_release.MacReleaseTest.test_signed_run_sets_launch_marker_and_locked_build)
+(inherited='compile-only-fixture')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/source/test_macos_release.py", line 97, in test_signed_run_sets_launch_marker_and_locked_build
+    self.assertEqual(71, result.returncode, result.stderr)
+AssertionError: 71 != 2 : FC-MAC requires reviewed Cargo.lock
+
+
+======================================================================
+FAIL: test_signed_run_sets_launch_marker_and_locked_build
+(test_macos_release.MacReleaseTest.test_signed_run_sets_launch_marker_and_locked_build)
+(inherited='unsigned-candidate')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/source/test_macos_release.py", line 97, in test_signed_run_sets_launch_marker_and_locked_build
+    self.assertEqual(71, result.returncode, result.stderr)
+AssertionError: 71 != 2 : FC-MAC requires reviewed Cargo.lock
+
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.263s
+
+FAILED (failures=8)

@@ -153,7 +153,7 @@ export function Menu({ trigger, align = 'start', side = 'bottom', label, classNa
             aria-label={label}
             onKeyDown={onPanelKeyDown}
             className={cx(
-              'absolute z-20 min-w-48 rounded-lg border border-zinc-200 bg-white p-[.3125rem] shadow-xs dark:border-zinc-600 dark:bg-zinc-700',
+              'absolute z-20 min-w-48 rounded-lg border border-line bg-surface p-[.3125rem] shadow-xs  ',
               align === 'end' ? 'end-0' : 'start-0',
               side === 'top' ? 'bottom-full mb-1' : 'top-full mt-1',
             )}
@@ -167,7 +167,7 @@ export function Menu({ trigger, align = 'start', side = 'bottom', label, classNa
 }
 
 const ITEM =
-  'flex w-full cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-start text-sm font-medium text-zinc-800 hover:bg-zinc-50 focus-visible:bg-zinc-50 focus-visible:outline-none aria-disabled:pointer-events-none aria-disabled:opacity-50 dark:text-white dark:hover:bg-zinc-600 dark:focus-visible:bg-zinc-600'
+  'flex w-full cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-start text-sm font-medium text-fg hover:bg-surface-2 focus-visible:bg-surface-2 focus-visible:outline-none aria-disabled:pointer-events-none aria-disabled:opacity-50   '
 
 interface MenuItemProps {
   onSelect?(): void
@@ -186,7 +186,7 @@ export function MenuItem({ onSelect, icon, disabled = false, danger = false, chi
       role="menuitem"
       tabIndex={-1}
       aria-disabled={disabled || undefined}
-      className={cx(ITEM, danger && 'text-red-600 dark:text-red-400', !danger && '[&_svg]:text-zinc-400')}
+      className={cx(ITEM, danger && 'text-danger ', !danger && '[&_svg]:text-muted')}
       onClick={() => {
         if (disabled) return
         close()
@@ -213,14 +213,14 @@ export function MenuLink({ to, icon, external = false, children }: MenuLinkProps
   const onClick = () => close(false)
   if (external) {
     return (
-      <a href={to} target="_blank" rel="noreferrer noopener" role="menuitem" tabIndex={-1} className={cx(ITEM, '[&_svg]:text-zinc-400')} onClick={() => close(true)}>
+      <a href={to} target="_blank" rel="noreferrer noopener" role="menuitem" tabIndex={-1} className={cx(ITEM, '[&_svg]:text-muted')} onClick={() => close(true)}>
         {icon}
         <span className="flex-1">{children}</span>
       </a>
     )
   }
   return (
-    <Link to={to} role="menuitem" tabIndex={-1} className={cx(ITEM, '[&_svg]:text-zinc-400')} onClick={onClick}>
+    <Link to={to} role="menuitem" tabIndex={-1} className={cx(ITEM, '[&_svg]:text-muted')} onClick={onClick}>
       {icon}
       <span className="flex-1">{children}</span>
     </Link>
@@ -255,9 +255,9 @@ export function MenuRadio({ checked, onSelect, children }: MenuRadioProps) {
 }
 
 export function MenuSeparator() {
-  return <div role="separator" className="-mx-[.3125rem] my-[.3125rem] h-px bg-zinc-800/15 dark:bg-white/20" />
+  return <div role="separator" className="-mx-[.3125rem] my-[.3125rem] h-px bg-surface-2 " />
 }
 
 export function MenuHeading({ children }: { children: ReactNode }) {
-  return <p className="px-2 py-1.5 text-xs font-medium text-zinc-500 dark:text-zinc-400">{children}</p>
+  return <p className="px-2 py-1.5 text-xs font-medium text-muted ">{children}</p>
 }

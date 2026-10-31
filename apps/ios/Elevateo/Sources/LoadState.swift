@@ -22,7 +22,7 @@ struct ErrorRetryView: View {
             Text(message)
                 .multilineTextAlignment(.center)
             Button("Try Again", action: retry)
-                .buttonStyle(.borderedProminent)
+                .buttonStyle(CorporateButtonStyle())
         }
         .padding()
         .accessibilityElement(children: .combine)
@@ -45,7 +45,8 @@ struct OfflineBanner: View {
             .font(.footnote)
             .padding(8)
             .frame(maxWidth: .infinity)
-            .background(.yellow.opacity(0.3))
+            .foregroundStyle(CorporateTheme.warning)
+            .background(CorporateTheme.neutral)
             .accessibilityLabel("You are offline. Nothing is sent or saved until you reconnect.")
     }
 }

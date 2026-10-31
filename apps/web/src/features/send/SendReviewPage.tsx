@@ -121,22 +121,22 @@ function Review({ mailboxId, draftId }: { mailboxId: string; draftId: string }) 
   const gate = consentGate(review.outbound_mode, review.recipient_checks, review.purpose)
   const suppressed = suppressedRecipientIndexes(review.recipient_checks)
   const approvable = review.ready && gate.allowed
-  const dt = 'text-xs font-medium uppercase tracking-wide text-zinc-500'
+  const dt = 'text-xs font-medium uppercase tracking-wide text-muted'
   // wrap-anywhere (CS-02): a 998-character unbroken subject must wrap at 390px too; break-words
   // leaves the grid item's min-content width at the full subject length, anywhere does not.
-  const dd = 'mt-1 min-w-0 wrap-anywhere text-sm text-zinc-800 dark:text-white'
+  const dd = 'mt-1 min-w-0 wrap-anywhere text-sm text-fg '
   return <article aria-busy={busy}>
     <PageHeader title="Review send" subtitle="Approve the exact saved content before anything is queued" />
     <Card className="max-w-3xl space-y-5">
       <div className="flex flex-wrap items-center gap-2"><Badge tone="warn">{review.simulated ? 'Simulated - no live mail' : MODE_LABEL[review.outbound_mode]}</Badge></div>
       {/* h2: PageHeader owns the page h1; focus still lands here so the reviewed version is announced. */}
-      <h2 ref={heading} tabIndex={-1} className="text-base font-medium text-zinc-800 dark:text-white">Review saved draft version {review.draft_version}</h2>
-      <p className="text-sm text-zinc-500">{review.purpose === 'marketing' ? 'You are reviewing a campaign message with recorded marketing consent.' : 'You are approving your own saved draft for individual correspondence.'}</p>
+      <h2 ref={heading} tabIndex={-1} className="text-base font-medium text-fg ">Review saved draft version {review.draft_version}</h2>
+      <p className="text-sm text-muted">{review.purpose === 'marketing' ? 'You are reviewing a campaign message with recorded marketing consent.' : 'You are approving your own saved draft for individual correspondence.'}</p>
       <dl className="grid gap-4 sm:grid-cols-2"><div><dt className={dt}>From</dt><dd className={`${dd} whitespace-pre-wrap`}>{review.sender.address ?? '(sender not configured)'}</dd></div>
         <div><dt className={dt}>Purpose</dt><dd className={dd}>{review.purpose === 'marketing' ? 'Marketing campaign' : 'Individual correspondence'}</dd></div>
         <div className="sm:col-span-2"><dt className={dt}>To — all {review.to.length} recipients</dt><dd className={dd}>{review.to.length === 0 ? '(no recipients)' : <ol className="list-decimal ps-5">{review.to.map((recipient, index) => <li key={index} className="whitespace-pre-wrap">{recipient.display_name === null ? '' : `${recipient.display_name} `}{recipient.address ?? '(address missing)'}</li>)}</ol>}</dd></div>
         <div className="sm:col-span-2"><dt className={dt}>Subject</dt><dd className={`${dd} whitespace-pre-wrap`}>{review.subject === '' ? '(no subject)' : review.subject}</dd></div>
-        <div className="sm:col-span-2"><dt className={dt}>Message</dt><dd className={`${dd} whitespace-pre-wrap rounded-lg border border-zinc-200 bg-zinc-50 p-3 leading-6 dark:border-zinc-700 dark:bg-zinc-900`}>{review.body_text === '' ? '(empty message)' : review.body_text}</dd></div>
+        <div className="sm:col-span-2"><dt className={dt}>Message</dt><dd className={`${dd} whitespace-pre-wrap rounded-lg border border-line bg-surface-2 p-3 leading-6  `}>{review.body_text === '' ? '(empty message)' : review.body_text}</dd></div>
         <div className="sm:col-span-2"><dt className={dt}>Attachments</dt>
         <dd className={dd}>{review.attachments.length === 0 ? 'None.' : <ul className="list-disc ps-5">{review.attachments.map((attachment) =>
           <li key={attachment.id} className="break-all">{attachment.filename} — {attachment.content_type} ({attachment.byte_size} bytes): {attachment.status === 'clean' ? 'Security scan passed' : 'Sending blocked: security scan not passed'}</li>)}</ul>}
@@ -150,8 +150,8 @@ function Review({ mailboxId, draftId }: { mailboxId: string; draftId: string }) 
       {!review.ready && <Callout variant="warning" role="alert"><p>This draft is not ready for approval.</p><ul className="list-disc ps-5">{review.issues.map((issue, index) => <li key={index}>{issue.code.replaceAll('_', ' ')}{issue.recipient_index === null ? '' : ` — recipient ${issue.recipient_index + 1}`}</li>)}</ul></Callout>}
       {!gate.allowed && <div role="alert" aria-label="Consent required"><Callout variant="danger" heading="Approval blocked: consent required" actions={<Link to="/outreach/leads" className={buttonClass('outline', 'sm')}>Record consent evidence</Link>}><p>{gate.reason}</p><ul className="list-disc ps-5">{gate.recipientIndexes.map((index) => <li key={index} className="whitespace-pre-wrap">Recipient {index + 1}: {review.to[index]?.address ?? '(address missing)'} has no consent evidence</li>)}</ul></Callout></div>}
       {message && <Callout variant="neutral" role="alert">{message}</Callout>}
-      {retry ? <p role="note" className="text-sm text-zinc-500">Original approval retry details survive reloads in this tab. Closing this tab clears them. The earlier approval may already be stored.</p> : <div className="flex items-start gap-3"><Checkbox id={checkbox} checked={confirmed} onChange={(event) => setConfirmed(event.target.checked)} disabled={busy || !approvable} className="mt-0.5" /><label htmlFor={checkbox} className="text-sm text-zinc-800 dark:text-white">{review.purpose === 'marketing' ? 'I confirm this marketing message and its opted-in recipients, and approve the full content shown above.' : review.simulated ? 'I confirm this is individual correspondence and approve the full content and recipients shown above.' : 'I confirm these recipients have opted in and approve sending this full content as live email.'}</label></div>}
-      <div className="flex flex-wrap gap-2 border-t border-zinc-200 pt-5 dark:border-zinc-700">
+      {retry ? <p role="note" className="text-sm text-muted">Original approval retry details survive reloads in this tab. Closing this tab clears them. The earlier approval may already be stored.</p> : <div className="flex items-start gap-3"><Checkbox id={checkbox} checked={confirmed} onChange={(event) => setConfirmed(event.target.checked)} disabled={busy || !approvable} className="mt-0.5" /><label htmlFor={checkbox} className="text-sm text-fg ">{review.purpose === 'marketing' ? 'I confirm this marketing message and its opted-in recipients, and approve the full content shown above.' : review.simulated ? 'I confirm this is individual correspondence and approve the full content and recipients shown above.' : 'I confirm these recipients have opted in and approve sending this full content as live email.'}</label></div>}
+      <div className="flex flex-wrap gap-2 border-t border-line pt-5 ">
         <Button variant="primary" disabled={busy || !proof || mailbox?.capabilities.approve_send === false || (!retry && (!confirmed || !approvable || review.review_digest === null))} onClick={() => void approve()}>{busy ? 'Approving…' : retry ? 'Retry original approval' : review.simulated ? 'Approve simulated send' : 'Approve live send'}</Button>
         <Link to={back} className={buttonClass('ghost', 'md')}>Back to draft</Link>
       </div>

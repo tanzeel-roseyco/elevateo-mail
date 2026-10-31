@@ -1,0 +1,54 @@
+docker : #0 building with "desktop-linux" instance using docker driver
+At line:14 char:1
++ docker build -f "$scratch/Browser.Dockerfile" -t elevateo-white-gold: ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (#0 building wit...g docker driver:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+
+#1 [internal] load build definition from Browser.Dockerfile
+#1 transferring dockerfile: 378B 0.0s done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for mcr.microsoft.com/playwright:v1.64.0-noble
+#2 DONE 5.1s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 140B done
+#3 DONE 0.1s
+
+#4 [internal] load build context
+#4 DONE 0.0s
+
+#5 [1/7] FROM
+mcr.microsoft.com/playwright:v1.64.0-noble@sha256:06a9939e57531807f8d5fd76ce44b53165ffb7d7501d87ab10e285c20b1e971f
+#5 resolve
+mcr.microsoft.com/playwright:v1.64.0-noble@sha256:06a9939e57531807f8d5fd76ce44b53165ffb7d7501d87ab10e285c20b1e971f
+0.1s done
+#5 ...
+
+#4 [internal] load build context
+#4 transferring context: 6.95MB 0.5s done
+#4 DONE 0.7s
+
+#5 [1/7] FROM
+mcr.microsoft.com/playwright:v1.64.0-noble@sha256:06a9939e57531807f8d5fd76ce44b53165ffb7d7501d87ab10e285c20b1e971f
+#5 sha256:ffa10a63dd93cfbfef3d670d7375230c264515aa7168f50bf80609458d8a380d 0B / 3.17MB 0.2s
+#5 sha256:a60ef8ec184edb5ed91f5983f00261359fb2fe20f603e8d488b9477d32fcad70 0B / 29.76MB 0.2s
+#5 sha256:ffa10a63dd93cfbfef3d670d7375230c264515aa7168f50bf80609458d8a380d 1.05MB / 3.17MB 5.1s
+#5 sha256:a60ef8ec184edb5ed91f5983f00261359fb2fe20f603e8d488b9477d32fcad70 2.10MB / 29.76MB 5.1s
+#5 sha256:ffa10a63dd93cfbfef3d670d7375230c264515aa7168f50bf80609458d8a380d 2.10MB / 3.17MB 6.8s
+#5 sha256:a60ef8ec184edb5ed91f5983f00261359fb2fe20f603e8d488b9477d32fcad70 4.19MB / 29.76MB 8.6s
+#5 sha256:ffa10a63dd93cfbfef3d670d7375230c264515aa7168f50bf80609458d8a380d 3.17MB / 3.17MB 9.7s done
+#5 sha256:a60ef8ec184edb5ed91f5983f00261359fb2fe20f603e8d488b9477d32fcad70 4.19MB / 29.76MB 13.7s
+#5 sha256:a60ef8ec184edb5ed91f5983f00261359fb2fe20f603e8d488b9477d32fcad70 5.24MB / 29.76MB 18.8s
+#5 sha256:a60ef8ec184edb5ed91f5983f00261359fb2fe20f603e8d488b9477d32fcad70 5.24MB / 29.76MB 23.8s
+#5 sha256:a60ef8ec184edb5ed91f5983f00261359fb2fe20f603e8d488b9477d32fcad70 6.29MB / 29.76MB 28.9s
+#5 sha256:a60ef8ec184edb5ed91f5983f00261359fb2fe20f603e8d488b9477d32fcad70 6.29MB / 29.76MB 34.0s
+#5 sha256:a60ef8ec184edb5ed91f5983f00261359fb2fe20f603e8d488b9477d32fcad70 7.34MB / 29.76MB 39.1s
+#5 sha256:a60ef8ec184edb5ed91f5983f00261359fb2fe20f603e8d488b9477d32fcad70 8.39MB / 29.76MB 44.2s
+#5 sha256:a60ef8ec184edb5ed91f5983f00261359fb2fe20f603e8d488b9477d32fcad70 9.44MB / 29.76MB 49.3s
+#5 sha256:a60ef8ec184edb5ed91f5983f00261359fb2fe20f603e8d488b9477d32fcad70 10.49MB / 29.76MB 54.4s
+#5 sha256:a60ef8ec184edb5ed91f5983f00261359fb2fe20f603e8d488b9477d32fcad70 10.49MB / 29.76MB 59.5s
+#5 sha256:a60ef8ec184edb5ed91f5983f00261359fb2fe20f603e8d488b9477d32fcad70 10.49MB / 29.76MB 64.6s
+#5 sha256:a60ef8ec184edb5ed91f5983f00261359fb2fe20f603e8d488b9477d32fcad70 10.49MB / 29.76MB 69.7s

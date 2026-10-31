@@ -263,12 +263,12 @@ function ProtectedShell({ session, replacedIdentity }: { session: Session; repla
   return (
     <MailboxesProvider value={mailboxesSnapshot}>
       <ToastProvider>
-        <div className="flex min-h-dvh bg-white dark:bg-zinc-800">
-          <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:start-2 focus:top-2 focus:z-40 focus:rounded-lg focus:border focus:border-zinc-200 focus:bg-white focus:px-3 focus:py-2 focus:text-sm">
+        <div className="flex min-h-dvh bg-surface ">
+          <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:start-2 focus:top-2 focus:z-40 focus:rounded-lg focus:border focus:border-line focus:bg-surface focus:px-3 focus:py-2 focus:text-sm">
             Skip to content
           </a>
           <aside
-            className={`sticky top-0 z-10 hidden max-h-[calc(100dvh-var(--bottom-notices))] shrink-0 flex-col overflow-y-auto overscroll-contain border-e border-zinc-200 bg-zinc-50 lg:flex dark:border-zinc-700 dark:bg-zinc-900 ${collapsed ? 'w-14' : 'w-66'}`}
+            className={`sticky top-0 z-10 hidden max-h-[calc(100dvh-var(--bottom-notices))] shrink-0 flex-col overflow-y-auto overscroll-contain border-e border-line bg-surface-2 lg:flex   ${collapsed ? 'w-14' : 'w-66'}`}
           >
             <Sidebar
               session={session}
@@ -324,7 +324,7 @@ function ProtectedShell({ session, replacedIdentity }: { session: Session; repla
 function SimulationNotice() {
   const ref = useBottomNotice('--simulation-inset')
   return (
-    <div ref={ref} role="status" className="fixed inset-x-0 bottom-0 z-30 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 border-t border-amber-200 bg-amber-50 px-6 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] text-xs text-amber-800 dark:border-amber-400/30 dark:bg-zinc-900 dark:text-amber-100">
+    <div ref={ref} role="status" className="fixed inset-x-0 bottom-0 z-30 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 border-t border-warn bg-warn-soft px-6 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] text-xs text-warn   ">
       <Badge tone="warn" size="sm">Simulated local mail</Badge>
       <span>{SIMULATION_FOOTNOTE}</span>
     </div>

@@ -56,8 +56,8 @@ export function DeveloperApiPage() {
       </LinkCardGrid>
 
       <Card className="mb-8 max-w-3xl">
-        <h2 className="text-sm font-medium text-zinc-800 dark:text-white">White-label Elevateo Mail</h2>
-        <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">Run the mailroom under your own brand and domain for your clients. Each organization is a separate tenant with its own members, mailboxes and simulated-mail boundary.</p>
+        <h2 className="text-sm font-medium text-fg ">White-label Elevateo Mail</h2>
+        <p className="mt-1 text-sm text-muted ">Run the mailroom under your own brand and domain for your clients. Each organization is a separate tenant with its own members, mailboxes and simulated-mail boundary.</p>
         <Link to="/help/community" className={cx(buttonClass('outline', 'xs'), 'mt-4')}>Contact us about white-label</Link>
       </Card>
 
@@ -116,12 +116,12 @@ function SimulatedTokensSection() {
           <EmptyState icon={<KeyIcon className="size-5" />} title="No token yet." body="There is no current token here." action={<Button variant="primary" onClick={() => setOpen(true)} disabled={!store.writable}>Add New API Token</Button>} />
         ) : (
           <Card className="p-0">
-            <ul className="divide-y divide-zinc-200 dark:divide-zinc-700" aria-label="API tokens">
+            <ul className="divide-y divide-line " aria-label="API tokens">
               {store.value.map((token) => (
                 <li key={token.id} className="flex flex-wrap items-center gap-3 px-6 py-4 text-sm">
                   <div className="min-w-0 flex-1">
-                    <p className="truncate font-medium text-zinc-800 dark:text-white">{token.name}</p>
-                    <p className="text-xs text-zinc-500"><span className="font-mono">{token.prefix}…</span> · created {formatDateTime(token.created_at)}</p>
+                    <p className="truncate font-medium text-fg ">{token.name}</p>
+                    <p className="text-xs text-muted"><span className="font-mono">{token.prefix}…</span> · created {formatDateTime(token.created_at)}</p>
                   </div>
                   <Badge tone={token.type === 'super-admin' ? 'warn' : 'neutral'} size="sm">{token.type}</Badge>
                   <Button size="sm" variant="danger" onClick={() => revoke(token)}>Revoke</Button>
@@ -144,7 +144,7 @@ function SimulatedTokensSection() {
       >
         {revealed && (
           <div className="space-y-4">
-            <p className="text-sm text-zinc-800 dark:text-zinc-200">Token “{revealed.name}”. Store it in a secret manager; only its prefix is kept here.</p>
+            <p className="text-sm text-fg ">Token “{revealed.name}”. Store it in a secret manager; only its prefix is kept here.</p>
             <CodeBlock code={revealed.secret} />
             <Callout variant="warning">Simulated token: the server will not accept it.</Callout>
           </div>

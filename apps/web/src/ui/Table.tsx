@@ -14,7 +14,7 @@ export function Table({ className, children, ...rest }: ComponentProps<'table'>)
 
 export function TH({ className, children, ...rest }: ComponentProps<'th'>) {
   return (
-    <th scope="col" className={cx('border-b border-zinc-200 px-3 py-3 text-start text-sm font-medium text-zinc-500 first:ps-0 last:pe-0 dark:border-zinc-700 dark:text-zinc-400', className)} {...rest}>
+    <th scope="col" className={cx('border-b border-line px-3 py-3 text-start text-sm font-medium text-muted first:ps-0 last:pe-0  ', className)} {...rest}>
       {children}
     </th>
   )
@@ -22,7 +22,7 @@ export function TH({ className, children, ...rest }: ComponentProps<'th'>) {
 
 export function TD({ className, children, ...rest }: ComponentProps<'td'>) {
   return (
-    <td className={cx('border-b border-zinc-800/10 px-3 py-3 text-sm text-zinc-800 first:ps-0 last:pe-0 dark:border-white/10 dark:text-zinc-300', className)} {...rest}>
+    <td className={cx('border-b border-line px-3 py-3 text-sm text-fg first:ps-0 last:pe-0  ', className)} {...rest}>
       {children}
     </td>
   )

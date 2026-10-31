@@ -203,6 +203,8 @@ pub fn run() {
                 tauri::WebviewUrl::External(approved.clone()),
             )
             .title("Elevateo Mail")
+            // AIDEV-NOTE: Native chrome stays light with the shared WebView design system.
+            .theme(Some(tauri::Theme::Light))
             .inner_size(1120.0, 760.0)
             .initialization_script(init_script(&approved.origin().ascii_serialization()))
             .on_navigation(move |url| {

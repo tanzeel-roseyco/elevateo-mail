@@ -1,0 +1,27 @@
+Windows task image before removal: sha256:b58154e0e4b64461db2afb32de290b60c86ea61144323988f0eddd0235bd14a0; reported size 344192847 bytes. All test containers used --rm and have exited.
+Untagged: elevateo-white-gold:windows
+Deleted: sha256:b58154e0e4b64461db2afb32de290b60c86ea61144323988f0eddd0235bd14a0
+Image removal does not establish physical host-space reclamation; shared layers and active build cache retained. No prune or volumes touched.
+Untagged: elevateo-white-gold:ios
+Deleted: sha256:03dc476006eaa87a6584c4b4ab34db87655da59fbe34258a71e29945668987ca
+sha256:ea90b42344e4ce108c4d46c3649f4ed6f3a34c103465a508bd5924fc69496dd7 2246409551
+docker : Error response from daemon: conflict: unable to delete elevateo-white-gold:android (must be forced) -
+container 47e33f553e37 is using its referenced image ea90b42344e4
+At line:2 char:211
++ ... cleanup.log; docker image rm elevateo-white-gold:android 2>&1 | Out-F ...
++                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Error response ...ge ea90b42344e4:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+sha256:588b00c9651285b297ddbaf86c4c317b088a61f57d7bef31f197955e8cc8c711 943308550
+Untagged: elevateo-white-gold:native
+Deleted: sha256:588b00c9651285b297ddbaf86c4c317b088a61f57d7bef31f197955e8cc8c711
+TYPE            TOTAL     ACTIVE    SIZE      RECLAIMABLE
+Images          19        18        20.52GB   24.74MB (0%)
+Containers      21        3         5.644GB   5.319GB (94%)
+Local Volumes   35        2         4.69GB    4.554GB (97%)
+Build Cache     82        18        15.96GB   3.95GB
+
+      Free
+      ----
+5040115712

@@ -1,0 +1,928 @@
+
+> @elevateo/web@0.1.0-read.1 check:api
+> openapi-typescript ../../contracts/v1/openapi.json --output src/data/generated/api.d.ts --check
+
+✨ openapi-typescript 7.13.0
+
+> @elevateo/web@0.1.0-read.1 check:api:v2
+> openapi-typescript ../../contracts/v2/openapi.json --output src/data/generated/api-v2.d.ts --check
+
+✨ openapi-typescript 7.13.0
+
+> @elevateo/web@0.1.0-read.1 lint
+> eslint . --max-warnings 0
+
+
+> @elevateo/web@0.1.0-read.1 typecheck
+> tsc -p tsconfig.json --noEmit
+
+
+> @elevateo/web@0.1.0-read.1 test
+> vitest run --coverage --maxWorkers=2
+
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.11 [39m[90m/workspace/apps/web[39m
+      [2mCoverage enabled with [22m[33mv8[39m
+
+docker : Error: Not implemented: window.scrollTo
+At line:2 char:38
++ ... top-linux'; docker run --rm --name elevateo-white-gold-gate7 --mount  ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Error: Not implemented: window.scrollTo:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    at module.exports (/workspace/apps/web/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at /workspace/apps/web/node_modules/jsdom/lib/jsdom/browser/Window.js:960:7
+    at /workspace/apps/web/src/app/Shell.tsx:232:12
+    at Object.react_stack_bottom_frame
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:28656:20)
+    at runWithFiberInDEV (/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:1048:13)
+    at commitHookEffectListMount
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:13748:29)
+    at commitHookPassiveMountEffects
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:13835:11)
+    at commitPassiveMountOnFiber
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16906:13)
+    at recursivelyTraversePassiveMountEffects
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16851:13)
+    at commitPassiveMountOnFiber
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16898:11) undefined
+ [32m✓[39m src/features/drafts/DraftEditorPage.test.tsx [2m([22m[2m33 tests[22m[2m)[22m[33m 7538[2mms[22m[39m
+     [33m[2m✓[22m[39m a new link starts at version 0 with the reply binding and the first explicit save creates version 1 [33m 484[2mms[22m[39m
+     [33m[2m✓[22m[39m associates validation errors with each field and removes stale descriptions after correction [33m 334[2mms[22m[39m
+     [33m[2m✓[22m[39m a recovery read that fails or says "unavailable" changes nothing: text, attempt and base version stay [33m 500[2mms[22m[39m
+     [33m[2m✓[22m[39m invalid newer local edits never block the exact retry, which sends the frozen payload [33m 391[2mms[22m[39m
+     [33m[2m✓[22m[39m a schema-valid lookup receipt bound to another draft is reported and applies nothing [33m 339[2mms[22m[39m
+     [33m[2m✓[22m[39m batched same-identity recovery: the surviving editor restores text, raw recipients and the frozen attempt; a late success is not applied [33m 379[2mms[22m[39m
+     [33m[2m✓[22m[39m unmounting recovery under Shell: the remounted editor restores the same intent; a late error is not applied as a rejection [33m 1538[2mms[22m[39m
+     [33m[2m✓[22m[39m retained intent is private to its owner: another actor never sees it, and it is dropped on the identity change [33m 349[2mms[22m[39m
+     [33m[2m✓[22m[39m busy state belongs to one request: a stale lookup cannot leave the editor resolving or clear a newer lookup [33m 696[2mms[22m[39m
+Error: Not implemented: window.scrollTo
+    at module.exports (/workspace/apps/web/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at /workspace/apps/web/node_modules/jsdom/lib/jsdom/browser/Window.js:960:7
+    at /workspace/apps/web/src/app/Shell.tsx:232:12
+    at Object.react_stack_bottom_frame
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:28656:20)
+    at runWithFiberInDEV (/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:1048:13)
+    at commitHookEffectListMount
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:13748:29)
+    at commitHookPassiveMountEffects
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:13835:11)
+    at commitPassiveMountOnFiber
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16906:13)
+    at recursivelyTraversePassiveMountEffects
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16851:13)
+    at commitPassiveMountOnFiber
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16898:11) undefined
+Error: Not implemented: window.scrollTo
+    at module.exports (/workspace/apps/web/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at /workspace/apps/web/node_modules/jsdom/lib/jsdom/browser/Window.js:960:7
+    at /workspace/apps/web/src/app/Shell.tsx:232:12
+    at Object.react_stack_bottom_frame
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:28656:20)
+    at runWithFiberInDEV (/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:1048:13)
+    at commitHookEffectListMount
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:13748:29)
+    at commitHookPassiveMountEffects
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:13835:11)
+    at commitPassiveMountOnFiber
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16906:13)
+    at recursivelyTraversePassiveMountEffects
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16851:13)
+    at commitPassiveMountOnFiber
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16898:11) undefined
+ [32m✓[39m src/app/Shell.test.tsx [2m([22m[2m29 tests[22m[2m)[22m[33m 9354[2mms[22m[39m
+     [33m[2m✓[22m[39m signing in from the form reaches the protected shell [32m 300[2mms[22m[39m
+     [33m[2m✓[22m[39m the workspace switcher lists memberships and an explicit switch replaces the identity [33m 446[2mms[22m[39m
+     [33m[2m✓[22m[39m sign-out hides the mail at once and ends on the sign-in form with the sign-out notice [33m 700[2mms[22m[39m
+     [33m[2m✓[22m[39m hides protected content and shows a recovery status while the one recovery runs [33m 777[2mms[22m[39m
+     [33m[2m✓[22m[39m one invalid continuation cursor resets the whole loop and replaces accumulated mailboxes [33m 1227[2mms[22m[39m
+     [33m[2m✓[22m[39m opens as a named dialog, closes on route selection, Escape restores trigger focus [33m 1106[2mms[22m[39m
+     [33m[2m✓[22m[39m shows the dashboard summary with a link to each visible mailbox [33m 428[2mms[22m[39m
+     [33m[2m✓[22m[39m an Outreach link in the rail reaches Celeste's real page, which reports the missing Outreach API [33m 935[2mms[22m[39m
+     [33m[2m✓[22m[39m a route change scrolls main to the top and only rescues focus stranded on body [33m 426[2mms[22m[39m
+ [32m✓[39m src/features/inbox/InboxFolders.test.tsx [2m([22m[2m11 tests[22m[2m)[22m[33m 6526[2mms[22m[39m
+     [33m[2m✓[22m[39m archives a row only after the server confirms, then shows it in Archive [33m 2633[2mms[22m[39m
+     [33m[2m✓[22m[39m a star is a server write shown as pressed and listed under Starred [33m 795[2mms[22m[39m
+     [33m[2m✓[22m[39m a preset snooze moves the row to Snoozed with its return time and offers Remove snooze [33m 708[2mms[22m[39m
+     [33m[2m✓[22m[39m the folder select reaches every server view and the URL carries it [33m 436[2mms[22m[39m
+     [33m[2m✓[22m[39m the # shortcut does nothing in Trash [33m 729[2mms[22m[39m
+ [32m✓[39m src/features/settings/settingsAdapters.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[33m 5590[2mms[22m[39m
+     [33m[2m✓[22m[39m refuses a new tag at capacity instead of evicting the oldest one [33m 2271[2mms[22m[39m
+     [33m[2m✓[22m[39m clears the draft when the modal is cancelled and reopened [33m 1154[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps the swatch grid at five columns on narrow screens and ten from sm [33m 426[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps memory-only records across two updates when localStorage throws [33m 388[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps the first tag when getItem works but setItem throws quota [33m 415[2mms[22m[39m
+[90mstderr[2m | src/features/thread/ThreadPage.test.tsx[2m > [22m[2mmessage reply draft[2m > [22m[2mwaits for
+the selected deep-link message and replies to that sender only
+[22m[39mIn HTML, <div> cannot be a descendant of <p>.
+This will cause a hydration error.
+
+  ...
+    <MailboxesProvider value={{status:"ready", ...}}>
+      <MemoryRouter initialEntries={[...]}>
+        <Router basename={undefined} location={{pathname:"...", ...}} navigationType="POP" navigator={{index:0, ...}}
+...>
+          <Routes>
+            <RenderedRoute match={{params:{...}, ...}} routeContext={{outlet:null, ...}}>
+              <ThreadPage readDirectMessage={function Mock}>
+                <ConversationReader mailboxId="00000000-0..." threadId="00000000-0..." readDirectMessage={function
+Mock}>
+                  <article aria-label="Conversation" className="flex min-h...">
+                    <div className={"overflow..."}>
+                      <div>
+                      <header>
+                      <div className="px-6 pb-4">
+>                       <p role="status">
+                          <Callout variant="neutral">
+                            <div role="note" aria-label={undefined} className={"flex rou..."}>
+                              <span>
+                              <div className="flex min-w...">
+>                               <div className="text-sm">
+                      ...
+                    ...
+
+<p> cannot contain a nested <div>.
+See this log for the ancestor stack trace.
+
+ [31m❯[39m src/features/thread/ThreadPage.test.tsx [2m([22m[2m42 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 7872[2mms[22m[39m
+     [33m[2m✓[22m[39m starts the top reply with the latest available sender and keeps save explicit [33m 521[2mms[22m[39m
+     [32m✓[39m holds the top reply when no authorized message has a usable sender[32m 201[2mms[22m[39m
+     [32m✓[39m offers no reply while the conversation loads or after its read fails[32m 258[2mms[22m[39m
+[31m     [31m×[31m follows the selected message URL instead of the latest loaded sender[39m[33m 1259[2mms[22m[39m
+     [33m[2m✓[22m[39m waits for the selected deep-link message and replies to that sender only [33m 370[2mms[22m[39m
+     [32m✓[39m keeps the top reply unavailable after selected-message lookup fails[32m 118[2mms[22m[39m
+     [32m✓[39m prefills the selected sender and subject, then saves only on explicit action[32m 160[2mms[22m[39m
+     [32m✓[39m does not offer sender reply without a usable address[32m 39[2mms[22m[39m
+     [32m✓[39m does not turn a line-broken sender field into multiple recipients[32m 34[2mms[22m[39m
+     [32m✓[39m does not offer sender reply when compose is denied[32m 45[2mms[22m[39m
+     [32m✓[39m does not copy a shortened subject into a new reply[32m 135[2mms[22m[39m
+     [32m✓[39m renders hostile content inertly and performs no network request[32m 43[2mms[22m[39m
+     [32m✓[39m renders a zero-message conversation without indexing the last element[32m 26[2mms[22m[39m
+     [32m✓[39m shows truncation honestly and a separate message continuation control[32m 46[2mms[22m[39m
+     [32m✓[39m shows the same unavailable UI for absent or inaccessible conversations[32m 16[2mms[22m[39m
+     [32m✓[39m resolves a later-page message directly without walking cursors[32m 36[2mms[22m[39m
+     [32m✓[39m refuses a direct response bound to another mailbox[32m 30[2mms[22m[39m
+     [32m✓[39m uses one generic unavailable answer for a missing or inaccessible direct message[32m 31[2mms[22m[39m
+     [32m✓[39m never renders a message after direct lookup reports a revoked session[32m 81[2mms[22m[39m
+     [33m[2m✓[22m[39m drops a direct resolve at the keyed thread commit boundary [33m 398[2mms[22m[39m
+     [32m✓[39m drops a direct reject at the keyed thread commit boundary[32m 240[2mms[22m[39m
+     [33m[2m✓[22m[39m offers explicit retry after a direct lookup network failure [33m 1174[2mms[22m[39m
+     [32m✓[39m drops an abort-ignoring direct answer after URL selection changes[32m 213[2mms[22m[39m
+     [32m✓[39m opens a message link without losing the inbox filter[32m 59[2mms[22m[39m
+     [33m[2m✓[22m[39m opens a direct message URL, focuses that message, and preserves the unread back filter [33m 469[2mms[22m[39m
+     [32m✓[39m keeps a selected later-page message pending until a deliberate bounded continuation[32m 240[2mms[22m[39m
+     [32m✓[39m does not steal focus when pagination starts or completes after a selected message was focused[32m 214[2mms[22m[39m
+     [33m[2m✓[22m[39m focuses a selected message once when it first arrives on a later page [33m 342[2mms[22m[39m
+     [32m✓[39m rejects a malformed message id before any gateway read[32m 6[2mms[22m[39m
+     [32m✓[39m shows an unavailable message after the final page and never walks farther[32m 28[2mms[22m[39m
+     [32m✓[39m does not reveal message content when the conversation read is denied[32m 23[2mms[22m[39m
+     [32m✓[39m preserves the unread filter in the back link[32m 13[2mms[22m[39m
+     [32m✓[39m returns to the unfiltered inbox when no filter was carried in[32m 19[2mms[22m[39m
+     [32m✓[39m keeps loaded plaintext on a network continuation failure and retries that page[32m 156[2mms[22m[39m
+     [32m✓[39m keeps a later-page permalink pending after a network failure[32m 77[2mms[22m[39m
+     [32m✓[39m removes loaded content when a continuation reports revoked access[32m 52[2mms[22m[39m
+     [32m✓[39m a reset replaces accumulated messages with the fresh first page[32m 53[2mms[22m[39m
+     [32m✓[39m an empty message page with a cursor stays usable and is distinct from a terminal empty conversation (D4)[32m 193[2mms[22m[39m
+     [32m✓[39m a second invalid cursor needs explicit retry, which starts a fresh traversal[32m 153[2mms[22m[39m
+     [32m✓[39m a deferred old-thread response that ignored abort cannot replace the newer thread[32m 100[2mms[22m[39m
+     [32m✓[39m the first committed frame of a new thread never shows the loaded previous conversation[32m 91[2mms[22m[39m
+     [32m✓[39m a late continuation failure from a loaded previous thread leaks no error and spends no recovery[32m 107[2mms[22m[39m
+Error: Not implemented: window.scrollTo
+    at module.exports (/workspace/apps/web/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at /workspace/apps/web/node_modules/jsdom/lib/jsdom/browser/Window.js:960:7
+    at /workspace/apps/web/src/app/Shell.tsx:232:12
+    at Object.react_stack_bottom_frame
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:28656:20)
+    at runWithFiberInDEV (/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:1048:13)
+    at commitHookEffectListMount
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:13748:29)
+    at commitHookPassiveMountEffects
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:13835:11)
+    at commitPassiveMountOnFiber
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16906:13)
+    at recursivelyTraversePassiveMountEffects
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16851:13)
+    at commitPassiveMountOnFiber
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16898:11) undefined
+ [32m✓[39m src/features/send/SendReviewPage.test.tsx [2m([22m[2m19 tests[22m[2m)[22m[33m 7510[2mms[22m[39m
+     [33m[2m✓[22m[39m blocks approval under resend when a recipient has no consent evidence [33m 2007[2mms[22m[39m
+     [33m[2m✓[22m[39m allows approval under mailpit without consent evidence [33m 339[2mms[22m[39m
+     [33m[2m✓[22m[39m renders all literal content, requires explicit attestation, then reads durable queued status [33m 671[2mms[22m[39m
+     [33m[2m✓[22m[39m retains the original operation/version/digest after a lost response and retries exactly [33m 302[2mms[22m[39m
+     [33m[2m✓[22m[39m preserves original retry across context recovery without carrying the old proof [33m 1135[2mms[22m[39m
+     [33m[2m✓[22m[39m renders every recipient in order at the 100-recipient boundary [33m 985[2mms[22m[39m
+     [33m[2m✓[22m[39m reloads a lost response and explicitly retries the exact original with a fresh proof [33m 414[2mms[22m[39m
+ [32m✓[39m src/features/settings/productionSettings.test.tsx [2m([22m[2m11 tests[22m[2m)[22m[33m 2964[2mms[22m[39m
+     [33m[2m✓[22m[39m /settings/tags shows the unavailable state with a real destination and no simulated form [33m 981[2mms[22m[39m
+     [33m[2m✓[22m[39m /settings/profile/password shows the unavailable state with a real destination and no simulated form [33m 362[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps the real API reference, Postman download and white-label card on the Developer API page [33m 464[2mms[22m[39m
+ [32m✓[39m src/features/inbox/InboxPage.test.tsx [2m([22m[2m20 tests[22m[2m)[22m[33m 2518[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps unread dots visible and read dots hidden [33m 454[2mms[22m[39m
+ [32m✓[39m src/features/thread/CollaborationPanels.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[33m 1935[2mms[22m[39m
+     [33m[2m✓[22m[39m marks read only through the explicit control and reports the server answer [33m 389[2mms[22m[39m
+Error: Not implemented: window.scrollTo
+    at module.exports (/workspace/apps/web/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at /workspace/apps/web/node_modules/jsdom/lib/jsdom/browser/Window.js:960:7
+    at /workspace/apps/web/src/app/Shell.tsx:232:12
+    at Object.react_stack_bottom_frame
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:28656:20)
+    at runWithFiberInDEV (/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:1048:13)
+    at commitHookEffectListMount
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:13748:29)
+    at commitHookPassiveMountEffects
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:13835:11)
+    at commitPassiveMountOnFiber
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16906:13)
+    at recursivelyTraversePassiveMountEffects
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16851:13)
+    at commitPassiveMountOnFiber
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16898:11) undefined
+Error: Not implemented: window.scrollTo
+    at module.exports (/workspace/apps/web/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at /workspace/apps/web/node_modules/jsdom/lib/jsdom/browser/Window.js:960:7
+    at /workspace/apps/web/src/app/Shell.tsx:232:12
+    at Object.react_stack_bottom_frame
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:28656:20)
+    at runWithFiberInDEV (/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:1048:13)
+    at commitHookEffectListMount
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:13748:29)
+    at commitHookPassiveMountEffects
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:13835:11)
+    at commitPassiveMountOnFiber
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16906:13)
+    at recursivelyTraversePassiveMountEffects
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16851:13)
+    at commitPassiveMountOnFiber
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16898:11) undefined
+ [32m✓[39m src/features/settings/SettingsRoutes.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[33m 1615[2mms[22m[39m
+     [33m[2m✓[22m[39m opens on the Workspace hub with the six section tabs and no billing tab [33m 306[2mms[22m[39m
+     [33m[2m✓[22m[39m redirects the legacy personal and organization routes into the new sections [33m 685[2mms[22m[39m
+     [33m[2m✓[22m[39m creates a tag through the modal and labels the page as a simulated adapter [33m 337[2mms[22m[39m
+ [32m✓[39m src/app/collaborationNav.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 1562[2mms[22m[39m
+     [33m[2m✓[22m[39m shows Drafts and Members folders for the C/D mailbox, plus the search entries [33m 601[2mms[22m[39m
+     [33m[2m✓[22m[39m hides the gated folders and disables Compose for a read-only mailbox [33m 365[2mms[22m[39m
+     [33m[2m✓[22m[39m marks only Drafts current and keeps reader navigation ancestors highlighted but unannounced [33m 460[2mms[22m[39m
+ [32m✓[39m src/features/inbox/UnifiedInbox.test.tsx [2m([22m[2m9 tests[22m[2m)[22m[33m 1278[2mms[22m[39m
+ [32m✓[39m src/features/outreach/OutreachPages.test.tsx [2m([22m[2m21 tests[22m[2m)[22m[33m 1185[2mms[22m[39m
+ [32m✓[39m src/features/thread/ThreadActions.test.tsx [2m([22m[2m11 tests[22m[2m)[22m[33m 1102[2mms[22m[39m
+ [32m✓[39m src/features/settings/ConnectionsPage.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 1203[2mms[22m[39m
+     [33m[2m✓[22m[39m lists each connection with the external-AI sharing notice (happy path) [33m 336[2mms[22m[39m
+     [33m[2m✓[22m[39m shows the one-time secret exactly once after granting (happy path) [33m 322[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps the connection listed and shows an error when a revoke fails (failure path) [33m 329[2mms[22m[39m
+ [32m✓[39m src/features/members/MembersPage.test.tsx [2m([22m[2m9 tests[22m[2m)[22m[33m 870[2mms[22m[39m
+Error: Not implemented: window.scrollTo
+    at module.exports (/workspace/apps/web/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at /workspace/apps/web/node_modules/jsdom/lib/jsdom/browser/Window.js:960:7
+    at /workspace/apps/web/src/app/Shell.tsx:232:12
+    at Object.react_stack_bottom_frame
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:28656:20)
+    at runWithFiberInDEV (/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:1048:13)
+    at commitHookEffectListMount
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:13748:29)
+    at commitHookPassiveMountEffects
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:13835:11)
+    at commitPassiveMountOnFiber
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16906:13)
+    at recursivelyTraversePassiveMountEffects
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16851:13)
+    at commitPassiveMountOnFiber
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16898:11) undefined
+Error: Not implemented: window.scrollTo
+    at module.exports (/workspace/apps/web/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at /workspace/apps/web/node_modules/jsdom/lib/jsdom/browser/Window.js:960:7
+    at /workspace/apps/web/src/app/Shell.tsx:232:12
+    at Object.react_stack_bottom_frame
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:28656:20)
+    at runWithFiberInDEV (/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:1048:13)
+    at commitHookEffectListMount
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:13748:29)
+    at commitHookPassiveMountEffects
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:13835:11)
+    at commitPassiveMountOnFiber
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16906:13)
+    at recursivelyTraversePassiveMountEffects
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16851:13)
+    at commitPassiveMountOnFiber
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16898:11) undefined
+ [32m✓[39m src/features/send/SavedDraftSendFlow.test.tsx [2m([22m[2m1 test[22m[2m)[22m[33m 739[2mms[22m[39m
+     [33m[2m✓[22m[39m offers review only after saving current edits and approves exactly the reviewed version [33m 737[2mms[22m[39m
+[90mstderr[2m | src/app/App.test.tsx[2m > [22m[2mdirect message binding on the thread route (FE-805)[2m >
+[22m[2mresolves a message URL beyond the first page with one bounded direct read and no cursor walk (happy path)
+[22m[39mIn HTML, <div> cannot be a descendant of <p>.
+This will cause a hydration error.
+
+  ...
+    <Frame mailboxId="00000000-0...">
+      <PageHeader>
+      <div className="flex min-h...">
+        <div>
+        <div className="flex min-w...">
+          <div>
+          <Outlet>
+            <RenderedRoute match={{params:{...}, ...}} routeContext={{outlet:null, ...}}>
+              <ThreadRoute>
+                <ThreadPage readDirectMessage={function Mock}>
+                  <ConversationReader mailboxId="00000000-0..." threadId="00000000-0..." ...>
+                    <article aria-label="Conversation" className="flex min-h...">
+                      <div className={"overflow..."}>
+                        <div>
+                        <header>
+                        <div className="px-6 pb-4">
+>                         <p role="status">
+                            <Callout variant="neutral">
+                              <div role="note" aria-label={undefined} className={"flex rou..."}>
+                                <span>
+                                <div className="flex min-w...">
+>                                 <div className="text-sm">
+                        ...
+                      ...
+      ...
+
+<p> cannot contain a nested <div>.
+See this log for the ancestor stack trace.
+
+ [32m✓[39m src/app/App.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[33m 1229[2mms[22m[39m
+     [33m[2m✓[22m[39m resolves a message URL beyond the first page with one bounded direct read and no cursor walk (happy path) [33m 671[2mms[22m[39m
+ [32m✓[39m src/features/auth/SignInPage.sso.test.tsx [2m([22m[2m23 tests[22m[2m)[22m[33m 1072[2mms[22m[39m
+ [32m✓[39m src/app/membershipRecovery.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[33m 1014[2mms[22m[39m
+     [33m[2m✓[22m[39m removing my own explicit row from a PRIVATE mailbox invalidates the old generation before the bootstrap answers; the refreshed list drops the mailbox and a late old list success changes nothing [33m 660[2mms[22m[39m
+     [33m[2m✓[22m[39m removing my own explicit row from a SHARED mailbox keeps it readable without compose or member links; a late old list error cannot break the recovered sidebar [33m 350[2mms[22m[39m
+ [32m✓[39m src/features/send/SendStatusPage.test.tsx [2m([22m[2m13 tests[22m[2m)[22m[33m 908[2mms[22m[39m
+Error: Not implemented: window.scrollTo
+    at module.exports (/workspace/apps/web/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at /workspace/apps/web/node_modules/jsdom/lib/jsdom/browser/Window.js:960:7
+    at /workspace/apps/web/src/app/Shell.tsx:232:12
+    at Object.react_stack_bottom_frame
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:28656:20)
+    at runWithFiberInDEV (/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:1048:13)
+    at commitHookEffectListMount
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:13748:29)
+    at commitHookPassiveMountEffects
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:13835:11)
+    at commitPassiveMountOnFiber
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16906:13)
+    at recursivelyTraversePassiveMountEffects
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16851:13)
+    at commitPassiveMountOnFiber
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16898:11) undefined
+Error: Not implemented: window.scrollTo
+    at module.exports (/workspace/apps/web/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at /workspace/apps/web/node_modules/jsdom/lib/jsdom/browser/Window.js:960:7
+    at /workspace/apps/web/src/app/Shell.tsx:232:12
+    at Object.react_stack_bottom_frame
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:28656:20)
+    at runWithFiberInDEV (/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:1048:13)
+    at commitHookEffectListMount
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:13748:29)
+    at commitHookPassiveMountEffects
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:13835:11)
+    at commitPassiveMountOnFiber
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16906:13)
+    at recursivelyTraversePassiveMountEffects
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16851:13)
+    at commitPassiveMountOnFiber
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16898:11) undefined
+ [32m✓[39m src/features/inbox/InboxLayout.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[33m 730[2mms[22m[39m
+     [33m[2m✓[22m[39m u returns from a thread to the list, keeping the folder filter [33m 418[2mms[22m[39m
+ [32m✓[39m src/features/email-finder/EmailFinderPage.test.tsx [2m([22m[2m13 tests[22m[2m)[22m[33m 763[2mms[22m[39m
+ [32m✓[39m src/features/outreach/RunComposer.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[33m 598[2mms[22m[39m
+ [32m✓[39m src/features/members/AdministrationPage.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[33m 829[2mms[22m[39m
+ [32m✓[39m src/features/auth/SignInPage.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[33m 911[2mms[22m[39m
+ [32m✓[39m src/features/outreach/CampaignRunsPage.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 528[2mms[22m[39m
+ [32m✓[39m src/features/thread/MessageAttachments.test.tsx [2m([22m[2m12 tests[22m[2m)[22m[33m 527[2mms[22m[39m
+ [32m✓[39m src/features/assistant/AssistantPanel.test.tsx [2m([22m[2m11 tests[22m[2m)[22m[33m 472[2mms[22m[39m
+ [32m✓[39m src/app/Sidebar.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[33m 573[2mms[22m[39m
+ [32m✓[39m src/features/drafts/DraftsPage.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[33m 381[2mms[22m[39m
+     [33m[2m✓[22m[39m replaces rows once after cursor expiry, then stops automatic recovery until explicit retry [33m 319[2mms[22m[39m
+ [32m✓[39m src/features/search/SearchPage.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[33m 511[2mms[22m[39m
+ [32m✓[39m src/features/help/HelpRoutes.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[33m 396[2mms[22m[39m
+ [32m✓[39m src/features/drafts/DraftAttachments.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[32m 241[2mms[22m[39m
+ [32m✓[39m src/app/features/index.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 528[2mms[22m[39m
+     [33m[2m✓[22m[39m passes the session context and Outreach gateway to Celeste's campaigns page (happy path) [33m 433[2mms[22m[39m
+ [32m✓[39m src/app/PageBoundary.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 503[2mms[22m[39m
+     [33m[2m✓[22m[39m handles a failed download without exposing diagnostics and permits another route [33m 339[2mms[22m[39m
+ [32m✓[39m src/features/auth/AuthCompletePage.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[33m 381[2mms[22m[39m
+ [32m✓[39m src/app/session.test.tsx [2m([22m[2m16 tests[22m[2m)[22m[33m 392[2mms[22m[39m
+ [32m✓[39m src/features/outreach/SequencePage.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 427[2mms[22m[39m
+ [32m✓[39m src/ui/primitives.test.tsx [2m([22m[2m13 tests[22m[2m)[22m[33m 392[2mms[22m[39m
+ [32m✓[39m src/features/send/BouncesPage.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[33m 353[2mms[22m[39m
+ [32m✓[39m src/features/thread/AssigneePicker.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[32m 266[2mms[22m[39m
+ [32m✓[39m src/features/send/SuppressionsPage.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 257[2mms[22m[39m
+ [32m✓[39m src/ui/useEditableViewport.test.tsx [2m([22m[2m7 tests[22m[2m)[22m[33m 577[2mms[22m[39m
+     [33m[2m✓[22m[39m reveals the focused note when Android IME shrinks the viewport after focus [33m 359[2mms[22m[39m
+ [32m✓[39m src/app/session-lifecycle.test.tsx [2m([22m[2m25 tests[22m[2m)[22m[33m 476[2mms[22m[39m
+ [32m✓[39m src/app/SearchBox.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[33m 864[2mms[22m[39m
+     [33m[2m✓[22m[39m refreshes idle fields on navigation and history, including an unavailable scope [33m 591[2mms[22m[39m
+ [32m✓[39m src/features/outreach/RunIntent.test.tsx [2m([22m[2m1 test[22m[2m)[22m[33m 548[2mms[22m[39m
+     [33m[2m✓[22m[39m retains the exact submitted intent across route remount and warns before tab close [33m 545[2mms[22m[39m
+ [32m✓[39m src/features/members/PersonalSettingsPage.test.tsx [2m([22m[2m7 tests[22m[2m)[22m[32m 246[2mms[22m[39m
+ [32m✓[39m src/data/signal-propagation.test.ts [2m([22m[2m108 tests[22m[2m)[22m[32m 169[2mms[22m[39m
+ [32m✓[39m src/ui/BrandMark.test.tsx [2m([22m[2m7 tests[22m[2m)[22m[32m 137[2mms[22m[39m
+ [32m✓[39m src/app/sendIntent.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 160[2mms[22m[39m
+ [32m✓[39m src/ui/ConnectivityBanner.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 287[2mms[22m[39m
+ [32m✓[39m src/features/inbox/ComposeFab.test.tsx [2m([22m[2m7 tests[22m[2m)[22m[32m 165[2mms[22m[39m
+ [32m✓[39m src/data/send-conformance.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 63[2mms[22m[39m
+ [32m✓[39m src/data/cd-conformance.test.ts [2m([22m[2m48 tests[22m[2m)[22m[32m 112[2mms[22m[39m
+ [32m✓[39m src/app/desktopHost.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 115[2mms[22m[39m
+ [32m✓[39m src/data/v2EmailFinderGateway.test.ts [2m([22m[2m20 tests[22m[2m)[22m[32m 94[2mms[22m[39m
+ [32m✓[39m src/dev/demoGateway.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 39[2mms[22m[39m
+ [32m✓[39m src/data/http/proposedAdapters.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 192[2mms[22m[39m
+ [32m✓[39m src/data/http/transport.test.ts [2m([22m[2m27 tests[22m[2m)[22m[32m 80[2mms[22m[39m
+ [32m✓[39m src/domain/draftOperation.test.ts [2m([22m[2m39 tests[22m[2m)[22m[32m 21[2mms[22m[39m
+ [32m✓[39m src/data/lifecycle-conformance.test.ts [2m([22m[2m24 tests[22m[2m)[22m[32m 63[2mms[22m[39m
+ [32m✓[39m src/data/fixtures/collaborationState.test.ts [2m([22m[2m24 tests[22m[2m)[22m[32m 77[2mms[22m[39m
+ [32m✓[39m src/data/v2PreferencesGateway.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 39[2mms[22m[39m
+ [32m✓[39m src/data/fixtures/fixtureGateway.test.ts [2m([22m[2m38 tests[22m[2m)[22m[32m 58[2mms[22m[39m
+ [32m✓[39m src/data/contract-collaboration.test.ts [2m([22m[2m59 tests[22m[2m)[22m[32m 80[2mms[22m[39m
+ [32m✓[39m src/data/conformance.test.ts [2m([22m[2m40 tests[22m[2m)[22m[32m 88[2mms[22m[39m
+ [32m✓[39m src/lib/postmanCollection.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+ [32m✓[39m src/data/contract.test.ts [2m([22m[2m40 tests[22m[2m)[22m[32m 25[2mms[22m[39m
+ [32m✓[39m src/domain/sendConsent.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32m✓[39m src/app/approvalRecovery.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+ [32m✓[39m src/data/v2SequenceGateway.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 48[2mms[22m[39m
+ [32m✓[39m src/data/ssoContract.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 53[2mms[22m[39m
+ [32m✓[39m src/ui/useBottomNotice.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 50[2mms[22m[39m
+ [32m✓[39m src/data/v2AssigneeOptionsGateway.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 31[2mms[22m[39m
+ [32m✓[39m src/data/v2AttachmentGateway.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 41[2mms[22m[39m
+ [32m✓[39m src/data/http/transport-cancellation.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 38[2mms[22m[39m
+ [32m✓[39m src/data/v2OutreachGateway.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 49[2mms[22m[39m
+ [32m✓[39m src/data/draftAttachmentGateway.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 34[2mms[22m[39m
+ [32m✓[39m src/data/contract-folders.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m src/app/outreachSessionPolicy.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32m✓[39m src/data/contract-send.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 32[2mms[22m[39m
+ [32m✓[39m src/data/http/transport-boundaries.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 49[2mms[22m[39m
+ [32m✓[39m src/data/v2CampaignRunsGateway.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+ [32m✓[39m src/styles/designSystem.test.ts [2m([22m[2m17 tests[22m[2m)[22m[33m 821[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps palette classes and literals out of application components [33m 816[2mms[22m[39m
+ [32m✓[39m src/data/v2DirectMessageGateway.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+ [32m✓[39m src/features/outreach/contract.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 21[2mms[22m[39m
+ [32m✓[39m src/data/contract-unicode.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32m✓[39m src/lib/readPage.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32m✓[39m src/data/send-signal.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+ [32m✓[39m src/domain/replyComposition.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32m✓[39m src/data/v2Contract.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+ [32m✓[39m src/domain/sendSuppression.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+ [32m✓[39m src/features/outreach/featureModule.test.tsx [2m([22m[2m1 test[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32m✓[39m src/features/members/adminModel.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m src/app/featureRegistry.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+ [32m✓[39m src/domain/threadFolders.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32m✓[39m src/app/scope.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32m✓[39m src/app/entry.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 4[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m src/features/thread/ThreadPage.test.tsx[2m > [22mmessage reply draft[2m > [22mfollows
+the selected message URL instead of the latest loaded sender
+[31m[1mTestingLibraryElementError[22m[39m: Unable to find an element with the text: Newer. This could be because
+the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make
+your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<article[39m
+      [33maria-label[39m=[32m"Conversation"[39m
+      [33mclass[39m=[32m"flex min-h-0 flex-1 flex-col"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"overflow-hidden rounded-xl border border-line bg-surface shadow-xs  "[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex min-h-12 flex-wrap items-center gap-1 border-b border-line px-2 "[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"inline-flex h-8 items-center gap-1.5 rounded-lg px-2 text-sm font-medium text-fg
+hover:bg-surface-2  "[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/mailboxes/00000000-0000-4000-8000-000000000023"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"size-5"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"16"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.5"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"16"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [0m Back to conversations[0m
+          [36m</a>[39m
+          [36m<span[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mclass[39m=[32m"mx-1 h-5 w-px bg-surface-2 "[39m
+          [36m/>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Archive"[39m
+            [33mclass[39m=[32m"inline-flex shrink-0 items-center justify-center [&_svg]:shrink-0
+disabled:pointer-events-none disabled:opacity-50 size-8 rounded-md bg-transparent hover:bg-surface-2 text-fg  "[39m
+            [33mdisabled[39m=[32m""[39m
+            [33mtitle[39m=[32m"Archive"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"size-5"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"16"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.5"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"16"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0
+1-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504
+1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125
+1.125Z"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</button>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Report spam"[39m
+            [33mclass[39m=[32m"inline-flex shrink-0 items-center justify-center [&_svg]:shrink-0
+disabled:pointer-events-none disabled:opacity-50 size-8 rounded-md bg-transparent hover:bg-surface-2 text-fg  "[39m
+            [33mdisabled[39m=[32m""[39m
+            [33mtitle[39m=[32m"Report spam"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"size-5"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"16"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.5"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"16"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874
+1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</button>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Delete"[39m
+            [33mclass[39m=[32m"inline-flex shrink-0 items-center justify-center [&_svg]:shrink-0
+disabled:pointer-events-none disabled:opacity-50 size-8 rounded-md bg-transparent hover:bg-surface-2 text-fg  "[39m
+            [33mdisabled[39m=[32m""[39m
+            [33mtitle[39m=[32m"Delete"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"size-5"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"16"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.5"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"16"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107
+1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456
+0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5
+0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667
+48.667 0 0 0-7.5 0"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</button>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative inline-block"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33maria-expanded[39m=[32m"false"[39m
+              [33maria-haspopup[39m=[32m"menu"[39m
+              [33maria-label[39m=[32m"Snooze"[39m
+              [33mclass[39m=[32m"inline-flex shrink-0 items-center justify-center [&_svg]:shrink-0
+disabled:pointer-events-none disabled:opacity-50 size-8 rounded-md bg-transparent hover:bg-surface-2 text-fg  "[39m
+              [33mdisabled[39m=[32m""[39m
+              [33mtitle[39m=[32m"Snooze"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"size-5"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"16"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"1.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"16"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex-1"[39m
+          [36m/>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Star"[39m
+            [33maria-pressed[39m=[32m"false"[39m
+            [33mclass[39m=[32m"inline-flex shrink-0 items-center justify-center [&_svg]:shrink-0
+disabled:pointer-events-none disabled:opacity-50 size-8 rounded-md bg-transparent hover:bg-surface-2 text-fg  "[39m
+            [33mdisabled[39m=[32m""[39m
+            [33mtitle[39m=[32m"Star"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"size-5"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"16"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.5"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"16"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0
+.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0
+1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0
+0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</button>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33maria-label[39m=[32m"Loading conversation"[39m
+          [33mclass[39m=[32m"p-6"[39m
+          [33mrole[39m=[32m"status"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mclass[39m=[32m"flex flex-col gap-2"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"h-10 rounded bg-skeleton "[39m
+            [36m/>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"h-10 rounded bg-skeleton "[39m
+            [36m/>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"h-10 rounded bg-skeleton "[39m
+            [36m/>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"h-10 rounded bg-skeleton "[39m
+            [36m/>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</article>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<article[39m
+      [33maria-label[39m=[32m"Conversation"[39m
+      [33mclass[39m=[32m"flex min-h-0 flex-1 flex-col"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"overflow-hidden rounded-xl border border-line bg-surface shadow-xs  "[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex min-h-12 flex-wrap items-center gap-1 border-b border-line px-2 "[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"inline-flex h-8 items-center gap-1.5 rounded-lg px-2 text-sm font-medium text-fg
+hover:bg-surface-2  "[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/mailboxes/00000000-0000-4000-8000-000000000023"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"size-5"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"16"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.5"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"16"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [0m Back to conversations[0m
+          [36m</a>[39m
+          [36m<span[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mclass[39m=[32m"mx-1 h-5 w-px bg-surface-2 "[39m
+          [36m/>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Archive"[39m
+            [33mclass[39m=[32m"inline-flex shrink-0 items-center justify-center [&_svg]:shrink-0
+disabled:pointer-events-none disabled:opacity-50 size-8 rounded-md bg-transparent hover:bg-surface-2 text-fg  "[39m
+            [33mdisabled[39m=[32m""[39m
+            [33mtitle[39m=[32m"Archive"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"size-5"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"16"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.5"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"16"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0
+1-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504
+1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125
+1.125Z"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</button>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Report spam"[39m
+            [33mclass[39m=[32m"inline-flex shrink-0 items-center justify-center [&_svg]:shrink-0
+disabled:pointer-events-none disabled:opacity-50 size-8 rounded-md bg-transparent hover:bg-surface-2 text-fg  "[39m
+            [33mdisabled[39m=[32m""[39m
+            [33mtitle[39m=[32m"Report spam"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"size-5"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"16"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.5"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"16"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874
+1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</button>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Delete"[39m
+            [33mclass[39m=[32m"inline-flex shrink-0 items-center justify-center [&_svg]:shrink-0
+disabled:pointer-events-none disabled:opacity-50 size-8 rounded-md bg-transparent hover:bg-surface-2 text-fg  "[39m
+            [33mdisabled[39m=[32m""[39m
+            [33mtitle[39m=[32m"Delete"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"size-5"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"16"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.5"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"16"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107
+1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456
+0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5
+0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667
+48.667 0 0 0-7.5 0"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</button>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative inline-block"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33maria-expanded[39m=[32m"false"[39m
+              [33maria-haspopup[39m=[32m"menu"[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m98 passed[39m[22m[90m (99)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m1210 passed[39m[22m[90m (1211)[39m
+[2m   Start at [22m 14:57:20
+[2m   Duration [22m 149.54s[2m (transform 49.25s, setup 16.14s, import 88.13s, tests 82.87s, environment 64.59s)[22m
+
+              [33maria-label[39m=[32m"Snooze"[39m
+              [33mclass[39m=[32m"inline-flex shrink-0 items-center justify-center [&_svg]:shrink-0
+disabled:pointer-events-none disabled:opacity-50 size-8 rounded-md bg-transparent hover:bg-surface-2 text-fg  "[39m
+              [33mdisabled[39m=[32m""[39m
+              [33mtitle[39m=[32m"Snooze"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"size-5"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"16"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"1.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"16"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex-1"[39m
+          [36m/>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Star"[39m
+            [33maria-pressed[39m=[32m"false"[39m
+            [33mclass[39m=[32m"inline-flex shrink-0 items-center justify-center [&_svg]:shrink-0
+disabled:pointer-events-none disabled:opacity-50 size-8 rounded-md bg-transparent hover:bg-surface-2 text-fg  "[39m
+            [33mdisabled[39m=[32m""[39m
+            [33mtitle[39m=[32m"Star"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"size-5"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"16"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.5"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"16"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0
+.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0
+1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0
+0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</button>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33maria-label[39m=[32m"Loading conversation"[39m
+          [33mclass[39m=[32m"p-6"[39m
+          [33mrole[39m=[32m"status"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mclass[39m=[32m"flex flex-col gap-2"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"h-10 rounded bg-skeleton "[39m
+            [36m/>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"h-10 rounded bg-skeleton "[39m
+            [36m/>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"h-10 rounded bg-skeleton "[39m
+            [36m/>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"h-10 rounded bg-skeleton "[39m
+            [36m/>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</article>[39m
+  [36m</div>[39m
+[36m</body>[39m
+[90m [2m❯[22m waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:[2m163:27[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m86:33[22m[39m
+[36m [2m❯[22m src/features/thread/ThreadPage.test.tsx:[2m162:18[22m[39m
+    [90m160|[39m     page[33m.[39mthread[33m.[39mmessage_count [33m=[39m [34m2[39m
+    [90m161|[39m     [34mrenderReply[39m(page)
+    [90m162|[39m     [35mawait[39m screen[33m.[39m[34mfindByText[39m([32m'Newer'[39m)
+    [90m   |[39m                  [31m^[39m
+    [90m163|[39m     fireEvent.click(screen.getAllByRole('link', { name: 'Open this mes…
+    [90m164|[39m     await waitFor(() => expect(screen.getByRole('listitem', { name: 'S…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m

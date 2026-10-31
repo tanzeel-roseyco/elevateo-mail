@@ -1,0 +1,132 @@
+docker : test_installs_native_behavior_for_each_identity_and_is_idempotent
+(test_customize_generated.CustomizeGeneratedTest.test_installs_native_behavior_for_each_identity_and_is_idempotent)
+... ok
+At line:3 char:1
++ docker run --rm --name elevateo-white-gold-android-python --mount "ty ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (test_installs_n...mpotent) ... ok:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+test_manifest_policy_changes_do_not_partially_write_activity
+(test_customize_generated.CustomizeGeneratedTest.test_manifest_policy_changes_do_not_partially_write_activity) ... ok
+test_missing_or_multiple_activity_sources_fail
+(test_customize_generated.CustomizeGeneratedTest.test_missing_or_multiple_activity_sources_fail) ... ok
+test_rejects_changed_template_or_package_without_partial_edits
+(test_customize_generated.CustomizeGeneratedTest.test_rejects_changed_template_or_package_without_partial_edits) ... ok
+test_symlink_input_is_rejected_without_touching_target
+(test_customize_generated.CustomizeGeneratedTest.test_symlink_input_is_rejected_without_touching_target) ... ok
+test_cli_pins_wrapper_and_preserves_other_properties
+(test_pin_gradle.PinWrapperTest.test_cli_pins_wrapper_and_preserves_other_properties) ... ok
+test_cli_rejects_invalid_input_without_mutating_it
+(test_pin_gradle.PinWrapperTest.test_cli_rejects_invalid_input_without_mutating_it) ... ok
+test_cli_requires_existing_file_and_one_argument
+(test_pin_gradle.PinWrapperTest.test_cli_requires_existing_file_and_one_argument) ... ok
+test_pins_generated_wrapper (test_pin_gradle.PinWrapperTest.test_pins_generated_wrapper) ... ok
+test_rejects_duplicate_checksum (test_pin_gradle.PinWrapperTest.test_rejects_duplicate_checksum) ... ok
+test_rejects_missing_distribution (test_pin_gradle.PinWrapperTest.test_rejects_missing_distribution) ... ok
+test_alternate_configuration_and_disabled_values_rejected
+(test_qa_resource_table.ResourceTableTest.test_alternate_configuration_and_disabled_values_rejected) ... ok
+test_duplicate_ids_entries_packages_and_empty_dump_rejected
+(test_qa_resource_table.ResourceTableTest.test_duplicate_ids_entries_packages_and_empty_dump_rejected) ... ok
+test_exact_default_files (test_qa_resource_table.ResourceTableTest.test_exact_default_files) ... ok
+test_generated_drawables_do_not_change_trust_binding_or_hide_duplicate_ids
+(test_qa_resource_table.ResourceTableTest.test_generated_drawables_do_not_change_trust_binding_or_hide_duplicate_ids)
+... ok
+test_missing_wrong_package_type_id_name_path_and_alias
+(test_qa_resource_table.ResourceTableTest.test_missing_wrong_package_type_id_name_path_and_alias) ... ok
+test_accepts_successful_nonempty_tree_without_view
+(test_verify_manifest_tree.VerifyManifestTreeTest.test_accepts_successful_nonempty_tree_without_view) ... ok
+test_rejects_flat_or_unrelated_tree
+(test_verify_manifest_tree.VerifyManifestTreeTest.test_rejects_flat_or_unrelated_tree) ... ok
+test_rejects_tool_failure_and_empty_output
+(test_verify_manifest_tree.VerifyManifestTreeTest.test_rejects_tool_failure_and_empty_output) ... ok
+test_rejects_view_callback (test_verify_manifest_tree.VerifyManifestTreeTest.test_rejects_view_callback) ... ok
+test_rejects_zero_exit_usage_and_diagnostic_output
+(test_verify_manifest_tree.VerifyManifestTreeTest.test_rejects_zero_exit_usage_and_diagnostic_output) ... ok
+test_allows_network_state_internet_and_androidx_signature_receiver
+(test_verify_permissions.VerifyPermissionsTest.test_allows_network_state_internet_and_androidx_signature_receiver) ...
+ok
+test_rejects_empty_aapt_permission_output
+(test_verify_permissions.VerifyPermissionsTest.test_rejects_empty_aapt_permission_output) ... ok
+test_rejects_extra_platform_permission
+(test_verify_permissions.VerifyPermissionsTest.test_rejects_extra_platform_permission) ... ok
+test_rejects_lookalike_receiver_permission
+(test_verify_permissions.VerifyPermissionsTest.test_rejects_lookalike_receiver_permission) ... ok
+test_rejects_missing_and_duplicate_receiver_declarations
+(test_verify_permissions.VerifyPermissionsTest.test_rejects_missing_and_duplicate_receiver_declarations) ... ok
+test_rejects_missing_network_state (test_verify_permissions.VerifyPermissionsTest.test_rejects_missing_network_state)
+... ok
+test_rejects_receiver_namespace_substitution
+(test_verify_permissions.VerifyPermissionsTest.test_rejects_receiver_namespace_substitution) ... ok
+test_rejects_sdk_specific_extra_manifest_permission
+(test_verify_permissions.VerifyPermissionsTest.test_rejects_sdk_specific_extra_manifest_permission) ... ok
+test_requires_signature_receiver_declaration
+(test_verify_permissions.VerifyPermissionsTest.test_requires_signature_receiver_declaration) ... ok
+test_ca_matches_exactly (test_verify_qa_package.QaPackageTest.test_ca_matches_exactly) ... ok
+test_ca_missing_wrong_path_or_private_material_rejected
+(test_verify_qa_package.QaPackageTest.test_ca_missing_wrong_path_or_private_material_rejected) ... ok
+test_decoded_numeric_references_require_exact_resource_binding
+(test_verify_qa_package.QaPackageTest.test_decoded_numeric_references_require_exact_resource_binding) ... ok
+test_expected_identity_and_policy (test_verify_qa_package.QaPackageTest.test_expected_identity_and_policy) ... ok
+test_manifest_rejects_permission_identity_and_cleartext_changes
+(test_verify_qa_package.QaPackageTest.test_manifest_rejects_permission_identity_and_cleartext_changes) ... ok
+test_manifest_requires_unique_network_state_permission
+(test_verify_qa_package.QaPackageTest.test_manifest_requires_unique_network_state_permission) ... ok
+test_network_rejects_broad_or_changed_trust
+(test_verify_qa_package.QaPackageTest.test_network_rejects_broad_or_changed_trust) ... ok
+test_reassigned_ids_are_checked_against_the_same_table
+(test_verify_qa_package.QaPackageTest.test_reassigned_ids_are_checked_against_the_same_table) ... ok
+test_accepts_only_known_missing_signature_diagnostic
+(test_verify_unsigned.VerifyUnsignedTest.test_accepts_only_known_missing_signature_diagnostic) ... ok
+test_rejects_corrupt_apk (test_verify_unsigned.VerifyUnsignedTest.test_rejects_corrupt_apk) ... ok
+test_rejects_signed_apk (test_verify_unsigned.VerifyUnsignedTest.test_rejects_signed_apk) ... ok
+test_rejects_tool_failure (test_verify_unsigned.VerifyUnsignedTest.test_rejects_tool_failure) ... ok
+
+----------------------------------------------------------------------
+Ran 42 tests in 0.409s
+
+OK
+test_absent_text_is_not_found (test_acceptance_results.DumpTextTest.test_absent_text_is_not_found) ... ok
+test_finds_text_and_content_desc_case_insensitively
+(test_acceptance_results.DumpTextTest.test_finds_text_and_content_desc_case_insensitively) ... ok
+test_malformed_dump_raises (test_acceptance_results.DumpTextTest.test_malformed_dump_raises) ... ok
+test_captured_link_fails (test_acceptance_results.ExternalLinkTest.test_captured_link_fails) ... ok
+test_link_resolved_elsewhere_passes (test_acceptance_results.ExternalLinkTest.test_link_resolved_elsewhere_passes) ...
+ok
+test_missing_evidence_is_not_run (test_acceptance_results.ExternalLinkTest.test_missing_evidence_is_not_run) ... ok
+test_bootstrap_scenarios_and_unknown_scenario
+(test_acceptance_results.FixtureOriginPolicyTest.test_bootstrap_scenarios_and_unknown_scenario) ... ok
+test_dist_paths_cannot_escape_the_bundle
+(test_acceptance_results.FixtureOriginPolicyTest.test_dist_paths_cannot_escape_the_bundle) ... ok
+test_only_the_exact_qa_host_and_port_connects
+(test_acceptance_results.FixtureOriginPolicyTest.test_only_the_exact_qa_host_and_port_connects) ... ok
+test_other_destinations_are_denied
+(test_acceptance_results.FixtureOriginPolicyTest.test_other_destinations_are_denied) ... ok
+test_extracts_resumed_package (test_acceptance_results.FocusedPackageTest.test_extracts_resumed_package) ... ok
+test_missing_resumed_activity_raises (test_acceptance_results.FocusedPackageTest.test_missing_resumed_activity_raises)
+... ok
+test_resumed_line_without_component_raises
+(test_acceptance_results.FocusedPackageTest.test_resumed_line_without_component_raises) ... ok
+test_apksigner_failure_still_removes_the_keystore
+(test_acceptance_results.ReleaseSigningTest.test_apksigner_failure_still_removes_the_keystore) ... ok
+test_invalid_base64_still_removes_the_keystore
+(test_acceptance_results.ReleaseSigningTest.test_invalid_base64_still_removes_the_keystore) ... ok
+test_successful_signing_uses_a_private_keystore_and_removes_it
+(test_acceptance_results.ReleaseSigningTest.test_successful_signing_uses_a_private_keystore_and_removes_it) ... ok
+test_any_failure_yields_nonzero (test_acceptance_results.ResultsRecordTest.test_any_failure_yields_nonzero) ... ok
+test_not_run_without_reason_is_rejected
+(test_acceptance_results.ResultsRecordTest.test_not_run_without_reason_is_rejected) ... ok
+test_parse_case_lines_round_trip_and_malformed_line
+(test_acceptance_results.ResultsRecordTest.test_parse_case_lines_round_trip_and_malformed_line) ... ok
+test_unknown_status_and_empty_record_are_rejected
+(test_acceptance_results.ResultsRecordTest.test_unknown_status_and_empty_record_are_rejected) ... ok
+test_write_results_reports_summary_and_exit_code
+(test_acceptance_results.ResultsRecordTest.test_write_results_reports_summary_and_exit_code) ... ok
+test_notice_only_or_sign_in_view_fails
+(test_acceptance_results.SignedInViewTest.test_notice_only_or_sign_in_view_fails) ... ok
+test_signed_in_shell_is_recognised (test_acceptance_results.SignedInViewTest.test_signed_in_shell_is_recognised) ... ok
+
+----------------------------------------------------------------------
+Ran 23 tests in 0.054s
+
+OK

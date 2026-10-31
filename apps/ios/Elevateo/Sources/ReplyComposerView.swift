@@ -56,6 +56,8 @@ struct ReplyComposerView: View {
                 Section("Message") {
                     TextEditor(text: $bodyText)
                         .frame(minHeight: 160)
+                        .padding(8)
+                        .overlay(RoundedRectangle(cornerRadius: 4).stroke(CorporateTheme.gold, lineWidth: 1))
                         .accessibilityLabel("Message body")
                         .disabled(saves.status == .saving)
                 }
@@ -66,7 +68,7 @@ struct ReplyComposerView: View {
                         systemImage: "info.circle"
                     )
                     .font(.footnote)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(CorporateTheme.muted)
                 }
                 statusSection
             }
@@ -96,40 +98,40 @@ struct ReplyComposerView: View {
         case .unconfirmed:
             Section {
                 Text("The last save could not be confirmed: it may or may not have reached the server. Retry Save resends exactly that version; edits made since then are saved after it.")
-                    .foregroundStyle(.orange)
+                    .foregroundStyle(CorporateTheme.warning)
                     .accessibilityAddTraits(.updatesFrequently)
             }
         case .conflict:
             Section {
                 Text("This draft was changed elsewhere since your last save.")
-                    .foregroundStyle(.red)
+                    .foregroundStyle(CorporateTheme.danger)
                 Button("Keep my edits (overwrite on next save)") { Task { await reconcile(keepLocal: true) } }
                     .disabled(reconciling)
                 Button("Load the saved version (discard my edits)") { Task { await reconcile(keepLocal: false) } }
                     .disabled(reconciling)
                 if let reconcileError {
                     Text(reconcileError)
-                        .foregroundStyle(.red)
+                        .foregroundStyle(CorporateTheme.danger)
                         .accessibilityAddTraits(.updatesFrequently)
                 }
             }
         case .failed(let message):
             Section {
                 Text(message)
-                    .foregroundStyle(.red)
+                    .foregroundStyle(CorporateTheme.danger)
                     .accessibilityAddTraits(.updatesFrequently)
             }
         case .idle, .saving:
             if saves.isSaved(content) {
                 Section {
                     Label("Draft saved (version \(saves.confirmedVersion)). Finish and send it from the web app.", systemImage: "checkmark.circle")
-                        .foregroundStyle(.green)
+                        .foregroundStyle(CorporateTheme.success)
                         .accessibilityAddTraits(.updatesFrequently)
                 }
             } else if saves.acknowledged != nil {
                 Section {
                     Label("Unsaved changes", systemImage: "pencil.circle")
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(CorporateTheme.muted)
                 }
             }
         }

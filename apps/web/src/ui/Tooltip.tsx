@@ -1,4 +1,4 @@
-// Flux tooltip: a small dark bubble shown on hover and keyboard focus. The wrapped control must
+// Flux tooltip: a small outlined white bubble shown on hover and keyboard focus. The wrapped control must
 // carry its own accessible name (IconButton's aria-label) so the bubble is purely visual.
 import { useState, type ReactNode } from 'react'
 import { cx } from '@/lib/format'
@@ -27,7 +27,7 @@ export function Tooltip({ label, side = 'bottom', className, children }: Tooltip
         <span
           aria-hidden
           className={cx(
-            'pointer-events-none invisible absolute start-1/2 z-30 -translate-x-1/2 whitespace-nowrap rounded-md bg-zinc-800 px-2 py-1 text-xs font-medium text-white opacity-0 shadow-sm transition-opacity group-hover/tip:visible group-hover/tip:opacity-100 group-focus-within/tip:visible group-focus-within/tip:opacity-100 dark:bg-zinc-600',
+            'pointer-events-none invisible absolute start-1/2 z-30 -translate-x-1/2 whitespace-nowrap rounded-md border border-line bg-surface px-2 py-1 text-xs font-medium text-fg opacity-0 shadow-sm  group-hover/tip:visible group-hover/tip:opacity-100 group-focus-within/tip:visible group-focus-within/tip:opacity-100 ',
             side === 'top' ? 'bottom-full mb-1.5' : 'top-full mt-1.5',
           )}
         >

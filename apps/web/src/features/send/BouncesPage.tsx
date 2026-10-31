@@ -118,24 +118,24 @@ function BounceList({ mailboxId, type, window }: { mailboxId: string; type: Type
   return (
     <section aria-label="Bounces" className="max-w-3xl space-y-3">
       <div className="flex flex-wrap items-center gap-2">
-        <h2 ref={heading} tabIndex={-1} className="text-base font-medium text-zinc-800 dark:text-white">{state.items.length === 0 ? 'No bounces' : `${state.items.length} shown`}</h2>
+        <h2 ref={heading} tabIndex={-1} className="text-base font-medium text-fg ">{state.items.length === 0 ? 'No bounces' : `${state.items.length} shown`}</h2>
         {port.simulated && <Badge tone="warn" size="sm">Simulated</Badge>}
       </div>
       {state.items.length === 0 ? (
         <EmptyState icon={<ArrowUturnLeftIcon className="size-5" />} title="No bounces in this view" body="No recipient bounced or complained for the selected type and time window." />
       ) : (
-        <ul className="divide-y divide-zinc-200 rounded-xl border border-zinc-200 dark:divide-zinc-700 dark:border-zinc-700">
+        <ul className="divide-y divide-line rounded-xl border border-line  ">
           {state.items.map((record) => {
             const kind = kindOf(record)
             return (
               <li key={record.id} className="space-y-1 p-4">
                 <div className="flex flex-wrap items-center gap-2">
                   <Badge tone={TONE[kind]} size="sm">{KIND_LABEL[kind]}</Badge>
-                  <span className="min-w-0 break-all font-medium text-zinc-800 dark:text-white">{record.recipient}</span>
-                  <time dateTime={record.occurred_at} className="ms-auto text-xs text-zinc-500">{formatDateTime(record.occurred_at)}</time>
+                  <span className="min-w-0 break-all font-medium text-fg ">{record.recipient}</span>
+                  <time dateTime={record.occurred_at} className="ms-auto text-xs text-muted">{formatDateTime(record.occurred_at)}</time>
                 </div>
                 {/* Plain text only: the reason never becomes markup. */}
-                <p className="whitespace-pre-wrap break-words text-sm text-zinc-600 dark:text-zinc-300">{record.reason}</p>
+                <p className="whitespace-pre-wrap break-words text-sm text-muted ">{record.reason}</p>
                 <div className="flex flex-wrap gap-3 text-sm">
                   <Link to={`/mailboxes/${mailboxId}/send-intents/${record.send_id}`} className={linkClass}>View send status</Link>
                   {record.thread_id !== null && <Link to={`/mailboxes/${mailboxId}/threads/${record.thread_id}`} className={linkClass}>Open thread</Link>}

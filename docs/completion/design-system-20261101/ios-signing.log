@@ -1,0 +1,12 @@
+docker : ...
+At line:2 char:65
++ ... tion).Path; docker run --rm --name elevateo-white-gold-ios-signing -- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (...:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.240s
+
+OK
+Docker exit: 0

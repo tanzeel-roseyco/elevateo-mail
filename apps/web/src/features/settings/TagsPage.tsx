@@ -17,13 +17,8 @@ import { SimulatedAdapterNotice } from './SettingsLayout'
 import { simulatedId, useSimulatedStore } from './simulatedStore'
 import { UnavailableSetting, useSimulatedSettings } from './UnavailableSetting'
 
-/** The reference palette: two rows of ten, light tints first, then saturated hues. */
-export const TAG_COLOURS: readonly { name: string; hex: string }[] = [
-  { name: 'Rose', hex: '#fecdd3' }, { name: 'Peach', hex: '#fed7aa' }, { name: 'Lemon', hex: '#fef08a' }, { name: 'Lime', hex: '#d9f99d' }, { name: 'Mint', hex: '#bbf7d0' },
-  { name: 'Aqua', hex: '#a5f3fc' }, { name: 'Sky', hex: '#bae6fd' }, { name: 'Lavender', hex: '#ddd6fe' }, { name: 'Pink', hex: '#fbcfe8' }, { name: 'Stone', hex: '#e7e5e4' },
-  { name: 'Red', hex: '#ef4444' }, { name: 'Orange', hex: '#f97316' }, { name: 'Gold', hex: '#c9a24e' }, { name: 'Green', hex: '#22c55e' }, { name: 'Teal', hex: '#14b8a6' },
-  { name: 'Cyan', hex: '#06b6d4' }, { name: 'Indigo', hex: '#6366f1' }, { name: 'Violet', hex: '#8b5cf6' }, { name: 'Magenta', hex: '#d946ef' }, { name: 'Slate', hex: '#64748b' },
-]
+import { TAG_COLOURS } from '@/styles/tagColours'
+export { TAG_COLOURS } from '@/styles/tagColours'
 
 const TagSchema = z.object({
   id: z.string().min(1),
@@ -82,19 +77,19 @@ function SimulatedTagsPage() {
       <SimulatedAdapterNotice />
       <div className="max-w-3xl">
         <div className="mb-5 flex items-center justify-between gap-4">
-          <h2 className="text-base font-medium text-zinc-800 dark:text-white">Tags</h2>
+          <h2 className="text-base font-medium text-fg ">Tags</h2>
           <Button variant="primary" size="xs" icon={<PlusIcon className="size-4" />} onClick={() => setOpen(true)} disabled={!store.writable}>Add New Tag</Button>
         </div>
         {store.value.length === 0 ? (
           <EmptyState icon={<TagIcon className="size-5" />} title="No tags yet" body="Tags label conversations and campaigns for your team. Create your first tag to start organising." action={<Button variant="primary" onClick={() => setOpen(true)} disabled={!store.writable}>Add New Tag</Button>} />
         ) : (
           <Card className="p-0">
-            <ul className="divide-y divide-zinc-200 dark:divide-zinc-700" aria-label="Tags">
+            <ul className="divide-y divide-line " aria-label="Tags">
               {store.value.map((tag) => (
                 <li key={tag.id} className="flex items-center gap-3 px-6 py-3 text-sm">
                   <Badge color={tag.color}>{tag.name}</Badge>
                   <span className="ms-auto flex items-center gap-2">
-                    <span className="font-mono text-xs text-zinc-500">{tag.color}</span>
+                    <span className="font-mono text-xs text-muted">{tag.color}</span>
                     <Button size="sm" variant="danger" onClick={() => remove(tag)}>Delete</Button>
                   </span>
                 </li>
@@ -147,7 +142,7 @@ function TagModal({ open, onOpenChange, onCreate }: { open: boolean; onOpenChang
           <TextInput id={`${id}-name`} placeholder="Enter tag name..." value={name} maxLength={40} onChange={(event) => setName(event.target.value)} aria-invalid={error ? true : undefined} />
         </Field>
         <fieldset>
-          <legend className="text-sm font-medium text-zinc-800 dark:text-white">Color</legend>
+          <legend className="text-sm font-medium text-fg ">Color</legend>
           {/* Ten columns match the reference at ≥640px; five keep 32px swatches inside a 390px modal. */}
           {/* Roving tabindex: the chosen swatch is the group's only tab stop; arrows move the choice. */}
           <div
@@ -176,13 +171,13 @@ function TagModal({ open, onOpenChange, onCreate }: { open: boolean; onOpenChang
                   tabIndex={selected ? 0 : -1}
                   onClick={() => setColor(swatch.hex)}
                   style={{ backgroundColor: swatch.hex }}
-                  className={cx('h-8 w-8 rounded-full transition-transform duration-75 hover:scale-105', selected && 'ring-2 ring-zinc-500 ring-offset-2 dark:ring-offset-zinc-800')}
+                  className={cx('h-8 w-8 rounded-full ', selected && 'ring-2 ring-ring ring-offset-2 ')}
                 />
               )
             })}
           </div>
         </fieldset>
-        <div className="flex items-center gap-2 text-sm text-zinc-500">Preview: <Badge color={color}>{name.trim() === '' ? 'Tag name' : name.trim()}</Badge></div>
+        <div className="flex items-center gap-2 text-sm text-muted">Preview: <Badge color={color}>{name.trim() === '' ? 'Tag name' : name.trim()}</Badge></div>
       </form>
     </Modal>
   )

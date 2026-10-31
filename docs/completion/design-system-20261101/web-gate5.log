@@ -1,0 +1,12 @@
+docker : Unable to find image 'elevateo-white-gold:web' locally
+At line:3 char:1
++ docker run --rm --name elevateo-white-gold-gate5 --mount "type=bind,s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Unable to find ...ld:web' locally:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+docker: Error response from daemon: failed to resolve reference "docker.io/library/elevateo-white-gold:web": failed to
+do request: Head "https://registry-1.docker.io/v2/library/elevateo-white-gold/manifests/web": net/http: TLS handshake
+timeout
+
+Run 'docker run --help' for more information

@@ -269,39 +269,39 @@ function Status({ mailboxId, sendId }: { mailboxId: string; sendId: string }) {
           <Badge tone="warn">{status.simulated ? 'Simulated - no live mail' : 'Live email'}</Badge>
           <Badge tone={STATE_TONE[status.state]}>{status.state.replaceAll('_', ' ')}</Badge>
         </div>
-        <h1 ref={heading} tabIndex={-1} className="text-base font-medium text-zinc-800 dark:text-white">Send intent: {status.state.replaceAll('_', ' ')}</h1>
-        <p role="status" className="text-sm text-zinc-700 dark:text-zinc-300">{DESCRIPTIONS[status.state]}</p>
+        <h1 ref={heading} tabIndex={-1} className="text-base font-medium text-fg ">Send intent: {status.state.replaceAll('_', ' ')}</h1>
+        <p role="status" className="text-sm text-fg ">{DESCRIPTIONS[status.state]}</p>
 
         {/* Lifecycle timeline. aria-live announces each stage change a silent poll brings in. */}
-        <ol aria-label="Delivery lifecycle" aria-live="polite" className="space-y-3 border-s border-zinc-200 ps-4 dark:border-zinc-700">
+        <ol aria-label="Delivery lifecycle" aria-live="polite" className="space-y-3 border-s border-line ps-4 ">
           {steps.map((step) => (
             <li key={step.key} className="space-y-0.5">
               <div className="flex flex-wrap items-center gap-2">
                 <Badge tone={STEP_TONE[step.tone].badge} size="sm">{step.label}</Badge>
                 <span className="sr-only">{STEP_TONE[step.tone].word}.</span>
-                {step.at !== null && <time dateTime={step.at} className="text-xs text-zinc-500">{formatDateTime(step.at)}</time>}
+                {step.at !== null && <time dateTime={step.at} className="text-xs text-muted">{formatDateTime(step.at)}</time>}
               </div>
-              <p className="text-sm text-zinc-600 dark:text-zinc-300">{step.note}</p>
+              <p className="text-sm text-muted ">{step.note}</p>
             </li>
           ))}
         </ol>
 
         {status.delivery_status !== null && (
-          <section aria-label="Delivery update" className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-700">
-            <h2 className="text-sm font-medium text-zinc-800 dark:text-white">Delivery: {status.delivery_status.replaceAll('_', ' ')}</h2>
-            <p className="mt-1 text-sm text-zinc-500">{DELIVERY[status.delivery_status]}</p>
-            {status.delivery_updated_at && <time dateTime={status.delivery_updated_at} className="mt-1 block text-xs text-zinc-500">{formatDateTime(status.delivery_updated_at)}</time>}
+          <section aria-label="Delivery update" className="rounded-lg border border-line p-4 ">
+            <h2 className="text-sm font-medium text-fg ">Delivery: {status.delivery_status.replaceAll('_', ' ')}</h2>
+            <p className="mt-1 text-sm text-muted">{DELIVERY[status.delivery_status]}</p>
+            {status.delivery_updated_at && <time dateTime={status.delivery_updated_at} className="mt-1 block text-xs text-muted">{formatDateTime(status.delivery_updated_at)}</time>}
           </section>
         )}
         <dl className="grid grid-cols-1 gap-x-6 gap-y-2 text-sm sm:grid-cols-2">
-          <div><dt className="text-zinc-500">Approved draft version</dt><dd className="font-medium text-zinc-800 dark:text-white">{status.approved_version}</dd></div>
-          <div><dt className="text-zinc-500">{status.simulated ? 'Simulated attempts' : 'Submission attempts'}</dt><dd className="font-medium text-zinc-800 dark:text-white">{status.attempts}</dd></div>
-          {status.hold_reason !== null && <div><dt className="text-zinc-500">Hold</dt><dd className="font-medium text-zinc-800 dark:text-white">{status.hold_reason.replaceAll('_', ' ')}</dd></div>}
+          <div><dt className="text-muted">Approved draft version</dt><dd className="font-medium text-fg ">{status.approved_version}</dd></div>
+          <div><dt className="text-muted">{status.simulated ? 'Simulated attempts' : 'Submission attempts'}</dt><dd className="font-medium text-fg ">{status.attempts}</dd></div>
+          {status.hold_reason !== null && <div><dt className="text-muted">Hold</dt><dd className="font-medium text-fg ">{status.hold_reason.replaceAll('_', ' ')}</dd></div>}
         </dl>
         {status.suppression_reason !== null && <Callout variant="warning" role="note" label="Suppression">{SUPPRESSION[status.suppression_reason]}</Callout>}
-        {status.cancel_requested && <p className="text-sm text-zinc-500">Stop has been requested. A late acceptance can still appear.</p>}
+        {status.cancel_requested && <p className="text-sm text-muted">Stop has been requested. A late acceptance can still appear.</p>}
         {/* Honest cue that the page refreshes itself, shown only while automatic updates are healthy. */}
-        {!isTerminal(status) && pollHealth === 'ok' && <p className="text-xs text-zinc-400">This status updates automatically while an outcome is pending.</p>}
+        {!isTerminal(status) && pollHealth === 'ok' && <p className="text-xs text-muted">This status updates automatically while an outcome is pending.</p>}
         {!isTerminal(status) && pollHealth === 'retrying' && (
           <Callout variant="warning" role="status" label="Status updates">The last automatic check failed, so this status may be out of date. Retrying automatically.</Callout>
         )}

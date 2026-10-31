@@ -58,8 +58,8 @@ const VIEW_ORDER: readonly InboxView[] = ['all', 'unread', 'starred', 'snoozed',
 const UNSUPPORTED: ReadonlyArray<{ label: string; Icon: Icon }> = [{ label: 'Sent', Icon: PaperAirplaneIcon }]
 
 const ITEM =
-  'my-px flex h-8 items-center gap-3 rounded-lg border border-transparent px-3 text-sm font-medium text-zinc-500 hover:bg-zinc-800/5 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-white/10 dark:hover:text-white'
-const CURRENT = 'border-zinc-200 bg-white text-zinc-800 shadow-xs dark:border-white/10 dark:bg-white/10 dark:text-white'
+  'my-px flex h-8 items-center gap-3 rounded-lg border border-transparent px-3 text-sm font-medium text-muted hover:bg-surface-2 hover:text-fg   '
+const CURRENT = 'border-line bg-surface text-fg shadow-xs   '
 
 export function useFolders(mailboxId: string, mailbox: Mailbox | undefined, counts: InboxCounts | null): readonly Folder[] {
   const { pathname, search } = useLocation()
@@ -132,7 +132,7 @@ interface FolderNavProps {
 export function FolderColumn({ mailboxId, mailbox, counts }: FolderNavProps) {
   const folders = useFolders(mailboxId, mailbox, counts)
   return (
-    <div className="flex w-60 shrink-0 flex-col gap-4 border-e border-zinc-200 pe-4 dark:border-zinc-700">
+    <div className="flex w-60 shrink-0 flex-col gap-4 border-e border-line pe-4 ">
       <MailboxPicker mailboxId={mailboxId} />
       <ComposeButton mailbox={mailbox} mailboxId={mailboxId} />
       <nav aria-label="Folders">
@@ -145,10 +145,10 @@ export function FolderColumn({ mailboxId, mailbox, counts }: FolderNavProps) {
                 data-current={folder.current || folder.within || undefined}
                 className={cx(ITEM, (folder.current || folder.within) && CURRENT)}
               >
-                <folder.Icon aria-hidden className={cx('size-5 shrink-0', (folder.current || folder.within) && 'text-(--color-accent-content)')} />
+                <folder.Icon aria-hidden className={cx('size-5 shrink-0', (folder.current || folder.within) && 'text-fg')} />
                 <span className="flex-1 truncate">{folder.label}</span>
                 {folder.badge !== undefined && (
-                  <span className="rounded-md bg-gold-100 px-1.5 py-0.5 text-xs font-medium tabular-nums text-gold-800 dark:bg-gold-400/20 dark:text-gold-200" aria-label={`${folder.badge} unread`}>
+                  <span className="rounded-md bg-surface px-1.5 py-0.5 text-xs font-medium tabular-nums text-fg  " aria-label={`${folder.badge} unread`}>
                     {folder.badge}
                   </span>
                 )}
@@ -156,11 +156,11 @@ export function FolderColumn({ mailboxId, mailbox, counts }: FolderNavProps) {
             </li>
           ))}
         </ul>
-        <p className="mt-3 px-3 pb-1 text-xs font-medium text-zinc-400">Not available yet</p>
+        <p className="mt-3 px-3 pb-1 text-xs font-medium text-muted">Not available yet</p>
         <ul className="flex flex-col" aria-label="Folders not available yet">
           {UNSUPPORTED.map(({ label, Icon }) => (
             <li key={label}>
-              <span aria-disabled="true" title="Not available yet" className={cx(ITEM, 'cursor-not-allowed opacity-50 hover:bg-transparent hover:text-zinc-500')}>
+              <span aria-disabled="true" title="Not available yet" className={cx(ITEM, 'cursor-not-allowed opacity-50 hover:bg-transparent hover:text-muted')}>
                 <Icon aria-hidden className="size-5 shrink-0" />
                 <span className="flex-1 truncate">{label}</span>
               </span>
@@ -202,7 +202,7 @@ export function ComposeFab({ mailboxId, mailbox }: { mailboxId: string; mailbox:
       type="button"
       aria-label="Compose a new draft"
       onClick={() => navigate(composeDraftPath(mailboxId))}
-      className="fixed end-6 bottom-[calc(1.5rem+var(--bottom-notices))] z-20 flex size-14 items-center justify-center rounded-full bg-(--color-accent) text-(--color-accent-foreground) shadow-lg hover:bg-gold-400 md:hidden"
+      className="fixed end-6 bottom-[calc(1.5rem+var(--bottom-notices))] z-20 flex size-14 items-center justify-center rounded-lg border-2 border-line bg-surface text-(--color-accent-foreground) shadow-lg hover:bg-surface md:hidden"
     >
       <PencilSquareIcon className="size-6" />
     </button>

@@ -88,28 +88,28 @@ function SequenceEditor({ campaignId, gateway, context, proof }: OutreachPagePro
     <Breadcrumbs crumbs={outreachCrumbs('Campaign sequence', `/outreach/campaigns/${campaignId}/sequence`)} />
     <PageHeader title="Campaign sequence" subtitle="Draft and held sequences cannot send or enroll leads." />
     <div className="max-w-3xl space-y-6">
-    {accessLost ? <p role="alert" className="text-sm font-medium text-red-500">Sequence access changed. Reopen this campaign after your session is refreshed.</p> :
-      load.status === 'loading' ? <p role="status" className="text-sm text-zinc-500">Loading sequence…</p> :
-      load.status === 'unavailable' ? <p role="status" className="text-sm text-zinc-500">Sequence API unavailable for this account.</p> :
-      load.status === 'error' ? <p role="alert" className="text-sm font-medium text-red-500">Unable to load this sequence.</p> :
-      <><p className="text-sm text-zinc-600 dark:text-zinc-400">{load.value ? 'Saved version ' + load.value.version + '; ' + load.value.status + '.' : 'No accessible sequence draft was returned. The server will decide whether a new draft can be created.'}</p>
-        <form onSubmit={(event) => { void save(event) }} className="space-y-4 p-6 rounded-xl border border-zinc-200 bg-white shadow-xs dark:border-zinc-700 dark:bg-zinc-800">
+    {accessLost ? <p role="alert" className="text-sm font-medium text-danger">Sequence access changed. Reopen this campaign after your session is refreshed.</p> :
+      load.status === 'loading' ? <p role="status" className="text-sm text-muted">Loading sequence…</p> :
+      load.status === 'unavailable' ? <p role="status" className="text-sm text-muted">Sequence API unavailable for this account.</p> :
+      load.status === 'error' ? <p role="alert" className="text-sm font-medium text-danger">Unable to load this sequence.</p> :
+      <><p className="text-sm text-muted ">{load.value ? 'Saved version ' + load.value.version + '; ' + load.value.status + '.' : 'No accessible sequence draft was returned. The server will decide whether a new draft can be created.'}</p>
+        <form onSubmit={(event) => { void save(event) }} className="space-y-4 p-6 rounded-xl border border-line bg-surface shadow-xs  ">
           <Field id="sequence-timezone" label="IANA timezone"><TextInput id="sequence-timezone" value={timezone} onChange={(event) => setTimezone(event.target.value)} required /></Field>
-          <Field id="sequence-status" label="Sequence state"><select id="sequence-status" className="h-10 w-full max-w-xs rounded-lg border border-zinc-200 border-b-zinc-300/80 bg-white px-3 text-sm text-zinc-700 shadow-xs dark:border-white/10 dark:bg-white/10 dark:text-zinc-300" value={status} onChange={(event) => setStatus(event.target.value as 'draft' | 'held')}>
+          <Field id="sequence-status" label="Sequence state"><select id="sequence-status" className="h-10 w-full max-w-xs rounded-lg border border-line border-b-line bg-surface px-3 text-sm text-fg shadow-xs   " value={status} onChange={(event) => setStatus(event.target.value as 'draft' | 'held')}>
             <option value="draft">Draft</option><option value="held">Held</option>
           </select></Field>
-          <ol className="space-y-4 p-6 rounded-xl border border-zinc-200 bg-white shadow-xs dark:border-zinc-700 dark:bg-zinc-800">{steps.map((step, index) => <li key={step.id} className="space-y-3 rounded-xl border border-zinc-200 p-4 dark:border-zinc-700">
-            <p className="text-sm text-zinc-600 dark:text-zinc-400">Step {index + 1}</p>
+          <ol className="space-y-4 p-6 rounded-xl border border-line bg-surface shadow-xs  ">{steps.map((step, index) => <li key={step.id} className="space-y-3 rounded-xl border border-line p-4 ">
+            <p className="text-sm text-muted ">Step {index + 1}</p>
             <Field id={'sequence-label-' + step.id} label={'Step ' + (index + 1) + ' label'}><TextInput id={'sequence-label-' + step.id} value={step.label} maxLength={120} onChange={(event) => changeStep(index, { label: event.target.value })} required /></Field>
             <Field id={'sequence-delay-' + step.id} label={'Step ' + (index + 1) + ' delay seconds'}><TextInput id={'sequence-delay-' + step.id} type="number" min={0} max={2_592_000} value={step.delay_seconds} onChange={(event) => changeStep(index, { delay_seconds: Number(event.target.value) })} required /></Field>
             <Field id={'sequence-time-' + step.id} label={'Step ' + (index + 1) + ' local time'}><TextInput id={'sequence-time-' + step.id} type="time" step={1} value={step.local_time} onChange={(event) => changeStep(index, { local_time: event.target.value.length === 5 ? event.target.value + ':00' : event.target.value })} required /></Field>
             {steps.length > 1 && <Button size="sm" onClick={() => setSteps((current) => current.filter((item) => item.id !== step.id).map((item, position) => ({ ...item, position: position + 1 })))}>Remove step {index + 1}</Button>}
           </li>)}</ol>
           {steps.length < 20 && <Button size="sm" onClick={() => setSteps((current) => [...current, freshStep(current.length + 1)])}>Add step</Button>}
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">Delays and local times are metadata. The backend decides any due time, consent or suppression outcome.</p>
-          {error && <p role="alert" className="text-sm font-medium text-red-500">{error}</p>}
+          <p className="text-sm text-muted ">Delays and local times are metadata. The backend decides any due time, consent or suppression outcome.</p>
+          {error && <p role="alert" className="text-sm font-medium text-danger">{error}</p>}
           <Button type="submit" variant="primary" disabled={!gateway?.saveOutreachSequenceDraft || !proof || busy || locked}>{busy ? 'Saving…' : expectedVersion === null ? 'Create draft sequence' : 'Save sequence'}</Button>
-          {locked && <p className="text-sm text-zinc-600 dark:text-zinc-400">Outcome or version requires inspection. Leave this page and reopen the saved sequence before retrying. <Link className={linkClass} to={'/outreach/campaigns/' + campaignId}>Campaign detail</Link></p>}
+          {locked && <p className="text-sm text-muted ">Outcome or version requires inspection. Leave this page and reopen the saved sequence before retrying. <Link className={linkClass} to={'/outreach/campaigns/' + campaignId}>Campaign detail</Link></p>}
         </form></>}
     </div>
   </section>

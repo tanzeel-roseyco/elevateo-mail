@@ -1,0 +1,17 @@
+v1.64.0-noble: Pulling from playwright
+46a6c541a51c: Pulling fs layer
+071058c704d1: Pulling fs layer
+ffa10a63dd93: Pulling fs layer
+a60ef8ec184e: Pulling fs layer
+9a29e489bcc7: Pulling fs layer
+aaf28652d7b7: Pulling fs layer
+dbe9e6168a20: Pulling fs layer
+ffa10a63dd93: Download complete
+a60ef8ec184e: Download complete
+a60ef8ec184e: Pull complete
+docker : short read: expected 314299216 bytes but got 76660736: unexpected EOF
+At line:2 char:38
++ ... top-linux'; docker pull mcr.microsoft.com/playwright:v1.64.0-noble *> ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (short read: exp... unexpected EOF:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError

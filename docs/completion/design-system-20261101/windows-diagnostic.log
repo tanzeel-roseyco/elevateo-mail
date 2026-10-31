@@ -1,0 +1,45 @@
+  Determining projects to restore...
+  Restored /workspace/windows/src/Elevateo.Client.Core/Elevateo.Client.Core.csproj (in 108 ms).
+  Restored /workspace/windows/tests/Elevateo.Client.Core.Tests/Elevateo.Client.Core.Tests.csproj (in 16.61 sec).
+  Restored /workspace/windows/src/Elevateo.Windows/Elevateo.Windows.csproj (in 1.16 min).
+/workspace/windows/src/Elevateo.Client.Core/Auth/ITokenStore.cs(16,10): warning CA1716: Rename virtual/interface member ITokenStore.Erase() so that it no longer conflicts with the reserved language keyword 'Erase'. Using a reserved keyword as the name of a virtual/interface member makes it harder for consumers in other languages to override/implement the member. (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1716) [/workspace/windows/src/Elevateo.Client.Core/Elevateo.Client.Core.csproj]
+/workspace/windows/src/Elevateo.Client.Core/Api/ApiError.cs(43,32): warning CA1000: Do not declare static members on generic types (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1000) [/workspace/windows/src/Elevateo.Client.Core/Elevateo.Client.Core.csproj]
+/workspace/windows/src/Elevateo.Client.Core/Api/ApiError.cs(42,32): warning CA1000: Do not declare static members on generic types (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1000) [/workspace/windows/src/Elevateo.Client.Core/Elevateo.Client.Core.csproj]
+  Elevateo.Client.Core -> /workspace/windows/src/Elevateo.Client.Core/bin/Release/net8.0/Elevateo.Client.Core.dll
+/workspace/windows/tests/Elevateo.Client.Core.Tests/CredentialStoreTests.cs(27,17): warning CA1707: Remove the underscores from member name Elevateo.Client.Core.Tests.CredentialStoreTests.Read_AfterErase_ReturnsNone() (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1707) [/workspace/windows/tests/Elevateo.Client.Core.Tests/Elevateo.Client.Core.Tests.csproj]
+/workspace/windows/tests/Elevateo.Client.Core.Tests/CredentialStoreTests.cs(11,17): warning CA1707: Remove the underscores from member name Elevateo.Client.Core.Tests.CredentialStoreTests.SignOut_ErasesAccessTokenAndRefreshCredential() (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1707) [/workspace/windows/tests/Elevateo.Client.Core.Tests/Elevateo.Client.Core.Tests.csproj]
+/workspace/windows/tests/Elevateo.Client.Core.Tests/CredentialStoreTests.cs(38,17): warning CA1707: Remove the underscores from member name Elevateo.Client.Core.Tests.CredentialStoreTests.Write_EmptyToken_Throws() (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1707) [/workspace/windows/tests/Elevateo.Client.Core.Tests/Elevateo.Client.Core.Tests.csproj]
+/workspace/windows/tests/Elevateo.Client.Core.Tests/ApiClientValidationTests.cs(37,23): warning CA1707: Remove the underscores from member name Elevateo.Client.Core.Tests.ApiClientValidationTests.ListThreads_WithValidResponse_ReturnsPage() (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1707) [/workspace/windows/tests/Elevateo.Client.Core.Tests/Elevateo.Client.Core.Tests.csproj]
+/workspace/windows/tests/Elevateo.Client.Core.Tests/ApiClientValidationTests.cs(56,23): warning CA1707: Remove the underscores from member name Elevateo.Client.Core.Tests.ApiClientValidationTests.ListThreads_WithMalformedJson_ReturnsInvalidResponse() (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1707) [/workspace/windows/tests/Elevateo.Client.Core.Tests/Elevateo.Client.Core.Tests.csproj]
+/workspace/windows/tests/Elevateo.Client.Core.Tests/ApiClientValidationTests.cs(71,23): warning CA1707: Remove the underscores from member name Elevateo.Client.Core.Tests.ApiClientValidationTests.ListThreads_WithMissingRequiredField_ReturnsInvalidResponse() (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1707) [/workspace/windows/tests/Elevateo.Client.Core.Tests/Elevateo.Client.Core.Tests.csproj]
+/workspace/windows/tests/Elevateo.Client.Core.Tests/ApiClientValidationTests.cs(87,23): warning CA1707: Remove the underscores from member name Elevateo.Client.Core.Tests.ApiClientValidationTests.ListThreads_With401_ReturnsSessionExpired() (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1707) [/workspace/windows/tests/Elevateo.Client.Core.Tests/Elevateo.Client.Core.Tests.csproj]
+/workspace/windows/tests/Elevateo.Client.Core.Tests/AuthFlowTests.cs(50,17): warning CA1707: Remove the underscores from member name Elevateo.Client.Core.Tests.AuthFlowTests.Client_ConformsToSharedAuthVectors() (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1707) [/workspace/windows/tests/Elevateo.Client.Core.Tests/Elevateo.Client.Core.Tests.csproj]
+/workspace/windows/tests/Elevateo.Client.Core.Tests/AuthFlowTests.cs(71,23): warning CA1707: Remove the underscores from member name Elevateo.Client.Core.Tests.AuthFlowTests.SignIn_WithValidCallback_ReturnsTokens() (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1707) [/workspace/windows/tests/Elevateo.Client.Core.Tests/Elevateo.Client.Core.Tests.csproj]
+/workspace/windows/tests/Elevateo.Client.Core.Tests/AuthFlowTests.cs(96,23): warning CA1707: Remove the underscores from member name Elevateo.Client.Core.Tests.AuthFlowTests.SignIn_WithStateMismatch_RejectsCallbackAndKeepsWaiting() (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1707) [/workspace/windows/tests/Elevateo.Client.Core.Tests/Elevateo.Client.Core.Tests.csproj]
+/workspace/windows/tests/Elevateo.Client.Core.Tests/AuthFlowTests.cs(115,17): warning CA1707: Remove the underscores from member name Elevateo.Client.Core.Tests.AuthFlowTests.Validator_ReplayedState_IsRejected() (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1707) [/workspace/windows/tests/Elevateo.Client.Core.Tests/Elevateo.Client.Core.Tests.csproj]
+/workspace/windows/tests/Elevateo.Client.Core.Tests/AuthFlowTests.cs(129,17): warning CA1707: Remove the underscores from member name Elevateo.Client.Core.Tests.AuthFlowTests.Validator_ExpiredAttempt_IsRejected() (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1707) [/workspace/windows/tests/Elevateo.Client.Core.Tests/Elevateo.Client.Core.Tests.csproj]
+  Elevateo.Client.Core.Tests -> /workspace/windows/tests/Elevateo.Client.Core.Tests/bin/Release/net8.0/Elevateo.Client.Core.Tests.dll
+Test run for /workspace/windows/tests/Elevateo.Client.Core.Tests/bin/Release/net8.0/Elevateo.Client.Core.Tests.dll (.NETCoreApp,Version=v8.0)
+VSTest version 17.11.1 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+docker : [xUnit.net 00:00:00.75]     Elevateo.Client.Core.Tests.AuthFlowTests.SignIn_WithValidCallback_ReturnsTokens
+[FAIL]
+At line:3 char:1
++ docker run --rm --name elevateo-white-gold-windows-diagnostic --mount ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([xUnit.net 00:0...nsTokens [FAIL]:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+  Failed Elevateo.Client.Core.Tests.AuthFlowTests.SignIn_WithValidCallback_ReturnsTokens [12 ms]
+  Error Message:
+   System.ObjectDisposedException : Cannot access a disposed object.
+Object name: 'System.Net.Http.Json.JsonContent'.
+  Stack Trace:
+     at System.Net.Http.HttpContent.ReadAsStringAsync(CancellationToken cancellationToken)
+   at Elevateo.Client.Core.Tests.AuthFlowTests.SignIn_WithValidCallback_ReturnsTokens() in /workspace/windows/tests/Elevateo.Client.Core.Tests/AuthFlowTests.cs:line 89
+--- End of stack trace from previous location ---
+
+Failed!  - Failed:     1, Passed:    11, Skipped:     0, Total:    12, Duration: 346 ms - Elevateo.Client.Core.Tests.dll (net8.0)
+Docker exit: 1

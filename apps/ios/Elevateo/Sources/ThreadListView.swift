@@ -36,7 +36,7 @@ struct ThreadListView: View {
                     if let error = pager.paginationError {
                         Text(error)
                             .font(.footnote)
-                            .foregroundStyle(.red)
+                            .foregroundStyle(CorporateTheme.danger)
                             .accessibilityAddTraits(.updatesFrequently)
                     }
                     if pager.hasMore {
@@ -134,11 +134,11 @@ struct ThreadRow: View {
                 if let at = thread.lastMessageAt {
                     Text(at.date, style: .date)
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(CorporateTheme.muted)
                 }
                 if thread.starred {
                     Image(systemName: "star.fill")
-                        .foregroundStyle(.yellow)
+                        .foregroundStyle(CorporateTheme.warning)
                         .accessibilityLabel("Starred")
                 }
             }
@@ -148,7 +148,7 @@ struct ThreadRow: View {
             // preview_text is plain text from the server; rendered as text only.
             Text(thread.previewText)
                 .font(.caption)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(CorporateTheme.muted)
                 .lineLimit(2)
         }
         .accessibilityElement(children: .combine)

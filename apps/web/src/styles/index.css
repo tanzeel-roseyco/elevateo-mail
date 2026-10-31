@@ -1,153 +1,56 @@
-/* Elevateo application theme: the EmailGuard design system (Tailwind v4 + Flux UI recipes, see
-   docs/design/emailguard-replica.md) with two brand exceptions, the Elevateo logo and a GOLD accent
-   in place of blue. Neutrals are Tailwind slate (Flux aliases its zinc scale to slate), the type
-   stack is the OS system font, radii/shadows/spacing follow DESIGN-SPEC Â§2.4.
-   AIDEV-NOTE: Legacy semantic tokens (--color-surface, --color-line, --color-fg, --color-muted,
-   --color-accent-text â€¦) are kept as aliases onto the slate/gold scales so every pre-existing page
-   keeps compiling and picks up the new palette without touching its own classes. */
 @import "tailwindcss";
 
-/* Dark mode is opt-in through data-theme="dark" and otherwise follows the OS preference, matching
-   the visual-state browser captures that toggle the attribute explicitly. */
-@custom-variant dark {
-  &:where([data-theme="dark"], [data-theme="dark"] *) {
-    @slot;
-  }
-  @media (prefers-color-scheme: dark) {
-    &:where(:root:not([data-theme="light"]), :root:not([data-theme="light"]) *) {
-      @slot;
-    }
-  }
-}
-
+/* AIDEV-NOTE: One light palette for browser and native WebViews; semantic aliases preserve existing flows. */
 @theme {
-  /* Â§2.3 system stack, exactly as EmailGuard renders it (Figtree is loaded there but unused). */
-  --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-
-  /* Â§2.1 Flux's zinc scale aliased to Tailwind slate: every neutral in the app is slate. */
-  --color-zinc-50: var(--color-slate-50);
-  --color-zinc-100: var(--color-slate-100);
-  --color-zinc-200: var(--color-slate-200);
-  --color-zinc-300: var(--color-slate-300);
-  --color-zinc-400: var(--color-slate-400);
-  --color-zinc-500: var(--color-slate-500);
-  --color-zinc-600: var(--color-slate-600);
-  --color-zinc-700: var(--color-slate-700);
-  --color-zinc-800: var(--color-slate-800);
-  --color-zinc-900: var(--color-slate-900);
-  --color-zinc-950: var(--color-slate-950);
-
-  /* Â§2.2 Elevateo gold, matched to the logo's metallic gold (~#C9A65A). */
-  --color-gold-50: #fbf7ec;
-  --color-gold-100: #f5edd3;
-  --color-gold-200: #ebdba8;
-  --color-gold-300: #dfc67a;
-  --color-gold-400: #d4b262;
-  --color-gold-500: #c9a24e;
-  --color-gold-600: #a9853a;
-  --color-gold-700: #86682d;
-  --color-gold-800: #634c22;
-  --color-gold-900: #43341a;
-  --color-gold-950: #261d0e;
-
-  /* Accent tokens the Flux recipes read (var(--color-accent) etc.). Dark values are set on :root
-     below because @theme cannot carry a media query. */
-  --color-accent: var(--color-gold-500);
-  --color-accent-content: var(--color-gold-700);
-  --color-accent-foreground: var(--color-slate-950);
-  /* AIDEV-NOTE: Focus rings use gold-600, not gold-500: 3.3:1 against white meets the WCAG 2.2
-     non-text contrast floor while gold-500 (2.6:1) does not. Visually it is still "the gold ring". */
-  --color-ring: var(--color-gold-600);
-
-  /* Legacy semantic aliases consumed by pre-existing pages (kept intentionally, see file header). */
-  --color-bg: var(--bg);
-  --color-surface: var(--surface);
-  --color-surface-2: var(--surface-2);
-  --color-skeleton: var(--skeleton);
-  --color-line: var(--line);
-  --color-fg: var(--fg);
-  --color-muted: var(--muted);
-  --color-accent-fg: var(--color-accent-foreground);
-  --color-accent-text: var(--color-accent-content);
-  --color-accent-soft: var(--accent-soft);
-  --color-danger: var(--danger);
-  --color-danger-fg: var(--danger-fg);
-  --color-success: var(--success);
-  --color-warn: var(--warn);
-  --color-brand-tile: #0a0b0f;
-
-  /* Â§2.4 shadows (Tailwind v4 names; listed so the exact EmailGuard values are pinned here). */
-  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --color-*: initial;
+  --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  --color-bg: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-2: #f5f5f4;
+  --color-skeleton: #e5e5e3;
+  --color-fg: #171717;
+  --color-muted: #525252;
+  --color-line: #a67c00;
+  --color-ring: #a67c00;
+  --color-accent: #ffffff;
+  --color-accent-content: #171717;
+  --color-accent-foreground: #171717;
+  --color-accent-fg: #171717;
+  --color-accent-text: #171717;
+  --color-accent-soft: #f5f5f4;
+  --color-danger: #b42318;
+  --color-danger-fg: #ffffff;
+  --color-danger-soft: #fff4f2;
+  --color-success: #176b3a;
+  --color-success-soft: #f0f8f2;
+  --color-warn: #855400;
+  --color-warn-soft: #fff8e6;
+  --color-overlay: #17171766;
+  --color-brand-tile: #ffffff;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 4px;
+  --radius-xl: 4px;
+  --radius-2xl: 4px;
+  --shadow-xs: none;
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: 0 2px 8px #17171714;
+  --shadow-xl: 0 2px 8px #17171714;
 }
 
-/* Light theme (primary). */
-:root,
-[data-theme="light"] {
-  --bg: #ffffff;
-  --surface: #ffffff;
-  --surface-2: var(--color-slate-50);
-  --skeleton: var(--color-slate-100);
-  --line: var(--color-slate-200);
-  --fg: var(--color-slate-800);
-  --muted: var(--color-slate-500);
-  --accent-soft: var(--color-gold-50);
-  --danger: var(--color-red-500);
-  --danger-fg: #ffffff;
-  --success: var(--color-green-600);
-  --warn: var(--color-amber-600);
-  /* AIDEV-NOTE: Accent tokens are re-asserted here so an explicit data-theme="light" subtree nested
-     inside an OS-dark :root does not inherit the dark gold values set on :root below. */
-  --color-accent: var(--color-gold-500);
-  --color-accent-content: var(--color-gold-700);
-  --color-accent-foreground: var(--color-slate-950);
-  --color-ring: var(--color-gold-600);
+:root {
   color-scheme: light;
-}
-
-/* Dark theme: Flux's dark surfaces (zinc-800 page, zinc-900 sidebar) with a lighter gold so gold
-   text stays readable; dark text on gold fills is kept because white-on-gold fails contrast. */
-[data-theme="dark"] {
-  --bg: var(--color-slate-800);
-  --surface: var(--color-slate-800);
-  --surface-2: var(--color-slate-900);
-  --skeleton: var(--color-slate-700);
-  --line: var(--color-slate-700);
-  --fg: #ffffff;
-  --muted: var(--color-slate-400);
-  --accent-soft: color-mix(in oklab, var(--color-gold-400) 20%, transparent);
-  --color-accent: var(--color-gold-400);
-  --color-accent-content: var(--color-gold-300);
-  --color-accent-foreground: var(--color-slate-950);
-  --color-ring: var(--color-gold-400);
-  --danger: var(--color-red-400);
-  --danger-fg: var(--color-slate-950);
-  --success: var(--color-green-400);
-  --warn: var(--color-amber-400);
-  color-scheme: dark;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: var(--color-slate-800);
-    --surface: var(--color-slate-800);
-    --surface-2: var(--color-slate-900);
-    --skeleton: var(--color-slate-700);
-    --line: var(--color-slate-700);
-    --fg: #ffffff;
-    --muted: var(--color-slate-400);
-    --accent-soft: color-mix(in oklab, var(--color-gold-400) 20%, transparent);
-    --color-accent: var(--color-gold-400);
-    --color-accent-content: var(--color-gold-300);
-    --color-accent-foreground: var(--color-slate-950);
-    --color-ring: var(--color-gold-400);
-    --danger: var(--color-red-400);
-    --danger-fg: var(--color-slate-950);
-    --success: var(--color-green-400);
-    --warn: var(--color-amber-400);
-    color-scheme: dark;
-  }
+  --bg: var(--color-bg);
+  --surface: var(--color-surface);
+  --surface-2: var(--color-surface-2);
+  --skeleton: var(--color-skeleton);
+  --line: var(--color-line);
+  --fg: var(--color-fg);
+  --muted: var(--color-muted);
+  --tick: url("data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><path fill=%22none%22 stroke=%22%23171717%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 d=%22M3.5 8.5l3 3 6-7%22/></svg>");
+  --badge-ink: var(--color-fg);
+  /* AIDEV-NOTE: Gold is an outline, never body ink; explicit light also overrides OS dark preference. */
 }
 
 html,
@@ -166,7 +69,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Tailwind v4 defaults bare `border`/`divide` to currentColor; EmailGuard's hairline is zinc-200. */
+/* Bare borders share the measured gold outline. */
 @layer base {
   *,
   ::before,
@@ -203,7 +106,7 @@ h2[tabindex="-1"]:focus {
   line-height: 1.2;
   letter-spacing: 0.02em;
   text-transform: uppercase;
-  color: var(--color-slate-500);
+  color: var(--muted);
 }
 .page-title {
   font-size: 18px;
@@ -214,7 +117,7 @@ h2[tabindex="-1"]:focus {
 .panel {
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: 4px;
 }
 .row {
   padding-block: 0.625rem;

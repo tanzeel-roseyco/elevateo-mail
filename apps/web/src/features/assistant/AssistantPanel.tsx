@@ -242,10 +242,10 @@ export function AssistantPanel({ bridge, onClose }: { bridge: AgentsBridge; onCl
       id="assistant-panel"
       role="complementary"
       aria-label="Assistant"
-      className="fixed inset-y-0 end-0 z-20 flex w-full max-w-sm flex-col border-s border-zinc-200 bg-white shadow-lg dark:border-zinc-700 dark:bg-zinc-900"
+      className="fixed inset-y-0 end-0 z-20 flex w-full max-w-sm flex-col border-s border-line bg-surface shadow-lg  "
     >
-      <header className="flex items-center gap-2 border-b border-zinc-200 px-4 py-3 dark:border-zinc-700">
-        <h2 className="flex-1 font-medium text-zinc-800 dark:text-white">Assistant</h2>
+      <header className="flex items-center gap-2 border-b border-line px-4 py-3 ">
+        <h2 className="flex-1 font-medium text-fg ">Assistant</h2>
         <IconButton label="Close assistant" variant="subtle" size="sm" onClick={onClose}>
           <XMarkIcon className="size-4" />
         </IconButton>
@@ -269,7 +269,7 @@ export function AssistantPanel({ bridge, onClose }: { bridge: AgentsBridge; onCl
 
       {availability.status === 'available' && (
         <div className="flex min-h-0 flex-1 flex-col">
-          <div className="border-b border-zinc-200 px-4 py-3 text-xs text-zinc-500 dark:border-zinc-700 dark:text-zinc-400">
+          <div className="border-b border-line px-4 py-3 text-xs text-muted  ">
             <p>{PERMISSIONS_NOTICE}</p>
             <p className="mt-1">{SHARING_NOTICE}</p>
           </div>
@@ -280,7 +280,7 @@ export function AssistantPanel({ bridge, onClose }: { bridge: AgentsBridge; onCl
                 <ErrorState title="The session could not be started" body={session.message} />
               )}
               {session.status === 'ended' && (
-                <p role="status" className="text-sm text-zinc-500 dark:text-zinc-400">
+                <p role="status" className="text-sm text-muted ">
                   The session has ended. Start a new one to continue.
                 </p>
               )}
@@ -292,7 +292,7 @@ export function AssistantPanel({ bridge, onClose }: { bridge: AgentsBridge; onCl
                 />
               )}
               {listening === 'connecting' && (
-                <p role="status" className="text-sm text-zinc-500 dark:text-zinc-400">Connecting to the assistant runtime…</p>
+                <p role="status" className="text-sm text-muted ">Connecting to the assistant runtime…</p>
               )}
               <Field id="assistant-runtime" label="Runtime">
                 <Select
@@ -315,7 +315,7 @@ export function AssistantPanel({ bridge, onClose }: { bridge: AgentsBridge; onCl
           )}
 
           {session.status === 'ending' && (
-            <p role="status" className="p-4 text-sm text-zinc-500 dark:text-zinc-400">Ending the session…</p>
+            <p role="status" className="p-4 text-sm text-muted ">Ending the session…</p>
           )}
 
           {session.status === 'end_failed' && (
@@ -332,18 +332,18 @@ export function AssistantPanel({ bridge, onClose }: { bridge: AgentsBridge; onCl
             <>
               <div role="log" aria-label="Transcript" className="min-h-0 flex-1 overflow-y-auto px-4 py-3">
                 {transcript.length === 0 ? (
-                  <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                  <p className="text-sm text-muted ">
                     No messages yet. Ask the assistant to find a conversation or prepare a draft.
                   </p>
                 ) : (
                   <ol className="flex flex-col gap-3">
                     {transcript.map((entry, index) => (
                       <li key={index} className="text-sm">
-                        <span className="block text-xs font-medium text-zinc-500 dark:text-zinc-400">
+                        <span className="block text-xs font-medium text-muted ">
                           {entry.role === 'you' ? 'You' : entry.role === 'assistant' ? RUNTIME_LABELS[runtime] : 'Notice'}
                         </span>
                         {/* Plain text only: assistant output must never be parsed as HTML. */}
-                        <span className="whitespace-pre-wrap break-words text-zinc-800 dark:text-zinc-100">{entry.text}</span>
+                        <span className="whitespace-pre-wrap break-words text-fg ">{entry.text}</span>
                       </li>
                     ))}
                   </ol>
@@ -353,7 +353,7 @@ export function AssistantPanel({ bridge, onClose }: { bridge: AgentsBridge; onCl
               <p role="status" aria-live="polite" className="sr-only">
                 {session.streaming ? 'The assistant is responding.' : 'The assistant is idle.'}
               </p>
-              <div className="flex flex-col gap-2 border-t border-zinc-200 p-4 dark:border-zinc-700">
+              <div className="flex flex-col gap-2 border-t border-line p-4 ">
                 <Field id="assistant-input" label="Message">
                   <TextArea
                     id="assistant-input"

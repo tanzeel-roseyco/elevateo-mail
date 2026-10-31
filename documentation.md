@@ -139,3 +139,6 @@ iOS Core verification — 2026-11-01: Linux Swift build and 36 tests pass; three
 
 
 Native verification — 2026-11-01: Cargo.lock regenerated. Docker formatting, compile check, Clippy rules, 40 Rust tests, 14 macOS helper tests and one wrapper regression pass. Eight compiler dead-code warnings remain; strict -D warnings failed and is not claimed passing. macOS packaging/signing remains unavailable. See docs/completion/final-readiness-20261101/native-receipt.md.
+## Corporate appearance (2026-11-01)
+
+The [white-and-gold design system](docs/design-system.md) defines the single light appearance across clients. Web tokens and shared components own the palette; native platforms use their theme mechanisms. API contracts, authorization and send behavior are unchanged. [Verification evidence](docs/completion/design-system-20261101/README.md) distinguishes executed checks from platform limitations.

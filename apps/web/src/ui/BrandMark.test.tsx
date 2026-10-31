@@ -6,12 +6,14 @@ import { describe, expect, it } from 'vitest'
 import { BrandMark } from './BrandMark'
 
 describe('official brand mark', () => {
-  it.each([24, 28, 36] as const)('reserves a square %i pixel slot and offers density-aware sources', size => {
+  it('ships the canonical assets/brand logo without recolouring', () => {
+    const shipped = readFileSync(new NodeURL('../../public/brand/elevateo-logo.png', import.meta.url))
+    expect(createHash('sha256').update(shipped).digest('hex')).toBe('919d9c4a5025497c179940d0a156906472e22372427d6003e85051adc0087d4c')
+  })
+  it.each([24, 28, 36] as const)('reserves a square %i pixel slot with the canonical artwork', size => {
     render(<BrandMark size={size} />)
     const mark = screen.getByRole('img', { name: 'Elevateo' })
-    expect(mark.getAttribute('src')).toBe('/brand/elevateo-mark-64.png')
-    expect(mark.getAttribute('srcset')).toBe('/brand/elevateo-mark-64.png 64w, /brand/elevateo-mark-180.png 180w')
-    expect(mark.getAttribute('sizes')).toBe(`${size}px`)
+    expect(mark.getAttribute('src')).toBe('/brand/elevateo-logo.png')
     expect(mark.getAttribute('width')).toBe(String(size))
     expect(mark.getAttribute('height')).toBe(String(size))
   })

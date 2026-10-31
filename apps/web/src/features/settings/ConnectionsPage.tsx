@@ -254,10 +254,10 @@ function ConnectionsManager({ gateway }: { gateway: ConnectorGrantsGateway }) {
         }
       >
         {confirm?.kind === 'revoke' && (
-          <p className="text-sm text-zinc-700 dark:text-zinc-300">“{confirm.grant.client_name}” will immediately lose access to every mailbox in this connection, and its credential will stop working. This cannot be undone; grant a new connection to restore access.</p>
+          <p className="text-sm text-fg ">“{confirm.grant.client_name}” will immediately lose access to every mailbox in this connection, and its credential will stop working. This cannot be undone; grant a new connection to restore access.</p>
         )}
         {confirm?.kind === 'removeMailbox' && (
-          <p className="text-sm text-zinc-700 dark:text-zinc-300">“{confirm.grant.client_name}” will no longer be able to read {nameFor(confirm.mailboxId, confirm.grant.mailboxes.find((m) => m.mailbox_id === confirm.mailboxId)?.display_name ?? 'this mailbox')}. The connection keeps its other mailboxes.</p>
+          <p className="text-sm text-fg ">“{confirm.grant.client_name}” will no longer be able to read {nameFor(confirm.mailboxId, confirm.grant.mailboxes.find((m) => m.mailbox_id === confirm.mailboxId)?.display_name ?? 'this mailbox')}. The connection keeps its other mailboxes.</p>
         )}
       </Modal>
     </section>
@@ -311,7 +311,7 @@ function ConnectionsList({ grants, mailboxFilter, focusId, nameFor, busy, onFilt
           <Button size="sm" variant="outline" onClick={() => onFocus(null)}>Show all connections</Button>
         ) : (
           filterable.length > 1 && (
-            <label className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-300">
+            <label className="flex items-center gap-2 text-sm text-muted ">
               <span id={filterId}>Filter by mailbox</span>
               <Select aria-labelledby={filterId} value={mailboxFilter ?? ''} onChange={(event) => onFilterMailbox(event.target.value === '' ? null : event.target.value)} className="w-56">
                 <option value="">All mailboxes</option>
@@ -364,12 +364,12 @@ function ConnectionCard({ grant, highlighted, nameFor, busy, onFocus, onRevoke, 
       <div className="flex flex-wrap items-start gap-3">
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <h3 className="truncate text-base font-medium text-zinc-800 dark:text-white">{grant.client_name}</h3>
+            <h3 className="truncate text-base font-medium text-fg ">{grant.client_name}</h3>
             <Badge tone="neutral" size="sm">{CLIENT_LABELS[grant.client_kind]}</Badge>
             <Badge tone="warn" size="sm">External AI</Badge>
             {expiry.expired && <Badge tone="danger" size="sm">Expired</Badge>}
           </div>
-          <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+          <p className="mt-1 text-xs text-muted ">
             Connected {formatDateTime(grant.created_at)} · {grant.last_used_at === null ? 'Never used' : `Last used ${formatDateTime(grant.last_used_at)}`} · {expiry.text}
           </p>
         </div>
@@ -380,25 +380,25 @@ function ConnectionCard({ grant, highlighted, nameFor, busy, onFocus, onRevoke, 
       </div>
 
       {/* Per-connection plain-language notice, required because mail content leaves for an external AI. */}
-      <p className="flex items-start gap-2 rounded-lg bg-amber-50 p-2 text-xs text-amber-800 dark:bg-amber-400/10 dark:text-amber-100">
+      <p className="flex items-start gap-2 rounded-lg bg-warn-soft p-2 text-xs text-warn  ">
         <ExclamationTriangleIcon aria-hidden className="mt-0.5 size-4 shrink-0" />
         <span>Mail in the mailboxes below is readable by {grant.client_name} (external AI). Content is sent to that AI provider when it reads.</span>
       </p>
 
-      <ul className="divide-y divide-zinc-200 dark:divide-zinc-700" aria-label={`Mailboxes ${grant.client_name} can access`}>
+      <ul className="divide-y divide-line " aria-label={`Mailboxes ${grant.client_name} can access`}>
         {grant.mailboxes.map((mailbox) => {
           const name = nameFor(mailbox.mailbox_id, mailbox.display_name)
           return (
             <li key={mailbox.mailbox_id} className="flex flex-wrap items-center gap-3 py-3 text-sm">
               <div className="min-w-0 flex-1">
-                <p className="truncate font-medium text-zinc-800 dark:text-white">{name}</p>
+                <p className="truncate font-medium text-fg ">{name}</p>
                 <p className="mt-1 flex flex-wrap gap-1">
                   {mailbox.scopes.map((scope) => (
                     <Badge key={scope} tone="neutral" size="sm">{SCOPE_LABELS[scope]}</Badge>
                   ))}
                 </p>
                 {/* The exact per-mailbox sharing sentence (task requirement). */}
-                <p className="mt-1 text-xs text-amber-700 dark:text-amber-200">Mail in {name} can be read by {grant.client_name} (external AI). Content is sent to that AI provider when it reads.</p>
+                <p className="mt-1 text-xs text-warn ">Mail in {name} can be read by {grant.client_name} (external AI). Content is sent to that AI provider when it reads.</p>
               </div>
               <Button
                 size="sm"
@@ -413,7 +413,7 @@ function ConnectionCard({ grant, highlighted, nameFor, busy, onFocus, onRevoke, 
           )
         })}
       </ul>
-      {soleMailbox && <p className="text-xs text-zinc-500">This is the connection’s only mailbox. Revoke the whole connection to remove it.</p>}
+      {soleMailbox && <p className="text-xs text-muted">This is the connection’s only mailbox. Revoke the whole connection to remove it.</p>}
     </Card>
   )
 }
@@ -513,13 +513,13 @@ export function GrantDialog({ open, mailboxes, busy, onOpenChange, onCreate }: G
         </Field>
 
         <fieldset aria-describedby={`${id}-mailboxes-note`}>
-          <legend className="text-sm font-medium text-zinc-800 dark:text-white">Mailboxes to share</legend>
-          <p id={`${id}-mailboxes-note`} className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">Each selected mailbox grants Read mail. Add Write drafts only if the client should be able to draft replies. Content in these mailboxes is sent to the AI provider when the client reads it.</p>
+          <legend className="text-sm font-medium text-fg ">Mailboxes to share</legend>
+          <p id={`${id}-mailboxes-note`} className="mt-1 text-xs text-muted ">Each selected mailbox grants Read mail. Add Write drafts only if the client should be able to draft replies. Content in these mailboxes is sent to the AI provider when the client reads it.</p>
           <ul className="mt-3 space-y-3">
             {mailboxes.map((mailbox) => {
               const choice = choices[mailbox.id] ?? { included: false, draft: false }
               return (
-                <li key={mailbox.id} className="rounded-lg border border-zinc-200 p-3 dark:border-zinc-700">
+                <li key={mailbox.id} className="rounded-lg border border-line p-3 ">
                   <CheckboxField id={`${id}-mb-${mailbox.id}`} label={mailbox.display_name} checked={choice.included} onChange={(event) => setChoice(mailbox.id, { included: event.target.checked })} />
                   {choice.included && (
                     <div className="mt-2 ps-7">
@@ -532,7 +532,7 @@ export function GrantDialog({ open, mailboxes, busy, onOpenChange, onCreate }: G
           </ul>
         </fieldset>
 
-        {error && !error.startsWith('Enter a name') && <p role="alert" className="text-sm font-medium text-red-500 dark:text-red-400">{error}</p>}
+        {error && !error.startsWith('Enter a name') && <p role="alert" className="text-sm font-medium text-danger ">{error}</p>}
       </form>
     </Modal>
   )
@@ -552,7 +552,7 @@ function SecretDialog({ secret, onClose }: { secret: { clientName: string; value
     >
       {secret && (
         <div className="space-y-4">
-          <p className="text-sm text-zinc-800 dark:text-zinc-200">Paste this secret into “{secret.clientName}” to finish connecting. Store it in a secret manager — you won’t be able to see it again. If you lose it, revoke the connection and grant a new one.</p>
+          <p className="text-sm text-fg ">Paste this secret into “{secret.clientName}” to finish connecting. Store it in a secret manager — you won’t be able to see it again. If you lose it, revoke the connection and grant a new one.</p>
           <CodeBlock code={secret.value} />
           <Callout variant="warning">The secret is not stored in a readable form. Once you close this dialog it cannot be shown again.</Callout>
         </div>
@@ -571,13 +571,13 @@ export function ConnectClientReference() {
       <PlannedConnectorNotice />
       {mcp.steps.map((step, index) => (
         <Card key={step.title}>
-          <h3 className="text-base font-medium text-zinc-800 dark:text-white">{index + 1}. {step.title}</h3>
-          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">{step.text}</p>
+          <h3 className="text-base font-medium text-fg ">{index + 1}. {step.title}</h3>
+          <p className="mt-1 text-sm text-muted ">{step.text}</p>
           {step.code !== undefined && <CodeBlock code={step.code} {...(step.language === undefined ? {} : { language: step.language })} className="mt-4" />}
         </Card>
       ))}
-      <p className="text-sm text-zinc-500 dark:text-zinc-400">
-        Looking for the terminal connector instead? <Link to="/settings/integrations/cli" className="font-medium text-(--color-accent-content) hover:underline">Elevateo CLI</Link>.
+      <p className="text-sm text-muted ">
+        Looking for the terminal connector instead? <Link to="/settings/integrations/cli" className="font-medium text-fg hover:underline">Elevateo CLI</Link>.
       </p>
     </section>
   )

@@ -1,0 +1,22 @@
+docker : test_installs_native_behavior_for_each_identity_and_is_idempotent
+(test_customize_generated.CustomizeGeneratedTest.test_installs_native_behavior_for_each_identity_and_is_idempotent)
+... ok
+At line:3 char:1
++ docker run --rm --name elevateo-white-gold-android-unit --mount "type ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (test_installs_n...mpotent) ... ok:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+test_manifest_policy_changes_do_not_partially_write_activity
+(test_customize_generated.CustomizeGeneratedTest.test_manifest_policy_changes_do_not_partially_write_activity) ... ok
+test_missing_or_multiple_activity_sources_fail
+(test_customize_generated.CustomizeGeneratedTest.test_missing_or_multiple_activity_sources_fail) ... ok
+test_rejects_changed_template_or_package_without_partial_edits
+(test_customize_generated.CustomizeGeneratedTest.test_rejects_changed_template_or_package_without_partial_edits) ... ok
+test_symlink_input_is_rejected_without_touching_target
+(test_customize_generated.CustomizeGeneratedTest.test_symlink_input_is_rejected_without_touching_target) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.089s
+
+OK

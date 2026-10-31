@@ -321,7 +321,7 @@ for (const theme of ['light', 'dark'] as const) {
 // Closes the recorded coverage gap: configuring the reduced-motion project proved nothing about
 // behavior. This asserts the REAL computed animation state from the bundle CSS in every project:
 // under reduce, index.css collapses all animation/transition durations to 0.01ms so nothing can
-// visibly move; without it, the pulse animation must genuinely run. Fail-closed on both branches.
+// visibly move. A synthetic pulse probes the reduced-motion override; real controls remain static.
 test('animations respect the reduced-motion preference (FE-R16)', async ({ page }) => {
   await page.goto(ENTRY)
   await expect(page.getByText('Simulated local mail')).toBeVisible()
@@ -333,7 +333,7 @@ test('animations respect the reduced-motion preference (FE-R16)', async ({ page 
   await swatch.hover()
   const probe = await page.evaluate(() => {
     const pulse = document.createElement('div')
-    pulse.className = 'animate-pulse' // the same class the real Skeleton uses
+    pulse.className = 'animate-pulse' // Synthetic probe only; corporate Skeletons are static.
     document.body.append(pulse)
     const pulseStyle = getComputedStyle(pulse)
     const transitioned = document.querySelector('[role="radio"][aria-checked="true"]')
@@ -350,14 +350,14 @@ test('animations respect the reduced-motion preference (FE-R16)', async ({ page 
   expect(probe.animationName, 'pulse animation must exist in the bundle CSS').not.toBe('none')
   expect(probe.transitionDuration, 'a transitioned element must be present to measure').not.toBeNull()
   if (probe.reduce) {
-    // 0.01ms (sub-millisecond) means no perceivable motion; a vacuous pass is impossible because
-    // the same properties are asserted to be genuinely animated when the preference is absent.
+    // The synthetic animation runs in the non-reduced branch, preventing a vacuous override check.
+    // The real swatch remains static in both branches.
     expect(seconds(probe.animationDuration), `animation-duration ${probe.animationDuration}`).toBeLessThanOrEqual(0.001)
     expect(seconds(probe.transitionDuration!), `transition-duration ${probe.transitionDuration}`).toBeLessThanOrEqual(0.001)
   } else {
     expect(seconds(probe.animationDuration), `animation-duration ${probe.animationDuration}`).toBeGreaterThanOrEqual(1)
-    // The real tag swatch specifies duration-75; verify that exact non-reduced duration.
-    expect(seconds(probe.transitionDuration!), `transition-duration ${probe.transitionDuration}`).toBeCloseTo(0.075, 5)
+    // AIDEV-NOTE: Corporate controls have no decorative transitions, regardless of OS motion preference.
+    expect(seconds(probe.transitionDuration!), `transition-duration ${probe.transitionDuration}`).toBe(0)
   }
 })
 

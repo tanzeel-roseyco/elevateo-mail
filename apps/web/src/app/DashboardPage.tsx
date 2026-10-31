@@ -157,13 +157,13 @@ function Announcement() {
   return (
     <Callout variant="accent" icon={false} className="mb-6" role="note">
       <div className="flex items-center justify-between gap-4">
-        <Link to="/help/collections/mcp" className="flex flex-1 items-center justify-center gap-2 text-center text-sm leading-6 text-gold-700 hover:underline dark:text-gold-200">
+        <Link to="/help/collections/mcp" className="flex flex-1 items-center justify-center gap-2 text-center text-sm leading-6 text-fg hover:underline ">
           <Badge tone="accent">New</Badge>
           <strong className="text-base font-medium">Elevateo MCP connector guide is live</strong>
           <span className="text-base max-sm:hidden">– connect Claude, Cursor and other AI tools</span>
           <ArrowUpRightMicroIcon className="size-4" />
         </Link>
-        <button type="button" aria-label="Dismiss" onClick={dismiss} className="rounded-md text-gold-700 hover:opacity-75 dark:text-gold-200">
+        <button type="button" aria-label="Dismiss" onClick={dismiss} className="rounded-md text-fg hover:opacity-75 ">
           <XMarkIcon className="size-5" />
         </button>
       </div>
@@ -223,8 +223,8 @@ function RecentConversations({ mailboxes, counts }: { mailboxes: readonly Mailbo
                   {thread.subject ?? '(no subject)'}
                 </Link>
               </TD>
-              <TD className="text-zinc-500 max-md:hidden">{mailbox.display_name}</TD>
-              <TD className="whitespace-nowrap text-end text-zinc-500">{thread.last_message_at ? formatWhen(thread.last_message_at) : '—'}</TD>
+              <TD className="text-muted max-md:hidden">{mailbox.display_name}</TD>
+              <TD className="whitespace-nowrap text-end text-muted">{thread.last_message_at ? formatWhen(thread.last_message_at) : '—'}</TD>
             </tr>
           ))}
         </tbody>
@@ -253,12 +253,12 @@ function MailboxRows({ mailboxes, counts }: { mailboxes: readonly Mailbox[]; cou
                 <TD className="font-medium">
                   <Link to={`/mailboxes/${mailbox.id}`} className="hover:underline">{mailbox.display_name}</Link>
                 </TD>
-                <TD className="text-zinc-500 max-md:hidden">{mailbox.display_address ?? '—'}</TD>
+                <TD className="text-muted max-md:hidden">{mailbox.display_address ?? '—'}</TD>
                 <TD className="text-end tabular-nums">
                   {c?.status === 'ready' ? (
                     <Link to={`/mailboxes/${mailbox.id}?filter=unread`} className="hover:underline" aria-label={`${fmt(c.unread)} unread in ${mailbox.display_name}`}>{fmt(c.unread)}</Link>
                   ) : c?.status === 'error' ? (
-                    <span className="text-red-500">Unavailable</span>
+                    <span className="text-danger">Unavailable</span>
                   ) : (
                     '…'
                   )}

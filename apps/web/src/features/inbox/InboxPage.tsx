@@ -312,14 +312,14 @@ function MailboxThreadList({ mailboxId, view }: { mailboxId: string; view: Inbox
       <h2 className="sr-only">Conversations</h2>
       {/* AIDEV-NOTE: An unknown mailbox capability is never treated as compose authority. */}
       {ready && canCompose && (
-        <Link to={composeDraftPath(mailboxId)} className="mb-3 inline-flex items-center gap-2 self-start rounded-lg px-2 py-1 text-sm font-medium text-(--color-accent-content) hover:bg-zinc-800/5 md:hidden">
+        <Link to={composeDraftPath(mailboxId)} className="mb-3 inline-flex items-center gap-2 self-start rounded-lg px-2 py-1 text-sm font-medium text-fg hover:bg-surface-2 md:hidden">
           <PencilSquareIcon className="size-5" /> Compose draft
         </Link>
       )}
-      <div className="overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-xs dark:border-zinc-700 dark:bg-zinc-800">
+      <div className="overflow-hidden rounded-xl border border-line bg-surface shadow-xs  ">
         {/* Toolbar: selection controls on the start side, filter tabs and pager on the end side. */}
         {/* min-h + wrap: at 390px the selection actions wrap under the checkbox instead of clipping. */}
-        <div className="flex min-h-12 flex-wrap items-center gap-x-1 gap-y-1 border-b border-zinc-200 px-2 py-1 dark:border-zinc-700">
+        <div className="flex min-h-12 flex-wrap items-center gap-x-1 gap-y-1 border-b border-line px-2 py-1 ">
           <Checkbox
             aria-label={allSelected ? 'Clear selection' : 'Select all conversations'}
             checked={allSelected}
@@ -337,7 +337,7 @@ function MailboxThreadList({ mailboxId, view }: { mailboxId: string; view: Inbox
               <IconButton label="Mark as read" disabled={!canWrite} onClick={() => void bulkRead(true)} className={TOOL}><EnvelopeOpenIcon className="size-5" /></IconButton>
               <IconButton label="Mark as unread" disabled={!canWrite} onClick={() => void bulkRead(false)} className={TOOL}><EnvelopeIcon className="size-5" /></IconButton>
               {snoozable && <SnoozeMenu snoozedUntil={null} disabled={!canWrite} className={TOOL} onSnooze={(at) => void bulk((thread) => snooze(thread, at))} />}
-              <span className="ms-2 text-sm text-zinc-500">{selected.size} selected</span>
+              <span className="ms-2 text-sm text-muted">{selected.size} selected</span>
             </div>
           ) : (
             <div className="flex items-center gap-0.5">
@@ -362,7 +362,7 @@ function MailboxThreadList({ mailboxId, view }: { mailboxId: string; view: Inbox
                     aria-current={view === value ? 'page' : undefined}
                     className={cx(
                       'inline-flex h-8 items-center gap-1 rounded-lg px-2.5 text-sm font-medium',
-                      view === value ? 'border-b-2 border-(--color-accent) text-zinc-800 dark:text-white' : 'text-zinc-500 hover:text-zinc-800 dark:hover:text-white',
+                      view === value ? 'border-b-2 border-(--color-accent) text-fg ' : 'text-muted hover:text-fg ',
                     )}
                   >
                     {value === 'starred' && <StarIcon className="size-4" aria-hidden />}
@@ -374,7 +374,7 @@ function MailboxThreadList({ mailboxId, view }: { mailboxId: string; view: Inbox
           )}
           {ready && visible.length > 0 && (
             <div className="ms-2 flex items-center gap-0.5">
-              <span className="text-sm tabular-nums text-zinc-500">{rangeLabel}</span>
+              <span className="text-sm tabular-nums text-muted">{rangeLabel}</span>
               <IconButton label="Newer conversations" disabled className={TOOL}><ChevronLeftIcon className="size-5" /></IconButton>
               <IconButton label="Older conversations" disabled={state.nextCursor === null || state.loadingMore} onClick={() => load(state.nextCursor ?? undefined, true)} className={TOOL}><ChevronRightIcon className="size-5" /></IconButton>
             </div>
@@ -428,9 +428,9 @@ function MailboxThreadList({ mailboxId, view }: { mailboxId: string; view: Inbox
             )}
             {/* Continuation depends on next_cursor, never on the row count (D4, FE-R09). */}
             {state.nextCursor !== null && (
-              <div className="flex justify-center border-t border-zinc-200 p-3 dark:border-zinc-700">
+              <div className="flex justify-center border-t border-line p-3 ">
                 <div className="flex flex-col items-center gap-2">
-                  {state.pageError !== null && <p role="alert" className="text-sm text-red-500">{state.pageError}</p>}
+                  {state.pageError !== null && <p role="alert" className="text-sm text-danger">{state.pageError}</p>}
                   <Button size="sm" disabled={state.loadingMore} onClick={() => load(state.nextCursor ?? undefined, true)}>
                     {state.loadingMore ? 'Loading…' : state.pageError !== null ? 'Retry more conversations' : 'Show more conversations'}
                   </Button>
@@ -448,7 +448,7 @@ function MailboxThreadList({ mailboxId, view }: { mailboxId: string; view: Inbox
 /** Discoverable shortcut legend; keeps the keyboard contract visible without a modal. */
 function ShortcutHint({ onCompose }: { onCompose: (() => void) | null }) {
   return (
-    <p className="mt-3 text-xs text-zinc-400 max-md:hidden">
+    <p className="mt-3 text-xs text-muted max-md:hidden">
       Keyboard: <kbd>j</kbd>/<kbd>k</kbd> move · <kbd>o</kbd> open · <kbd>x</kbd> select · <kbd>s</kbd> star · <kbd>e</kbd> archive · <kbd>#</kbd> delete · <kbd>!</kbd> spam · <kbd>Shift</kbd>+<kbd>U</kbd> unread · <kbd>/</kbd> search
       {onCompose && <> · <kbd>c</kbd> compose</>} · <kbd>u</kbd> back to list
     </p>

@@ -86,15 +86,15 @@ export function WorkspaceSwitcher({ session }: { session: Session }) {
         aria-controls={open ? listId : undefined}
         aria-label={`Workspace: ${current.name}`}
         onClick={() => (open ? close(true) : setOpen(true))}
-        className="flex h-10 w-full items-center gap-2 overflow-hidden rounded-lg border border-zinc-200 border-b-zinc-300/80 bg-white px-3 py-2 text-base shadow-xs sm:text-sm dark:border-white/10 dark:bg-white/10"
+        className="flex h-10 w-full items-center gap-2 overflow-hidden rounded-lg border border-line border-b-line bg-surface px-3 py-2 text-base shadow-xs sm:text-sm  "
       >
-        <span className="flex-1 truncate text-start text-zinc-700 dark:text-zinc-200">{current.name}</span>
-        <ChevronUpDownMiniIcon className="size-4 shrink-0 text-zinc-400" />
+        <span className="flex-1 truncate text-start text-fg ">{current.name}</span>
+        <ChevronUpDownMiniIcon className="size-4 shrink-0 text-muted" />
       </button>
       {open && (
-        <div className="absolute inset-x-0 top-full z-20 mt-1 flex min-w-48 flex-col rounded-lg border border-zinc-200 bg-white p-[.3125rem] shadow-xs dark:border-zinc-600 dark:bg-zinc-700">
+        <div className="absolute inset-x-0 top-full z-20 mt-1 flex min-w-48 flex-col rounded-lg border border-line bg-surface p-[.3125rem] shadow-xs  ">
           <div className="relative -mx-[5px] -mt-[5px] mb-[5px] flex grow">
-            <span aria-hidden className="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3.5 text-zinc-400">
+            <span aria-hidden className="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3.5 text-muted">
               <MagnifyingGlassMiniIcon className="size-4" />
             </span>
             <input
@@ -104,7 +104,7 @@ export function WorkspaceSwitcher({ session }: { session: Session }) {
               onChange={(event) => setQuery(event.target.value)}
               placeholder="Search workspaces..."
               aria-label="Search workspaces"
-              className="h-10 w-full border-b border-zinc-200 bg-white px-3 pe-9 ps-9 text-base font-medium text-zinc-800 outline-hidden placeholder:font-normal sm:text-sm dark:border-white/10 dark:bg-transparent dark:text-white"
+              className="h-10 w-full border-b border-line bg-surface px-3 pe-9 ps-9 text-base font-medium text-fg outline-hidden placeholder:font-normal sm:text-sm   "
             />
             {query !== '' && (
               <span className="absolute inset-y-0 end-0 flex items-center pe-1">
@@ -119,11 +119,11 @@ export function WorkspaceSwitcher({ session }: { session: Session }) {
               <div role="status" aria-label="Loading workspaces" className="p-1"><Skeleton rows={3} /></div>
             ) : organizations.status === 'error' ? (
               <div role="alert" className="p-2">
-                <p className="text-sm text-zinc-500">{organizations.message}</p>
+                <p className="text-sm text-muted">{organizations.message}</p>
                 <Button size="sm" className="mt-2" onClick={() => setAttempt((n) => n + 1)}>Try again</Button>
               </div>
             ) : visible.length === 0 ? (
-              <p className="px-2 py-1.5 text-sm text-zinc-500 dark:text-zinc-400">No results found</p>
+              <p className="px-2 py-1.5 text-sm text-muted ">No results found</p>
             ) : (
               visible.map((organization) => {
                 const selected = organization.id === current.id
@@ -138,22 +138,22 @@ export function WorkspaceSwitcher({ session }: { session: Session }) {
                     disabled={pendingId !== null}
                     onClick={() => void choose(organization.id)}
                     className={cx(
-                      'flex w-full items-center rounded-md px-2 py-1.5 text-start text-sm font-medium text-zinc-800 hover:bg-zinc-50 focus-visible:bg-zinc-50 focus-visible:outline-none disabled:opacity-50 dark:text-white dark:hover:bg-zinc-600',
+                      'flex w-full items-center rounded-md px-2 py-1.5 text-start text-sm font-medium text-fg hover:bg-surface-2 focus-visible:bg-surface-2 focus-visible:outline-none disabled:opacity-50  ',
                       selected && 'disabled:opacity-100',
                     )}
                   >
                     <span className="flex w-7 shrink-0 items-center">{selected && <CheckMiniIcon className="size-4" />}</span>
                     <span className="min-w-0 flex-1 truncate">{organization.name}</span>
-                    {switching && <span className="ms-2 shrink-0 text-xs text-zinc-500">Switching…</span>}
+                    {switching && <span className="ms-2 shrink-0 text-xs text-muted">Switching…</span>}
                   </button>
                 )
               })
             )}
             {organizations.status === 'ready' && organizations.incomplete && (
-              <p className="px-2 py-1.5 text-xs text-zinc-500">More workspaces exist than are listed here.</p>
+              <p className="px-2 py-1.5 text-xs text-muted">More workspaces exist than are listed here.</p>
             )}
           </div>
-          {failure && <p role="alert" className="px-2 py-1.5 text-sm font-medium text-red-500">{failure}</p>}
+          {failure && <p role="alert" className="px-2 py-1.5 text-sm font-medium text-danger">{failure}</p>}
         </div>
       )}
     </div>

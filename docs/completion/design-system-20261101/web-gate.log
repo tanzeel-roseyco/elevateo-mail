@@ -1,0 +1,2526 @@
+
+> @elevateo/web@0.1.0-read.1 check:api
+> openapi-typescript ../../contracts/v1/openapi.json --output src/data/generated/api.d.ts --check
+
+✨ openapi-typescript 7.13.0
+
+> @elevateo/web@0.1.0-read.1 check:api:v2
+> openapi-typescript ../../contracts/v2/openapi.json --output src/data/generated/api-v2.d.ts --check
+
+✨ openapi-typescript 7.13.0
+
+> @elevateo/web@0.1.0-read.1 lint
+> eslint . --max-warnings 0
+
+
+> @elevateo/web@0.1.0-read.1 typecheck
+> tsc -p tsconfig.json --noEmit
+
+
+> @elevateo/web@0.1.0-read.1 test
+> vitest run --coverage
+
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.11 [39m[90m/workspace/apps/web[39m
+      [2mCoverage enabled with [22m[33mv8[39m
+
+ [32m✓[39m src/domain/draftOperation.test.ts [2m([22m[2m39 tests[22m[2m)[22m[32m 105[2mms[22m[39m
+ [32m✓[39m src/data/contract-collaboration.test.ts [2m([22m[2m59 tests[22m[2m)[22m[32m 138[2mms[22m[39m
+ [32m✓[39m src/data/fixtures/collaborationState.test.ts [2m([22m[2m24 tests[22m[2m)[22m[32m 120[2mms[22m[39m
+ [32m✓[39m src/data/cd-conformance.test.ts [2m([22m[2m48 tests[22m[2m)[22m[32m 248[2mms[22m[39m
+ [32m✓[39m src/app/session-lifecycle.test.tsx [2m([22m[2m25 tests[22m[2m)[22m[33m 675[2mms[22m[39m
+ [32m✓[39m src/app/session.test.tsx [2m([22m[2m16 tests[22m[2m)[22m[33m 669[2mms[22m[39m
+ [32m✓[39m src/features/thread/MessageAttachments.test.tsx [2m([22m[2m12 tests[22m[2m)[22m[33m 1402[2mms[22m[39m
+     [33m[2m✓[22m[39m wraps a 244-character filename in the row and keeps the Download button short (TS-02) [33m 331[2mms[22m[39m
+ [32m✓[39m src/data/contract.test.ts [2m([22m[2m40 tests[22m[2m)[22m[32m 190[2mms[22m[39m
+ [31m❯[39m src/features/auth/SignInPage.sso.test.tsx [2m([22m[2m23 tests[22m[2m | [22m[31m3 failed[39m[2m)[22m[33m 3390[2mms[22m[39m
+[31m     [31m×[31m shows a single sign-on primary button above the outline password form when both are enabled[39m[33m 330[2mms[22m[39m
+[31m     [31m×[31m makes the password submit primary when it is the only entry[39m[32m 35[2mms[22m[39m
+     [32m✓[39m keeps the typed email when returning from the recovery confirmation[32m 275[2mms[22m[39m
+     [32m✓[39m shows only the single sign-on entry when the server disables password login[32m 156[2mms[22m[39m
+     [32m✓[39m shows only the password form when SSO is disabled[32m 167[2mms[22m[39m
+     [32m✓[39m offers nothing but a re-check when no entry is enabled, and recovers on the next status[32m 164[2mms[22m[39m
+     [32m✓[39m announces a loading state while the status is unknown and offers no entry[32m 42[2mms[22m[39m
+     [32m✓[39m fails closed on a status failure: an error card with retry, no password form[32m 206[2mms[22m[39m
+     [32m✓[39m shows the unavailable state (not a Google button) when google is the only provider[32m 88[2mms[22m[39m
+[31m     [31m×[31m falls back to the password form (no SSO button) when google is reported alongside password login[39m[32m 108[2mms[22m[39m
+     [32m✓[39m navigates the document to the server start path, shows the redirecting state and locks the form[32m 166[2mms[22m[39m
+     [32m✓[39m starts SSO with a document navigation only: no fetch and no login exchange[32m 228[2mms[22m[39m
+     [32m✓[39m unlocks the page when the document is restored after a Back from the identity provider[32m 122[2mms[22m[39m
+     [32m✓[39m unlocks the page when the navigation is refused[32m 108[2mms[22m[39m
+     [32m✓[39m shows the generic message once and strips the parameter from the URL[32m 149[2mms[22m[39m
+     [32m✓[39m drops the callout reference from the form while recovering, because the callout is not rendered[32m 180[2mms[22m[39m
+     [32m✓[39m maps unavailable to its copy[32m 128[2mms[22m[39m
+     [32m✓[39m maps invalid_response to its copy[32m 110[2mms[22m[39m
+     [32m✓[39m strips the parameter exactly once under StrictMode[32m 167[2mms[22m[39m
+     [32m✓[39m still shows the callback failure when no entry is enabled[32m 214[2mms[22m[39m
+     [32m✓[39m collapses an unknown value to generic copy and never echoes it[32m 135[2mms[22m[39m
+     [32m✓[39m replaceSearch keeps pathname, hash and history state[32m 94[2mms[22m[39m
+     [32m✓[39m onRestore fires only for a persisted pageshow and unsubscribes[32m 7[2mms[22m[39m
+docker : [90mstderr[2m | src/features/thread/ThreadPage.test.tsx[2m > [22m[2mmessage reply draft[2m >
+[22m[2mwaits for the selected deep-link message and replies to that sender only
+At line:2 char:38
++ ... top-linux'; docker run --rm --name elevateo-white-gold-gate elevateo- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([90mstderr[2m...hat sender only:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+[22m[39mIn HTML, <div> cannot be a descendant of <p>.
+This will cause a hydration error.
+
+  ...
+    <MailboxesProvider value={{status:"ready", ...}}>
+      <MemoryRouter initialEntries={[...]}>
+        <Router basename={undefined} location={{pathname:"...", ...}} navigationType="POP" navigator={{index:0, ...}}
+...>
+          <Routes>
+            <RenderedRoute match={{params:{...}, ...}} routeContext={{outlet:null, ...}}>
+              <ThreadPage readDirectMessage={function Mock}>
+                <ConversationReader mailboxId="00000000-0..." threadId="00000000-0..." readDirectMessage={function
+Mock}>
+                  <article aria-label="Conversation" className="flex min-h...">
+                    <div className={"overflow..."}>
+                      <div>
+                      <header>
+                      <div className="px-6 pb-4">
+>                       <p role="status">
+                          <Callout variant="neutral">
+                            <div role="note" aria-label={undefined} className={"flex rou..."}>
+                              <span>
+                              <div className="flex min-w...">
+>                               <div className="text-sm">
+                      ...
+                    ...
+
+<p> cannot contain a nested <div>.
+See this log for the ancestor stack trace.
+
+ [32m✓[39m src/data/http/transport.test.ts [2m([22m[2m27 tests[22m[2m)[22m[33m 431[2mms[22m[39m
+ [32m✓[39m src/features/assistant/AssistantPanel.test.tsx [2m([22m[2m11 tests[22m[2m)[22m[33m 2546[2mms[22m[39m
+     [33m[2m✓[22m[39m shows the honest unavailable state when the runtime is not available [33m 375[2mms[22m[39m
+     [33m[2m✓[22m[39m renders streamed events as plain text in the transcript [33m 502[2mms[22m[39m
+     [33m[2m✓[22m[39m ends the owned session on close, and a start that resolves after close [33m 336[2mms[22m[39m
+     [33m[2m✓[22m[39m shows a failed end with a retry instead of claiming the session ended [33m 482[2mms[22m[39m
+ [32m✓[39m src/data/lifecycle-conformance.test.ts [2m([22m[2m24 tests[22m[2m)[22m[32m 280[2mms[22m[39m
+ [32m✓[39m src/features/inbox/UnifiedInbox.test.tsx [2m([22m[2m9 tests[22m[2m)[22m[33m 6089[2mms[22m[39m
+     [33m[2m✓[22m[39m reads the organization list once, labels each row with its mailbox and links it into that mailbox [33m 1572[2mms[22m[39m
+     [33m[2m✓[22m[39m passes the filter to the server and shows the per-view empty state [33m 407[2mms[22m[39m
+     [33m[2m✓[22m[39m continues with next_cursor on Show more and appends without duplicates [33m 1171[2mms[22m[39m
+     [33m[2m✓[22m[39m restarts from the first page once when a continuation cursor is rejected [33m 439[2mms[22m[39m
+     [33m[2m✓[22m[39m stars a row with the row’s own mailbox id and keeps it when the server confirms [33m 394[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps a star confirmed during "Show more" when the page read finishes afterwards [33m 979[2mms[22m[39m
+     [33m[2m✓[22m[39m shows an explicit error with retry when the server list fails, and recovers on Try again [33m 418[2mms[22m[39m
+     [33m[2m✓[22m[39m moves keyboard focus to a neighbour when a confirmed unstar removes the focused row from Starred [33m 665[2mms[22m[39m
+ [32m✓[39m src/features/thread/ThreadActions.test.tsx [2m([22m[2m11 tests[22m[2m)[22m[33m 4369[2mms[22m[39m
+     [33m[2m✓[22m[39m reply all addresses the sender and recipients once each, without the mailbox address [33m 1447[2mms[22m[39m
+     [33m[2m✓[22m[39m forward quotes the message in plaintext, leaves recipients empty and is not threaded as a reply [33m 635[2mms[22m[39m
+     [33m[2m✓[22m[39m a shortened subject is not reused by forward [33m 508[2mms[22m[39m
+     [33m[2m✓[22m[39m forward acts on the newest message even when it has no sender [33m 320[2mms[22m[39m
+     [33m[2m✓[22m[39m stays on the reader while the move is pending and leaves only once the server confirms [33m 402[2mms[22m[39m
+ [32m✓[39m src/features/inbox/InboxPage.test.tsx [2m([22m[2m19 tests[22m[2m)[22m[33m 10325[2mms[22m[39m
+     [33m[2m✓[22m[39m carries the unread filter into conversation links [33m 836[2mms[22m[39m
+     [33m[2m✓[22m[39m leaves the default all filter out of conversation links [33m 580[2mms[22m[39m
+     [33m[2m✓[22m[39m opens a fresh compose window for an authorized mailbox without saving a draft [33m 375[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps loaded rows through a network continuation failure and retries that page [33m 982[2mms[22m[39m
+     [33m[2m✓[22m[39m removes loaded rows on a continuation access denial [33m 378[2mms[22m[39m
+     [33m[2m✓[22m[39m an empty page with a cursor stays usable and is distinct from a terminal empty mailbox [33m 549[2mms[22m[39m
+     [33m[2m✓[22m[39m a terminal empty mailbox offers no continuation [33m 311[2mms[22m[39m
+     [33m[2m✓[22m[39m a reset replaces accumulated rows with the fresh first page [33m 2321[2mms[22m[39m
+     [33m[2m✓[22m[39m a second invalid cursor is not retried automatically; explicit retry starts a new traversal [33m 577[2mms[22m[39m
+     [33m[2m✓[22m[39m duplicate summaries across pages are deduplicated by thread id [33m 420[2mms[22m[39m
+     [33m[2m✓[22m[39m a deferred mailbox-A success that ignored abort cannot replace mailbox-B rows [33m 473[2mms[22m[39m
+     [33m[2m✓[22m[39m a deferred mailbox-A failure that ignored abort cannot surface an error on mailbox B [33m 370[2mms[22m[39m
+     [33m[2m✓[22m[39m the first committed frame of a new mailbox never shows loaded previous-mailbox rows [33m 703[2mms[22m[39m
+     [33m[2m✓[22m[39m a late continuation failure from a loaded previous mailbox leaks no error and spends no recovery [33m 309[2mms[22m[39m
+ [32m✓[39m src/features/outreach/OutreachPages.test.tsx [2m([22m[2m21 tests[22m[2m)[22m[33m 9235[2mms[22m[39m
+     [33m[2m✓[22m[39m creates a draft and navigates to its detail without any send control [33m 1223[2mms[22m[39m
+     [33m[2m✓[22m[39m reports an uncertain create failure without automatic duplicate submission [33m 305[2mms[22m[39m
+     [33m[2m✓[22m[39m adds an unknown-consent lead and never submits a consent assertion [33m 882[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps pause failure visible without claiming a state transition [33m 527[2mms[22m[39m
+     [33m[2m✓[22m[39m hides loaded campaign content after a revoked write [33m 371[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps a failed lead mutation uncertain and blocks a second submission [33m 569[2mms[22m[39m
+     [33m[2m✓[22m[39m records separate attested consent evidence without a send action [33m 944[2mms[22m[39m
+     [33m[2m✓[22m[39m does not automatically replay a rejected consent evidence operation [33m 1646[2mms[22m[39m
+     [33m[2m✓[22m[39m navigates a bounded cursor page without silently hiding more campaigns [33m 320[2mms[22m[39m
+Error: Not implemented: window.scrollTo
+    at module.exports (/workspace/apps/web/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at /workspace/apps/web/node_modules/jsdom/lib/jsdom/browser/Window.js:960:7
+    at /workspace/apps/web/src/app/Shell.tsx:232:12
+    at Object.react_stack_bottom_frame
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:28656:20)
+    at runWithFiberInDEV (/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:1048:13)
+    at commitHookEffectListMount
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:13748:29)
+    at commitHookPassiveMountEffects
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:13835:11)
+    at commitPassiveMountOnFiber
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16906:13)
+    at recursivelyTraversePassiveMountEffects
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16851:13)
+    at commitPassiveMountOnFiber
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16898:11) undefined
+ [32m✓[39m src/features/settings/settingsAdapters.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[33m 9577[2mms[22m[39m
+     [33m[2m✓[22m[39m refuses a new tag at capacity instead of evicting the oldest one [33m 4085[2mms[22m[39m
+     [33m[2m✓[22m[39m clears the draft when the modal is cancelled and reopened [33m 1393[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps the swatch grid at five columns on narrow screens and ten from sm [33m 535[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps memory-only records across two updates when localStorage throws [33m 594[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps the first tag when getItem works but setItem throws quota [33m 633[2mms[22m[39m
+     [33m[2m✓[22m[39m exposes one tab stop and moves selection with the arrow keys [33m 561[2mms[22m[39m
+     [33m[2m✓[22m[39m edits an invitation in place and refuses an address another invitation already uses [33m 871[2mms[22m[39m
+     [33m[2m✓[22m[39m reports a missing event on the fieldset, not on the URL field [33m 615[2mms[22m[39m
+ [32m✓[39m src/app/membershipRecovery.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[33m 4673[2mms[22m[39m
+     [33m[2m✓[22m[39m removing my own explicit row from a PRIVATE mailbox invalidates the old generation before the bootstrap answers; the refreshed list drops the mailbox and a late old list success changes nothing [33m 3106[2mms[22m[39m
+     [33m[2m✓[22m[39m removing my own explicit row from a SHARED mailbox keeps it readable without compose or member links; a late old list error cannot break the recovered sidebar [33m 1551[2mms[22m[39m
+ [32m✓[39m src/features/thread/CollaborationPanels.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[33m 15054[2mms[22m[39m
+     [33m[2m✓[22m[39m marks read only through the explicit control and reports the server answer [33m 2385[2mms[22m[39m
+     [33m[2m✓[22m[39m an unconfirmed write does not flip the control and says the same choice is safe to repeat [33m 1038[2mms[22m[39m
+     [33m[2m✓[22m[39m assigns to me, clears, and chooses a mailbox-scoped user, each advancing the revision [33m 2058[2mms[22m[39m
+     [33m[2m✓[22m[39m a stale revision is refused and the reload shows what the server holds [33m 801[2mms[22m[39m
+     [33m[2m✓[22m[39m an ineligible target is unavailable, not silently dropped [33m 779[2mms[22m[39m
+     [33m[2m✓[22m[39m adds an immutable plaintext note rendered inertly and attributed to you [33m 1051[2mms[22m[39m
+     [33m[2m✓[22m[39m uncertainty then success: the retry resends the SAME note id and payload and exactly one note results [33m 851[2mms[22m[39m
+     [33m[2m✓[22m[39m "Write a different note" abandons the frozen attempt without pretending it failed or succeeded [33m 2357[2mms[22m[39m
+     [33m[2m✓[22m[39m an over-long note is refused locally and an unavailable list hides the form [33m 1691[2mms[22m[39m
+     [33m[2m✓[22m[39m opens a sender-filled thread reply and saves only after explicit action [33m 2037[2mms[22m[39m
+ [32m✓[39m src/app/outreachSessionPolicy.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 64[2mms[22m[39m
+ [32m✓[39m src/data/fixtures/fixtureGateway.test.ts [2m([22m[2m38 tests[22m[2m)[22m[32m 179[2mms[22m[39m
+ [32m✓[39m src/data/conformance.test.ts [2m([22m[2m40 tests[22m[2m)[22m[33m 322[2mms[22m[39m
+Error: Not implemented: window.scrollTo
+    at module.exports (/workspace/apps/web/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at /workspace/apps/web/node_modules/jsdom/lib/jsdom/browser/Window.js:960:7
+    at /workspace/apps/web/src/app/Shell.tsx:232:12
+    at Object.react_stack_bottom_frame
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:28656:20)
+    at runWithFiberInDEV (/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:1048:13)
+    at commitHookEffectListMount
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:13748:29)
+    at commitHookPassiveMountEffects
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:13835:11)
+    at commitPassiveMountOnFiber
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16906:13)
+    at recursivelyTraversePassiveMountEffects
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16851:13)
+    at commitPassiveMountOnFiber
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16898:11) undefined
+ [31m❯[39m src/features/drafts/DraftEditorPage.test.tsx [2m([22m[2m33 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 17517[2mms[22m[39m
+     [32m✓[39m round-trips name/address pairs, bare addresses and bare names, skipping blank lines[32m 15[2mms[22m[39m
+     [33m[2m✓[22m[39m a new link starts at version 0 with the reply binding and the first explicit save creates version 1 [33m 1363[2mms[22m[39m
+     [32m✓[39m an existing draft loads its server copy as inert text in the form[32m 246[2mms[22m[39m
+     [32m✓[39m a non-new link to an absent draft is unavailable, and a malformed id never reaches the gateway[32m 98[2mms[22m[39m
+     [32m✓[39m a 503 on load shows a retry that reloads[32m 139[2mms[22m[39m
+     [33m[2m✓[22m[39m an over-long subject disables the save and never sends [33m 381[2mms[22m[39m
+     [33m[2m✓[22m[39m associates validation errors with each field and removes stale descriptions after correction [33m 427[2mms[22m[39m
+     [32m✓[39m a consumed draft is read-only[32m 150[2mms[22m[39m
+     [33m[2m✓[22m[39m rebase keeps my text, continues from the server version and the next save is a fresh operation [33m 910[2mms[22m[39m
+     [32m✓[39m adopt discards my text for the server copy and is clean afterwards[32m 120[2mms[22m[39m
+     [33m[2m✓[22m[39m a recovery read that fails or says "unavailable" changes nothing: text, attempt and base version stay [33m 528[2mms[22m[39m
+     [33m[2m✓[22m[39m a conflict on a draft that became consumed: "keep my text" retains text and attempt read-only; only "discard" replaces them [33m 646[2mms[22m[39m
+     [32m✓[39m a 503 keeps the text and the retry resends the identical operation id and payload[32m 221[2mms[22m[39m
+     [33m[2m✓[22m[39m invalid newer local edits never block the exact retry, which sends the frozen payload [33m 1878[2mms[22m[39m
+     [33m[2m✓[22m[39m the lookup resolves a committed-but-unanswered save as applied without resending [33m 348[2mms[22m[39m
+     [33m[2m✓[22m[39m an unknown lookup is not proof of absence: the attempt stays and still retries identically [33m 662[2mms[22m[39m
+     [33m[2m✓[22m[39m a lost reply followed by a retry refused with 400 request_invalid keeps the attempt unresolved; the lookup still answers for it [33m 428[2mms[22m[39m
+     [33m[2m✓[22m[39m a lost reply followed by a retry refused with 404 not_available keeps the attempt unresolved; the lookup still answers for it [33m 340[2mms[22m[39m
+     [32m✓[39m a schema-valid lookup receipt bound to another draft is reported and applies nothing[32m 270[2mms[22m[39m
+     [32m✓[39m a schema-valid lookup receipt bound to another mailbox is reported and applies nothing[32m 155[2mms[22m[39m
+     [32m✓[39m a schema-valid lookup receipt bound to another base version is reported and applies nothing[32m 199[2mms[22m[39m
+     [33m[2m✓[22m[39m an expired lookup makes the id unusable; a new save needs a successful current read and then uses a fresh id [33m 1777[2mms[22m[39m
+     [33m[2m✓[22m[39m a 409 during a save hands control to the session; the recovered editor keeps the text and the attempt as uncertain, never as saved [33m 1289[2mms[22m[39m
+     [32m✓[39m batched same-identity recovery: the surviving editor restores text, raw recipients and the frozen attempt; a late success is not applied[32m 172[2mms[22m[39m
+[31m     [31m×[31m unmounting recovery under Shell: the remounted editor restores the same intent; a late error is not applied as a rejection[39m[33m 1471[2mms[22m[39m
+     [33m[2m✓[22m[39m retained intent is private to its owner: another actor never sees it, and it is dropped on the identity change [33m 1089[2mms[22m[39m
+     [33m[2m✓[22m[39m busy state belongs to one request: a stale lookup cannot leave the editor resolving or clear a newer lookup [33m 652[2mms[22m[39m
+     [32m✓[39m registers for dirty and unresolved intent, then removes after a confirmed clean save[32m 294[2mms[22m[39m
+     [32m✓[39m guards raw-only padding edits until explicit canonical reversion[32m 223[2mms[22m[39m
+     [32m✓[39m guards raw-only blank lines edits until explicit canonical reversion[32m 218[2mms[22m[39m
+     [32m✓[39m keeps the guard when displayed-text reversion still removes a saved empty recipient[32m 142[2mms[22m[39m
+     [33m[2m✓[22m[39m drops raw-only intent and its guard when the principal changes [33m 518[2mms[22m[39m
+     [32m✓[39m removes the guard on owner clearing and provider unmount[32m 126[2mms[22m[39m
+ [32m✓[39m src/data/http/proposedAdapters.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 181[2mms[22m[39m
+Error: Not implemented: window.scrollTo
+    at module.exports (/workspace/apps/web/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at /workspace/apps/web/node_modules/jsdom/lib/jsdom/browser/Window.js:960:7
+    at /workspace/apps/web/src/app/Shell.tsx:232:12
+    at Object.react_stack_bottom_frame
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:28656:20)
+    at runWithFiberInDEV (/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:1048:13)
+    at commitHookEffectListMount
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:13748:29)
+    at commitHookPassiveMountEffects
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:13835:11)
+    at commitPassiveMountOnFiber
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16906:13)
+    at recursivelyTraversePassiveMountEffects
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16851:13)
+    at commitPassiveMountOnFiber
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16898:11) undefined
+Error: Not implemented: window.scrollTo
+    at module.exports (/workspace/apps/web/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at /workspace/apps/web/node_modules/jsdom/lib/jsdom/browser/Window.js:960:7
+    at /workspace/apps/web/src/app/Shell.tsx:232:12
+    at Object.react_stack_bottom_frame
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:28656:20)
+    at runWithFiberInDEV (/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:1048:13)
+    at commitHookEffectListMount
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:13748:29)
+    at commitHookPassiveMountEffects
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:13835:11)
+    at commitPassiveMountOnFiber
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16906:13)
+    at recursivelyTraversePassiveMountEffects
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16851:13)
+    at commitPassiveMountOnFiber
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16898:11) undefined
+ [32m✓[39m src/features/members/PersonalSettingsPage.test.tsx [2m([22m[2m7 tests[22m[2m)[22m[33m 496[2mms[22m[39m
+ [32m✓[39m src/ui/primitives.test.tsx [2m([22m[2m12 tests[22m[2m)[22m[33m 1044[2mms[22m[39m
+     [33m[2m✓[22m[39m closes on Escape and returns focus to the trigger even when it has no items [33m 436[2mms[22m[39m
+ [32m✓[39m src/features/send/SendReviewPage.test.tsx [2m([22m[2m19 tests[22m[2m)[22m[33m 18691[2mms[22m[39m
+     [33m[2m✓[22m[39m blocks approval under resend when a recipient has no consent evidence [33m 1087[2mms[22m[39m
+     [33m[2m✓[22m[39m blocks simulated marketing without recorded consent [33m 383[2mms[22m[39m
+     [33m[2m✓[22m[39m explains consent withdrawal after a simulated marketing review [33m 754[2mms[22m[39m
+     [33m[2m✓[22m[39m allows approval under mailpit without consent evidence [33m 2051[2mms[22m[39m
+     [33m[2m✓[22m[39m shows a server consent_required refusal as a persistent reason with no retry [33m 1280[2mms[22m[39m
+     [33m[2m✓[22m[39m renders all literal content, requires explicit attestation, then reads durable queued status [33m 952[2mms[22m[39m
+     [33m[2m✓[22m[39m requires explicit live approval and preserves live status wording [33m 586[2mms[22m[39m
+     [33m[2m✓[22m[39m shows attachment scan readiness and blocks approval for unscanned bytes [33m 420[2mms[22m[39m
+     [33m[2m✓[22m[39m retains the original operation/version/digest after a lost response and retries exactly [33m 3282[2mms[22m[39m
+     [33m[2m✓[22m[39m requires a fresh review after review_stale without touching draft text [33m 444[2mms[22m[39m
+     [33m[2m✓[22m[39m requires a fresh review after draft_conflict without touching draft text [33m 3432[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps mismatched approval receipts uncertain, with the original binding [33m 331[2mms[22m[39m
+     [33m[2m✓[22m[39m preserves original retry across context recovery without carrying the old proof [33m 1758[2mms[22m[39m
+     [33m[2m✓[22m[39m renders every recipient in order at the 100-recipient boundary [33m 369[2mms[22m[39m
+     [33m[2m✓[22m[39m reloads a lost response and explicitly retries the exact original with a fresh proof [33m 532[2mms[22m[39m
+     [33m[2m✓[22m[39m drops a late approval after logout and clears retry details [33m 597[2mms[22m[39m
+ [31m❯[39m src/features/thread/ThreadPage.test.tsx [2m([22m[2m42 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 20812[2mms[22m[39m
+     [33m[2m✓[22m[39m starts the top reply with the latest available sender and keeps save explicit [33m 1001[2mms[22m[39m
+     [33m[2m✓[22m[39m holds the top reply when no authorized message has a usable sender [33m 424[2mms[22m[39m
+     [33m[2m✓[22m[39m offers no reply while the conversation loads or after its read fails [33m 535[2mms[22m[39m
+     [33m[2m✓[22m[39m follows the selected message URL instead of the latest loaded sender [33m 577[2mms[22m[39m
+     [33m[2m✓[22m[39m waits for the selected deep-link message and replies to that sender only [33m 625[2mms[22m[39m
+     [32m✓[39m keeps the top reply unavailable after selected-message lookup fails[32m 299[2mms[22m[39m
+     [33m[2m✓[22m[39m prefills the selected sender and subject, then saves only on explicit action [33m 852[2mms[22m[39m
+     [32m✓[39m does not offer sender reply without a usable address[32m 218[2mms[22m[39m
+     [33m[2m✓[22m[39m does not turn a line-broken sender field into multiple recipients [33m 2002[2mms[22m[39m
+     [32m✓[39m does not offer sender reply when compose is denied[32m 146[2mms[22m[39m
+     [32m✓[39m does not copy a shortened subject into a new reply[32m 244[2mms[22m[39m
+     [32m✓[39m renders hostile content inertly and performs no network request[32m 174[2mms[22m[39m
+     [32m✓[39m renders a zero-message conversation without indexing the last element[32m 36[2mms[22m[39m
+     [32m✓[39m shows truncation honestly and a separate message continuation control[32m 85[2mms[22m[39m
+     [33m[2m✓[22m[39m shows the same unavailable UI for absent or inaccessible conversations [33m 549[2mms[22m[39m
+     [33m[2m✓[22m[39m resolves a later-page message directly without walking cursors [33m 310[2mms[22m[39m
+     [32m✓[39m refuses a direct response bound to another mailbox[32m 250[2mms[22m[39m
+     [32m✓[39m uses one generic unavailable answer for a missing or inaccessible direct message[32m 164[2mms[22m[39m
+     [32m✓[39m never renders a message after direct lookup reports a revoked session[32m 179[2mms[22m[39m
+     [32m✓[39m drops a direct resolve at the keyed thread commit boundary[32m 208[2mms[22m[39m
+     [33m[2m✓[22m[39m drops a direct reject at the keyed thread commit boundary [33m 2568[2mms[22m[39m
+[31m     [31m×[31m offers explicit retry after a direct lookup network failure[39m[33m 3676[2mms[22m[39m
+     [33m[2m✓[22m[39m drops an abort-ignoring direct answer after URL selection changes [33m 359[2mms[22m[39m
+     [32m✓[39m opens a message link without losing the inbox filter[32m 257[2mms[22m[39m
+     [32m✓[39m opens a direct message URL, focuses that message, and preserves the unread back filter[32m 188[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps a selected later-page message pending until a deliberate bounded continuation [33m 421[2mms[22m[39m
+     [32m✓[39m does not steal focus when pagination starts or completes after a selected message was focused[32m 259[2mms[22m[39m
+     [33m[2m✓[22m[39m focuses a selected message once when it first arrives on a later page [33m 460[2mms[22m[39m
+     [32m✓[39m rejects a malformed message id before any gateway read[32m 122[2mms[22m[39m
+     [32m✓[39m shows an unavailable message after the final page and never walks farther[32m 95[2mms[22m[39m
+     [32m✓[39m does not reveal message content when the conversation read is denied[32m 74[2mms[22m[39m
+     [32m✓[39m preserves the unread filter in the back link[32m 41[2mms[22m[39m
+     [32m✓[39m returns to the unfiltered inbox when no filter was carried in[32m 68[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps loaded plaintext on a network continuation failure and retries that page [33m 310[2mms[22m[39m
+     [32m✓[39m keeps a later-page permalink pending after a network failure[32m 152[2mms[22m[39m
+     [32m✓[39m removes loaded content when a continuation reports revoked access[32m 148[2mms[22m[39m
+     [32m✓[39m a reset replaces accumulated messages with the fresh first page[32m 161[2mms[22m[39m
+     [32m✓[39m an empty message page with a cursor stays usable and is distinct from a terminal empty conversation (D4)[32m 211[2mms[22m[39m
+     [33m[2m✓[22m[39m a second invalid cursor needs explicit retry, which starts a fresh traversal [33m 354[2mms[22m[39m
+     [32m✓[39m a deferred old-thread response that ignored abort cannot replace the newer thread[32m 197[2mms[22m[39m
+     [32m✓[39m the first committed frame of a new thread never shows the loaded previous conversation[32m 284[2mms[22m[39m
+     [33m[2m✓[22m[39m a late continuation failure from a loaded previous thread leaks no error and spends no recovery [33m 1487[2mms[22m[39m
+ [32m✓[39m src/features/auth/SignInPage.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[33m 1553[2mms[22m[39m
+     [33m[2m✓[22m[39m submits the typed credentials under a challenge and hands over to the ready session [33m 589[2mms[22m[39m
+ [32m✓[39m src/features/members/AdministrationPage.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[33m 1651[2mms[22m[39m
+     [33m[2m✓[22m[39m shows unbound references separately and sends a revision-bound edit for an active UUID [33m 493[2mms[22m[39m
+     [33m[2m✓[22m[39m does not retry a stale role write [33m 502[2mms[22m[39m
+ [32m✓[39m src/features/thread/AssigneePicker.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[33m 1717[2mms[22m[39m
+     [33m[2m✓[22m[39m loads only when opened, pages one bounded request at a time, and selects a verified UUID [33m 1015[2mms[22m[39m
+ [31m❯[39m src/app/Sidebar.test.tsx [2m([22m[2m5 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 986[2mms[22m[39m
+[31m     [31m×[31m renders the brand, workspace switcher, primary links and every group as independent landmarks[39m[33m 628[2mms[22m[39m
+     [32m✓[39m marks only the exact page with aria-current while a nested path keeps its parent highlighted[32m 90[2mms[22m[39m
+     [32m✓[39m hides every empty feature section and keeps the mailbox highlighted under its sub-routes[32m 72[2mms[22m[39m
+     [32m✓[39m shows the loading, empty and retryable error states of the mailbox list[32m 142[2mms[22m[39m
+     [32m✓[39m collapses to icons with titles and an expanded toggle state[32m 39[2mms[22m[39m
+ [31m❯[39m src/app/Shell.test.tsx [2m([22m[2m29 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 23474[2mms[22m[39m
+     [33m[2m✓[22m[39m a signed-out session shows the sign-in form instead of a terminal screen [33m 620[2mms[22m[39m
+     [33m[2m✓[22m[39m signing in from the form reaches the protected shell [33m 1068[2mms[22m[39m
+     [32m✓[39m a valid identity without an organization is an explicit state with sign-out[32m 230[2mms[22m[39m
+     [33m[2m✓[22m[39m the workspace switcher lists memberships and an explicit switch replaces the identity [33m 1246[2mms[22m[39m
+     [33m[2m✓[22m[39m a failed switch reports in the sheet and keeps the current organization [33m 852[2mms[22m[39m
+     [33m[2m✓[22m[39m sign-out hides the mail at once and ends on the sign-in form with the sign-out notice [33m 1817[2mms[22m[39m
+     [33m[2m✓[22m[39m an unconfirmed sign-out keeps the mail hidden and offers to retry or return [33m 322[2mms[22m[39m
+     [32m✓[39m shows the ready shell with the fixture mailboxes and outlet content[32m 286[2mms[22m[39m
+     [33m[2m✓[22m[39m hides protected content and shows a recovery status while the one recovery runs [33m 1128[2mms[22m[39m
+     [33m[2m✓[22m[39m a second context change blocks in retry_required until the explicit retry [33m 431[2mms[22m[39m
+[31m     [31m×[31m one invalid continuation cursor resets the whole loop and replaces accumulated mailboxes[39m[33m 1940[2mms[22m[39m
+     [33m[2m✓[22m[39m a second invalid cursor surfaces manual retry, and retrying starts a fresh traversal [33m 592[2mms[22m[39m
+     [33m[2m✓[22m[39m opens as a named dialog, closes on route selection, Escape restores trigger focus [33m 2866[2mms[22m[39m
+     [33m[2m✓[22m[39m Escape inside the workspace popup closes only the popup and keeps the drawer open [33m 432[2mms[22m[39m
+     [32m✓[39m growing past the md breakpoint closes an open drawer[32m 150[2mms[22m[39m
+     [33m[2m✓[22m[39m the first committed render of a replaced identity contains no previous-identity content [33m 437[2mms[22m[39m
+     [33m[2m✓[22m[39m offers access guidance for a completed zero-visible-mailbox list [33m 380[2mms[22m[39m
+     [33m[2m✓[22m[39m shows the dashboard summary with a link to each visible mailbox [33m 579[2mms[22m[39m
+     [33m[2m✓[22m[39m does not infer an empty list while an empty first page has a pending continuation [33m 512[2mms[22m[39m
+     [33m[2m✓[22m[39m shows a load failure without claiming an empty or accessible mailbox list, then allows retry [33m 546[2mms[22m[39m
+     [33m[2m✓[22m[39m a failed count never reads as zero or as "caught up" [33m 371[2mms[22m[39m
+     [33m[2m✓[22m[39m an Outreach link in the rail reaches Celeste's real page, which reports the missing Outreach API [33m 1081[2mms[22m[39m
+     [33m[2m✓[22m[39m a route change scrolls main to the top and only rescues focus stranded on body [33m 450[2mms[22m[39m
+     [33m[2m✓[22m[39m an offline drop shows the notice inside the shell and a return offers reload [33m 504[2mms[22m[39m
+     [33m[2m✓[22m[39m shows the transport-only simulation footnote and badge for a simulated session, without any local-only storage claim [33m 923[2mms[22m[39m
+     [33m[2m✓[22m[39m a 401 from a campaign write clears the protected shell and restores access centrally (happy path) [33m 834[2mms[22m[39m
+     [33m[2m✓[22m[39m one context change from a campaign read recovers the session and the list reloads with the new epoch [33m 1051[2mms[22m[39m
+     [33m[2m✓[22m[39m a stale 401 from a request started under the previous identity cannot mark the replacement context (REV866) [33m 1338[2mms[22m[39m
+     [33m[2m✓[22m[39m an ordinary failure stays on Celeste's page as her own alert without any session transition [33m 468[2mms[22m[39m
+ [32m✓[39m src/data/signal-propagation.test.ts [2m([22m[2m108 tests[22m[2m)[22m[33m 622[2mms[22m[39m
+ [31m❯[39m src/features/send/SendStatusPage.test.tsx [2m([22m[2m13 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 6422[2mms[22m[39m
+[31m     [31m×[31m shows known pre-dispatch cancellation and refreshes authoritative status[39m[33m 2041[2mms[22m[39m
+     [33m[2m✓[22m[39m describes a late stop as uncertain, never as safely cancelled [33m 433[2mms[22m[39m
+     [33m[2m✓[22m[39m offers idempotent stop retry after lost response without enabling resend [33m 989[2mms[22m[39m
+     [33m[2m✓[22m[39m never labels simulated acceptance as delivery or offers cancellation [33m 646[2mms[22m[39m
+     [32m✓[39m shows delivery evidence separately from provider acceptance[32m 163[2mms[22m[39m
+     [33m[2m✓[22m[39m shows the bounced provider state and its suppression reason on a live send [33m 372[2mms[22m[39m
+     [32m✓[39m shows the complained provider state and its suppression reason on a live send[32m 57[2mms[22m[39m
+     [32m✓[39m shows delivery delays without a suppression reason[32m 35[2mms[22m[39m
+     [32m✓[39m keeps the simulated label on simulated sends[32m 37[2mms[22m[39m
+     [32m✓[39m does not present a foreign mailbox status as this intent[32m 24[2mms[22m[39m
+     [33m[2m✓[22m[39m re-checks a pending send and stops once the status is terminal [33m 1061[2mms[22m[39m
+     [32m✓[39m warns after a failed poll, retries a bounded number of times, then reports the status as stale[32m 280[2mms[22m[39m
+     [32m✓[39m never lets a late poll overwrite a confirmed cancellation[32m 257[2mms[22m[39m
+ [32m✓[39m src/features/members/MembersPage.test.tsx [2m([22m[2m9 tests[22m[2m)[22m[33m 6473[2mms[22m[39m
+     [33m[2m✓[22m[39m shows the explicit members, the revision and the actor badge, with no user directory [33m 2192[2mms[22m[39m
+     [33m[2m✓[22m[39m adds a member at the current revision and shows the new revision [33m 1171[2mms[22m[39m
+     [33m[2m✓[22m[39m a stale revision is refused and the reload shows the roster the server holds [33m 951[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps another row draft while a successful member write replaces its own server copy [33m 969[2mms[22m[39m
+     [33m[2m✓[22m[39m a self-affecting change with a rotated authorization version re-bootstraps the session [33m 303[2mms[22m[39m
+ [32m✓[39m src/data/v2OutreachGateway.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 163[2mms[22m[39m
+ [32m✓[39m src/data/ssoContract.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 174[2mms[22m[39m
+ [32m✓[39m src/data/v2EmailFinderGateway.test.ts [2m([22m[2m20 tests[22m[2m)[22m[33m 341[2mms[22m[39m
+Error: Not implemented: window.scrollTo
+    at module.exports (/workspace/apps/web/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at /workspace/apps/web/node_modules/jsdom/lib/jsdom/browser/Window.js:960:7
+    at /workspace/apps/web/src/app/Shell.tsx:232:12
+    at Object.react_stack_bottom_frame
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:28656:20)
+    at runWithFiberInDEV (/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:1048:13)
+    at commitHookEffectListMount
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:13748:29)
+    at commitHookPassiveMountEffects
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:13835:11)
+    at commitPassiveMountOnFiber
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16906:13)
+    at recursivelyTraversePassiveMountEffects
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16851:13)
+    at commitPassiveMountOnFiber
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16898:11) undefined
+ [32m✓[39m src/features/email-finder/EmailFinderPage.test.tsx [2m([22m[2m12 tests[22m[2m)[22m[33m 3350[2mms[22m[39m
+     [33m[2m✓[22m[39m queues a person and exposes persisted progress [33m 1498[2mms[22m[39m
+     [33m[2m✓[22m[39m announces global reputation backoff [33m 320[2mms[22m[39m
+     [33m[2m✓[22m[39m rejects missing company without queuing [33m 438[2mms[22m[39m
+ [32m✓[39m src/features/outreach/RunComposer.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[33m 2164[2mms[22m[39m
+     [33m[2m✓[22m[39m queues only selected opted-in leads with explicit confirmation [33m 1074[2mms[22m[39m
+     [33m[2m✓[22m[39m replays the exact operation and message after a lost or malformed receipt [33m 447[2mms[22m[39m
+     [33m[2m✓[22m[39m preserves original input after invalid response Error: Receipt mismatch [33m 309[2mms[22m[39m
+ [31m❯[39m src/features/auth/AuthCompletePage.test.tsx [2m([22m[2m6 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 994[2mms[22m[39m
+     [33m[2m✓[22m[39m rejects a mismatch and a short password locally without any request [33m 535[2mms[22m[39m
+     [32m✓[39m sends the password once under a fresh challenge and offers the way into the application[32m 165[2mms[22m[39m
+     [32m✓[39m a generic 401 replaces the form with the invalid-link outcome and drops the typed values[32m 88[2mms[22m[39m
+     [32m✓[39m a 404 says the password is set but no organization exists yet[32m 69[2mms[22m[39m
+     [32m✓[39m a 503 keeps both entries and claims no save[32m 65[2mms[22m[39m
+[31m     [31m×[31m reads nothing from the URL and stores nothing in the browser[39m[32m 59[2mms[22m[39m
+ [32m✓[39m src/domain/threadFolders.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 48[2mms[22m[39m
+ [32m✓[39m src/dev/demoGateway.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 243[2mms[22m[39m
+ [32m✓[39m src/data/send-conformance.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 287[2mms[22m[39m
+ [32m✓[39m src/features/drafts/DraftAttachments.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[33m 1344[2mms[22m[39m
+     [33m[2m✓[22m[39m a failed first list shows the error without a lingering loading status [33m 550[2mms[22m[39m
+     [33m[2m✓[22m[39m uploads, displays scan state, refreshes, and removes [33m 321[2mms[22m[39m
+ [32m✓[39m src/lib/readPage.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 66[2mms[22m[39m
+ [31m❯[39m src/features/settings/SettingsRoutes.test.tsx [2m([22m[2m6 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 5052[2mms[22m[39m
+     [33m[2m✓[22m[39m opens on the Workspace hub with the six section tabs and no billing tab [33m 1095[2mms[22m[39m
+[31m     [31m×[31m redirects the legacy personal and organization routes into the new sections[39m[33m 1034[2mms[22m[39m
+     [33m[2m✓[22m[39m creates a tag through the modal and labels the page as a simulated adapter [33m 1557[2mms[22m[39m
+     [33m[2m✓[22m[39m rejects a non-HTTPS webhook URL and keeps the empty state [33m 438[2mms[22m[39m
+     [33m[2m✓[22m[39m offers the Postman collection as a same-tab download next to the API reference [33m 920[2mms[22m[39m
+     [32m✓[39m resolves page titles by the longest matching route prefix[32m 1[2mms[22m[39m
+ [32m✓[39m src/ui/useEditableViewport.test.tsx [2m([22m[2m7 tests[22m[2m)[22m[33m 837[2mms[22m[39m
+     [33m[2m✓[22m[39m reveals the focused note when Android IME shrinks the viewport after focus [33m 417[2mms[22m[39m
+ [32m✓[39m src/features/outreach/SequencePage.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 2041[2mms[22m[39m
+     [33m[2m✓[22m[39m creates an inert draft after a generic 404 and reloads the saved version [33m 1207[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps the saved version visible and blocks replay after a 409 conflict [33m 448[2mms[22m[39m
+     [33m[2m✓[22m[39m hides loaded sequence content after a denied write [33m 339[2mms[22m[39m
+ [31m❯[39m src/features/inbox/InboxFolders.test.tsx [2m([22m[2m11 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 13888[2mms[22m[39m
+[31m     [31m×[31m archives a row only after the server confirms, then shows it in Archive[39m[33m 5315[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps the row and reports the failure when the server rejects the move [33m 2073[2mms[22m[39m
+     [33m[2m✓[22m[39m trash offers only a restore and no snooze [33m 1510[2mms[22m[39m
+     [33m[2m✓[22m[39m a selected row that fails to move stays selected while confirmed rows are cleared [33m 490[2mms[22m[39m
+     [32m✓[39m a bulk archive clears the selection and empties the inbox view[32m 127[2mms[22m[39m
+     [33m[2m✓[22m[39m a star is a server write shown as pressed and listed under Starred [33m 1093[2mms[22m[39m
+     [33m[2m✓[22m[39m the s shortcut stars the focused row [33m 446[2mms[22m[39m
+     [33m[2m✓[22m[39m a preset snooze moves the row to Snoozed with its return time and offers Remove snooze [33m 883[2mms[22m[39m
+     [33m[2m✓[22m[39m the folder select reaches every server view and the URL carries it [33m 499[2mms[22m[39m
+     [33m[2m✓[22m[39m the e shortcut archives the focused row, and Archive has no e shortcut [33m 789[2mms[22m[39m
+     [33m[2m✓[22m[39m the # shortcut does nothing in Trash [33m 632[2mms[22m[39m
+ [32m✓[39m src/data/contract-unicode.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 83[2mms[22m[39m
+ [32m✓[39m src/data/http/transport-cancellation.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 199[2mms[22m[39m
+ [32m✓[39m src/features/outreach/CampaignRunsPage.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 2483[2mms[22m[39m
+     [33m[2m✓[22m[39m labels missing capabilities without presenting a sending form [33m 614[2mms[22m[39m
+     [33m[2m✓[22m[39m loads validated history and refreshes after an explicit cancellation [33m 1063[2mms[22m[39m
+     [33m[2m✓[22m[39m fails closed on a cross-campaign response and allows a refresh [33m 486[2mms[22m[39m
+[90mstderr[2m | src/app/App.test.tsx[2m > [22m[2mdirect message binding on the thread route (FE-805)[2m >
+[22m[2mresolves a message URL beyond the first page with one bounded direct read and no cursor walk (happy path)
+[22m[39mIn HTML, <div> cannot be a descendant of <p>.
+This will cause a hydration error.
+
+  ...
+    <Frame mailboxId="00000000-0...">
+      <PageHeader>
+      <div className="flex min-h...">
+        <div>
+        <div className="flex min-w...">
+          <div>
+          <Outlet>
+            <RenderedRoute match={{params:{...}, ...}} routeContext={{outlet:null, ...}}>
+              <ThreadRoute>
+                <ThreadPage readDirectMessage={function Mock}>
+                  <ConversationReader mailboxId="00000000-0..." threadId="00000000-0..." ...>
+                    <article aria-label="Conversation" className="flex min-h...">
+                      <div className={"overflow..."}>
+                        <div>
+                        <header>
+                        <div className="px-6 pb-4">
+>                         <p role="status">
+                            <Callout variant="neutral">
+                              <div role="note" aria-label={undefined} className={"flex rou..."}>
+                                <span>
+                                <div className="flex min-w...">
+>                                 <div className="text-sm">
+                        ...
+                      ...
+      ...
+
+<p> cannot contain a nested <div>.
+See this log for the ancestor stack trace.
+
+ [31m❯[39m src/features/settings/ConnectionsPage.test.tsx [2m([22m[2m4 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 5331[2mms[22m[39m
+[31m     [31m×[31m lists each connection with the external-AI sharing notice (happy path)[39m[33m 1498[2mms[22m[39m
+     [33m[2m✓[22m[39m shows the one-time secret exactly once after granting (happy path) [33m 1540[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps the connection listed and shows an error when a revoke fails (failure path) [33m 1346[2mms[22m[39m
+     [33m[2m✓[22m[39m offers a retry when the connection list fails to load (failure path) [33m 936[2mms[22m[39m
+ [32m✓[39m src/data/http/transport-boundaries.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 150[2mms[22m[39m
+ [32m✓[39m src/app/desktopHost.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 260[2mms[22m[39m
+ [32m✓[39m src/features/help/HelpRoutes.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[33m 1964[2mms[22m[39m
+     [33m[2m✓[22m[39m updates the search field when the browser goes back to an earlier query [33m 680[2mms[22m[39m
+     [33m[2m✓[22m[39m a search followed by an immediate Back in the same batch restores the earlier query [33m 386[2mms[22m[39m
+     [33m[2m✓[22m[39m lists every collection on the home page and keeps articles bound to a known collection [33m 387[2mms[22m[39m
+     [33m[2m✓[22m[39m renders an article with its breadcrumb and copies it as Markdown for an LLM [33m 335[2mms[22m[39m
+ [32m✓[39m src/domain/replyComposition.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 72[2mms[22m[39m
+ [32m✓[39m src/features/send/BouncesPage.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[33m 1970[2mms[22m[39m
+     [33m[2m✓[22m[39m renders the bounce list and passes the URL type filter to the port [33m 585[2mms[22m[39m
+     [33m[2m✓[22m[39m shows an error with retry when the list fails to load [33m 479[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps loaded bounces when the next page fails and recovers on retry [33m 552[2mms[22m[39m
+ [32m✓[39m src/data/v2PreferencesGateway.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 63[2mms[22m[39m
+ [32m✓[39m src/app/App.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[33m 5041[2mms[22m[39m
+     [33m[2m✓[22m[39m resolves a message URL beyond the first page with one bounded direct read and no cursor walk (happy path) [33m 2977[2mms[22m[39m
+     [33m[2m✓[22m[39m refuses a direct answer bound to another mailbox and shows the generic unavailable state [33m 1298[2mms[22m[39m
+     [33m[2m✓[22m[39m a revoked session from the direct read clears the protected content through the shared policy [33m 737[2mms[22m[39m
+ [32m✓[39m src/data/v2SequenceGateway.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 153[2mms[22m[39m
+ [32m✓[39m src/app/collaborationNav.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 7684[2mms[22m[39m
+     [33m[2m✓[22m[39m shows Drafts and Members folders for the C/D mailbox, plus the search entries [33m 2658[2mms[22m[39m
+     [33m[2m✓[22m[39m hides the gated folders and disables Compose for a read-only mailbox [33m 1733[2mms[22m[39m
+     [33m[2m✓[22m[39m marks only Drafts current and keeps reader navigation ancestors highlighted but unannounced [33m 2648[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps the mailbox highlighted on the standalone Members page without any folder column [33m 640[2mms[22m[39m
+ [32m✓[39m src/app/PageBoundary.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 1122[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps navigation available while a page downloads, then renders it [33m 341[2mms[22m[39m
+     [33m[2m✓[22m[39m handles a failed download without exposing diagnostics and permits another route [33m 450[2mms[22m[39m
+ [32m✓[39m src/app/features/index.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 1778[2mms[22m[39m
+     [33m[2m✓[22m[39m passes the session context and Outreach gateway to Celeste's campaigns page (happy path) [33m 1048[2mms[22m[39m
+     [33m[2m✓[22m[39m shows Celeste's own unavailable state when no Outreach gateway is connected [33m 329[2mms[22m[39m
+     [33m[2m✓[22m[39m routes a campaign-scoped account read through the real V2 adapter, which fails explicitly without any dispatch [33m 335[2mms[22m[39m
+ [32m✓[39m src/data/contract-send.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 148[2mms[22m[39m
+ [32m✓[39m src/data/v2AttachmentGateway.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 195[2mms[22m[39m
+ [32m✓[39m src/app/approvalRecovery.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 97[2mms[22m[39m
+ [32m✓[39m src/data/contract-folders.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 59[2mms[22m[39m
+ [32m✓[39m src/data/draftAttachmentGateway.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 81[2mms[22m[39m
+ [32m✓[39m src/features/drafts/DraftsPage.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[33m 1950[2mms[22m[39m
+     [33m[2m✓[22m[39m replaces rows once after cursor expiry, then stops automatic recovery until explicit retry [33m 1674[2mms[22m[39m
+ [32m✓[39m src/features/search/SearchPage.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[33m 2449[2mms[22m[39m
+     [33m[2m✓[22m[39m without a query it explains literal matching and runs nothing [33m 304[2mms[22m[39m
+     [33m[2m✓[22m[39m lists literal matches across mailboxes as inert rows linking into the reader [33m 649[2mms[22m[39m
+     [33m[2m✓[22m[39m scopes to one mailbox and treats metacharacters literally [33m 664[2mms[22m[39m
+     [33m[2m✓[22m[39m an unavailable scope and an outage are distinct states, and the outage retries [33m 670[2mms[22m[39m
+ [32m✓[39m src/lib/postmanCollection.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 50[2mms[22m[39m
+ [32m✓[39m src/data/v2CampaignRunsGateway.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 182[2mms[22m[39m
+ [32m✓[39m src/features/settings/productionSettings.test.tsx [2m([22m[2m11 tests[22m[2m)[22m[33m 8664[2mms[22m[39m
+     [33m[2m✓[22m[39m /settings/tags shows the unavailable state with a real destination and no simulated form [33m 1884[2mms[22m[39m
+     [33m[2m✓[22m[39m /settings/webhooks shows the unavailable state with a real destination and no simulated form [33m 976[2mms[22m[39m
+     [33m[2m✓[22m[39m /settings/webhooks/create shows the unavailable state with a real destination and no simulated form [33m 1113[2mms[22m[39m
+     [33m[2m✓[22m[39m /settings/developer-api shows the unavailable state with a real destination and no simulated form [33m 683[2mms[22m[39m
+     [33m[2m✓[22m[39m /settings/workspace/name shows the unavailable state with a real destination and no simulated form [33m 571[2mms[22m[39m
+     [33m[2m✓[22m[39m /settings/workspace/invite shows the unavailable state with a real destination and no simulated form [33m 897[2mms[22m[39m
+     [33m[2m✓[22m[39m /settings/workspace/invitations shows the unavailable state with a real destination and no simulated form [33m 564[2mms[22m[39m
+     [33m[2m✓[22m[39m /settings/workspace/create shows the unavailable state with a real destination and no simulated form [33m 507[2mms[22m[39m
+     [33m[2m✓[22m[39m /settings/profile/password shows the unavailable state with a real destination and no simulated form [33m 350[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps the real API reference, Postman download and white-label card on the Developer API page [33m 745[2mms[22m[39m
+     [33m[2m✓[22m[39m shows the server workspace name read-only on the rename page [33m 339[2mms[22m[39m
+ [32m✓[39m src/features/outreach/contract.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 57[2mms[22m[39m
+ [32m✓[39m src/features/members/adminModel.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 42[2mms[22m[39m
+ [32m✓[39m src/domain/sendConsent.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 21[2mms[22m[39m
+Error: Not implemented: window.scrollTo
+    at module.exports (/workspace/apps/web/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at /workspace/apps/web/node_modules/jsdom/lib/jsdom/browser/Window.js:960:7
+    at /workspace/apps/web/src/app/Shell.tsx:232:12
+    at Object.react_stack_bottom_frame
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:28656:20)
+    at runWithFiberInDEV (/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:1048:13)
+    at commitHookEffectListMount
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:13748:29)
+    at commitHookPassiveMountEffects
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:13835:11)
+    at commitPassiveMountOnFiber
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16906:13)
+    at recursivelyTraversePassiveMountEffects
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16851:13)
+    at commitPassiveMountOnFiber
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16898:11) undefined
+ [32m✓[39m src/app/sendIntent.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 294[2mms[22m[39m
+ [32m✓[39m src/ui/useBottomNotice.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 103[2mms[22m[39m
+ [32m✓[39m src/data/v2AssigneeOptionsGateway.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 72[2mms[22m[39m
+ [32m✓[39m src/data/send-signal.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 86[2mms[22m[39m
+Error: Not implemented: window.scrollTo
+    at module.exports (/workspace/apps/web/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at /workspace/apps/web/node_modules/jsdom/lib/jsdom/browser/Window.js:960:7
+    at /workspace/apps/web/src/app/Shell.tsx:232:12
+    at Object.react_stack_bottom_frame
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:28656:20)
+    at runWithFiberInDEV (/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:1048:13)
+    at commitHookEffectListMount
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:13748:29)
+    at commitHookPassiveMountEffects
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:13835:11)
+    at commitPassiveMountOnFiber
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16906:13)
+    at recursivelyTraversePassiveMountEffects
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16851:13)
+    at commitPassiveMountOnFiber
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16898:11) undefined
+ [32m✓[39m src/ui/ConnectivityBanner.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[33m 485[2mms[22m[39m
+ [32m✓[39m src/app/featureRegistry.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m src/app/SearchBox.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[33m 1170[2mms[22m[39m
+     [33m[2m✓[22m[39m refreshes idle fields on navigation and history, including an unavailable scope [33m 706[2mms[22m[39m
+ [32m✓[39m src/features/inbox/InboxLayout.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[33m 3078[2mms[22m[39m
+     [33m[2m✓[22m[39m u returns from a thread to the list, keeping the folder filter [33m 1784[2mms[22m[39m
+     [33m[2m✓[22m[39m c starts a new draft in a composable mailbox and / focuses the search field [33m 835[2mms[22m[39m
+     [33m[2m✓[22m[39m ignores c in a mailbox without the compose capability [33m 452[2mms[22m[39m
+ [32m✓[39m src/features/outreach/RunIntent.test.tsx [2m([22m[2m1 test[22m[2m)[22m[33m 889[2mms[22m[39m
+     [33m[2m✓[22m[39m retains the exact submitted intent across route remount and warns before tab close [33m 885[2mms[22m[39m
+ [32m✓[39m src/features/send/SuppressionsPage.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[33m 993[2mms[22m[39m
+     [33m[2m✓[22m[39m renders the suppression list and passes the URL search to the port [33m 394[2mms[22m[39m
+     [33m[2m✓[22m[39m shows an error with retry when the list fails to load [33m 455[2mms[22m[39m
+ [32m✓[39m src/data/v2DirectMessageGateway.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 90[2mms[22m[39m
+Error: Not implemented: window.scrollTo
+    at module.exports (/workspace/apps/web/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at /workspace/apps/web/node_modules/jsdom/lib/jsdom/browser/Window.js:960:7
+    at /workspace/apps/web/src/app/Shell.tsx:232:12
+    at Object.react_stack_bottom_frame
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:28656:20)
+    at runWithFiberInDEV (/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:1048:13)
+    at commitHookEffectListMount
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:13748:29)
+    at commitHookPassiveMountEffects
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:13835:11)
+    at commitPassiveMountOnFiber
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16906:13)
+    at recursivelyTraversePassiveMountEffects
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16851:13)
+    at commitPassiveMountOnFiber
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16898:11) undefined
+ [32m✓[39m src/ui/BrandMark.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[32m 282[2mms[22m[39m
+ [32m✓[39m src/data/v2Contract.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 43[2mms[22m[39m
+Error: Not implemented: window.scrollTo
+    at module.exports (/workspace/apps/web/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at /workspace/apps/web/node_modules/jsdom/lib/jsdom/browser/Window.js:960:7
+    at /workspace/apps/web/src/app/Shell.tsx:232:12
+    at Object.react_stack_bottom_frame
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:28656:20)
+    at runWithFiberInDEV (/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:1048:13)
+    at commitHookEffectListMount
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:13748:29)
+    at commitHookPassiveMountEffects
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:13835:11)
+    at commitPassiveMountOnFiber
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16906:13)
+    at recursivelyTraversePassiveMountEffects
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16851:13)
+    at commitPassiveMountOnFiber
+(/workspace/apps/web/node_modules/react-dom/cjs/react-dom-client.development.js:16898:11) undefined
+ [32m✓[39m src/domain/sendSuppression.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32m✓[39m src/features/outreach/featureModule.test.tsx [2m([22m[2m1 test[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m src/features/send/SavedDraftSendFlow.test.tsx [2m([22m[2m1 test[22m[2m)[22m[33m 3045[2mms[22m[39m
+     [33m[2m✓[22m[39m offers review only after saving current edits and approves exactly the reviewed version [33m 3041[2mms[22m[39m
+ [32m✓[39m src/features/inbox/ComposeFab.test.tsx [2m([22m[2m7 tests[22m[2m)[22m[32m 244[2mms[22m[39m
+ [32m✓[39m src/app/entry.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32m✓[39m src/app/scope.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 5[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 12 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m src/app/Shell.test.tsx[2m > [22mmailbox traversal[2m > [22mone invalid continuation
+cursor resets the whole loop and replaces accumulated mailboxes
+[31m[1mTestingLibraryElementError[22m[39m: Unable to find role="link" and name "Fresh first page"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"flex min-h-dvh bg-surface "[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"sr-only focus:not-sr-only focus:fixed focus:start-2 focus:top-2 focus:z-40
+focus:rounded-lg focus:border focus:border-line focus:bg-surface focus:px-3 focus:py-2 focus:text-sm"[39m
+        [33mhref[39m=[32m"#main"[39m
+      [36m>[39m
+        [0mSkip to content[0m
+      [36m</a>[39m
+      [36m<aside[39m
+        [33mclass[39m=[32m"sticky top-0 z-10 hidden max-h-[calc(100dvh-var(--bottom-notices))] shrink-0 flex-col
+overflow-y-auto overscroll-contain border-e border-line bg-surface-2 lg:flex   w-66"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex h-full min-h-0 flex-col gap-4 p-4"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex min-h-10 items-center gap-2 justify-between"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33maria-label[39m=[32m"Elevateo home"[39m
+              [33mclass[39m=[32m"inline-flex h-6 items-center gap-2 rounded-md h-10 px-2"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"inline-flex shrink-0 items-center justify-center rounded-lg bg-brand-tile p-1
+rounded-md p-0.5"[39m
+                [33mdata-testid[39m=[32m"brand-mark"[39m
+              [36m>[39m
+                [36m<img[39m
+                  [33malt[39m=[32m""[39m
+                  [33mclass[39m=[32m"block object-contain"[39m
+                  [33mdecoding[39m=[32m"async"[39m
+                  [33mheight[39m=[32m"24"[39m
+                  [33msrc[39m=[32m"/brand/elevateo-logo.png"[39m
+                  [33mstyle[39m=[32m"width: 24px; height: 24px;"[39m
+                  [33mwidth[39m=[32m"24"[39m
+                [36m/>[39m
+              [36m</span>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"text-sm font-semibold uppercase leading-none tracking-[0.18em] text-fg "[39m
+              [36m>[39m
+                [0mElevateo Co.[0m
+              [36m</span>[39m
+            [36m</a>[39m
+            [36m<button[39m
+              [33maria-expanded[39m=[32m"true"[39m
+              [33maria-label[39m=[32m"Toggle sidebar"[39m
+              [33mclass[39m=[32m"inline-flex shrink-0 items-center justify-center [&_svg]:shrink-0
+disabled:pointer-events-none disabled:opacity-50 size-10 rounded-lg bg-transparent hover:bg-surface-2 text-muted
+hover:text-fg   "[39m
+              [33mtitle[39m=[32m"Toggle sidebar"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"size-5 "[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"16"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"1.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"16"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M15.75 19.5 8.25 12l7.5-7.5"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33maria-expanded[39m=[32m"false"[39m
+              [33maria-haspopup[39m=[32m"listbox"[39m
+              [33maria-label[39m=[32m"Workspace: Synthetic organization A"[39m
+              [33mclass[39m=[32m"flex h-10 w-full items-center gap-2 overflow-hidden rounded-lg border border-line
+border-b-line bg-surface px-3 py-2 text-base shadow-xs sm:text-sm  "[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"flex-1 truncate text-start text-fg "[39m
+              [36m>[39m
+                [0mSynthetic organization A[0m
+              [36m</span>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"size-4 shrink-0 text-muted"[39m
+                [33mfill[39m=[32m"currentColor"[39m
+                [33mheight[39m=[32m"16"[39m
+                [33mviewBox[39m=[32m"0 0 20 20"[39m
+                [33mwidth[39m=[32m"16"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33mclip-rule[39m=[32m"evenodd"[39m
+                  [33md[39m=[32m"M10 3a.75.75 0 0 1 .55.24l3.25 3.5a.75.75 0 1 1-1.1 1.02L10 4.852 7.3 7.76a.75.75
+0 0 1-1.1-1.02l3.25-3.5A.75.75 0 0 1 10 3Zm-3.76 9.2a.75.75 0 0 1 1.06.04l2.7 2.908 2.7-2.908a.75.75 0 1 1 1.1
+1.02l-3.25 3.5a.75.75 0 0 1-1.1 0l-3.25-3.5a.75.75 0 0 1 .04-1.06Z"[39m
+                  [33mfill-rule[39m=[32m"evenodd"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain"[39m
+          [36m>[39m
+            [36m<nav[39m
+              [33maria-label[39m=[32m"Primary"[39m
+            [36m>[39m
+              [36m<ul[39m
+                [33mclass[39m=[32m"flex flex-col"[39m
+              [36m>[39m
+                [36m<li>[39m
+                  [36m<a[39m
+                    [33mclass[39m=[32m"relative my-px flex h-8 w-full items-center gap-3 rounded-lg border
+border-transparent px-3 text-start text-muted hover:bg-surface-2 hover:text-fg   "[39m
+                    [33mdata-discover[39m=[32m"true"[39m
+                    [33mhref[39m=[32m"/inbox"[39m
+                  [36m>[39m
+                    [36m<svg[39m
+                      [33maria-hidden[39m=[32m"true"[39m
+                      [33mclass[39m=[32m"size-4 shrink-0"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mheight[39m=[32m"16"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mstroke-linecap[39m=[32m"round"[39m
+                      [33mstroke-linejoin[39m=[32m"round"[39m
+                      [33mstroke-width[39m=[32m"1.5"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                      [33mwidth[39m=[32m"16"[39m
+                    [36m>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M2.25 13.5h3.86a2.25 2.25 0 0 1 2.012 1.244l.256.512a2.25 2.25 0 0 0 2.013
+1....
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"flex min-h-dvh bg-surface "[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"sr-only focus:not-sr-only focus:fixed focus:start-2 focus:top-2 focus:z-40
+focus:rounded-lg focus:border focus:border-line focus:bg-surface focus:px-3 focus:py-2 focus:text-sm"[39m
+        [33mhref[39m=[32m"#main"[39m
+      [36m>[39m
+        [0mSkip to content[0m
+      [36m</a>[39m
+      [36m<aside[39m
+        [33mclass[39m=[32m"sticky top-0 z-10 hidden max-h-[calc(100dvh-var(--bottom-notices))] shrink-0 flex-col
+overflow-y-auto overscroll-contain border-e border-line bg-surface-2 lg:flex   w-66"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex h-full min-h-0 flex-col gap-4 p-4"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex min-h-10 items-center gap-2 justify-between"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33maria-label[39m=[32m"Elevateo home"[39m
+              [33mclass[39m=[32m"inline-flex h-6 items-center gap-2 rounded-md h-10 px-2"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"inline-flex shrink-0 items-center justify-center rounded-lg bg-brand-tile p-1
+rounded-md p-0.5"[39m
+                [33mdata-testid[39m=[32m"brand-mark"[39m
+              [36m>[39m
+                [36m<img[39m
+                  [33malt[39m=[32m""[39m
+                  [33mclass[39m=[32m"block object-contain"[39m
+                  [33mdecoding[39m=[32m"async"[39m
+                  [33mheight[39m=[32m"24"[39m
+                  [33msrc[39m=[32m"/brand/elevateo-logo.png"[39m
+                  [33mstyle[39m=[32m"width: 24px; height: 24px;"[39m
+                  [33mwidth[39m=[32m"24"[39m
+                [36m/>[39m
+              [36m</span>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"text-sm font-semibold uppercase leading-none tracking-[0.18em] text-fg "[39m
+              [36m>[39m
+                [0mElevateo Co.[0m
+              [36m</span>[39m
+            [36m</a>[39m
+            [36m<button[39m
+              [33maria-expanded[39m=[32m"true"[39m
+              [33maria-label[39m=[32m"Toggle sidebar"[39m
+              [33mclass[39m=[32m"inline-flex shrink-0 items-center justify-center [&_svg]:shrink-0
+disabled:pointer-events-none disabled:opacity-50 size-10 rounded-lg bg-transparent hover:bg-surface-2 text-muted
+hover:text-fg   "[39m
+              [33mtitle[39m=[32m"Toggle sidebar"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"size-5 "[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"16"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"1.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"16"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M15.75 19.5 8.25 12l7.5-7.5"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33maria-expanded[39m=[32m"false"[39m
+              [33maria-haspopup[39m=[32m"listbox"[39m
+              [33maria-label[39m=[32m"Workspace: Synthetic organization A"[39m
+              [33mclass[39m=[32m"flex h-10 w-full items-center gap-2 overflow-hidden rounded-lg border border-line
+border-b-line bg-surface px-3 py-2 text-base shadow-xs sm:text-sm  "[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"flex-1 truncate text-start text-fg "[39m
+              [36m>[39m
+                [0mSynthetic organization A[0m
+              [36m</span>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"size-4 shrink-0 text-muted"[39m
+                [33mfill[39m=[32m"currentColor"[39m
+                [33mheight[39m=[32m"16"[39m
+                [33mviewBox[39m=[32m"0 0 20 20"[39m
+                [33mwidth[39m=[32m"16"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33mclip-rule[39m=[32m"evenodd"[39m
+                  [33md[39m=[32m"M10 3a.75.75 0 0 1 .55.24l3.25 3.5a.75.75 0 1 1-1.1 1.02L10 4.852 7.3 7.76a.75.75
+0 0 1-1.1-1.02l3.25-3.5A.75.75 0 0 1 10 3Zm-3.76 9.2a.75.75 0 0 1 1.06.04l2.7 2.908 2.7-2.908a.75.75 0 1 1 1.1
+1.02l-3.25 3.5a.75.75 0 0 1-1.1 0l-3.25-3.5a.75.75 0 0 1 .04-1.06Z"[39m
+                  [33mfill-rule[39m=[32m"evenodd"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain"[39m
+          [36m>[39m
+            [36m<nav[39m
+              [33maria-label[39m=[32m"Primary"[39m
+            [36m>[39m
+              [36m<ul[39m
+                [33mclass[39m=[32m"flex flex-col"[39m
+              [36m>[39m
+                [36m<li>[39m
+                  [36m<a[39m
+                    [33mclass[39m=[32m"relative my-px flex h-8 w-full items-center gap-3 rounded-lg border
+border-transparent px-3 text-start text-muted hover:bg-surface-2 hover:text-fg   "[39m
+                    [33mdata-discover[39m=[32m"true"[39m
+                    [33mhref[39m=[32m"/inbox"[39m
+                  [36m>[39m
+                    [36m<svg[39m
+                      [33maria-hidden[39m=[32m"true"[39m
+                      [33mclass[39m=[32m"size-4 shrink-0"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mheight[39m=[32m"16"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mstroke-linecap[39m=[32m"round"[39m
+                      [33mstroke-linejoin[39m=[32m"round"[39m
+                      [33mstroke-width[39m=[32m"1.5"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                      [33mwidth[39m=[32m"16"[39m
+                    [36m>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M2.25 13.5h3.86a2.25 2.25 0 0 1 2.012 1.244l.256.512a2.25 2.25 0 0 0 2.013
+1....
+[90m [2m❯[22m waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:[2m163:27[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m86:33[22m[39m
+[36m [2m❯[22m src/app/Shell.test.tsx:[2m264:18[22m[39m
+    [90m262|[39m     ])
+    [90m263|[39m     [34mrenderShell[39m(gateway)
+    [90m264|[39m     [35mawait[39m screen[33m.[39m[34mfindByRole[39m([32m'link'[39m[33m,[39m {
+name[33m:[39m [32m'Fresh first page'[39m })
+    [90m   |[39m                  [31m^[39m
+    [90m265|[39m     expect(screen.getByRole('link', { name: 'Fresh second page' })).to…
+    [90m266|[39m     // The page accumulated before the reset was discarded, not merged…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/12]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/app/Sidebar.test.tsx[2m > [22msidebar sections[2m > [22mrenders the brand, workspace
+switcher, primary links and every group as independent landmarks
+[31m[1mAssertionError[22m: expected '/brand/elevateo-logo.png' to be '/brand/elevateo-mark-64.png' // Object.is
+equality[39m
+
+Expected: [32m"/brand/elevateo-[7mmark-64[27m.png"[39m
+Received: [31m"/brand/elevateo-[7mlogo[27m.png"[39m
+
+[36m [2m❯[22m src/app/Sidebar.test.tsx:[2m65:39[22m[39m
+    [90m 63|[39m     // AIDEV-NOTE: Compact publisher assets; BrandMark tests verify au…
+    [90m 64|[39m     [35mconst[39m mark [33m=[39m
+screen[33m.[39m[34mgetByTestId[39m([32m'brand-mark'[39m)[33m.[39m[34mquerySelector[39m([32m'img'[39m)
+    [90m 65|[39m     expect(mark?.getAttribute('src')).toBe('/brand/elevateo-mark-64.pn…
+    [90m   |[39m                                       [31m^[39m
+    [90m 66|[39m
+[34mexpect[39m(mark[33m?.[39m[34mgetAttribute[39m([32m'alt'[39m))[33m.[39m[34mtoBe[39m([32m''[39m)
+    [90m 67|[39m     [34mexpect[39m(screen[33m.[39m[34mgetByText[39m([32m'Elevateo
+Co.'[39m))[33m.[39m[34mtoBeTruthy[39m()
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/12]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/features/auth/AuthCompletePage.test.tsx[2m > [22mcompletion form[2m > [22mreads
+nothing from the URL and stores nothing in the browser
+[31m[1mAssertionError[22m: expected [ '/brand/elevateo-logo.png' ] to deeply equal [ '/brand/elevateo-mark-64.png'
+][39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[32m-   "/brand/elevateo-mark-64.png",[39m
+[31m+   "/brand/elevateo-logo.png",[39m
+[2m  ][22m
+
+[36m [2m❯[22m src/features/auth/AuthCompletePage.test.tsx:[2m90:23[22m[39m
+    [90m 88|[39m     // The only resource is the constant brand mark: no script, styles…
+    [90m 89|[39m     const resources = Array.from(document.querySelectorAll('script[src…
+    [90m 90|[39m
+[34mexpect[39m(resources)[33m.[39m[34mtoEqual[39m([[32m'/brand/elevateo-mark-64.png'[39m])
+    [90m   |[39m                       [31m^[39m
+    [90m 91|[39m   })
+    [90m 92|[39m })
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/12]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/features/auth/SignInPage.sso.test.tsx[2m > [22msign-in entries by server status[2m >
+[22mshows a single sign-on primary button above the outline password form when both are enabled
+[31m[1mAssertionError[22m: expected 'inline-flex shrink-0 items-center jus…' to contain 'bg-(--color-accent)'[39m
+
+Expected: [32m"bg-(--color-accent)"[39m
+Received: [31m"inline-flex shrink-0 items-center justify-center whitespace-nowrap font-medium [&_svg]:shrink-0
+disabled:pointer-events-none disabled:opacity-50 bg-surface hover:bg-surface-2 text-fg border-2 border-line
+font-semibold h-10 gap-2 px-4 text-sm rounded-lg w-full"[39m
+
+[36m [2m❯[22m src/features/auth/SignInPage.sso.test.tsx:[2m62:27[22m[39m
+    [90m 60|[39m     const sso = await screen.findByRole('button', { name: 'Continue wi…
+    [90m 61|[39m     [35mconst[39m submit [33m=[39m
+screen[33m.[39m[34mgetByRole[39m([32m'button'[39m[33m,[39m { name[33m:[39m [32m'Sign in'[39m })
+    [90m 62|[39m
+[34mexpect[39m(sso[33m.[39mclassName)[33m.[39m[34mtoContain[39m([32m'bg-(--color-accent)'[39m)
+    [90m   |[39m                           [31m^[39m
+    [90m 63|[39m
+[34mexpect[39m(submit[33m.[39mclassName)[33m.[39m[34mtoContain[39m([32m'bg-surface'[39m)
+    [90m 64|[39m     // DOCUMENT_POSITION_FOLLOWING: the submit comes after the SSO but…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/12]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/features/auth/SignInPage.sso.test.tsx[2m > [22msign-in entries by server status[2m >
+[22mmakes the password submit primary when it is the only entry
+[31m[1mAssertionError[22m: expected 'inline-flex shrink-0 items-center jus…' to contain 'bg-(--color-accent)'[39m
+
+Expected: [32m"bg-(--color-accent)"[39m
+Received: [31m"inline-flex shrink-0 items-center justify-center whitespace-nowrap font-medium [&_svg]:shrink-0
+disabled:pointer-events-none disabled:opacity-50 bg-surface hover:bg-surface-2 text-fg border-2 border-line
+font-semibold h-10 gap-2 px-4 text-sm rounded-lg w-full"[39m
+
+[36m [2m❯[22m src/features/auth/SignInPage.sso.test.tsx:[2m73:80[22m[39m
+    [90m 71|[39m   it('makes the password submit primary when it is the only entry', as…
+    [90m 72|[39m     [34mrenderSignedOut[39m({ getSsoStatus[33m:[39m [32m'sso_password_only'[39m })
+    [90m 73|[39m     expect((await screen.findByRole('button', { name: 'Sign in' })).cl…
+    [90m   |[39m                                                                                [31m^[39m
+    [90m 74|[39m   })
+    [90m 75|[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/12]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/features/auth/SignInPage.sso.test.tsx[2m > [22munsupported single sign-on provider
+(fails closed, no Google UI)[2m > [22mfalls back to the password form (no SSO button) when google is reported
+alongside password login
+[31m[1mAssertionError[22m: expected 'inline-flex shrink-0 items-center jus…' to contain 'bg-(--color-accent)'[39m
+
+Expected: [32m"bg-(--color-accent)"[39m
+Received: [31m"inline-flex shrink-0 items-center justify-center whitespace-nowrap font-medium [&_svg]:shrink-0
+disabled:pointer-events-none disabled:opacity-50 bg-surface hover:bg-surface-2 text-fg border-2 border-line
+font-semibold h-10 gap-2 px-4 text-sm rounded-lg w-full"[39m
+
+[36m [2m❯[22m src/features/auth/SignInPage.sso.test.tsx:[2m160:73[22m[39m
+    [90m158|[39m
+[34mexpect[39m(screen[33m.[39m[34mqueryByText[39m([36m/google/i[39m))[33m.[39m[34mtoBeNull[39m()
+    [90m159|[39m     // The lone password submit is primary, exactly as when SSO is dis…
+    [90m160|[39m     expect((screen.getByRole('button', { name: 'Sign in' })).className…
+    [90m   |[39m                                                                         [31m^[39m
+    [90m161|[39m   })
+    [90m162|[39m })
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/12]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/features/drafts/DraftEditorPage.test.tsx[2m > [22mcontext recovery keeps local intent
+for the same owner[2m > [22munmounting recovery under Shell: the remounted editor restores the same intent; a late
+error is not applied as a rejection
+[31m[1mTestingLibraryElementError[22m[39m: Unable to find an element with the text: Saved version 2. This could be
+because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to
+make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"flex min-h-dvh bg-surface "[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"sr-only focus:not-sr-only focus:fixed focus:start-2 focus:top-2 focus:z-40
+focus:rounded-lg focus:border focus:border-line focus:bg-surface focus:px-3 focus:py-2 focus:text-sm"[39m
+        [33mhref[39m=[32m"#main"[39m
+      [36m>[39m
+        [0mSkip to content[0m
+      [36m</a>[39m
+      [36m<aside[39m
+        [33mclass[39m=[32m"sticky top-0 z-10 hidden max-h-[calc(100dvh-var(--bottom-notices))] shrink-0 flex-col
+overflow-y-auto overscroll-contain border-e border-line bg-surface-2 lg:flex   w-66"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex h-full min-h-0 flex-col gap-4 p-4"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex min-h-10 items-center gap-2 justify-between"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33maria-label[39m=[32m"Elevateo home"[39m
+              [33mclass[39m=[32m"inline-flex h-6 items-center gap-2 rounded-md h-10 px-2"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"inline-flex shrink-0 items-center justify-center rounded-lg bg-brand-tile p-1
+rounded-md p-0.5"[39m
+                [33mdata-testid[39m=[32m"brand-mark"[39m
+              [36m>[39m
+                [36m<img[39m
+                  [33malt[39m=[32m""[39m
+                  [33mclass[39m=[32m"block object-contain"[39m
+                  [33mdecoding[39m=[32m"async"[39m
+                  [33mheight[39m=[32m"24"[39m
+                  [33msrc[39m=[32m"/brand/elevateo-logo.png"[39m
+                  [33mstyle[39m=[32m"width: 24px; height: 24px;"[39m
+                  [33mwidth[39m=[32m"24"[39m
+                [36m/>[39m
+              [36m</span>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"text-sm font-semibold uppercase leading-none tracking-[0.18em] text-fg "[39m
+              [36m>[39m
+                [0mElevateo Co.[0m
+              [36m</span>[39m
+            [36m</a>[39m
+            [36m<button[39m
+              [33maria-expanded[39m=[32m"true"[39m
+              [33maria-label[39m=[32m"Toggle sidebar"[39m
+              [33mclass[39m=[32m"inline-flex shrink-0 items-center justify-center [&_svg]:shrink-0
+disabled:pointer-events-none disabled:opacity-50 size-10 rounded-lg bg-transparent hover:bg-surface-2 text-muted
+hover:text-fg   "[39m
+              [33mtitle[39m=[32m"Toggle sidebar"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"size-5 "[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"16"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"1.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"16"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M15.75 19.5 8.25 12l7.5-7.5"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33maria-expanded[39m=[32m"false"[39m
+              [33maria-haspopup[39m=[32m"listbox"[39m
+              [33maria-label[39m=[32m"Workspace: Synthetic organization A"[39m
+              [33mclass[39m=[32m"flex h-10 w-full items-center gap-2 overflow-hidden rounded-lg border border-line
+border-b-line bg-surface px-3 py-2 text-base shadow-xs sm:text-sm  "[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"flex-1 truncate text-start text-fg "[39m
+              [36m>[39m
+                [0mSynthetic organization A[0m
+              [36m</span>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"size-4 shrink-0 text-muted"[39m
+                [33mfill[39m=[32m"currentColor"[39m
+                [33mheight[39m=[32m"16"[39m
+                [33mviewBox[39m=[32m"0 0 20 20"[39m
+                [33mwidth[39m=[32m"16"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33mclip-rule[39m=[32m"evenodd"[39m
+                  [33md[39m=[32m"M10 3a.75.75 0 0 1 .55.24l3.25 3.5a.75.75 0 1 1-1.1 1.02L10 4.852 7.3 7.76a.75.75
+0 0 1-1.1-1.02l3.25-3.5A.75.75 0 0 1 10 3Zm-3.76 9.2a.75.75 0 0 1 1.06.04l2.7 2.908 2.7-2.908a.75.75 0 1 1 1.1
+1.02l-3.25 3.5a.75.75 0 0 1-1.1 0l-3.25-3.5a.75.75 0 0 1 .04-1.06Z"[39m
+                  [33mfill-rule[39m=[32m"evenodd"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain"[39m
+          [36m>[39m
+            [36m<nav[39m
+              [33maria-label[39m=[32m"Primary"[39m
+            [36m>[39m
+              [36m<ul[39m
+                [33mclass[39m=[32m"flex flex-col"[39m
+              [36m>[39m
+                [36m<li>[39m
+                  [36m<a[39m
+                    [33mclass[39m=[32m"relative my-px flex h-8 w-full items-center gap-3 rounded-lg border
+border-transparent px-3 text-start text-muted hover:bg-surface-2 hover:text-fg   "[39m
+                    [33mdata-discover[39m=[32m"true"[39m
+                    [33mhref[39m=[32m"/inbox"[39m
+                  [36m>[39m
+                    [36m<svg[39m
+                      [33maria-hidden[39m=[32m"true"[39m
+                      [33mclass[39m=[32m"size-4 shrink-0"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mheight[39m=[32m"16"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mstroke-linecap[39m=[32m"round"[39m
+                      [33mstroke-linejoin[39m=[32m"round"[39m
+                      [33mstroke-width[39m=[32m"1.5"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                      [33mwidth[39m=[32m"16"[39m
+                    [36m>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M2.25 13.5h3.86a2.25 2.25 0 0 1 2.012 1.244l.256.512a2.25 2.25 0 0 0 2.013
+1....
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"flex min-h-dvh bg-surface "[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"sr-only focus:not-sr-only focus:fixed focus:start-2 focus:top-2 focus:z-40
+focus:rounded-lg focus:border focus:border-line focus:bg-surface focus:px-3 focus:py-2 focus:text-sm"[39m
+        [33mhref[39m=[32m"#main"[39m
+      [36m>[39m
+        [0mSkip to content[0m
+      [36m</a>[39m
+      [36m<aside[39m
+        [33mclass[39m=[32m"sticky top-0 z-10 hidden max-h-[calc(100dvh-var(--bottom-notices))] shrink-0 flex-col
+overflow-y-auto overscroll-contain border-e border-line bg-surface-2 lg:flex   w-66"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex h-full min-h-0 flex-col gap-4 p-4"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex min-h-10 items-center gap-2 justify-between"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33maria-label[39m=[32m"Elevateo home"[39m
+              [33mclass[39m=[32m"inline-flex h-6 items-center gap-2 rounded-md h-10 px-2"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"inline-flex shrink-0 items-center justify-center rounded-lg bg-brand-tile p-1
+rounded-md p-0.5"[39m
+                [33mdata-testid[39m=[32m"brand-mark"[39m
+              [36m>[39m
+                [36m<img[39m
+                  [33malt[39m=[32m""[39m
+                  [33mclass[39m=[32m"block object-contain"[39m
+                  [33mdecoding[39m=[32m"async"[39m
+                  [33mheight[39m=[32m"24"[39m
+                  [33msrc[39m=[32m"/brand/elevateo-logo.png"[39m
+                  [33mstyle[39m=[32m"width: 24px; height: 24px;"[39m
+                  [33mwidth[39m=[32m"24"[39m
+                [36m/>[39m
+              [36m</span>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"text-sm font-semibold uppercase leading-none tracking-[0.18em] text-fg "[39m
+              [36m>[39m
+                [0mElevateo Co.[0m
+              [36m</span>[39m
+            [36m</a>[39m
+            [36m<button[39m
+              [33maria-expanded[39m=[32m"true"[39m
+              [33maria-label[39m=[32m"Toggle sidebar"[39m
+              [33mclass[39m=[32m"inline-flex shrink-0 items-center justify-center [&_svg]:shrink-0
+disabled:pointer-events-none disabled:opacity-50 size-10 rounded-lg bg-transparent hover:bg-surface-2 text-muted
+hover:text-fg   "[39m
+              [33mtitle[39m=[32m"Toggle sidebar"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"size-5 "[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"16"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"1.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"16"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M15.75 19.5 8.25 12l7.5-7.5"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33maria-expanded[39m=[32m"false"[39m
+              [33maria-haspopup[39m=[32m"listbox"[39m
+              [33maria-label[39m=[32m"Workspace: Synthetic organization A"[39m
+              [33mclass[39m=[32m"flex h-10 w-full items-center gap-2 overflow-hidden rounded-lg border border-line
+border-b-line bg-surface px-3 py-2 text-base shadow-xs sm:text-sm  "[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"flex-1 truncate text-start text-fg "[39m
+              [36m>[39m
+                [0mSynthetic organization A[0m
+              [36m</span>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"size-4 shrink-0 text-muted"[39m
+                [33mfill[39m=[32m"currentColor"[39m
+                [33mheight[39m=[32m"16"[39m
+                [33mviewBox[39m=[32m"0 0 20 20"[39m
+                [33mwidth[39m=[32m"16"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33mclip-rule[39m=[32m"evenodd"[39m
+                  [33md[39m=[32m"M10 3a.75.75 0 0 1 .55.24l3.25 3.5a.75.75 0 1 1-1.1 1.02L10 4.852 7.3 7.76a.75.75
+0 0 1-1.1-1.02l3.25-3.5A.75.75 0 0 1 10 3Zm-3.76 9.2a.75.75 0 0 1 1.06.04l2.7 2.908 2.7-2.908a.75.75 0 1 1 1.1
+1.02l-3.25 3.5a.75.75 0 0 1-1.1 0l-3.25-3.5a.75.75 0 0 1 .04-1.06Z"[39m
+                  [33mfill-rule[39m=[32m"evenodd"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain"[39m
+          [36m>[39m
+            [36m<nav[39m
+              [33maria-label[39m=[32m"Primary"[39m
+            [36m>[39m
+              [36m<ul[39m
+                [33mclass[39m=[32m"flex flex-col"[39m
+              [36m>[39m
+                [36m<li>[39m
+                  [36m<a[39m
+                    [33mclass[39m=[32m"relative my-px flex h-8 w-full items-center gap-3 rounded-lg border
+border-transparent px-3 text-start text-muted hover:bg-surface-2 hover:text-fg   "[39m
+                    [33mdata-discover[39m=[32m"true"[39m
+                    [33mhref[39m=[32m"/inbox"[39m
+                  [36m>[39m
+                    [36m<svg[39m
+                      [33maria-hidden[39m=[32m"true"[39m
+                      [33mclass[39m=[32m"size-4 shrink-0"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mheight[39m=[32m"16"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mstroke-linecap[39m=[32m"round"[39m
+                      [33mstroke-linejoin[39m=[32m"round"[39m
+                      [33mstroke-width[39m=[32m"1.5"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                      [33mwidth[39m=[32m"16"[39m
+                    [36m>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M2.25 13.5h3.86a2.25 2.25 0 0 1 2.012 1.244l.256.512a2.25 2.25 0 0 0 2.013
+1....
+[90m [2m❯[22m waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:[2m163:27[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m86:33[22m[39m
+[36m [2m❯[22m src/features/drafts/DraftEditorPage.test.tsx:[2m632:18[22m[39m
+    [90m630|[39m     [35mconst[39m h [33m=[39m [34mharness[39m()
+    [90m631|[39m     const { controller } = renderEditorInShell(h.gateway, path(CD.draf…
+    [90m632|[39m     [35mawait[39m screen[33m.[39m[34mfindByText[39m([32m'Saved version 2'[39m)
+    [90m   |[39m                  [31m^[39m
+    [90m633|[39m     fireEvent[33m.[39m[34mchange[39m([34minput[39m([32m'Subject'[39m)[33m,[39m {
+target[33m:[39m { value[33m:[39m [32m'Edited'[39m } })
+    [90m634|[39m     fireEvent.change(input('To'), { target: { value: RAW_RECIPIENTS } …
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/12]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/features/inbox/InboxFolders.test.tsx[2m > [22mfolder moves[2m > [22marchives a row
+only after the server confirms, then shows it in Archive
+[31m[1mError[22m: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with
+"testTimeout".[39m
+[36m [2m❯[22m src/features/inbox/InboxFolders.test.tsx:[2m48:3[22m[39m
+    [90m 46|[39m
+    [90m 47|[39m [34mdescribe[39m([32m'folder moves'[39m[33m,[39m () [33m=>[39m {
+    [90m 48|[39m   it('archives a row only after the server confirms, then shows it in …
+    [90m   |[39m   [31m^[39m
+    [90m 49|[39m     [35mconst[39m gateway [33m=[39m [34mcreateFixtureGateway[39m()
+    [90m 50|[39m     [35mconst[39m write [33m=[39m vi[33m.[39m[34mspyOn[39m(gateway[33m,[39m
+[32m'setThreadFolder'[39m)
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/12]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/features/send/SendStatusPage.test.tsx[2m > [22mBE03 simulated status[2m > [22mshows
+known pre-dispatch cancellation and refreshes authoritative status
+[31m[1mTestingLibraryElementError[22m[39m: Unable to find role="button" and name "Cancel before dispatch"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"mb-10 flex items-start max-md:flex-col"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"min-w-0 flex-1 self-stretch max-md:pt-6"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex items-center justify-between gap-4"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"min-w-0 space-y-1"[39m
+          [36m>[39m
+            [36m<h1[39m
+              [33mclass[39m=[32m"text-lg font-medium text-fg "[39m
+              [33mtabindex[39m=[32m"-1"[39m
+            [36m>[39m
+              [0mSend status[0m
+            [36m</h1>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"mb-6 flex flex-wrap items-center gap-3"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"relative inline-block"[39m
+            [36m>[39m
+              [36m<button[39m
+                [33maria-expanded[39m=[32m"false"[39m
+                [33maria-haspopup[39m=[32m"menu"[39m
+                [33mclass[39m=[32m"inline-flex shrink-0 items-center justify-center whitespace-nowrap font-medium
+[&_svg]:shrink-0 disabled:pointer-events-none disabled:opacity-50 bg-surface hover:bg-surface-2 border border-line
+border-b-line text-fg shadow-xs     h-10 gap-2 px-3 text-xs rounded-lg pe-4"[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mclass[39m=[32m"size-4"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"16"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-linecap[39m=[32m"round"[39m
+                  [33mstroke-linejoin[39m=[32m"round"[39m
+                  [33mstroke-width[39m=[32m"1.5"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"16"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0
+3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9
+5.25h.008v.008H12v-.008Z"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [0mGet Help[0m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mclass[39m=[32m"size-4 text-muted"[39m
+                  [33mfill[39m=[32m"currentColor"[39m
+                  [33mheight[39m=[32m"16"[39m
+                  [33mviewBox[39m=[32m"0 0 20 20"[39m
+                  [33mwidth[39m=[32m"16"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33mclip-rule[39m=[32m"evenodd"[39m
+                    [33md[39m=[32m"M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25
+4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"[39m
+                    [33mfill-rule[39m=[32m"evenodd"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"h-px w-full bg-surface-2  mt-4"[39m
+          [33mrole[39m=[32m"separator"[39m
+        [36m/>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+    [36m<div[39m
+      [33maria-label[39m=[32m"Loading send status"[39m
+      [33mrole[39m=[32m"status"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33maria-hidden[39m=[32m"true"[39m
+        [33mclass[39m=[32m"flex flex-col gap-2"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"h-10 rounded bg-skeleton "[39m
+        [36m/>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"h-10 rounded bg-skeleton "[39m
+        [36m/>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"h-10 rounded bg-skeleton "[39m
+        [36m/>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"mb-10 flex items-start max-md:flex-col"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"min-w-0 flex-1 self-stretch max-md:pt-6"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex items-center justify-between gap-4"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"min-w-0 space-y-1"[39m
+          [36m>[39m
+            [36m<h1[39m
+              [33mclass[39m=[32m"text-lg font-medium text-fg "[39m
+              [33mtabindex[39m=[32m"-1"[39m
+            [36m>[39m
+              [0mSend status[0m
+            [36m</h1>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"mb-6 flex flex-wrap items-center gap-3"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"relative inline-block"[39m
+            [36m>[39m
+              [36m<button[39m
+                [33maria-expanded[39m=[32m"false"[39m
+                [33maria-haspopup[39m=[32m"menu"[39m
+                [33mclass[39m=[32m"inline-flex shrink-0 items-center justify-center whitespace-nowrap font-medium
+[&_svg]:shrink-0 disabled:pointer-events-none disabled:opacity-50 bg-surface hover:bg-surface-2 border border-line
+border-b-line text-fg shadow-xs     h-10 gap-2 px-3 text-xs rounded-lg pe-4"[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mclass[39m=[32m"size-4"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"16"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-linecap[39m=[32m"round"[39m
+                  [33mstroke-linejoin[39m=[32m"round"[39m
+                  [33mstroke-width[39m=[32m"1.5"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"16"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0
+3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9
+5.25h.008v.008H12v-.008Z"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [0mGet Help[0m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mclass[39m=[32m"size-4 text-muted"[39m
+                  [33mfill[39m=[32m"currentColor"[39m
+                  [33mheight[39m=[32m"16"[39m
+                  [33mviewBox[39m=[32m"0 0 20 20"[39m
+                  [33mwidth[39m=[32m"16"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33mclip-rule[39m=[32m"evenodd"[39m
+                    [33md[39m=[32m"M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25
+4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"[39m
+                    [33mfill-rule[39m=[32m"evenodd"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"h-px w-full bg-surface-2  mt-4"[39m
+          [33mrole[39m=[32m"separator"[39m
+        [36m/>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+    [36m<div[39m
+      [33maria-label[39m=[32m"Loading send status"[39m
+      [33mrole[39m=[32m"status"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33maria-hidden[39m=[32m"true"[39m
+        [33mclass[39m=[32m"flex flex-col gap-2"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"h-10 rounded bg-skeleton "[39m
+        [36m/>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"h-10 rounded bg-skeleton "[39m
+        [36m/>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"h-10 rounded bg-skeleton "[39m
+        [36m/>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+[90m [2m❯[22m waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:[2m163:27[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m86:33[22m[39m
+[36m [2m❯[22m src/features/send/SendStatusPage.test.tsx:[2m26:34[22m[39m
+    [90m 24|[39m   it('shows known pre-dispatch cancellation and refreshes authoritativ…
+    [90m 25|[39m     [35mconst[39m g [33m=[39m [34msetup[39m([33mSTATUS[39m[33m,[39m [32m'cancelled'[39m)
+    [90m 26|[39m     fireEvent.click(await screen.findByRole('button', { name: 'Cancel …
+    [90m   |[39m                                  [31m^[39m
+    [90m 27|[39m     await screen.findByText('Cancellation confirmed before dispatch au…
+    [90m 28|[39m     expect(g.cancelSend).toHaveBeenCalledWith(expect.anything(), expec…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/12]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/features/settings/ConnectionsPage.test.tsx[2m > [22mConnections screen[2m >
+[22mlists each connection with the external-AI sharing notice (happy path)
+[31m[1mTestingLibraryElementError[22m[39m: Unable to find role="heading" and name "Claude Desktop"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"flex min-h-dvh bg-surface "[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"sr-only focus:not-sr-only focus:fixed focus:start-2 focus:top-2 focus:z-40
+focus:rounded-lg focus:border focus:border-line focus:bg-surface focus:px-3 focus:py-2 focus:text-sm"[39m
+        [33mhref[39m=[32m"#main"[39m
+      [36m>[39m
+        [0mSkip to content[0m
+      [36m</a>[39m
+      [36m<aside[39m
+        [33mclass[39m=[32m"sticky top-0 z-10 hidden max-h-[calc(100dvh-var(--bottom-notices))] shrink-0 flex-col
+overflow-y-auto overscroll-contain border-e border-line bg-surface-2 lg:flex   w-66"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex h-full min-h-0 flex-col gap-4 p-4"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex min-h-10 items-center gap-2 justify-between"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33maria-label[39m=[32m"Elevateo home"[39m
+              [33mclass[39m=[32m"inline-flex h-6 items-center gap-2 rounded-md h-10 px-2"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"inline-flex shrink-0 items-center justify-center rounded-lg bg-brand-tile p-1
+rounded-md p-0.5"[39m
+                [33mdata-testid[39m=[32m"brand-mark"[39m
+              [36m>[39m
+                [36m<img[39m
+                  [33malt[39m=[32m""[39m
+                  [33mclass[39m=[32m"block object-contain"[39m
+                  [33mdecoding[39m=[32m"async"[39m
+                  [33mheight[39m=[32m"24"[39m
+                  [33msrc[39m=[32m"/brand/elevateo-logo.png"[39m
+                  [33mstyle[39m=[32m"width: 24px; height: 24px;"[39m
+                  [33mwidth[39m=[32m"24"[39m
+                [36m/>[39m
+              [36m</span>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"text-sm font-semibold uppercase leading-none tracking-[0.18em] text-fg "[39m
+              [36m>[39m
+                [0mElevateo Co.[0m
+              [36m</span>[39m
+            [36m</a>[39m
+            [36m<button[39m
+              [33maria-expanded[39m=[32m"true"[39m
+              [33maria-label[39m=[32m"Toggle sidebar"[39m
+              [33mclass[39m=[32m"inline-flex shrink-0 items-center justify-center [&_svg]:shrink-0
+disabled:pointer-events-none disabled:opacity-50 size-10 rounded-lg bg-transparent hover:bg-surface-2 text-muted
+hover:text-fg   "[39m
+              [33mtitle[39m=[32m"Toggle sidebar"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"size-5 "[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"16"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"1.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"16"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M15.75 19.5 8.25 12l7.5-7.5"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33maria-expanded[39m=[32m"false"[39m
+              [33maria-haspopup[39m=[32m"listbox"[39m
+              [33maria-label[39m=[32m"Workspace: Synthetic organization A"[39m
+              [33mclass[39m=[32m"flex h-10 w-full items-center gap-2 overflow-hidden rounded-lg border border-line
+border-b-line bg-surface px-3 py-2 text-base shadow-xs sm:text-sm  "[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"flex-1 truncate text-start text-fg "[39m
+              [36m>[39m
+                [0mSynthetic organization A[0m
+              [36m</span>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"size-4 shrink-0 text-muted"[39m
+                [33mfill[39m=[32m"currentColor"[39m
+                [33mheight[39m=[32m"16"[39m
+                [33mviewBox[39m=[32m"0 0 20 20"[39m
+                [33mwidth[39m=[32m"16"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33mclip-rule[39m=[32m"evenodd"[39m
+                  [33md[39m=[32m"M10 3a.75.75 0 0 1 .55.24l3.25 3.5a.75.75 0 1 1-1.1 1.02L10 4.852 7.3 7.76a.75.75
+0 0 1-1.1-1.02l3.25-3.5A.75.75 0 0 1 10 3Zm-3.76 9.2a.75.75 0 0 1 1.06.04l2.7 2.908 2.7-2.908a.75.75 0 1 1 1.1
+1.02l-3.25 3.5a.75.75 0 0 1-1.1 0l-3.25-3.5a.75.75 0 0 1 .04-1.06Z"[39m
+                  [33mfill-rule[39m=[32m"evenodd"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain"[39m
+          [36m>[39m
+            [36m<nav[39m
+              [33maria-label[39m=[32m"Primary"[39m
+            [36m>[39m
+              [36m<ul[39m
+                [33mclass[39m=[32m"flex flex-col"[39m
+              [36m>[39m
+                [36m<li>[39m
+                  [36m<a[39m
+                    [33mclass[39m=[32m"relative my-px flex h-8 w-full items-center gap-3 rounded-lg border
+border-transparent px-3 text-start text-muted hover:bg-surface-2 hover:text-fg   "[39m
+                    [33mdata-discover[39m=[32m"true"[39m
+                    [33mhref[39m=[32m"/inbox"[39m
+                  [36m>[39m
+                    [36m<svg[39m
+                      [33maria-hidden[39m=[32m"true"[39m
+                      [33mclass[39m=[32m"size-4 shrink-0"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mheight[39m=[32m"16"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mstroke-linecap[39m=[32m"round"[39m
+                      [33mstroke-linejoin[39m=[32m"round"[39m
+                      [33mstroke-width[39m=[32m"1.5"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                      [33mwidth[39m=[32m"16"[39m
+                    [36m>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M2.25 13.5h3.86a2.25 2.25 0 0 1 2.012 1.244l.256.512a2.25 2.25 0 0 0 2.013
+1....
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"flex min-h-dvh bg-surface "[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"sr-only focus:not-sr-only focus:fixed focus:start-2 focus:top-2 focus:z-40
+focus:rounded-lg focus:border focus:border-line focus:bg-surface focus:px-3 focus:py-2 focus:text-sm"[39m
+        [33mhref[39m=[32m"#main"[39m
+      [36m>[39m
+        [0mSkip to content[0m
+      [36m</a>[39m
+      [36m<aside[39m
+        [33mclass[39m=[32m"sticky top-0 z-10 hidden max-h-[calc(100dvh-var(--bottom-notices))] shrink-0 flex-col
+overflow-y-auto overscroll-contain border-e border-line bg-surface-2 lg:flex   w-66"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex h-full min-h-0 flex-col gap-4 p-4"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex min-h-10 items-center gap-2 justify-between"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33maria-label[39m=[32m"Elevateo home"[39m
+              [33mclass[39m=[32m"inline-flex h-6 items-center gap-2 rounded-md h-10 px-2"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"inline-flex shrink-0 items-center justify-center rounded-lg bg-brand-tile p-1
+rounded-md p-0.5"[39m
+                [33mdata-testid[39m=[32m"brand-mark"[39m
+              [36m>[39m
+                [36m<img[39m
+                  [33malt[39m=[32m""[39m
+                  [33mclass[39m=[32m"block object-contain"[39m
+                  [33mdecoding[39m=[32m"async"[39m
+                  [33mheight[39m=[32m"24"[39m
+                  [33msrc[39m=[32m"/brand/elevateo-logo.png"[39m
+                  [33mstyle[39m=[32m"width: 24px; height: 24px;"[39m
+                  [33mwidth[39m=[32m"24"[39m
+                [36m/>[39m
+              [36m</span>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"text-sm font-semibold uppercase leading-none tracking-[0.18em] text-fg "[39m
+              [36m>[39m
+                [0mElevateo Co.[0m
+              [36m</span>[39m
+            [36m</a>[39m
+            [36m<button[39m
+              [33maria-expanded[39m=[32m"true"[39m
+              [33maria-label[39m=[32m"Toggle sidebar"[39m
+              [33mclass[39m=[32m"inline-flex shrink-0 items-center justify-center [&_svg]:shrink-0
+disabled:pointer-events-none disabled:opacity-50 size-10 rounded-lg bg-transparent hover:bg-surface-2 text-muted
+hover:text-fg   "[39m
+              [33mtitle[39m=[32m"Toggle sidebar"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"size-5 "[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"16"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"1.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"16"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M15.75 19.5 8.25 12l7.5-7.5"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33maria-expanded[39m=[32m"false"[39m
+              [33maria-haspopup[39m=[32m"listbox"[39m
+              [33maria-label[39m=[32m"Workspace: Synthetic organization A"[39m
+              [33mclass[39m=[32m"flex h-10 w-full items-center gap-2 overflow-hidden rounded-lg border border-line
+border-b-line bg-surface px-3 py-2 text-base shadow-xs sm:text-sm  "[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"flex-1 truncate text-start text-fg "[39m
+              [36m>[39m
+                [0mSynthetic organization A[0m
+              [36m</span>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"size-4 shrink-0 text-muted"[39m
+                [33mfill[39m=[32m"currentColor"[39m
+                [33mheight[39m=[32m"16"[39m
+                [33mviewBox[39m=[32m"0 0 20 20"[39m
+                [33mwidth[39m=[32m"16"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33mclip-rule[39m=[32m"evenodd"[39m
+                  [33md[39m=[32m"M10 3a.75.75 0 0 1 .55.24l3.25 3.5a.75.75 0 1 1-1.1 1.02L10 4.852 7.3 7.76a.75.75
+0 0 1-1.1-1.02l3.25-3.5A.75.75 0 0 1 10 3Zm-3.76 9.2a.75.75 0 0 1 1.06.04l2.7 2.908 2.7-2.908a.75.75 0 1 1 1.1
+1.02l-3.25 3.5a.75.75 0 0 1-1.1 0l-3.25-3.5a.75.75 0 0 1 .04-1.06Z"[39m
+                  [33mfill-rule[39m=[32m"evenodd"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain"[39m
+          [36m>[39m
+            [36m<nav[39m
+              [33maria-label[39m=[32m"Primary"[39m
+            [36m>[39m
+              [36m<ul[39m
+                [33mclass[39m=[32m"flex flex-col"[39m
+              [36m>[39m
+                [36m<li>[39m
+                  [36m<a[39m
+                    [33mclass[39m=[32m"relative my-px flex h-8 w-full items-center gap-3 rounded-lg border
+border-transparent px-3 text-start text-muted hover:bg-surface-2 hover:text-fg   "[39m
+                    [33mdata-discover[39m=[32m"true"[39m
+                    [33mhref[39m=[32m"/inbox"[39m
+                  [36m>[39m
+                    [36m<svg[39m
+                      [33maria-hidden[39m=[32m"true"[39m
+                      [33mclass[39m=[32m"size-4 shrink-0"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mheight[39m=[32m"16"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mstroke-linecap[39m=[32m"round"[39m
+                      [33mstroke-linejoin[39m=[32m"round"[39m
+                      [33mstroke-width[39m=[32m"1.5"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                      [33mwidth[39m=[32m"16"[39m
+                    [36m>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M2.25 13.5h3.86a2.25 2.25 0 0 1 2.012 1.244l.256.512a2.25 2.25 0 0 0 2.013
+1....
+[90m [2m❯[22m waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:[2m163:27[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m86:33[22m[39m
+[36m [2m❯[22m src/features/settings/ConnectionsPage.test.tsx:[2m60:25[22m[39m
+    [90m 58|[39m     renderConnections(fakeGateway({ listConnectorGrants: async () => (…
+    [90m 59|[39m     // The connection and its client kind are shown, flagged as an ext…
+    [90m 60|[39m     expect(await screen.findByRole('heading', { name: 'Claude Desktop'…
+    [90m   |[39m                         [31m^[39m
+    [90m 61|[39m     [34mexpect[39m(screen[33m.[39m[34mgetByText[39m([32m'External
+AI'[39m))[33m.[39m[34mtoBeTruthy[39m()
+    [90m 62|[39m     // The exact per-mailbox sharing sentence names the mailbox and th…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/12]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/features/settings/SettingsRoutes.test.tsx[2m > [22msettings area[2m > [22mredirects
+the legacy personal and organization routes into the new sections
+[31m[1mTestingLibraryElementError[22m[39m: Unable to find role="heading" and name "Personal Details"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"flex min-h-dvh bg-surface "[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"sr-only focus:not-sr-only focus:fixed focus:start-2 focus:top-2 focus:z-40
+focus:rounded-lg focus:border focus:border-line focus:bg-surface focus:px-3 focus:py-2 focus:text-sm"[39m
+        [33mhref[39m=[32m"#main"[39m
+      [36m>[39m
+        [0mSkip to content[0m
+      [36m</a>[39m
+      [36m<aside[39m
+        [33mclass[39m=[32m"sticky top-0 z-10 hidden max-h-[calc(100dvh-var(--bottom-notices))] shrink-0 flex-col
+overflow-y-auto overscroll-contain border-e border-line bg-surface-2 lg:flex   w-66"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex h-full min-h-0 flex-col gap-4 p-4"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex min-h-10 items-center gap-2 justify-between"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33maria-label[39m=[32m"Elevateo home"[39m
+              [33mclass[39m=[32m"inline-flex h-6 items-center gap-2 rounded-md h-10 px-2"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"inline-flex shrink-0 items-center justify-center rounded-lg bg-brand-tile p-1
+rounded-md p-0.5"[39m
+                [33mdata-testid[39m=[32m"brand-mark"[39m
+              [36m>[39m
+                [36m<img[39m
+                  [33malt[39m=[32m""[39m
+                  [33mclass[39m=[32m"block object-contain"[39m
+                  [33mdecoding[39m=[32m"async"[39m
+                  [33mheight[39m=[32m"24"[39m
+                  [33msrc[39m=[32m"/brand/elevateo-logo.png"[39m
+                  [33mstyle[39m=[32m"width: 24px; height: 24px;"[39m
+                  [33mwidth[39m=[32m"24"[39m
+                [36m/>[39m
+              [36m</span>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"text-sm font-semibold uppercase leading-none tracking-[0.18em] text-fg "[39m
+              [36m>[39m
+                [0mElevateo Co.[0m
+              [36m</span>[39m
+            [36m</a>[39m
+            [36m<button[39m
+              [33maria-expanded[39m=[32m"true"[39m
+              [33maria-label[39m=[32m"Toggle sidebar"[39m
+              [33mclass[39m=[32m"inline-flex shrink-0 items-center justify-center [&_svg]:shrink-0
+disabled:pointer-events-none disabled:opacity-50 size-10 rounded-lg bg-transparent hover:bg-surface-2 text-muted
+hover:text-fg   "[39m
+              [33mtitle[39m=[32m"Toggle sidebar"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"size-5 "[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"16"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"1.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"16"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M15.75 19.5 8.25 12l7.5-7.5"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33maria-expanded[39m=[32m"false"[39m
+              [33maria-haspopup[39m=[32m"listbox"[39m
+              [33maria-label[39m=[32m"Workspace: Synthetic organization A"[39m
+              [33mclass[39m=[32m"flex h-10 w-full items-center gap-2 overflow-hidden rounded-lg border border-line
+border-b-line bg-surface px-3 py-2 text-base shadow-xs sm:text-sm  "[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"flex-1 truncate text-start text-fg "[39m
+              [36m>[39m
+                [0mSynthetic organization A[0m
+              [36m</span>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"size-4 shrink-0 text-muted"[39m
+                [33mfill[39m=[32m"currentColor"[39m
+                [33mheight[39m=[32m"16"[39m
+                [33mviewBox[39m=[32m"0 0 20 20"[39m
+                [33mwidth[39m=[32m"16"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33mclip-rule[39m=[32m"evenodd"[39m
+                  [33md[39m=[32m"M10 3a.75.75 0 0 1 .55.24l3.25 3.5a.75.75 0 1 1-1.1 1.02L10 4.852 7.3 7.76a.75.75
+0 0 1-1.1-1.02l3.25-3.5A.75.75 0 0 1 10 3Zm-3.76 9.2a.75.75 0 0 1 1.06.04l2.7 2.908 2.7-2.908a.75.75 0 1 1 1.1
+1.02l-3.25 3.5a.75.75 0 0 1-1.1 0l-3.25-3.5a.75.75 0 0 1 .04-1.06Z"[39m
+                  [33mfill-rule[39m=[32m"evenodd"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain"[39m
+          [36m>[39m
+            [36m<nav[39m
+              [33maria-label[39m=[32m"Primary"[39m
+            [36m>[39m
+              [36m<ul[39m
+                [33mclass[39m=[32m"flex flex-col"[39m
+              [36m>[39m
+                [36m<li>[39m
+                  [36m<a[39m
+                    [33mclass[39m=[32m"relative my-px flex h-8 w-full items-center gap-3 rounded-lg border
+border-transparent px-3 text-start text-muted hover:bg-surface-2 hover:text-fg   "[39m
+                    [33mdata-discover[39m=[32m"true"[39m
+                    [33mhref[39m=[32m"/inbox"[39m
+                  [36m>[39m
+                    [36m<svg[39m
+                      [33maria-hidden[39m=[32m"true"[39m
+                      [33mclass[39m=[32m"size-4 shrink-0"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mheight[39m=[32m"16"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mstroke-linecap[39m=[32m"round"[39m
+                      [33mstroke-linejoin[39m=[32m"round"[39m
+                      [33mstroke-width[39m=[32m"1.5"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                      [33mwidth[39m=[32m"16"[39m
+                    [36m>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M2.25 13.5h3.86a2.25 2.25 0 0 1 2.012 1.244l.256.512a2.25 2.25 0 0 0 2.013
+1....
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"flex min-h-dvh bg-surface "[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"sr-only focus:not-sr-only focus:fixed focus:start-2 focus:top-2 focus:z-40
+focus:rounded-lg focus:border focus:border-line focus:bg-surface focus:px-3 focus:py-2 focus:text-sm"[39m
+        [33mhref[39m=[32m"#main"[39m
+      [36m>[39m
+        [0mSkip to content[0m
+      [36m</a>[39m
+      [36m<aside[39m
+        [33mclass[39m=[32m"sticky top-0 z-10 hidden max-h-[calc(100dvh-var(--bottom-notices))] shrink-0 flex-col
+overflow-y-auto overscroll-contain border-e border-line bg-surface-2 lg:flex   w-66"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex h-full min-h-0 flex-col gap-4 p-4"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex min-h-10 items-center gap-2 justify-between"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33maria-label[39m=[32m"Elevateo home"[39m
+              [33mclass[39m=[32m"inline-flex h-6 items-center gap-2 rounded-md h-10 px-2"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"inline-flex shrink-0 items-center justify-center rounded-lg bg-brand-tile p-1
+rounded-md p-0.5"[39m
+                [33mdata-testid[39m=[32m"brand-mark"[39m
+              [36m>[39m
+                [36m<img[39m
+                  [33malt[39m=[32m""[39m
+                  [33mclass[39m=[32m"block object-contain"[39m
+                  [33mdecoding[39m=[32m"async"[39m
+                  [33mheight[39m=[32m"24"[39m
+                  [33msrc[39m=[32m"/brand/elevateo-logo.png"[39m
+                  [33mstyle[39m=[32m"width: 24px; height: 24px;"[39m
+                  [33mwidth[39m=[32m"24"[39m
+                [36m/>[39m
+              [36m</span>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"text-sm font-semibold uppercase leading-none tracking-[0.18em] text-fg "[39m
+              [36m>[39m
+                [0mElevateo Co.[0m
+              [36m</span>[39m
+            [36m</a>[39m
+            [36m<button[39m
+              [33maria-expanded[39m=[32m"true"[39m
+              [33maria-label[39m=[32m"Toggle sidebar"[39m
+              [33mclass[39m=[32m"inline-flex shrink-0 items-center justify-center [&_svg]:shrink-0
+disabled:pointer-events-none disabled:opacity-50 size-10 rounded-lg bg-transparent hover:bg-surface-2 text-muted
+hover:text-fg   "[39m
+              [33mtitle[39m=[32m"Toggle sidebar"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"size-5 "[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"16"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"1.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"16"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M15.75 19.5 8.25 12l7.5-7.5"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33maria-expanded[39m=[32m"false"[39m
+              [33maria-haspopup[39m=[32m"listbox"[39m
+              [33maria-label[39m=[32m"Workspace: Synthetic organization A"[39m
+              [33mclass[39m=[32m"flex h-10 w-full items-center gap-2 overflow-hidden rounded-lg border border-line
+border-b-line bg-surface px-3 py-2 text-base shadow-xs sm:text-sm  "[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"flex-1 truncate text-start text-fg "[39m
+              [36m>[39m
+                [0mSynthetic organization A[0m
+              [36m</span>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"size-4 shrink-0 text-muted"[39m
+                [33mfill[39m=[32m"currentColor"[39m
+                [33mheight[39m=[32m"16"[39m
+                [33mviewBox[39m=[32m"0 0 20 20"[39m
+                [33mwidth[39m=[32m"16"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33mclip-rule[39m=[32m"evenodd"[39m
+                  [33md[39m=[32m"M10 3a.75.75 0 0 1 .55.24l3.25 3.5a.75.75 0 1 1-1.1 1.02L10 4.852 7.3 7.76a.75.75
+0 0 1-1.1-1.02l3.25-3.5A.75.75 0 0 1 10 3Zm-3.76 9.2a.75.75 0 0 1 1.06.04l2.7 2.908 2.7-2.908a.75.75 0 1 1 1.1
+1.02l-3.25 3.5a.75.75 0 0 1-1.1 0l-3.25-3.5a.75.75 0 0 1 .04-1.06Z"[39m
+                  [33mfill-rule[39m=[32m"evenodd"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain"[39m
+          [36m>[39m
+            [36m<nav[39m
+              [33maria-label[39m=[32m"Primary"[39m
+            [36m>[39m
+              [36m<ul[39m
+                [33mclass[39m=[32m"flex flex-col"[39m
+              [36m>[39m
+                [36m<li>[39m
+                  [36m<a[39m
+                    [33mclass[39m=[32m"relative my-px flex h-8 w-full items-center gap-3 rounded-lg border
+border-transparent px-3 text-start text-muted hover:bg-surface-2 hover:text-fg   "[39m
+                    [33mdata-discover[39m=[32m"true"[39m
+                    [33mhref[39m=[32m"/inbox"[39m
+                  [36m>[39m
+                    [36m<svg[39m
+                      [33maria-hidden[39m=[32m"true"[39m
+                      [33mclass[39m=[32m"size-4 shrink-0"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mheight[39m=[32m"16"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mstroke-linecap[39m=[32m"round"[39m
+                      [33mstroke-linejoin[39m=[32m"round"[39m
+                      [33mstroke-width[39m=[32m"1.5"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                      [33mwidth[39m=[32m"16"[39m
+                    [36m>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M2.25 13.5h3.86a2.25 2.25 0 0 1 2.012 1.244l.256.512a2.25 2.25 0 0 0 2.013
+1....
+[90m [2m❯[22m waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:[2m163:27[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m86:33[22m[39m
+[36m [2m❯[22m src/features/settings/SettingsRoutes.test.tsx:[2m69:27[22m[39m
+    [90m 67|[39m     [35mtry[39m {
+    [90m 68|[39m       [35mconst[39m first [33m=[39m [34mrenderSettings[39m([32m'/settings/personal'[39m)
+    [90m 69|[39m       expect(await screen.findByRole('heading', { name: 'Personal Deta…
+    [90m   |[39m                           [31m^[39m
+    [90m 70|[39m       expect(await screen.findByText(/Signed in as Fixture user A/)).t…
+    [90m 71|[39m       expect(screen.getByRole('textbox', { name: 'Display name' })).to…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/12]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/features/thread/ThreadPage.test.tsx[2m > [22mindividual message permalink[2m >
+[22moffers explicit retry after a direct lookup network failure
+[31m[1mTestingLibraryElementError[22m[39m: Unable to find role="button" and name "Retry message"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<article[39m
+      [33maria-label[39m=[32m"Conversation"[39m
+      [33mclass[39m=[32m"flex min-h-0 flex-1 flex-col"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"overflow-hidden rounded-xl border border-line bg-surface shadow-xs  "[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex min-h-12 flex-wrap items-center gap-1 border-b border-line px-2 "[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"inline-flex h-8 items-center gap-1.5 rounded-lg px-2 text-sm font-medium text-fg
+hover:bg-surface-2  "[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/mailboxes/00000000-0000-4000-8000-000000000021"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"size-5"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"16"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.5"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"16"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [0m Back to conversations[0m
+          [36m</a>[39m
+          [36m<span[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mclass[39m=[32m"mx-1 h-5 w-px bg-surface-2 "[39m
+          [36m/>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Archive"[39m
+            [33mclass[39m=[32m"inline-flex shrink-0 items-center justify-center [&_svg]:shrink-0
+disabled:pointer-events-none disabled:opacity-50 size-8 rounded-md bg-transparent hover:bg-surface-2 text-fg  "[39m
+            [33mtitle[39m=[32m"Archive"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"size-5"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"16"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.5"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"16"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0
+1-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504
+1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125
+1.125Z"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</button>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Report spam"[39m
+            [33mclass[39m=[32m"inline-flex shrink-0 items-center justify-center [&_svg]:shrink-0
+disabled:pointer-events-none disabled:opacity-50 size-8 rounded-md bg-transparent hover:bg-surface-2 text-fg  "[39m
+            [33mtitle[39m=[32m"Report spam"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"size-5"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"16"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.5"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"16"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874
+1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</button>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Delete"[39m
+            [33mclass[39m=[32m"inline-flex shrink-0 items-center justify-center [&_svg]:shrink-0
+disabled:pointer-events-none disabled:opacity-50 size-8 rounded-md bg-transparent hover:bg-surface-2 text-fg  "[39m
+            [33mtitle[39m=[32m"Delete"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"size-5"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"16"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.5"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"16"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107
+1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456
+0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5
+0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667
+48.667 0 0 0-7.5 0"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</button>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative inline-block"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33maria-expanded[39m=[32m"false"[39m
+              [33maria-haspopup[39m=[32m"menu"[39m
+              [33maria-label[39m=[32m"Snooze"[39m
+              [33mclass[39m=[32m"inline-flex shrink-0 items-center justify-center [&_svg]:shrink-0
+disabled:pointer-events-none disabled:opacity-50 size-8 rounded-md bg-transparent hover:bg-surface-2 text-fg  "[39m
+              [33mtitle[39m=[32m"Snooze"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"size-5"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"16"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mst...
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<article[39m
+      [33maria-label[39m=[32m"Conversation"[39m
+      [33mclass[39m=[32m"flex min-h-0 flex-1 flex-col"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"overflow-hidden rounded-xl border border-line bg-surface shadow-xs  "[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex min-h-12 flex-wrap items-center gap-1 border-b border-line px-2 "[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"inline-flex h-8 items-center gap-1.5 rounded-lg px-2 text-sm font-medium text-fg
+hover:bg-surface-2  "[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/mailboxes/00000000-0000-4000-8000-000000000021"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"size-5"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"16"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.5"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"16"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [0m Back to conversations[0m
+          [36m</a>[39m
+          [36m<span[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mclass[39m=[32m"mx-1 h-5 w-px bg-surface-2 "[39m
+          [36m/>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Archive"[39m
+            [33mclass[39m=[32m"inline-flex shrink-0 items-center justify-center [&_svg]:shrink-0
+disabled:pointer-events-none disabled:opacity-50 size-8 rounded-md bg-transparent hover:bg-surface-2 text-fg  "[39m
+            [33mtitle[39m=[32m"Archive"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<svg[39m
+
+[2m Test Files [22m [1m[31m10 failed[39m[22m[2m | [22m[1m[32m88 passed[39m[22m[90m (98)[39m
+[2m      Tests [22m [1m[31m12 failed[39m[22m[2m | [22m[1m[32m1178 passed[39m[22m[90m (1190)[39m
+[2m   Start at [22m 14:34:51
+[2m   Duration [22m 50.73s[2m (transform 68.02s, setup 61.56s, import 148.84s, tests 255.98s, environment 142.90s)[22m
+
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"size-5"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"16"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.5"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"16"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0
+1-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504
+1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125
+1.125Z"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</button>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Report spam"[39m
+            [33mclass[39m=[32m"inline-flex shrink-0 items-center justify-center [&_svg]:shrink-0
+disabled:pointer-events-none disabled:opacity-50 size-8 rounded-md bg-transparent hover:bg-surface-2 text-fg  "[39m
+            [33mtitle[39m=[32m"Report spam"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"size-5"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"16"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.5"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"16"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874
+1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</button>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Delete"[39m
+            [33mclass[39m=[32m"inline-flex shrink-0 items-center justify-center [&_svg]:shrink-0
+disabled:pointer-events-none disabled:opacity-50 size-8 rounded-md bg-transparent hover:bg-surface-2 text-fg  "[39m
+            [33mtitle[39m=[32m"Delete"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"size-5"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"16"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"1.5"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"16"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107
+1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456
+0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5
+0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667
+48.667 0 0 0-7.5 0"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</button>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative inline-block"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33maria-expanded[39m=[32m"false"[39m
+              [33maria-haspopup[39m=[32m"menu"[39m
+              [33maria-label[39m=[32m"Snooze"[39m
+              [33mclass[39m=[32m"inline-flex shrink-0 items-center justify-center [&_svg]:shrink-0
+disabled:pointer-events-none disabled:opacity-50 size-8 rounded-md bg-transparent hover:bg-surface-2 text-fg  "[39m
+              [33mtitle[39m=[32m"Snooze"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"size-5"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"16"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mst...
+[90m [2m❯[22m waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:[2m163:27[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m86:33[22m[39m
+[36m [2m❯[22m src/features/thread/ThreadPage.test.tsx:[2m379:18[22m[39m
+    [90m377|[39m       [33m.[39m[34mmockResolvedValueOnce[39m([34mdirectPage[39m([33mMESSAGE_B[39m))
+    [90m378|[39m     renderReaderWith(pagedGateway([detailPage([MESSAGE_A], 'next')]).g…
+    [90m379|[39m     [35mawait[39m screen[33m.[39m[34mfindByRole[39m([32m'button'[39m[33m,[39m {
+name[33m:[39m [32m'Retry message'[39m })
+    [90m   |[39m                  [31m^[39m
+    [90m380|[39m     [34mexpect[39m(screen[33m.[39m[34mqueryByText[39m([32m'Direct
+plaintext'[39m))[33m.[39m[34mtoBeNull[39m()
+    [90m381|[39m     fireEvent.click(screen.getByRole('button', { name: 'Retry message'…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/12]⎯[22m[39m

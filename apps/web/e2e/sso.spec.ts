@@ -21,7 +21,7 @@ test('single sign-on and password entries: gold primary button, separator, form;
   // Keyboard: Tab from the focused heading reaches the SSO button first, with a visible ring.
   await page.keyboard.press('Tab')
   await expect(sso).toBeFocused()
-  // Visible focus: the global :focus-visible rule draws a 2px solid gold-600 outline (#a9853a,
+  // Visible focus: the global :focus-visible rule draws a 2px solid semantic gold outline (#a67c00,
   // light scheme). Checking style != 'none' alone would pass a transparent or zero-width ring, so
   // the computed width and colour are asserted, with the blurred (unfocused) heading as the control.
   const ringOf = (el: Element) => {
@@ -31,7 +31,7 @@ test('single sign-on and password entries: gold primary button, separator, form;
   const ring = await sso.evaluate(ringOf)
   expect(ring.style).toBe('solid')
   expect(ring.width).toBeGreaterThanOrEqual(2)
-  expect(ring.color).toBe('rgb(169, 133, 58)')
+  expect(ring.color).toBe('rgb(166, 124, 0)')
   // Negative control: the element that lost focus must not carry the ring any more.
   const blurred = await page.getByRole('heading', { name: 'Sign in' }).evaluate(ringOf)
   expect(blurred.width === 0 || blurred.style === 'none').toBe(true)

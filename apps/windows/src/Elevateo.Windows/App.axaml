@@ -1,9 +1,50 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="Elevateo.Windows.App"
-             RequestedThemeVariant="Default">
-  <!-- Fluent theme follows the OS light/dark/high-contrast variant; focus visuals stay enabled. -->
+             RequestedThemeVariant="Light">
+  <!-- AIDEV-NOTE: Native Fluent resources mirror web tokens; gold is reserved for strokes and focus. -->
+  <Application.Resources>
+    <SolidColorBrush x:Key="ElevateoSurface">#FFFFFF</SolidColorBrush>
+    <SolidColorBrush x:Key="ElevateoNeutral">#F5F5F4</SolidColorBrush>
+    <SolidColorBrush x:Key="ElevateoInk">#171717</SolidColorBrush>
+    <SolidColorBrush x:Key="ElevateoGold">#A67C00</SolidColorBrush>
+    <SolidColorBrush x:Key="SystemControlErrorTextForegroundBrush">#B42318</SolidColorBrush>
+    <SolidColorBrush x:Key="SystemControlBackgroundListLowBrush">#F5F5F4</SolidColorBrush>
+    <SolidColorBrush x:Key="SystemControlFocusVisualPrimaryBrush">#A67C00</SolidColorBrush>
+    <SolidColorBrush x:Key="SystemControlFocusVisualSecondaryBrush">#FFFFFF</SolidColorBrush>
+    <CornerRadius x:Key="ControlCornerRadius">4</CornerRadius>
+  </Application.Resources>
   <Application.Styles>
-    <FluentTheme />
+    <FluentTheme DensityStyle="Compact">
+      <FluentTheme.Palettes>
+        <ColorPaletteResources x:Key="Light" Accent="#171717" RegionColor="#FFFFFF"
+                               BaseHigh="#171717" BaseMedium="#525252" ErrorText="#B42318" />
+      </FluentTheme.Palettes>
+    </FluentTheme>
+    <Style Selector="Window">
+      <Setter Property="Background" Value="{DynamicResource ElevateoSurface}" />
+      <Setter Property="Foreground" Value="{DynamicResource ElevateoInk}" />
+    </Style>
+    <Style Selector="Button">
+      <Setter Property="Background" Value="{DynamicResource ElevateoSurface}" />
+      <Setter Property="Foreground" Value="{DynamicResource ElevateoInk}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource ElevateoGold}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="4" />
+    </Style>
+    <Style Selector="TextBox">
+      <Setter Property="Background" Value="{DynamicResource ElevateoSurface}" />
+      <Setter Property="Foreground" Value="{DynamicResource ElevateoInk}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource ElevateoGold}" />
+      <Setter Property="CornerRadius" Value="4" />
+    </Style>
+    <Style Selector="ListBox">
+      <Setter Property="Background" Value="{DynamicResource ElevateoSurface}" />
+    </Style>
+    <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource ElevateoNeutral}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource ElevateoGold}" />
+      <Setter Property="BorderThickness" Value="2,0,0,0" />
+    </Style>
   </Application.Styles>
 </Application>

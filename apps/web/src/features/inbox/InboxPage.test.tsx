@@ -79,6 +79,21 @@ function renderInbox(gateway: MailroomGateway, initialEntry = `/mailboxes/${MB}`
 
 afterEach(() => vi.restoreAllMocks())
 
+describe('unread visual indicator', () => {
+  // AIDEV-NOTE: The unread dot must contrast with the white row independently of bold subject text.
+  it('keeps unread dots visible and read dots hidden', async () => {
+    const base = threadPage(['Unread cue', 'Read cue'], null)
+    const page = { ...base, items: base.items.map((item, index) => ({ ...item, unread: index === 0 })) }
+    renderInbox(pagedGateway([page]).gateway)
+    for (const [subject, hidden] of [['Unread cue', false], ['Read cue', true]] as const) {
+      const row = (await screen.findByRole('link', { name: new RegExp(subject) })).closest('li')
+      const dot = row?.querySelector('span[aria-hidden].bg-fg')
+      expect(dot?.classList.contains('bg-fg')).toBe(true)
+      expect(dot?.classList.contains('invisible')).toBe(hidden)
+    }
+  })
+})
+
 describe('URL filter (FE-R11)', () => {
   it('carries the unread filter into conversation links', async () => {
     renderInbox(createFixtureGateway(), `/mailboxes/${MB}?filter=unread`)

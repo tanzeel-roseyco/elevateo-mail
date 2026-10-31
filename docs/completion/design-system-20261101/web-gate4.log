@@ -1,0 +1,6 @@
+docker : fixtures dist/assets; then exit 1; fi: 1: Syntax error: end of file unexpected (expecting "then")
+At line:3 char:1
++ docker run --rm --name elevateo-white-gold-gate4 --mount "type=bind,s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (fixtures dist/a...pecting "then"):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError

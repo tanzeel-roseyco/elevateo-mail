@@ -63,9 +63,9 @@ export function DraftAttachments({ draftId, mailboxId, disabled }: { draftId: st
     if (outcome.kind === 'ok') { setItems([]); setPending(null) }
     else setMessage('Removal was not confirmed. Refresh attachments before trying again.')
   }
-  return <section aria-label="Draft attachment" aria-busy={busy} className="rounded-lg border border-zinc-200 p-3 text-sm">
+  return <section aria-label="Draft attachment" aria-busy={busy} className="rounded-lg border border-line p-3 text-sm">
     <h2 className="font-semibold">Attachment</h2>
-    <p className="my-1 text-zinc-500">One PDF, PNG, JPEG or text file, at most 1 MiB. Sending waits for a successful security scan.</p>
+    <p className="my-1 text-muted">One PDF, PNG, JPEG or text file, at most 1 MiB. Sending waits for a successful security scan.</p>
     {items === null && message === null && <p role="status">Loading attachments...</p>}
     {items === null && message !== null && <Button disabled={busy} onClick={() => void load()}>Retry loading attachments</Button>}
     {items?.map((item) => <div key={item.id} className="my-2 flex flex-wrap items-center gap-2">
@@ -78,7 +78,7 @@ export function DraftAttachments({ draftId, mailboxId, disabled }: { draftId: st
       <input id={inputId} type="file" accept="application/pdf,image/png,image/jpeg,text/plain" disabled={disabled || busy || !proof}
         onChange={(event) => { const file = event.target.files?.[0]; event.target.value = ''; if (file) void upload(file) }} />
     </div>}
-    {uploading && <p role="progressbar" aria-label="Uploading attachment" aria-busy="true" className="my-2 text-zinc-500">Uploading…</p>}
+    {uploading && <p role="progressbar" aria-label="Uploading attachment" aria-busy="true" className="my-2 text-muted">Uploading…</p>}
     {pending && !uploading && <Button disabled={disabled || busy || !proof} onClick={() => void upload()}>Retry same attachment</Button>}
     <Button disabled={busy} onClick={() => { setMessage(null); void load() }}>Refresh attachments</Button>
     {message && <p role="alert" className="mt-2">{message}</p>}

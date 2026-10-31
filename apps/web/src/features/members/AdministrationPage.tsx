@@ -131,25 +131,25 @@ export function AdministrationPage({ section }: { section: 'people' | 'organizat
 
   const title = section === 'people' ? 'People' : 'Organization settings'
   const subtitle = section === 'people' ? 'Who is in this workspace and what they may administer' : 'Organization grants and the settings this build exposes'
-  const selectClass = 'h-8 rounded-lg border border-zinc-200 border-b-zinc-300/80 bg-white px-2 text-sm text-zinc-700 shadow-xs dark:border-white/10 dark:bg-white/10 dark:text-zinc-300'
+  const selectClass = 'h-8 rounded-lg border border-line border-b-line bg-surface px-2 text-sm text-fg shadow-xs   '
   return <section aria-label={title}>
     {section === 'people' ? <PageHeader title={title} subtitle={subtitle} /> : <div className="mb-6"><Heading as="h2" size="lg">{title}</Heading><Subheading>{subtitle}</Subheading></div>}
     <Callout variant="neutral" className="mb-6">Organization administration does not grant mailbox content access. Reading and sending mail require current mailbox permission.</Callout>
-    {section === 'organization' && <Card className="mb-6"><h2 className="text-base font-medium text-zinc-800 dark:text-white">Available settings</h2><p className="mt-1 text-sm text-zinc-500">Current organization grants can be reviewed here. Provider, DNS, live delivery and credential settings are unavailable in this build.</p></Card>}
+    {section === 'organization' && <Card className="mb-6"><h2 className="text-base font-medium text-fg ">Available settings</h2><p className="mt-1 text-sm text-muted">Current organization grants can be reviewed here. Provider, DNS, live delivery and credential settings are unavailable in this build.</p></Card>}
 
     <SectionHeader title="Configuration identities" subtitle="These twelve references are unbound. Their proposed roles are planning metadata, not active permissions, accounts, invitations or logins." />
-    {roster.status === 'loading' && <p role="status" className="mb-3 text-xs text-zinc-500">Checking organization roster…</p>}
-    {roster.status === 'ready' && <p className="mb-3 text-xs text-zinc-500">Unbound roster verified with the organization gateway.</p>}
-    {roster.status === 'unavailable' && <p className="mb-3 text-xs text-zinc-500">Organization roster unavailable; the reference list below is local configuration only.</p>}
-    {roster.status === 'error' && <p role="alert" className="mb-3 text-xs text-red-500">Organization roster could not be verified; the reference list below is local configuration only.</p>}
+    {roster.status === 'loading' && <p role="status" className="mb-3 text-xs text-muted">Checking organization roster…</p>}
+    {roster.status === 'ready' && <p className="mb-3 text-xs text-muted">Unbound roster verified with the organization gateway.</p>}
+    {roster.status === 'unavailable' && <p className="mb-3 text-xs text-muted">Organization roster unavailable; the reference list below is local configuration only.</p>}
+    {roster.status === 'error' && <p role="alert" className="mb-3 text-xs text-danger">Organization roster could not be verified; the reference list below is local configuration only.</p>}
     <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-      {CONFIG_PEOPLE.map((person) => <li key={person.key} className="flex items-start gap-3 rounded-xl border border-zinc-200 bg-white p-4 text-sm shadow-xs dark:border-zinc-700 dark:bg-zinc-800">
+      {CONFIG_PEOPLE.map((person) => <li key={person.key} className="flex items-start gap-3 rounded-xl border border-line bg-surface p-4 text-sm shadow-xs  ">
         <Avatar name={person.display_name} shape="circle" />
         <div className="min-w-0">
-          <p className="font-medium text-zinc-800 dark:text-white">{person.display_name}</p>
-          <p className="text-xs text-zinc-500">{person.title}{person.department ? ` · ${person.department}` : ''}</p>
-          <p className="mt-2 text-xs text-zinc-700 dark:text-zinc-300">Unbound · no email or login</p>
-          <p className="text-xs text-zinc-500">Proposed: {person.proposed_org_role.replaceAll('_', ' ')}</p>
+          <p className="font-medium text-fg ">{person.display_name}</p>
+          <p className="text-xs text-muted">{person.title}{person.department ? ` · ${person.department}` : ''}</p>
+          <p className="mt-2 text-xs text-fg ">Unbound · no email or login</p>
+          <p className="text-xs text-muted">Proposed: {person.proposed_org_role.replaceAll('_', ' ')}</p>
         </div>
       </li>)}
     </ul>
@@ -160,17 +160,17 @@ export function AdministrationPage({ section }: { section: 'people' | 'organizat
     {view.status === 'error' && <ErrorState title="Current grants could not be loaded" body="No current permission state is shown." action={<Button variant="primary" onClick={() => void load()}>Try again</Button>} />}
     {notice && <div className="mb-4"><Callout variant="warning" role="alert">{notice}</Callout></div>}
     {view.status === 'ready' && <>
-      <p className="mb-3 text-xs text-zinc-500">Current grants loaded · audit event details unavailable in this build</p>
-      {view.value.grants.length === 0 && <p className="mb-3 text-sm text-zinc-500">No current grants were returned.</p>}
+      <p className="mb-3 text-xs text-muted">Current grants loaded · audit event details unavailable in this build</p>
+      {view.value.grants.length === 0 && <p className="mb-3 text-sm text-muted">No current grants were returned.</p>}
       <Card className="p-0">
-        <ul className="divide-y divide-zinc-200 dark:divide-zinc-700">
+        <ul className="divide-y divide-line ">
           {view.value.grants.map((grant) => {
             const roles = editableRoles(view.value.actor, grant)
             const selected = selection[grant.user_id] ?? grant.role
             {/* basis-full below sm: the UUID/role text owns the first line at 390px; controls wrap under it. */}
             return <li key={grant.user_id} className="flex flex-wrap items-center gap-3 px-6 py-4 text-sm">
-              <div className="min-w-0 basis-full sm:flex-1 sm:basis-auto"><p className="break-all font-mono text-xs text-zinc-700 dark:text-zinc-300">{grant.user_id}</p><p className="text-xs text-zinc-500">Current: {grant.role.replaceAll('_', ' ')} · revision {grant.revision}</p></div>
-              {roles.length > 0 && <><label className="text-xs text-zinc-500">Role <select aria-label={`Role for ${grant.user_id}`} className={`ms-1 ${selectClass}`} disabled={pending !== null || writeBlocked} value={selected} onChange={(event) => { const role = roles.find((candidate) => candidate === event.target.value); if (role) setSelection((before) => ({ ...before, [grant.user_id]: role })) }}>{[grant.role, ...roles.filter((role) => role !== grant.role)].map((role) => <option key={role} value={role}>{role.replaceAll('_', ' ')}</option>)}</select></label><Button size="sm" disabled={pending !== null || writeBlocked || selected === grant.role} onClick={() => void change(grant)}>Save role</Button></>}
+              <div className="min-w-0 basis-full sm:flex-1 sm:basis-auto"><p className="break-all font-mono text-xs text-fg ">{grant.user_id}</p><p className="text-xs text-muted">Current: {grant.role.replaceAll('_', ' ')} · revision {grant.revision}</p></div>
+              {roles.length > 0 && <><label className="text-xs text-muted">Role <select aria-label={`Role for ${grant.user_id}`} className={`ms-1 ${selectClass}`} disabled={pending !== null || writeBlocked} value={selected} onChange={(event) => { const role = roles.find((candidate) => candidate === event.target.value); if (role) setSelection((before) => ({ ...before, [grant.user_id]: role })) }}>{[grant.role, ...roles.filter((role) => role !== grant.role)].map((role) => <option key={role} value={role}>{role.replaceAll('_', ' ')}</option>)}</select></label><Button size="sm" disabled={pending !== null || writeBlocked || selected === grant.role} onClick={() => void change(grant)}>Save role</Button></>}
             </li>
           })}
         </ul>

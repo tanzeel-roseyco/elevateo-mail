@@ -16,11 +16,11 @@ export function Breadcrumbs({ crumbs }: { crumbs: readonly Crumb[] }) {
           const last = index === crumbs.length - 1
           return (
             <li key={`${crumb.label}-${index}`} className="flex items-center gap-1.5">
-              {index > 0 && <ChevronRightMiniIcon aria-hidden className="size-4 text-zinc-400" />}
+              {index > 0 && <ChevronRightMiniIcon aria-hidden className="size-4 text-muted" />}
               {crumb.to && !last ? (
-                <Link to={crumb.to} className="text-zinc-800 hover:underline dark:text-white">{crumb.label}</Link>
+                <Link to={crumb.to} className="text-fg hover:underline ">{crumb.label}</Link>
               ) : (
-                <span aria-current={last ? 'page' : undefined} className="text-zinc-500 dark:text-zinc-400">{crumb.label}</span>
+                <span aria-current={last ? 'page' : undefined} className="text-muted ">{crumb.label}</span>
               )}
             </li>
           )

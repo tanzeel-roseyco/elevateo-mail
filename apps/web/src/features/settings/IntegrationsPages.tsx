@@ -92,12 +92,12 @@ export function IntegrationDetailPage() {
     <div className="max-w-3xl space-y-6">
       <PlannedConnectorNotice />
       <Card>
-        <p className="text-sm text-zinc-800 dark:text-zinc-200">{integration.intro}</p>
+        <p className="text-sm text-fg ">{integration.intro}</p>
       </Card>
       {integration.steps.map((step, index) => (
         <Card key={step.title}>
-          <h2 className="text-base font-medium text-zinc-800 dark:text-white">{index + 1}. {step.title}</h2>
-          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">{step.text}</p>
+          <h2 className="text-base font-medium text-fg ">{index + 1}. {step.title}</h2>
+          <p className="mt-1 text-sm text-muted ">{step.text}</p>
           {step.code !== undefined && <CodeBlock code={step.code} {...(step.language === undefined ? {} : { language: step.language })} className="mt-4" />}
         </Card>
       ))}

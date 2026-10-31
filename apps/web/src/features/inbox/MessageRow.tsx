@@ -64,9 +64,9 @@ export function MessageRow({ thread, to, mailboxName, selected, onSelect, onStar
       data-selected={selected || undefined}
       aria-busy={busy || undefined}
       className={cx(
-        'group relative flex items-center gap-2 border-b border-zinc-800/10 px-2 text-sm last:border-b-0 hover:bg-zinc-50 hover:shadow-[inset_0_-1px_0_var(--color-zinc-200)] max-md:h-18 md:h-10 dark:border-white/10 dark:hover:bg-white/5',
-        unread ? 'bg-white dark:bg-transparent' : 'bg-zinc-50/60 dark:bg-white/[0.02]',
-        selected && 'border-s-2 border-s-gold-500 bg-gold-50 hover:bg-gold-50 dark:bg-gold-400/10',
+        'group relative flex items-center gap-2 border-b border-line px-2 text-sm last:border-b-0 hover:bg-surface-2  max-md:h-18 md:h-10  ',
+        unread ? 'bg-surface ' : 'bg-surface-2 ',
+        selected && 'border-s-2 border-s-line bg-surface hover:bg-surface ',
       )}
     >
       {onSelect && (
@@ -79,9 +79,9 @@ export function MessageRow({ thread, to, mailboxName, selected, onSelect, onStar
           aria-label={starred ? `Unstar ${name}` : `Star ${name}`}
           disabled={busy}
           onClick={onStar}
-          className="flex size-8 shrink-0 items-center justify-center rounded-lg text-zinc-300 hover:text-zinc-500 disabled:opacity-50 dark:text-zinc-600"
+          className="flex size-8 shrink-0 items-center justify-center rounded-lg text-muted hover:text-muted disabled:opacity-50 "
         >
-          {starred ? <StarSolidIcon className="size-5 text-gold-500" /> : <StarIcon className="size-5" />}
+          {starred ? <StarSolidIcon className="size-5 text-fg" /> : <StarIcon className="size-5" />}
         </button>
       )}
       <Link
@@ -91,25 +91,25 @@ export function MessageRow({ thread, to, mailboxName, selected, onSelect, onStar
         className="flex h-full min-w-0 flex-1 items-center gap-2 rounded-md focus-visible:outline-offset-[-2px] max-md:gap-3"
       >
         <Avatar name={sender} size={10} shape="circle" className="md:hidden" />
-        <span aria-hidden className={cx('size-1.5 shrink-0 rounded-full bg-gold-500 max-md:hidden', !unread && 'invisible')} />
+        <span aria-hidden className={cx('size-1.5 shrink-0 rounded-full bg-fg max-md:hidden', !unread && 'invisible')} />
         {unread && <span className="sr-only">Unread, </span>}
         {starred && !onStar && <span className="sr-only">Starred, </span>}
         <span className="flex min-w-0 flex-1 flex-col md:flex-row md:items-center md:gap-2">
           <span className="flex items-center justify-between gap-2 md:contents">
-            <span className={cx('truncate md:w-50 md:shrink-0', unread ? 'font-semibold text-zinc-800 dark:text-white' : 'text-zinc-600 dark:text-zinc-400')}>{sender}</span>
-            <span className={cx('shrink-0 text-xs md:hidden', unread ? 'font-semibold text-zinc-800 dark:text-white' : 'text-zinc-500')}>{date}</span>
+            <span className={cx('truncate md:w-50 md:shrink-0', unread ? 'font-semibold text-fg ' : 'text-muted ')}>{sender}</span>
+            <span className={cx('shrink-0 text-xs md:hidden', unread ? 'font-semibold text-fg ' : 'text-muted')}>{date}</span>
           </span>
           <span className="block min-w-0 truncate md:flex-1">
-            <span className={cx(unread ? 'font-semibold text-zinc-800 dark:text-white' : 'text-zinc-600 dark:text-zinc-400')}>
+            <span className={cx(unread ? 'font-semibold text-fg ' : 'text-muted ')}>
               {subject}
               {thread.subject_truncated && <span title="Subject shortened">…</span>}
             </span>
-            {thread.preview_text !== '' && <span className="text-zinc-500 dark:text-zinc-400"> – {thread.preview_text}</span>}
-            {mailboxName !== undefined && <span className="text-zinc-400"> · {mailboxName}</span>}
+            {thread.preview_text !== '' && <span className="text-muted "> – {thread.preview_text}</span>}
+            {mailboxName !== undefined && <span className="text-muted"> · {mailboxName}</span>}
           </span>
         </span>
-        <span className={cx('flex w-18 shrink-0 items-center justify-end gap-1 text-end text-xs max-md:hidden', unread ? 'font-semibold text-zinc-800 dark:text-white' : 'text-zinc-500', hasActions && 'group-focus-within:invisible group-hover:invisible')}>
-          {snoozing && <ClockIcon aria-hidden className="size-3.5 text-zinc-400" />}
+        <span className={cx('flex w-18 shrink-0 items-center justify-end gap-1 text-end text-xs max-md:hidden', unread ? 'font-semibold text-fg ' : 'text-muted', hasActions && 'group-focus-within:invisible group-hover:invisible')}>
+          {snoozing && <ClockIcon aria-hidden className="size-3.5 text-muted" />}
           {date}
         </span>
       </Link>
@@ -186,13 +186,13 @@ function RowMenuItems({ selected, unread, snoozedUntil, actions, onSelect, onTog
 /** Skeleton rows at sender/subject/date widths (INBOX-SPEC "Loading"). */
 export function MessageRowSkeleton({ rows = 6 }: { rows?: number }) {
   return (
-    <ul aria-hidden className="divide-y divide-zinc-800/10">
+    <ul aria-hidden className="divide-y divide-line">
       {Array.from({ length: rows }, (_, i) => (
         <li key={i} className="flex h-10 items-center gap-3 px-3">
-          <span className="size-4 rounded bg-zinc-100 animate-pulse" />
-          <span className="h-3 w-40 rounded bg-zinc-100 animate-pulse" />
-          <span className="h-3 flex-1 rounded bg-zinc-100 animate-pulse" />
-          <span className="h-3 w-12 rounded bg-zinc-100 animate-pulse" />
+          <span className="size-4 rounded bg-surface-2 " />
+          <span className="h-3 w-40 rounded bg-surface-2 " />
+          <span className="h-3 flex-1 rounded bg-surface-2 " />
+          <span className="h-3 w-12 rounded bg-surface-2 " />
         </li>
       ))}
     </ul>

@@ -45,9 +45,9 @@ const FEATURE_ICONS: Readonly<Record<string, Icon>> = {
 }
 
 const ITEM =
-  'relative my-px flex h-8 w-full items-center gap-3 rounded-lg border border-transparent px-3 text-start text-zinc-500 hover:bg-zinc-800/5 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-white/10 dark:hover:text-white'
+  'relative my-px flex h-8 w-full items-center gap-3 rounded-lg border border-transparent px-3 text-start text-muted hover:bg-surface-2 hover:text-fg   '
 const CURRENT =
-  'border-zinc-200 bg-white text-(--color-accent-content) hover:text-(--color-accent-content) dark:border-white/10 dark:bg-white/10 dark:text-(--color-accent-content)'
+  'border-line bg-surface text-fg hover:text-fg   '
 
 /** Whole path segment only, so one path being a prefix of another cannot mark both active. */
 function isWithin(pathname: string, base: string): boolean {
@@ -88,7 +88,7 @@ function NavItem({ to, label, Icon, exact = false, collapsed, onNavigate }: NavI
 function Group({ id, label, collapsed, children }: { id: string; label: string; collapsed: boolean; children: ReactNode }) {
   return (
     <nav aria-labelledby={id} className="flex flex-col">
-      <p id={id} className={cx('px-3 pb-1 pt-3 text-xs font-medium text-zinc-400', collapsed && 'sr-only')}>{label}</p>
+      <p id={id} className={cx('px-3 pb-1 pt-3 text-xs font-medium text-muted', collapsed && 'sr-only')}>{label}</p>
       <ul className="flex flex-col">{children}</ul>
     </nav>
   )
@@ -126,7 +126,7 @@ export function Sidebar({ session, mailboxes, sections = {}, onNavigate, collaps
         ) : (
           onToggle && (
             <IconButton label="Toggle sidebar" variant="subtle" size="md" aria-expanded={!collapsed} onClick={onToggle}>
-              <ChevronLeftIcon className={cx('size-5 transition-transform', collapsed && 'rotate-180')} />
+              <ChevronLeftIcon className={cx('size-5 ', collapsed && 'rotate-180')} />
             </IconButton>
           )
         )}
@@ -156,14 +156,14 @@ export function Sidebar({ session, mailboxes, sections = {}, onNavigate, collaps
                 </IconButton>
               ) : (
                 <>
-                  <p className="text-sm text-zinc-500">{mailboxes.message}</p>
+                  <p className="text-sm text-muted">{mailboxes.message}</p>
                   <Button size="sm" className="mt-2" onClick={mailboxes.retry}>Try again</Button>
                 </>
               )}
             </li>
           )}
           {mailboxes.status === 'ready' && mailboxes.mailboxes.length === 0 && (
-            <li className={cx('px-3 py-2 text-sm text-zinc-500', collapsed && 'sr-only')}>No mailboxes are visible to you.</li>
+            <li className={cx('px-3 py-2 text-sm text-muted', collapsed && 'sr-only')}>No mailboxes are visible to you.</li>
           )}
           {mailboxes.status === 'ready' &&
             mailboxes.mailboxes.map((mailbox) => (

@@ -1,0 +1,38 @@
+docker : test_arm64_arch_selects_the_aarch64_target
+(test_macos_release.MacReleaseTest.test_arm64_arch_selects_the_aarch64_target) ... ok
+At line:3 char:1
++ docker run --rm --name elevateo-white-gold-native-python --mount "typ ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (test_arm64_arch..._target) ... ok:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+test_full_env_dry_run_prints_codesign_notarytool_stapler_in_order
+(test_macos_release.MacReleaseTest.test_full_env_dry_run_prints_codesign_notarytool_stapler_in_order) ... ok
+test_missing_python3_fails_before_validation_or_build
+(test_macos_release.MacReleaseTest.test_missing_python3_fails_before_validation_or_build) ... ok
+test_no_credentials_is_an_unsigned_dry_run_that_passes
+(test_macos_release.MacReleaseTest.test_no_credentials_is_an_unsigned_dry_run_that_passes) ... ok
+test_non_mac_without_dry_run_stops_before_cargo
+(test_macos_release.MacReleaseTest.test_non_mac_without_dry_run_stops_before_cargo) ... ok
+test_partial_credentials_fail_with_the_missing_names
+(test_macos_release.MacReleaseTest.test_partial_credentials_fail_with_the_missing_names) ... ok
+test_partial_notarization_api_key_trio_fails
+(test_macos_release.MacReleaseTest.test_partial_notarization_api_key_trio_fails) ... ok
+test_signed_run_sets_launch_marker_and_locked_build
+(test_macos_release.MacReleaseTest.test_signed_run_sets_launch_marker_and_locked_build) ... ok
+test_rejects_global_bridge (test_validate_macos_config.MacConfigTest.test_rejects_global_bridge) ... ok
+test_rejects_second_capability_file (test_validate_macos_config.MacConfigTest.test_rejects_second_capability_file) ...
+ok
+test_rejects_unreviewed_capability_permission
+(test_validate_macos_config.MacConfigTest.test_rejects_unreviewed_capability_permission) ... ok
+test_rejects_widened_remote_context (test_validate_macos_config.MacConfigTest.test_rejects_widened_remote_context) ...
+ok
+test_unapproved_callback_registration (test_validate_macos_config.MacConfigTest.test_unapproved_callback_registration)
+... ok
+test_valid_overlay (test_validate_macos_config.MacConfigTest.test_valid_overlay) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 1.216s
+
+OK
+native static package boundary PASS

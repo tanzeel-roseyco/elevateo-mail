@@ -59,6 +59,13 @@ function ModalHarness() {
 }
 
 describe('Modal', () => {
+  // AIDEV-NOTE: A translucent semantic backdrop preserves context behind confirmation dialogs.
+  it('keeps the underlying task visible through its backdrop', async () => {
+    render(<ModalHarness />)
+    fireEvent.click(screen.getByRole('button', { name: 'Open dialog' }))
+    await screen.findByRole('dialog', { name: 'Example' })
+    expect(document.querySelector('.bg-overlay')).not.toBeNull()
+  })
   it('returns focus to the control that opened a trigger-less dialog', async () => {
     render(<ModalHarness />)
     const opener = screen.getByRole('button', { name: 'Open dialog' })
@@ -98,18 +105,18 @@ describe('LinkTabs', () => {
     const profile = screen.getByRole('link', { name: 'Profile' })
     const workspace = screen.getByRole('link', { name: 'Workspace' })
     expect(profile.getAttribute('aria-current')).toBe('page')
-    expect(profile.className).toContain('border-(--color-accent-content)')
+    expect(profile.className).toContain('border-line')
     expect(profile.className).not.toContain('border-transparent')
     expect(workspace.className).toContain('border-transparent')
-    expect(workspace.className).not.toContain('border-(--color-accent-content)')
+    expect(workspace.className).not.toContain('border-line')
   })
 })
 
 describe('CodeBlock', () => {
   it('keeps the Copy control on an opaque surface so scrolled code cannot show through it', () => {
     render(<CodeBlock code={'x'.repeat(400)} />)
-    expect(screen.getByRole('button', { name: 'Copy' }).className).toContain('bg-zinc-50')
-    expect(document.querySelector('[aria-hidden].bg-linear-to-l')).not.toBeNull()
+    expect(screen.getByRole('button', { name: 'Copy' }).className).toContain('bg-surface-2')
+    expect(document.querySelector('[aria-hidden].bg-surface-2')).not.toBeNull()
   })
 })
 

@@ -53,22 +53,22 @@ export function RunComposer({ gateway, campaign, leads, onCreated }: {
       setError(uncertain ? 'The run was not confirmed. Retry the original run to recover its receipt. Do not create another run.' : 'The server rejected this run. Refresh consent and campaign details before correcting it.')
     }
   }
-  return <form onSubmit={(event) => { void submit(event) }} className="space-y-4 p-6 rounded-xl border border-zinc-200 bg-white shadow-xs dark:border-zinc-700 dark:bg-zinc-800" aria-label="Create marketing run">
-    <h2 className="text-base font-medium text-zinc-800 dark:text-white">Single-message campaign</h2>
-    <p className="text-sm text-zinc-500">Choose up to 25 opted-in leads from this page. Suppression and current consent are checked again by the server. Include your identity and unsubscribe instructions.</p>
-    {attempt && <p role="status" className="text-sm text-zinc-500">{attempt.runId ? 'Run confirmed. View its recipients below.' : 'Original run is preserved in this tab. Retry it unchanged to check its result.'}</p>}
-    <Field id="run-mailbox" label="Sending account"><select id="run-mailbox" disabled={locked} className="h-10 w-full max-w-xs rounded-lg border border-zinc-200 border-b-zinc-300/80 bg-white px-3 text-sm text-zinc-700 shadow-xs dark:border-white/10 dark:bg-white/10 dark:text-zinc-300" value={attempt?.input.mailbox_id ?? mailbox} onChange={(event) => setMailbox(event.target.value)}><option value="">Choose an account</option>{available.map((item) => <option key={item.id} value={item.id}>{item.display_name}</option>)}</select></Field>
-    {available.length === 0 && <p role="status" className="text-sm text-zinc-500">No account currently grants compose and send approval access.</p>}
+  return <form onSubmit={(event) => { void submit(event) }} className="space-y-4 p-6 rounded-xl border border-line bg-surface shadow-xs  " aria-label="Create marketing run">
+    <h2 className="text-base font-medium text-fg ">Single-message campaign</h2>
+    <p className="text-sm text-muted">Choose up to 25 opted-in leads from this page. Suppression and current consent are checked again by the server. Include your identity and unsubscribe instructions.</p>
+    {attempt && <p role="status" className="text-sm text-muted">{attempt.runId ? 'Run confirmed. View its recipients below.' : 'Original run is preserved in this tab. Retry it unchanged to check its result.'}</p>}
+    <Field id="run-mailbox" label="Sending account"><select id="run-mailbox" disabled={locked} className="h-10 w-full max-w-xs rounded-lg border border-line border-b-line bg-surface px-3 text-sm text-fg shadow-xs   " value={attempt?.input.mailbox_id ?? mailbox} onChange={(event) => setMailbox(event.target.value)}><option value="">Choose an account</option>{available.map((item) => <option key={item.id} value={item.id}>{item.display_name}</option>)}</select></Field>
+    {available.length === 0 && <p role="status" className="text-sm text-muted">No account currently grants compose and send approval access.</p>}
     <Field id="run-subject" label="Subject"><TextInput id="run-subject" value={attempt?.input.subject ?? subject} disabled={locked} maxLength={998} onChange={(event) => setSubject(event.target.value)} /></Field>
     <Field id="run-body" label="Plain-text message"><TextArea id="run-body" value={attempt?.input.body_text ?? body} disabled={locked} maxLength={65_536} onChange={(event) => setBody(event.target.value)} /></Field>
-    <fieldset disabled={locked} className="space-y-2"><legend className="mb-2 text-sm font-medium text-zinc-800 dark:text-white">Recipients ({attempt?.input.lead_ids.length ?? selected.length}/25)</legend>
-      {leads.length === 0 && <p className="text-sm text-zinc-500">No leads on this page. Add leads and record consent first.</p>}
+    <fieldset disabled={locked} className="space-y-2"><legend className="mb-2 text-sm font-medium text-fg ">Recipients ({attempt?.input.lead_ids.length ?? selected.length}/25)</legend>
+      {leads.length === 0 && <p className="text-sm text-muted">No leads on this page. Add leads and record consent first.</p>}
       {leads.map((lead) => <div key={lead.id}><CheckboxField id={`run-lead-${lead.id}`} label={`${lead.email} · ${lead.suppressed ? 'suppressed' : lead.consent_status}`} checked={(attempt?.input.lead_ids ?? selected).includes(lead.id)} disabled={locked || lead.suppressed || lead.consent_status !== 'granted' || (selected.length >= 25 && !selected.includes(lead.id))} onChange={(event) => setSelected((items) => event.target.checked ? [...items, lead.id] : items.filter((id) => id !== lead.id))} /></div>)}
     </fieldset>
     <CheckboxField id="run-confirm" label="I confirm these recipients opted into this marketing message and I have provided an unsubscribe method." checked={attempt ? true : confirmed} disabled={locked} onChange={(event) => setConfirmed(event.target.checked)} />
-    {error && <p role="alert" className="text-sm text-red-500">{error}</p>}
+    {error && <p role="alert" className="text-sm text-danger">{error}</p>}
     {attempt?.runId ? <Button onClick={() => { intent.clear(campaign.id); setAttempt(undefined); setConfirmed(false); setSelected([]) }}>Prepare another run</Button> : <Button type="submit" variant="primary" disabled={busy || !proof || !gateway.createCampaignRun || (!attempt && (available.length === 0 || campaign.status !== 'draft'))}>{busy ? 'Confirming run…' : attempt ? 'Retry original run' : 'Queue marketing run'}</Button>}
-    {campaign.status === 'paused' && <p className="text-sm text-zinc-500">This campaign is paused. New runs cannot start.</p>}
-    <p className="text-xs text-zinc-500">A queued or accepted message is not proof of delivery. Cancellation cannot recall mail already accepted.</p>
+    {campaign.status === 'paused' && <p className="text-sm text-muted">This campaign is paused. New runs cannot start.</p>}
+    <p className="text-xs text-muted">A queued or accepted message is not proof of delivery. Cancellation cannot recall mail already accepted.</p>
   </form>
 }

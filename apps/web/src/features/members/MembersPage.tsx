@@ -175,7 +175,7 @@ function MemberRoster({ mailboxId }: { mailboxId: string }) {
         subtitle={mailbox ? `${mailbox.display_name}${mailbox.display_address ? ` · ${mailbox.display_address}` : ''}` : 'Mailbox membership'}
         actions={roster.status === 'ready' ? <Badge tone="neutral">Roster revision {roster.version}</Badge> : undefined}
       />
-      <p className="mb-6 max-w-3xl text-sm text-zinc-500">
+      <p className="mb-6 max-w-3xl text-sm text-muted">
         Explicit members of this mailbox. An explicit row grants read; shared mailboxes may also be readable without a row. Only user ids are shown: this build has no user directory.
       </p>
       {roster.status === 'loading' && <div role="status" aria-label="Loading members"><Skeleton rows={4} /></div>}
@@ -196,7 +196,7 @@ function MemberRoster({ mailboxId }: { mailboxId: string }) {
             {roster.members.length === 0 && <EmptyState icon={<UserGroupIcon className="size-5" />} title="No explicit members" body="Nobody has an explicit membership row in this mailbox." />}
             {roster.members.length > 0 && (
               <Card className="p-0">
-                <ul className="divide-y divide-zinc-200 dark:divide-zinc-700">
+                <ul className="divide-y divide-line ">
                   {roster.members.map((member) => (
                     <MemberRow
                       key={member.user_id}
@@ -211,7 +211,7 @@ function MemberRoster({ mailboxId }: { mailboxId: string }) {
                 </ul>
               </Card>
             )}
-            {roster.more && <p className="mt-2 text-xs text-zinc-500">More members exist than are shown here.</p>}
+            {roster.more && <p className="mt-2 text-xs text-muted">More members exist than are shown here.</p>}
             {failure && (
               <div className="mt-4">
                 <Callout variant="danger" role="alert" actions={(failure.code === 'stale_version' || failure.uncertain) && <Button size="sm" onClick={() => void load()}>Reload members</Button>}>
@@ -230,17 +230,17 @@ function MemberRoster({ mailboxId }: { mailboxId: string }) {
                 }}
                 noValidate
               >
-                <h2 className="text-base font-medium text-zinc-800 dark:text-white">Add or update a member</h2>
+                <h2 className="text-base font-medium text-fg ">Add or update a member</h2>
                 <Field id={ids.user} label="User id" hint="UUID of a current organization member. An existing member's flags are replaced." error={newUserError}>
                   <TextInput id={ids.user} value={newUserText} onChange={(e) => setNewUserText(e.target.value)} disabled={disabled} autoComplete="off" spellCheck={false} aria-invalid={newUserError ? true : undefined} aria-describedby={`${ids.user}-hint`} className="font-mono text-xs" />
                 </Field>
                 <fieldset className="flex flex-col gap-2" aria-describedby={`${ids.flags}-hint`}>
-                  <legend className="mb-2 text-sm font-medium text-zinc-800 dark:text-white">Capabilities</legend>
+                  <legend className="mb-2 text-sm font-medium text-fg ">Capabilities</legend>
                   {FLAGS.map((flag) => (
                     <CheckboxField key={flag.key} id={`${ids.flags}-${flag.key}`} label={flag.label} checked={newFlags[flag.key]} disabled={disabled} onChange={(e) => setNewFlags({ ...newFlags, [flag.key]: e.target.checked })} />
                   ))}
                 </fieldset>
-                <p id={`${ids.flags}-hint`} className="text-xs text-zinc-500">Read is granted by the membership itself. Sending is not available in this build regardless of these flags.</p>
+                <p id={`${ids.flags}-hint`} className="text-xs text-muted">Read is granted by the membership itself. Sending is not available in this build regardless of these flags.</p>
                 <div>
                   <Button type="submit" variant="primary" disabled={disabled || newUserText.trim() === ''}>Save member</Button>
                 </div>
@@ -267,9 +267,9 @@ function MemberRow({ member, isSelf, busy, disabled, onApply, onRemove }: { memb
     <li className="flex flex-col gap-3 px-6 py-4">
       <div className="flex flex-wrap items-center gap-3">
         <Avatar name={member.user_id.slice(0, 2)} />
-        <code className="min-w-0 flex-1 truncate font-mono text-xs text-zinc-700 dark:text-zinc-300">{member.user_id}</code>
+        <code className="min-w-0 flex-1 truncate font-mono text-xs text-fg ">{member.user_id}</code>
         {isSelf && <Badge tone="accent" size="sm">You</Badge>}
-        {busy && <span role="status" className="text-xs text-zinc-500">Saving…</span>}
+        {busy && <span role="status" className="text-xs text-muted">Saving…</span>}
       </div>
       <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
         {FLAGS.map((flag) => (

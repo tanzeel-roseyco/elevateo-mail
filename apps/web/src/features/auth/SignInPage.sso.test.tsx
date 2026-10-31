@@ -59,8 +59,8 @@ describe('sign-in entries by server status', () => {
     renderSignedOut()
     const sso = await screen.findByRole('button', { name: 'Continue with single sign-on' })
     const submit = screen.getByRole('button', { name: 'Sign in' })
-    expect(sso.className).toContain('bg-(--color-accent)')
-    expect(submit.className).toContain('bg-white')
+    expect(sso.className).toContain('border-2')
+    expect(submit.className).toContain('bg-surface')
     // DOCUMENT_POSITION_FOLLOWING: the submit comes after the SSO button in document order.
     expect(sso.compareDocumentPosition(submit) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
     expect(screen.getByRole('separator', { name: 'or' })).toBeTruthy()
@@ -70,7 +70,7 @@ describe('sign-in entries by server status', () => {
 
   it('makes the password submit primary when it is the only entry', async () => {
     renderSignedOut({ getSsoStatus: 'sso_password_only' })
-    expect((await screen.findByRole('button', { name: 'Sign in' })).className).toContain('bg-(--color-accent)')
+    expect((await screen.findByRole('button', { name: 'Sign in' })).className).toContain('border-2')
   })
 
   it('keeps the typed email when returning from the recovery confirmation', async () => {
@@ -157,7 +157,7 @@ describe('unsupported single sign-on provider (fails closed, no Google UI)', () 
     expect(screen.queryByRole('separator')).toBeNull()
     expect(screen.queryByText(/google/i)).toBeNull()
     // The lone password submit is primary, exactly as when SSO is disabled entirely.
-    expect((screen.getByRole('button', { name: 'Sign in' })).className).toContain('bg-(--color-accent)')
+    expect((screen.getByRole('button', { name: 'Sign in' })).className).toContain('border-2')
   })
 })
 

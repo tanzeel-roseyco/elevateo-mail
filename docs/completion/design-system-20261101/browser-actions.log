@@ -1,0 +1,44 @@
+docker : sh: 1: send.status: not found
+At line:2 char:38
++ ... top-linux'; docker exec elevateo-white-gold-qa sh -c 'cp /workspace/a ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (sh: 1: send.status: not found:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+node:events:505
+    throw er; // Unhandled 'error' event
+    ^
+
+Error: write EPIPE
+    at afterWriteDispatched (node:internal/stream_base_commons:159:15)
+    at writeGeneric (node:internal/stream_base_commons:150:3)
+    at Socket._writeGeneric (node:net:1262:11)
+    at Socket._write (node:net:1274:8)
+    at writeOrBuffer (node:internal/streams/writable:574:12)
+    at _write (node:internal/streams/writable:503:10)
+    at Socket.Writable.write (node:internal/streams/writable:512:10)
+    at StripAnsiStream.write (/qa/apps/web/node_modules/playwright/lib/runner/index.js:1067:25)
+    at ListReporter.writeLine (/qa/apps/web/node_modules/playwright/lib/runner/index.js:1315:25)
+    at ListReporter.onBegin (/qa/apps/web/node_modules/playwright/lib/runner/index.js:4862:12)
+    at /qa/apps/web/node_modules/playwright/lib/runner/index.js:1614:42
+    at Multiplexer._wrap (/qa/apps/web/node_modules/playwright/lib/runner/index.js:1677:7)
+    at Multiplexer.onBegin (/qa/apps/web/node_modules/playwright/lib/runner/index.js:1614:12)
+    at InternalReporter.onBegin (/qa/apps/web/node_modules/playwright/lib/runner/index.js:1802:29)
+    at Object.setup (/qa/apps/web/node_modules/playwright/lib/runner/index.js:6536:33)
+    at taskLoop (/qa/apps/web/node_modules/playwright/lib/runner/index.js:6341:29)
+    at _TaskRunner.runDeferCleanup (/qa/apps/web/node_modules/playwright/lib/runner/index.js:6357:5)
+    at _TaskRunner.run (/qa/apps/web/node_modules/playwright/lib/runner/index.js:6321:33)
+    at runTasks (/qa/apps/web/node_modules/playwright/lib/runner/index.js:6487:18)
+    at Object.runAllTestsWithConfig (/qa/apps/web/node_modules/playwright/lib/runner/index.js:7150:18)
+    at runTests (/qa/apps/web/node_modules/playwright/lib/cli/testActions.js:91:18)
+    at _Command.<anonymous> (/qa/apps/web/node_modules/playwright/lib/program.js:55:7)
+Emitted 'error' event on Socket instance at:
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at processTicksAndRejections (node:internal/process/task_queues:90:21) {
+  errno: -32,
+  code: 'EPIPE',
+  syscall: 'write'
+}
+
+Node.js v24.21.0

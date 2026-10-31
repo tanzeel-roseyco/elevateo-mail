@@ -29,6 +29,17 @@ beforeEach(() => {
 afterEach(cleanup)
 
 describe('email finder workspace', () => {
+  // AIDEV-NOTE: Selection needs a structural cue as well as the subtle neutral surface fill.
+  it('distinguishes only the current mode with a thicker border and text weight', async () => {
+    open('/email-finder?mode=jobs')
+    await screen.findByText(/Connection timed out on port 25/)
+    const current = document.querySelector('a[aria-current="page"]')
+    expect(current?.classList.contains('border-b-2')).toBe(true)
+    expect(current?.classList.contains('font-semibold')).toBe(true)
+    const otherModes = Array.from(document.querySelectorAll('nav a:not([aria-current="page"])'))
+    expect(otherModes.length).toBeGreaterThan(0)
+    for (const link of otherModes) expect(link.classList.contains('border-b-2')).toBe(false)
+  })
   it('queues a person and exposes persisted progress', async () => {
     open()
     fireEvent.change(screen.getByLabelText('Full name'), { target: { value: 'Alex Morgan' } })

@@ -1,0 +1,80 @@
+
+> @elevateo/web@0.1.0-read.1 lint
+> eslint . --max-warnings 0
+
+
+> @elevateo/web@0.1.0-read.1 typecheck
+> tsc -p tsconfig.json --noEmit
+
+
+> @elevateo/web@0.1.0-read.1 build
+> tsc -p tsconfig.json --noEmit && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+docker : node_modules/zod/v4/core/util.js (400:0): A comment
+At line:2 char:38
++ ... top-linux'; docker exec -w /qa/apps/web elevateo-white-gold-qa sh /tm ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node_modules/zo...0:0): A comment:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+
+"// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on
+`Number`, so the bare object literal survived into every bundle."
+
+in "node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the
+comment. The comment will be removed to avoid issues.
+node_modules/zod/v4/core/regexes.js (74:0): A comment
+
+"/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+ * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+ * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+
+in "node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of
+the comment. The comment will be removed to avoid issues.
+✓ 325 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                 0.85 kB │ gzip:  0.38 kB
+dist/.vite/manifest.json                       10.96 kB │ gzip:  1.27 kB
+dist/assets/app-By45zake.css                   38.22 kB │ gzip:  8.26 kB
+dist/assets/UnavailableSetting-CkBCqWDP.js      0.45 kB │ gzip:  0.30 kB
+dist/assets/Breadcrumbs-3ZvSSK6U.js             0.69 kB │ gzip:  0.41 kB
+dist/assets/sendConsent-CDdZ1nf6.js             1.00 kB │ gzip:  0.56 kB
+dist/assets/CodeBlock-CzKLvHaO.js               1.30 kB │ gzip:  0.70 kB
+dist/assets/ComposeWindow-Dv2-dlMg.js           1.54 kB │ gzip:  0.80 kB
+dist/assets/PersonalSettingsPage-DcP9ZLcO.js    4.20 kB │ gzip:  1.78 kB
+dist/assets/SearchPage-Cf4j0uWW.js              4.55 kB │ gzip:  2.00 kB
+dist/assets/DraftsPage-BUBtYJwH.js              5.19 kB │ gzip:  2.09 kB
+dist/assets/SuppressionsPage-BjP7DYIv.js        5.23 kB │ gzip:  2.25 kB
+dist/assets/BouncesPage-Sk50itw1.js             5.41 kB │ gzip:  2.32 kB
+dist/assets/SequencePage-BlRvqaPn.js            6.31 kB │ gzip:  2.52 kB
+dist/assets/MembersPage-CQ0XL8gw.js             7.12 kB │ gzip:  3.03 kB
+dist/assets/UnifiedInboxPage-Dcfd9doY.js        9.19 kB │ gzip:  3.64 kB
+dist/assets/CampaignRunsPage-BaE2vPAw.js        9.79 kB │ gzip:  3.82 kB
+dist/assets/AdministrationPage-DnsQHcgG.js     10.35 kB │ gzip:  3.72 kB
+dist/assets/SendStatusPage-CLzzx0dV.js         11.06 kB │ gzip:  3.63 kB
+dist/assets/SendReviewPage-uqEkcsBo.js         11.22 kB │ gzip:  3.92 kB
+dist/assets/vendor-CTdyrM6S.js                 12.80 kB │ gzip:  4.91 kB
+dist/assets/EmailFinderPage-DeluhZ7a.js        13.03 kB │ gzip:  4.75 kB
+dist/assets/DraftEditorPage-CF0VavBq.js        16.95 kB │ gzip:  6.17 kB
+dist/assets/OutreachPages-BdR-F7IU.js          21.44 kB │ gzip:  6.25 kB
+dist/assets/HelpRoutes-BIRCdpxf.js             26.92 kB │ gzip:  9.30 kB
+dist/assets/radix-CYzEupTz.js                  26.93 kB │ gzip:  8.97 kB
+dist/assets/ThreadPage-CSFO0R_H.js             30.48 kB │ gzip:  9.46 kB
+dist/assets/router-BO77BYMJ.js                 39.54 kB │ gzip: 14.26 kB
+dist/assets/SettingsRoutes-BeRz4cPH.js         53.78 kB │ gzip: 15.75 kB
+dist/assets/zod-C_rs46U9.js                    89.68 kB │ gzip: 25.54 kB
+dist/assets/app-CNFW_bFu.js                   191.35 kB │ gzip: 57.74 kB
+dist/assets/react--YlFthuv.js                 222.24 kB │ gzip: 69.18 kB
+✓ built in 4.33s
+
+> @elevateo/web@0.1.0-read.1 check:bundle
+> node scripts/check-bundle-budget.mjs
+
+OK   entry assets/app-CNFW_bFu.js: 186.9 KB (budget 500.0 KB)
+check:bundle passed: every entry chunk is within the 500 KB budget.
+Production fixture marker check passed
+GATE_EXIT=0
+DOCKER_EXIT=0

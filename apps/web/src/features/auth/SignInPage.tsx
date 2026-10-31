@@ -128,11 +128,11 @@ function useSsoStatus(gateway: MailroomGateway): { state: SsoStatusState; retry(
 /** Centred card frame shared by sign-in, recovery and the completion form. */
 export function AuthFrame({ children, labelledBy }: { children: ReactNode; labelledBy?: string }) {
   return (
-    <main className="flex min-h-dvh items-center justify-center bg-zinc-50 p-6 dark:bg-zinc-900" aria-labelledby={labelledBy}>
-      <div className="flex w-full max-w-sm flex-col gap-6 rounded-xl border border-zinc-200 bg-white p-6 shadow-xs dark:border-zinc-700 dark:bg-zinc-800">
+    <main className="flex min-h-dvh items-center justify-center bg-surface-2 p-6 " aria-labelledby={labelledBy}>
+      <div className="flex w-full max-w-sm flex-col gap-6 rounded-xl border border-line bg-surface p-6 shadow-xs  ">
         <BrandLockup linked={false} />
         {children}
-        <p className="text-xs leading-snug text-zinc-500">{FOOTNOTE}</p>
+        <p className="text-xs leading-snug text-muted">{FOOTNOTE}</p>
       </div>
     </main>
   )
@@ -257,8 +257,8 @@ export function SignInPage({ navigation = browserNavigation }: { navigation?: Si
     return (
       <AuthFrame labelledBy="recovery-sent-heading">
         <div className="space-y-2">
-          <h1 id="recovery-sent-heading" ref={headingRef} tabIndex={-1} className="text-lg font-medium text-zinc-800 dark:text-white">Check your email</h1>
-          <p role="status" className="text-sm text-zinc-500 dark:text-zinc-400">
+          <h1 id="recovery-sent-heading" ref={headingRef} tabIndex={-1} className="text-lg font-medium text-fg ">Check your email</h1>
+          <p role="status" className="text-sm text-muted ">
             If an account exists for that address, a recovery message has been sent. Open the link in it to set a new password. The link works once and expires.
           </p>
         </div>
@@ -270,13 +270,13 @@ export function SignInPage({ navigation = browserNavigation }: { navigation?: Si
   return (
     <AuthFrame labelledBy="sign-in-heading">
       <div className="space-y-2">
-        <h1 id="sign-in-heading" ref={headingRef} tabIndex={-1} className="text-lg font-medium text-zinc-800 dark:text-white">
+        <h1 id="sign-in-heading" ref={headingRef} tabIndex={-1} className="text-lg font-medium text-fg ">
           {recovery ? 'Recover access' : 'Sign in'}
         </h1>
         {recovery ? (
-          <p className="text-sm text-zinc-500 dark:text-zinc-400">Enter your email address. If an account exists, a message with a one-time link will be sent to it.</p>
+          <p className="text-sm text-muted ">Enter your email address. If an account exists, a message with a one-time link will be sent to it.</p>
         ) : (
-          ssoEnabled && !passwordEnabled && <p className="text-sm text-zinc-500 dark:text-zinc-400">Use your organization's single sign-on account to continue.</p>
+          ssoEnabled && !passwordEnabled && <p className="text-sm text-muted ">Use your organization's single sign-on account to continue.</p>
         )}
       </div>
       {!recovery && noticeCallout}
@@ -287,10 +287,10 @@ export function SignInPage({ navigation = browserNavigation }: { navigation?: Si
         </Button>
       )}
       {ssoEnabled && passwordEnabled && !recovery && (
-        <div role="separator" aria-label="or" className="flex items-center gap-3 text-xs font-medium uppercase tracking-wider text-zinc-400">
-          <span aria-hidden className="h-px flex-1 bg-zinc-200 dark:bg-zinc-700" />
+        <div role="separator" aria-label="or" className="flex items-center gap-3 text-xs font-medium uppercase tracking-wider text-muted">
+          <span aria-hidden className="h-px flex-1 bg-surface-2 " />
           or
-          <span aria-hidden className="h-px flex-1 bg-zinc-200 dark:bg-zinc-700" />
+          <span aria-hidden className="h-px flex-1 bg-surface-2 " />
         </div>
       )}
       {passwordEnabled && (
@@ -397,7 +397,7 @@ function PasswordEntry({ mode, onMode, email, onEmail, describedBy, locked, seco
             id={ids.password}
             label="Password"
             labelAside={
-              <button type="button" className="text-sm font-medium text-(--color-accent-content) hover:underline" onClick={() => switchMode('recovery')} disabled={busy || locked}>
+              <button type="button" className="text-sm font-medium text-fg hover:underline" onClick={() => switchMode('recovery')} disabled={busy || locked}>
                 Forgot your password?
               </button>
             }
@@ -416,7 +416,7 @@ function PasswordEntry({ mode, onMode, email, onEmail, describedBy, locked, seco
           </Field>
         )}
         {failure && (
-          <p id={ids.error} role="alert" className="text-sm font-medium text-red-500">
+          <p id={ids.error} role="alert" className="text-sm font-medium text-danger">
             {failure.message}
             {hold > 0 && ` You can try again in ${hold} s.`}
           </p>

@@ -1,0 +1,24 @@
+# Platform verification
+
+All commands ran in Docker Desktop with `DOCKER_CONTEXT=desktop-linux`. Source mounts were read-only; builds copied source into disposable containers. No platform runtime screenshots were captured.
+
+| Client | Result | Evidence |
+| --- | --- | --- |
+| Windows | Strict solution test failed before tests on existing CA1000 (ApiError.cs:42-43), CA1716 (ITokenStore.cs:16). Diagnostic warnings-not-errors test: 11 passed, 1 failed (AuthFlowTests reads disposed JsonContent). Separate diagnostic Avalonia app build succeeded, 0 errors/5 warnings, including theme XAML compilation. | windows-tests.log, windows-diagnostic.log, windows-compile.log |
+| iOS | Docker image `swift build` succeeded for ElevateoCore. Strict tests failed to compile because APIClientTests.swift lacks FoundationNetworking on Linux; 0 executed. Diagnostic container-only import: 36 passed/0 failed. Subsequent Python command failed because image lacks python3. Signing helper tests separately passed 3/0 in Rust image. SwiftUI app/Xcode build and simulator were not run. | ios-build.log, ios-tests.log, ios-diagnostic.log, ios-signing.log |
+| Native | Python release/configuration checks: 14 passed/0 failed; static boundary check passed. Strict Rust fixture failed on stale Cargo.lock before tests. Diagnostic disposable source copy allowed lock update: 40 tests passed/0 failed, including compilation of the changed light-theme API; subsequent cargo check passed, overall exit 0. Repository Cargo.lock unchanged. No native GUI runtime checked. | native-python-corrected-mount.log, native-cargo.log, native-diagnostic.log |
+| Android | Python suites: 42 + 23 = 65 passed/0 failed, including generated light-theme assertions. SDK/NDK/Tauri CLI Docker image built successfully. Strict build-apk.sh repeated 65 passing Python tests, then failed before Rust tests/APK generation on stale Cargo.lock (exit 101). No APK or emulator visual check. | android-python-corrected-command.log, android-build-capped.log, android-apk.log |
+
+Windows diagnostic command: `dotnet test Elevateo.Windows.sln -c Release -p:TreatWarningsAsErrors=false`; separate compile: `dotnet build src/Elevateo.Windows/Elevateo.Windows.csproj -c Release -p:TreatWarningsAsErrors=false`. Strict command omitted the property. No Windows source or baseline test changes were made for diagnostics.
+
+iOS diagnostic injected `import FoundationNetworking` only into the disposable image copy before `swift test`; the repository test is unchanged. Signing helper command: `python3 -B test_signing_helpers.py` in a read-only apps/ios mount, using `rust:1.90.0-bookworm`.
+
+Native Python command: `python3 -B -m unittest test_macos_release test_validate_macos_config -v && python3 -B ci/verify_boundary.py` from apps/native, with the full repository read-only mounted to preserve relative paths. The earlier native-python.log used an incorrect mount and is a harness failure, superseded by native-python-corrected-mount.log.
+
+Android command: `python3 -B -m unittest discover -s . -v && python3 -B -m unittest discover -s build -v` from apps/android. Earlier android-python.log reflects shell glob quoting failure before tests; the corrected log is authoritative. Separate customization suite also passed 5/0, already included in the 65.
+
+Android image build used the repository Dockerfile copied outside the repository, changing only cargo install to use `-j 2` for shared-machine resource limits. The first build was cancelled before CLI compilation and the capped build reused completed SDK layers. APK entry ran as uid 1000 with no signing environment, synthetic QA trust only, and disposable copied source. Native diagnostics used one Cargo job with CPU/memory limits; lock updates existed only in the disposable container.
+
+All disposable platform test containers were removed by `--rm`; Windows/iOS/native task images were removed explicitly after verification (platform-cleanup.log). Android image removal was refused because another worker's `elevateo-client-android-tools-reserve-20261101` container references it; both were preserved. Retained Android image virtual size: 2,246,409,551 bytes. Shared build caches remain because other builds are active. Image virtual sizes are not measurements of physical disk reclaimed. No volumes, shared images, preview containers, or other workers' workloads were removed. Final host C: free space measured 5,040,115,712 bytes. Docker reported images 20.52 GB, containers 5.644 GB, volumes 4.69 GB, build cache 15.96 GB; these are shared-machine totals. Compaction was not attempted with active shared workloads.
+
+Small diagnostic scripts and ephemeral Dockerfiles remain under `C:/Users/Tanzeel/Code and projects/elevateo-white-gold-20261101/` as verification harness records. They contain no credentials or source copies. Build outputs and synthetic QA private keys existed only in removed disposable containers.
