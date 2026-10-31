@@ -1,0 +1,355 @@
+
+> @elevateo/web@0.1.0-read.1 lint
+> eslint . --max-warnings 0
+
+
+> @elevateo/web@0.1.0-read.1 typecheck
+> tsc -p tsconfig.json --noEmit
+
+
+> @elevateo/web@0.1.0-read.1 test
+> vitest run src/features/thread/ThreadPage.test.tsx src/features/thread/NotesPanel.test.tsx --maxWorkers=1
+
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.11 [39m[90m/workspace/apps/web[39m
+
+ [32mâœ“[39m src/features/thread/ThreadPage.test.tsx [2m([22m[2m42 tests[22m[2m)[22m[33m 1901[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m42 passed[39m[22m[90m (42)[39m
+[2m   Start at [22m 16:17:45
+[2m   Duration [22m 3.90s[2m (transform 708ms, setup 172ms, import 877ms, tests 1.90s, environment 809ms)[22m
+
+
+> @elevateo/web@0.1.0-read.1 build
+> tsc -p tsconfig.json --noEmit && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+docker : node_modules/zod/v4/core/regexes.js (74:0): A comment
+At line:2 char:820
++ ... ($false))); docker start -a elevateo-client-browser-20261101 2>&1 | T ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node_modules/zo...4:0): A comment:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+
+"/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+ * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+ * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+
+in "node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of
+the comment. The comment will be removed to avoid issues.
+node_modules/zod/v4/core/util.js (400:0): A comment
+
+"// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on
+`Number`, so the bare object literal survived into every bundle."
+
+in "node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the
+comment. The comment will be removed to avoid issues.
+âœ“ 324 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                 0.85 kB â”‚ gzip:  0.38 kB
+dist/.vite/manifest.json                       10.96 kB â”‚ gzip:  1.27 kB
+dist/assets/app-5nEjaep3.css                   79.25 kB â”‚ gzip: 12.02 kB
+dist/assets/UnavailableSetting-DTxZfPXt.js      0.45 kB â”‚ gzip:  0.30 kB
+dist/assets/Breadcrumbs-C2gH_jNO.js             0.74 kB â”‚ gzip:  0.42 kB
+dist/assets/sendConsent-CDdZ1nf6.js             1.00 kB â”‚ gzip:  0.56 kB
+dist/assets/CodeBlock-DIl5WVTx.js               1.51 kB â”‚ gzip:  0.77 kB
+dist/assets/ComposeWindow-BHifKY9f.js           1.63 kB â”‚ gzip:  0.83 kB
+dist/assets/PersonalSettingsPage-DcvZZpS9.js    4.20 kB â”‚ gzip:  1.78 kB
+dist/assets/SearchPage-Del1uMM-.js              4.63 kB â”‚ gzip:  2.02 kB
+dist/assets/SuppressionsPage-ShwvPWc3.js        5.35 kB â”‚ gzip:  2.28 kB
+dist/assets/DraftsPage-D9LtN1fB.js              5.40 kB â”‚ gzip:  2.16 kB
+dist/assets/BouncesPage-DdwjeexG.js             5.53 kB â”‚ gzip:  2.36 kB
+dist/assets/SequencePage-CCWp7gzp.js            6.57 kB â”‚ gzip:  2.57 kB
+dist/assets/MembersPage-DLpvNiNe.js             7.22 kB â”‚ gzip:  3.06 kB
+dist/assets/UnifiedInboxPage-BwOy_mTk.js        9.36 kB â”‚ gzip:  3.68 kB
+dist/assets/CampaignRunsPage-CSI2iy2J.js       10.10 kB â”‚ gzip:  3.88 kB
+dist/assets/AdministrationPage-B-PwWYcq.js     10.60 kB â”‚ gzip:  3.78 kB
+dist/assets/SendStatusPage-CVZxGwpT.js         11.28 kB â”‚ gzip:  3.66 kB
+dist/assets/SendReviewPage-CjHO-fSk.js         11.36 kB â”‚ gzip:  3.95 kB
+dist/assets/vendor-CTdyrM6S.js                 12.80 kB â”‚ gzip:  4.91 kB
+dist/assets/EmailFinderPage-BIbDhRWp.js        13.18 kB â”‚ gzip:  4.77 kB
+dist/assets/DraftEditorPage-CqxCuttj.js        17.21 kB â”‚ gzip:  6.22 kB
+dist/assets/OutreachPages-CNSXkmd2.js          22.38 kB â”‚ gzip:  6.31 kB
+dist/assets/radix-CYzEupTz.js                  26.93 kB â”‚ gzip:  8.97 kB
+dist/assets/HelpRoutes-7-MOImJU.js             27.10 kB â”‚ gzip:  9.35 kB
+dist/assets/ThreadPage-BrOfevjy.js             31.07 kB â”‚ gzip:  9.59 kB
+dist/assets/router-BO77BYMJ.js                 39.54 kB â”‚ gzip: 14.26 kB
+dist/assets/SettingsRoutes-Xnlu35eN.js         55.16 kB â”‚ gzip: 15.99 kB
+dist/assets/zod-C_rs46U9.js                    89.68 kB â”‚ gzip: 25.54 kB
+dist/assets/app-Dstu4NjM.js                   196.26 kB â”‚ gzip: 58.93 kB
+dist/assets/react--YlFthuv.js                 222.24 kB â”‚ gzip: 69.18 kB
+âœ“ built in 5.31s
+
+Running 264 tests using 1 worker
+
+  âœ“    1 [desktop-1440] â€º e2e/collaboration.spec.ts:70:1 â€º the C/D mailbox exposes Drafts and Members; the read-only inbox does not (3.8s)
+  âœ“    2 [desktop-1440] â€º e2e/collaboration.spec.ts:83:1 â€º a new draft is created by an explicit save and then listed (4.4s)
+  âœ“    3 [desktop-1440] â€º e2e/collaboration.spec.ts:101:1 â€º a definitive conflict never overwrites: my text is kept and rebase re-enables saving (3.5s)
+  âœ“    4 [desktop-1440] â€º e2e/collaboration.spec.ts:120:1 â€º an uncertain save keeps the text and the ledger lookup does not invent certainty (3.2s)
+  âœ“    5 [desktop-1440] â€º e2e/collaboration.spec.ts:140:1 â€º read state, assignment and an inert note inside the reader (2.9s)
+  âœ“    6 [desktop-1440] â€º e2e/collaboration.spec.ts:168:1 â€º a persistently unconfirmed note stays frozen for retry and can be deliberately abandoned (2.0s)
+  âœ“    7 [desktop-1440] â€º e2e/collaboration.spec.ts:187:1 â€º membership: add a reader at the current revision; the last manager is protected (1.9s)
+  âœ“    8 [desktop-1440] â€º e2e/collaboration.spec.ts:201:1 â€º search is literal, scoped by URL, and links into the reader (2.2s)
+  âœ“    9 [desktop-1440] â€º e2e/collaboration.spec.ts:215:1 â€º no horizontal overflow on the C/D views at 390px, each route captured after its own ready assertion (3.7s)
+  âœ“   10 [desktop-1440] â€º e2e/collaboration.spec.ts:226:1 â€º dark theme C/D views, each route captured after its own ready assertion (4.0s)
+  âœ“   11 [desktop-1440] â€º e2e/collaboration.spec.ts:237:1 â€º dark theme recovery states: the conflict and the uncertain attempt, each from a freshly scripted load (5.1s)
+  âœ“   12 [desktop-1440] â€º e2e/consent-send.spec.ts:20:1 â€º resend review without consent evidence is blocked with a visible reason (989ms)
+  âœ“   13 [desktop-1440] â€º e2e/consent-send.spec.ts:32:1 â€º live bounced send shows provider state and suppression reason without simulated labels (919ms)
+  âœ“   14 [desktop-1440] â€º e2e/email-finder.spec.ts:35:1 â€º finder forms, progress and results work at every viewport (3.1s)
+  âœ“   15 [desktop-1440] â€º e2e/email-finder.spec.ts:56:1 â€º blocked sources are never displayed as not found (1.8s)
+  âœ“   16 [desktop-1440] â€º e2e/email-finder.spec.ts:66:1 â€º API failures retain an explicit retry state (1.7s)
+  âœ“   17 [desktop-1440] â€º e2e/live-send.spec.ts:10:1 â€º live attachment scan, consent approval and delivery evidence (3.1s)
+  âœ“   18 [desktop-1440] â€º e2e/production.spec.ts:116:3 â€º production artifact â€º a failing API produces an honest error with no fixture fallback or markers (618ms)
+  âœ“   19 [desktop-1440] â€º e2e/production.spec.ts:125:3 â€º production artifact â€º a hard network failure also stays on the deliberate error, never fixtures (482ms)
+  âœ“   20 [desktop-1440] â€º e2e/production.spec.ts:133:3 â€º production artifact â€º hostile plaintext renders as inert escaped text in the reader; every request stays on the artifact origin (5.0s)
+  âœ“   21 [desktop-1440] â€º e2e/production.spec.ts:161:3 â€º production artifact â€º 50-row interaction and long-task baseline (2.7s)
+  âœ“   22 [desktop-1440] â€º e2e/read.spec.ts:7:1 â€º fixture entry is visibly labelled and shows the simulated-mail indicator (1.7s)
+  âœ“   23 [desktop-1440] â€º e2e/read.spec.ts:14:1 â€º keyboard traversal: skip link, mailbox, conversation, reader focus (2.4s)
+  âœ“   24 [desktop-1440] â€º e2e/read.spec.ts:30:1 â€º no horizontal overflow at 390px and readable empty state (1.4s)
+  âœ“   25 [desktop-1440] â€º e2e/read.spec.ts:38:1 â€º real keyboard traversal: Tab reaches the skip link, Enter lands on main (1.6s)
+  âœ“   26 [desktop-1440] â€º e2e/read.spec.ts:47:1 â€º real keyboard navigation: Tab reaches a conversation row and Enter opens its reader (3.5s)
+  âœ“   27 [desktop-1440] â€º e2e/read.spec.ts:72:3 â€º mobile drawer at 390px (V8/D6) â€º contains Tab and Shift+Tab, excludes the background, Escape restores the trigger (2.1s)
+  âœ“   28 [desktop-1440] â€º e2e/read.spec.ts:101:3 â€º mobile drawer at 390px (V8/D6) â€º selecting a mailbox in the drawer closes it and shows that mailbox (1.7s)
+  âœ“   29 [desktop-1440] â€º e2e/read.spec.ts:115:3 â€º mobile drawer at 390px (V8/D6) â€º populated inbox at 390px has no horizontal overflow (1.9s)
+  âœ“   30 [desktop-1440] â€º e2e/read.spec.ts:129:3 â€º accent text meets 4.5:1 on its surfaces in the light theme (1.9s)
+  âœ“   31 [desktop-1440] â€º e2e/read.spec.ts:129:3 â€º accent text meets 4.5:1 on its surfaces in the dark theme (2.1s)
+  âœ“   32 [desktop-1440] â€º e2e/read.spec.ts:325:1 â€º animations respect the reduced-motion preference (FE-R16) (2.9s)
+  âœ“   33 [desktop-1440] â€º e2e/read.spec.ts:364:1 â€º no request leaves for remote hosts while reading hostile content (2.7s)
+  âœ“   34 [desktop-1440] â€º e2e/read.spec.ts:388:3 â€º People, workspace members and Personal Details show simulated data at 1440px (2.4s)
+  âœ“   35 [desktop-1440] â€º e2e/read.spec.ts:388:3 â€º People, workspace members and Personal Details show simulated data at 390px (2.1s)
+  âœ“   36 [desktop-1440] â€º e2e/read.spec.ts:407:1 â€º without simulated ports Personal Details shows its error state, not invented data (1.5s)
+  âœ“   37 [desktop-1440] â€º e2e/session.spec.ts:11:1 â€º a signed-out fixture session shows the sign-in form after one refresh attempt, with no stored credential (1.3s)
+  âœ“   38 [desktop-1440] â€º e2e/session.spec.ts:20:1 â€º keyboard sign-in: Tab through email and password, Enter submits, the shell appears (2.2s)
+  âœ“   39 [desktop-1440] â€º e2e/session.spec.ts:43:1 â€º a rejected sign-in announces one generic alert, clears the password and keeps the email (1.4s)
+  âœ“   40 [desktop-1440] â€º e2e/session.spec.ts:56:1 â€º a 503 on sign-in keeps the typed entries and claims no save (1.3s)
+  âœ“   41 [desktop-1440] â€º e2e/session.spec.ts:66:1 â€º a refresh that succeeds reaches the shell without the sign-in form (1.5s)
+  âœ“   42 [desktop-1440] â€º e2e/session.spec.ts:72:1 â€º a valid identity without an organization is an explicit state that can sign out (1.3s)
+  âœ“   43 [desktop-1440] â€º e2e/session.spec.ts:79:1 â€º recovery reads the same for any address (1.4s)
+  âœ“   44 [desktop-1440] â€º e2e/session.spec.ts:89:1 â€º workspace switcher: Escape closes it, an explicit switch replaces the identity, sign-out fences the shell (2.4s)
+  âœ“   45 [desktop-1440] â€º e2e/session.spec.ts:127:1 â€º the completion form sets a password once and never reads the URL (1.8s)
+  âœ“   46 [desktop-1440] â€º e2e/session.spec.ts:143:1 â€º no horizontal overflow on the sign-in and completion forms at 390px (1.1s)
+  âœ“   47 [desktop-1440] â€º e2e/sso.spec.ts:12:1 â€º single sign-on and password entries: gold primary button, separator, form; SSO starts a top-level navigation (1.7s)
+  âœ“   48 [desktop-1440] â€º e2e/sso.spec.ts:48:1 â€º single sign-on only: no password fields, explanatory line (1.3s)
+  âœ“   49 [desktop-1440] â€º e2e/sso.spec.ts:60:1 â€º callback failure: generic alert, parameter removed from the address bar (1.4s)
+  âœ“   50 [desktop-1440] â€º e2e/sso.spec.ts:69:1 â€º status failure fails closed with a retry card (1.2s)
+  âœ“   51 [desktop-1440] â€º e2e/sso.spec.ts:77:1 â€º no entry enabled shows the empty state (1.2s)
+  âœ“   52 [desktop-1440] â€º e2e/visual-states.spec.ts:505:3 â€º read-checkpoint visual states (capture for human inspection) â€º contrast probe rejects transparent and no-op fills (243ms)
+  âœ“   53 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º shell-ready (light) (971ms)
+  âœ“   54 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º inbox-ready (light) (1.1s)
+  âœ“   55 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º inbox-unread-filter-active (light) (1.4s)
+  -   56 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º drawer-open-populated (light)
+  âœ“   57 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º reader-ready-hostile (light) (2.2s)
+  âœ“   58 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º reader-populated-note (light) (2.0s)
+  âœ“   59 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º session-loading (light) (742ms)
+  âœ“   60 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º session-unauthenticated (light) (839ms)
+  âœ“   61 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º session-refreshing (light) (783ms)
+  âœ“   62 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º session-refreshed (light) (1.1s)
+  âœ“   63 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º session-no-organization (light) (615ms)
+  âœ“   64 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º sign-in-rejected (light) (862ms)
+  âœ“   65 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º sign-in-unavailable-keeps-entries (light) (997ms)
+  âœ“   66 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º sign-in-rate-limited-hold (light) (963ms)
+  âœ“   67 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º sign-in-succeeds-into-shell (light) (1.2s)
+  âœ“   68 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º recovery-form (light) (775ms)
+  âœ“   69 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º workspace-switcher-open (light) (1.3s)
+  âœ“   70 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º account-menu-open (light) (1.1s)
+  âœ“   71 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º signed-out-notice (light) (1.1s)
+  âœ“   72 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º sign-out-unconfirmed (light) (1.1s)
+  âœ“   73 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º session-error (light) (545ms)
+  âœ“   74 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º session-recovering (light) (819ms)
+  âœ“   75 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º session-retry-required (light) (934ms)
+  âœ“   76 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º mailboxes-loading (light) (747ms)
+  âœ“   77 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º mailboxes-paginated-loading (light) (860ms)
+  âœ“   78 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º mailboxes-error (light) (694ms)
+  âœ“   79 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º mailboxes-empty (light) (716ms)
+  âœ“   80 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º inbox-loading (light) (1.3s)
+  âœ“   81 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º inbox-empty (light) (1.1s)
+  âœ“   82 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º inbox-empty-page-with-cursor (light) (1.0s)
+  âœ“   83 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º inbox-unavailable (light) (1.2s)
+  âœ“   84 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º inbox-error (light) (978ms)
+  âœ“   85 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º inbox-loading-more (light) (1.1s)
+  âœ“   86 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º reader-loading (light) (1.5s)
+  âœ“   87 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º reader-truncated-badges (light) (1.6s)
+  âœ“   88 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º reader-unavailable (light) (1.5s)
+  âœ“   89 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º reader-error (light) (1.4s)
+  âœ“   90 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º reader-empty (light) (1.7s)
+  âœ“   91 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º reader-empty-page-with-cursor (light) (1.5s)
+  âœ“   92 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º reader-loading-more (light) (1.6s)
+  âœ“   93 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º shell-ready (dark) (925ms)
+  âœ“   94 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º inbox-ready (dark) (1.2s)
+  âœ“   95 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º inbox-unread-filter-active (dark) (1.3s)
+  -   96 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º drawer-open-populated (dark)
+  âœ“   97 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º reader-ready-hostile (dark) (2.2s)
+  âœ“   98 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º reader-populated-note (dark) (2.1s)
+  âœ“   99 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º session-loading (dark) (798ms)
+  âœ“  100 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º session-unauthenticated (dark) (684ms)
+  âœ“  101 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º session-refreshing (dark) (779ms)
+  âœ“  102 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º session-refreshed (dark) (1.0s)
+  âœ“  103 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º session-no-organization (dark) (554ms)
+  âœ“  104 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º sign-in-rejected (dark) (1.1s)
+  âœ“  105 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º sign-in-unavailable-keeps-entries (dark) (1.4s)
+  âœ“  106 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º sign-in-rate-limited-hold (dark) (1.4s)
+  âœ“  107 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º sign-in-succeeds-into-shell (dark) (1.6s)
+  âœ“  108 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º recovery-form (dark) (932ms)
+  âœ“  109 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º workspace-switcher-open (dark) (1.5s)
+  âœ“  110 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º account-menu-open (dark) (1.3s)
+  âœ“  111 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º signed-out-notice (dark) (1.8s)
+  âœ“  112 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º sign-out-unconfirmed (dark) (1.4s)
+  âœ“  113 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º session-error (dark) (718ms)
+  âœ“  114 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º session-recovering (dark) (1.3s)
+  âœ“  115 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º session-retry-required (dark) (1.7s)
+  âœ“  116 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º mailboxes-loading (dark) (1.2s)
+  âœ“  117 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º mailboxes-paginated-loading (dark) (1.1s)
+  âœ“  118 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º mailboxes-error (dark) (934ms)
+  âœ“  119 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º mailboxes-empty (dark) (890ms)
+  âœ“  120 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º inbox-loading (dark) (1.3s)
+  âœ“  121 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º inbox-empty (dark) (1.2s)
+  âœ“  122 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º inbox-empty-page-with-cursor (dark) (1.7s)
+  âœ“  123 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º inbox-unavailable (dark) (1.5s)
+  âœ“  124 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º inbox-error (dark) (2.2s)
+  âœ“  125 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º inbox-loading-more (dark) (1.9s)
+  âœ“  126 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º reader-loading (dark) (2.7s)
+  âœ“  127 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º reader-truncated-badges (dark) (2.3s)
+  âœ“  128 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º reader-unavailable (dark) (2.4s)
+  âœ“  129 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º reader-error (dark) (1.9s)
+  âœ“  130 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º reader-empty (dark) (2.3s)
+  âœ“  131 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º reader-empty-page-with-cursor (dark) (2.0s)
+  âœ“  132 [desktop-1440] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º reader-loading-more (dark) (2.5s)
+  âœ“  133 [narrow-390] â€º e2e/collaboration.spec.ts:70:1 â€º the C/D mailbox exposes Drafts and Members; the read-only inbox does not (3.3s)
+  âœ“  134 [narrow-390] â€º e2e/collaboration.spec.ts:83:1 â€º a new draft is created by an explicit save and then listed (3.0s)
+  âœ“  135 [narrow-390] â€º e2e/collaboration.spec.ts:101:1 â€º a definitive conflict never overwrites: my text is kept and rebase re-enables saving (2.5s)
+  âœ“  136 [narrow-390] â€º e2e/collaboration.spec.ts:120:1 â€º an uncertain save keeps the text and the ledger lookup does not invent certainty (2.6s)
+  âœ“  137 [narrow-390] â€º e2e/collaboration.spec.ts:140:1 â€º read state, assignment and an inert note inside the reader (2.5s)
+  âœ“  138 [narrow-390] â€º e2e/collaboration.spec.ts:168:1 â€º a persistently unconfirmed note stays frozen for retry and can be deliberately abandoned (2.0s)
+  âœ“  139 [narrow-390] â€º e2e/collaboration.spec.ts:187:1 â€º membership: add a reader at the current revision; the last manager is protected (1.9s)
+  âœ“  140 [narrow-390] â€º e2e/collaboration.spec.ts:201:1 â€º search is literal, scoped by URL, and links into the reader (2.3s)
+  âœ“  141 [narrow-390] â€º e2e/collaboration.spec.ts:215:1 â€º no horizontal overflow on the C/D views at 390px, each route captured after its own ready assertion (3.8s)
+  âœ“  142 [narrow-390] â€º e2e/collaboration.spec.ts:226:1 â€º dark theme C/D views, each route captured after its own ready assertion (4.0s)
+  âœ“  143 [narrow-390] â€º e2e/collaboration.spec.ts:237:1 â€º dark theme recovery states: the conflict and the uncertain attempt, each from a freshly scripted load (3.9s)
+  âœ“  144 [narrow-390] â€º e2e/consent-send.spec.ts:20:1 â€º resend review without consent evidence is blocked with a visible reason (1.0s)
+  âœ“  145 [narrow-390] â€º e2e/consent-send.spec.ts:32:1 â€º live bounced send shows provider state and suppression reason without simulated labels (993ms)
+  âœ“  146 [narrow-390] â€º e2e/email-finder.spec.ts:35:1 â€º finder forms, progress and results work at every viewport (3.1s)
+  âœ“  147 [narrow-390] â€º e2e/email-finder.spec.ts:56:1 â€º blocked sources are never displayed as not found (2.0s)
+  âœ“  148 [narrow-390] â€º e2e/email-finder.spec.ts:66:1 â€º API failures retain an explicit retry state (2.2s)
+  âœ“  149 [narrow-390] â€º e2e/live-send.spec.ts:10:1 â€º live attachment scan, consent approval and delivery evidence (3.1s)
+  âœ“  150 [narrow-390] â€º e2e/production.spec.ts:116:3 â€º production artifact â€º a failing API produces an honest error with no fixture fallback or markers (663ms)
+  âœ“  151 [narrow-390] â€º e2e/production.spec.ts:125:3 â€º production artifact â€º a hard network failure also stays on the deliberate error, never fixtures (650ms)
+  âœ“  152 [narrow-390] â€º e2e/production.spec.ts:133:3 â€º production artifact â€º hostile plaintext renders as inert escaped text in the reader; every request stays on the artifact origin (6.0s)
+  âœ“  153 [narrow-390] â€º e2e/production.spec.ts:161:3 â€º production artifact â€º 50-row interaction and long-task baseline (1.7s)
+  âœ“  154 [narrow-390] â€º e2e/read.spec.ts:7:1 â€º fixture entry is visibly labelled and shows the simulated-mail indicator (1.7s)
+  âœ“  155 [narrow-390] â€º e2e/read.spec.ts:14:1 â€º keyboard traversal: skip link, mailbox, conversation, reader focus (2.7s)
+  âœ“  156 [narrow-390] â€º e2e/read.spec.ts:30:1 â€º no horizontal overflow at 390px and readable empty state (1.6s)
+  âœ“  157 [narrow-390] â€º e2e/read.spec.ts:38:1 â€º real keyboard traversal: Tab reaches the skip link, Enter lands on main (1.8s)
+  âœ“  158 [narrow-390] â€º e2e/read.spec.ts:47:1 â€º real keyboard navigation: Tab reaches a conversation row and Enter opens its reader (2.9s)
+  âœ“  159 [narrow-390] â€º e2e/read.spec.ts:72:3 â€º mobile drawer at 390px (V8/D6) â€º contains Tab and Shift+Tab, excludes the background, Escape restores the trigger (2.5s)
+  âœ“  160 [narrow-390] â€º e2e/read.spec.ts:101:3 â€º mobile drawer at 390px (V8/D6) â€º selecting a mailbox in the drawer closes it and shows that mailbox (2.0s)
+  âœ“  161 [narrow-390] â€º e2e/read.spec.ts:115:3 â€º mobile drawer at 390px (V8/D6) â€º populated inbox at 390px has no horizontal overflow (1.8s)
+  âœ“  162 [narrow-390] â€º e2e/read.spec.ts:129:3 â€º accent text meets 4.5:1 on its surfaces in the light theme (2.3s)
+  âœ“  163 [narrow-390] â€º e2e/read.spec.ts:129:3 â€º accent text meets 4.5:1 on its surfaces in the dark theme (2.3s)
+  âœ“  164 [narrow-390] â€º e2e/read.spec.ts:325:1 â€º animations respect the reduced-motion preference (FE-R16) (2.1s)
+  âœ“  165 [narrow-390] â€º e2e/read.spec.ts:364:1 â€º no request leaves for remote hosts while reading hostile content (2.6s)
+  âœ“  166 [narrow-390] â€º e2e/read.spec.ts:388:3 â€º People, workspace members and Personal Details show simulated data at 1440px (2.5s)
+  âœ“  167 [narrow-390] â€º e2e/read.spec.ts:388:3 â€º People, workspace members and Personal Details show simulated data at 390px (2.3s)
+  âœ“  168 [narrow-390] â€º e2e/read.spec.ts:407:1 â€º without simulated ports Personal Details shows its error state, not invented data (1.6s)
+  âœ“  169 [narrow-390] â€º e2e/session.spec.ts:11:1 â€º a signed-out fixture session shows the sign-in form after one refresh attempt, with no stored credential (1.4s)
+  âœ“  170 [narrow-390] â€º e2e/session.spec.ts:20:1 â€º keyboard sign-in: Tab through email and password, Enter submits, the shell appears (2.2s)
+  âœ“  171 [narrow-390] â€º e2e/session.spec.ts:43:1 â€º a rejected sign-in announces one generic alert, clears the password and keeps the email (1.5s)
+  âœ“  172 [narrow-390] â€º e2e/session.spec.ts:56:1 â€º a 503 on sign-in keeps the typed entries and claims no save (1.4s)
+  âœ“  173 [narrow-390] â€º e2e/session.spec.ts:66:1 â€º a refresh that succeeds reaches the shell without the sign-in form (1.4s)
+  âœ“  174 [narrow-390] â€º e2e/session.spec.ts:72:1 â€º a valid identity without an organization is an explicit state that can sign out (1.2s)
+  âœ“  175 [narrow-390] â€º e2e/session.spec.ts:79:1 â€º recovery reads the same for any address (1.7s)
+  âœ“  176 [narrow-390] â€º e2e/session.spec.ts:89:1 â€º workspace switcher: Escape closes it, an explicit switch replaces the identity, sign-out fences the shell (2.4s)
+  âœ“  177 [narrow-390] â€º e2e/session.spec.ts:127:1 â€º the completion form sets a password once and never reads the URL (1.6s)
+  âœ“  178 [narrow-390] â€º e2e/session.spec.ts:143:1 â€º no horizontal overflow on the sign-in and completion forms at 390px (1.4s)
+  âœ“  179 [narrow-390] â€º e2e/sso.spec.ts:12:1 â€º single sign-on and password entries: gold primary button, separator, form; SSO starts a top-level navigation (1.7s)
+  âœ“  180 [narrow-390] â€º e2e/sso.spec.ts:48:1 â€º single sign-on only: no password fields, explanatory line (1.4s)
+  âœ“  181 [narrow-390] â€º e2e/sso.spec.ts:60:1 â€º callback failure: generic alert, parameter removed from the address bar (1.4s)
+  âœ“  182 [narrow-390] â€º e2e/sso.spec.ts:69:1 â€º status failure fails closed with a retry card (1.5s)
+  âœ“  183 [narrow-390] â€º e2e/sso.spec.ts:77:1 â€º no entry enabled shows the empty state (1.4s)
+  âœ“  184 [narrow-390] â€º e2e/visual-states.spec.ts:505:3 â€º read-checkpoint visual states (capture for human inspection) â€º contrast probe rejects transparent and no-op fills (260ms)
+  âœ“  185 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º shell-ready (light) (908ms)
+  âœ“  186 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º inbox-ready (light) (1.2s)
+  âœ“  187 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º inbox-unread-filter-active (light) (1.4s)
+  âœ“  188 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º drawer-open-populated (light) (1.2s)
+  âœ“  189 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º reader-ready-hostile (light) (2.2s)
+  âœ“  190 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º reader-populated-note (light) (2.1s)
+  âœ“  191 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º session-loading (light) (645ms)
+  âœ“  192 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º session-unauthenticated (light) (828ms)
+  âœ“  193 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º session-refreshing (light) (803ms)
+  âœ“  194 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º session-refreshed (light) (966ms)
+  âœ“  195 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º session-no-organization (light) (545ms)
+  âœ“  196 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º sign-in-rejected (light) (1.0s)
+  âœ“  197 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º sign-in-unavailable-keeps-entries (light) (1.0s)
+  âœ“  198 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º sign-in-rate-limited-hold (light) (971ms)
+  âœ“  199 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º sign-in-succeeds-into-shell (light) (1.3s)
+  âœ“  200 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º recovery-form (light) (890ms)
+  âœ“  201 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º workspace-switcher-open (light) (984ms)
+  âœ“  202 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º account-menu-open (light) (950ms)
+  âœ“  203 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º signed-out-notice (light) (1.3s)
+  âœ“  204 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º sign-out-unconfirmed (light) (1.0s)
+  âœ“  205 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º session-error (light) (555ms)
+  âœ“  206 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º session-recovering (light) (808ms)
+  âœ“  207 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º session-retry-required (light) (875ms)
+  âœ“  208 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º mailboxes-loading (light) (1.3s)
+  âœ“  209 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º mailboxes-paginated-loading (light) (934ms)
+  âœ“  210 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º mailboxes-error (light) (797ms)
+  âœ“  211 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º mailboxes-empty (light) (827ms)
+  âœ“  212 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º inbox-loading (light) (1.2s)
+  âœ“  213 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º inbox-empty (light) (1.1s)
+  âœ“  214 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º inbox-empty-page-with-cursor (light) (1.3s)
+  âœ“  215 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º inbox-unavailable (light) (1.2s)
+  âœ“  216 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º inbox-error (light) (1.3s)
+  âœ“  217 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º inbox-loading-more (light) (1.4s)
+  âœ“  218 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º reader-loading (light) (1.8s)
+  âœ“  219 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º reader-truncated-badges (light) (2.2s)
+  âœ“  220 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º reader-unavailable (light) (1.6s)
+  âœ“  221 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º reader-error (light) (1.8s)
+  âœ“  222 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º reader-empty (light) (1.8s)
+  âœ“  223 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º reader-empty-page-with-cursor (light) (1.8s)
+  âœ“  224 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º reader-loading-more (light) (2.2s)
+  âœ“  225 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º shell-ready (dark) (1.2s)
+  âœ“  226 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º inbox-ready (dark) (1.9s)
+  âœ“  227 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º inbox-unread-filter-active (dark) (1.8s)
+  âœ“  228 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º drawer-open-populated (dark) (1.9s)
+  âœ“  229 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º reader-ready-hostile (dark) (2.1s)
+  âœ“  230 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º reader-populated-note (dark) (2.2s)
+  âœ“  231 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º session-loading (dark) (875ms)
+  âœ“  232 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º session-unauthenticated (dark) (1.0s)
+  âœ“  233 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º session-refreshing (dark) (1.0s)
+  âœ“  234 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º session-refreshed (dark) (1.3s)
+  âœ“  235 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º session-no-organization (dark) (690ms)
+  âœ“  236 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º sign-in-rejected (dark) (1.3s)
+  âœ“  237 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º sign-in-unavailable-keeps-entries (dark) (1.3s)
+  âœ“  238 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º sign-in-rate-limited-hold (dark) (1.2s)
+  âœ“  239 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º sign-in-succeeds-into-shell (dark) (1.5s)
+  âœ“  240 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º recovery-form (dark) (970ms)
+  âœ“  241 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º workspace-switcher-open (dark) (1.7s)
+  âœ“  242 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º account-menu-open (dark) (1.2s)
+  âœ“  243 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º signed-out-notice (dark) (1.4s)
+  âœ“  244 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º sign-out-unconfirmed (dark) (1.2s)
+  âœ“  245 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º session-error (dark) (691ms)
+  âœ“  246 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º session-recovering (dark) (1.1s)
+  âœ“  247 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º session-retry-required (dark) (1.2s)
+  âœ“  248 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º mailboxes-loading (dark) (1.8s)
+  âœ“  249 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º mailboxes-paginated-loading (dark) (1.2s)
+  âœ“  250 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º mailboxes-error (dark) (860ms)
+  âœ“  251 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º mailboxes-empty (dark) (934ms)
+  âœ“  252 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º inbox-loading (dark) (1.3s)
+  âœ“  253 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º inbox-empty (dark) (1.1s)
+  âœ“  254 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º inbox-empty-page-with-cursor (dark) (1.3s)
+  âœ“  255 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º inbox-unavailable (dark) (1.2s)
+  âœ“  256 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º inbox-error (dark) (1.2s)
+  âœ“  257 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º inbox-loading-more (dark) (1.3s)
+  âœ“  258 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º reader-loading (dark) (1.7s)
+  âœ“  259 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º reader-truncated-badges (dark) (1.9s)
+  âœ“  260 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º reader-unavailable (dark) (1.5s)
+  âœ“  261 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º reader-error (dark) (2.0s)
+  âœ“  262 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º reader-empty (dark) (2.0s)
+  âœ“  263 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º reader-empty-page-with-cursor (dark) (2.0s)
+  âœ“  264 [narrow-390] â€º e2e/visual-states.spec.ts:526:7 â€º read-checkpoint visual states (capture for human inspection) â€º reader-loading-more (dark) (2.0s)
+
+  2 skipped
+  262 passed (7.5m)

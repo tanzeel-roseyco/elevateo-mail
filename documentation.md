@@ -116,3 +116,8 @@ iOS Core verification — 2026-11-01: Linux Swift build and 36 tests pass; three
 
 
 Native verification — 2026-11-01: Cargo.lock regenerated. Docker formatting, compile check, Clippy rules, 40 Rust tests, 14 macOS helper tests and one wrapper regression pass. Eight compiler dead-code warnings remain; strict -D warnings failed and is not claimed passing. macOS packaging/signing remains unavailable. See docs/completion/final-readiness-20261101/native-receipt.md.
+
+
+## Browser verification completed — 2026-11-01
+
+Final Docker matrix: 262 passed, 0 failed, 2 intentional desktop skips of mobile-only drawer cases; both mobile cases pass. Lint/typecheck, 42 focused ThreadPage tests and production build pass after the dark reader/note contrast repair. Negative control: 4 light cases pass, 4 dark cases fail before the repair; all eight pass afterward. Actual screenshots inspected at 1440/390 px in light/dark. Production-artifact tests use intercepted synthetic APIs, not a real backend. The backend harness removes volumes and cannot run under the current no-volume-touch instruction; low disk/RAM also precludes new backend builds. Android APK remains in progress. See [browser receipt](docs/completion/final-readiness-20261101/browser-receipt.md), [visual receipt](docs/completion/final-readiness-20261101/visual-receipt.md) and [backend limitation](docs/completion/final-readiness-20261101/backend-receipt.md). These results supersede earlier pending checkpoints.

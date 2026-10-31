@@ -1,8 +1,7 @@
 import { defineConfig, devices } from '@playwright/test'
 
-// R6 browser checks against the labelled fixture entry (no backend exists yet). Run only inside
-// the pinned mcr.microsoft.com/playwright:v1.64.0-noble image; this config was not executed by
-// the authoring agent.
+// Browser checks against the labelled fixture entry and optional served production artifact.
+// AIDEV-NOTE: Run in pinned Playwright Docker; intercepted API tests do not prove backend integration.
 export default defineConfig({
   testDir: './e2e',
   outputDir: './e2e/.results',

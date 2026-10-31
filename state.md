@@ -1,13 +1,14 @@
 # Project state
 
-Updated 2026-10-30. Earlier entries are preserved verbatim in [docs/history/logs/state-log.md](docs/history/logs/state-log.md).
+Updated 2026-11-01. Earlier entries are preserved verbatim in [docs/history/logs/state-log.md](docs/history/logs/state-log.md).
 
 ## Summary
 
 All Elevateo Mail work is consolidated in this repository. `main` contains the integrated product: backend,
 self-hosted mail server, email finder, and web, macOS, Windows, Android and iOS clients. Nothing is deployed.
-The backend and the email finder have passed their Docker gates. The client work and the merged `main` have not
-been built or tested yet.
+The backend and email finder passed their recorded historical Docker gates. On `feature/final-readiness`,
+Windows packaging, web unit/build, native Linux and iOS Core gates have now run; results and limitations
+are recorded below. Browser verification is complete; Android packaging is running without deployment.
 
 ## How main was assembled
 
@@ -33,7 +34,7 @@ been built or tested yet.
 | Web gate (merged `main`, `feature/final-readiness`) | Contract checks, lint, typecheck, 1,190 unit tests, build, bundle budget and fixture-marker check pass; Vitest capped at two workers after one default-worker timeout | `apps/web/docker/test.Dockerfile`, scratchpad `unit-two-workers.log`, 2026-10-31 |
 | Fixture Playwright (`feature/final-readiness`) | Each of desktop, desktop-1440, narrow-390 and reduced-motion: 44 passed, 0 failed, 86 skipped; total 176 passed / 344 skipped. Production URL absent; production and visual QA remain unverified | Docker, network disabled, two workers; scratchpad `full-e2e.log` and `e2e-results/full-report.json`, 2026-10-31 |
 
-## Open
+## Original October 30 checklist (superseded by November 1 results below)
 
 1. **Final Docker pass on merged `main`** (web gate done; the rest below is outstanding): regenerate `apps/native/src-tauri/Cargo.lock`, then web lint, typecheck,
    unit tests, build, Playwright, and screenshot visual QA at 1440 and 390 px in light and dark. Then the Windows and Mac
@@ -82,3 +83,8 @@ iOS Core verification — 2026-11-01: Linux Swift build and 36 tests pass; three
 
 
 Native verification — 2026-11-01: Cargo.lock regenerated. Docker formatting, compile check, Clippy rules, 40 Rust tests, 14 macOS helper tests and one wrapper regression pass. Eight compiler dead-code warnings remain; strict -D warnings failed and is not claimed passing. macOS packaging/signing remains unavailable. See docs/completion/final-readiness-20261101/native-receipt.md.
+
+
+## Browser verification completed — 2026-11-01
+
+Final Docker matrix: 262 passed, 0 failed, 2 intentional desktop skips of mobile-only drawer cases; both mobile cases pass. Lint/typecheck, 42 focused ThreadPage tests and production build pass after the dark reader/note contrast repair. Negative control: 4 light cases pass, 4 dark cases fail before the repair; all eight pass afterward. Actual screenshots inspected at 1440/390 px in light/dark. Production-artifact tests use intercepted synthetic APIs, not a real backend. The backend harness removes volumes and cannot run under the current no-volume-touch instruction; low disk/RAM also precludes new backend builds. Android APK remains in progress. See [browser receipt](docs/completion/final-readiness-20261101/browser-receipt.md), [visual receipt](docs/completion/final-readiness-20261101/visual-receipt.md) and [backend limitation](docs/completion/final-readiness-20261101/backend-receipt.md). These results supersede earlier pending checkpoints.

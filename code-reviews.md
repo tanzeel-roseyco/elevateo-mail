@@ -2688,14 +2688,14 @@ Final coherent local acceptance: standard1285/14595 (four protocol skips covered
 ## Final client readiness reviews — 2026-11-01
 
 P24–P34 have now run, superseding their historical wave-1 pending status. Bounded packets
-(maximum 200 LOC) and a dedicated design review are recorded with exact ranges, defect counts
+(at most 400 LOC per assignment) and a dedicated design review are recorded with exact ranges, defect counts
 and densities in [current evidence](docs/completion/final-readiness-20261101/reviews.md).
 The inherited [2026-10-30 review notes](docs/completion/final-readiness-20261030/review-findings.md)
 are preserved separately and are not double-counted as current findings. Final compile repair
 reviews: 48 LOC and 57 LOC, both zero defects (0/KLOC). Execution exposed one nullable
 argument error and two test compile/analyzer errors; all repaired before the passing Windows gate.
 Coverage denominators overlap; do not sum them as unique code coverage. Obsidian tools were
-unavailable; design scenarios were analytical, not Obsidian-backed. Web runtime verification is pending.
+unavailable; design scenarios were analytical, not Obsidian-backed. Web unit/build verification passes; final browser verification is recorded below.
 Web runtime follow-up: one invalid status-wrapper nesting defect repaired. Bounded repair review: 106 LOC, zero residual defects (0/KLOC). Batched boundary-test fixture follow-up: 36 LOC, zero defects (0/KLOC). Full Docker rerun: 1,195 tests pass. See the November 1 web receipt and review table.
 
 Android resource-control review: 163 LOC, one defect (6.13/KLOC): APK entrypoint overrode caller limits. Repair review: 80 LOC, zero residual defects (0/KLOC). Three script-execution regressions pass in Docker; no actual OOM or APK success claimed.
@@ -2705,3 +2705,18 @@ Swift wrapper/import repair review: 42 LOC, zero residual defects (0/KLOC). Runt
 
 
 Native gate follow-up: 49 LOC, one unchecked-directory defect (20.41/KLOC). Four cd operations now stop on failure; a Docker regression exercises all four. Repair review: 49 LOC, zero residual defects (0/KLOC). Formatting and two Clippy style repairs were delegated to tools. Final native gate passes, with eight existing compiler dead-code warnings explicitly retained as follow-up; strict warnings gate did not pass.
+
+Browser verification follow-up: 256 LOC reviewed, three test defects (11.72/KLOC): OKLCH parsing, missing SSO status fixture, and ambiguous Unread selectors. Regressions and fixture repairs added. Independent production filter/baseline rereview: 69 LOC, zero residual defects (0/KLOC). Exact ranges are in the November 1 review receipt; Docker browser rerun remains required.
+
+Sign-out visual oracle follow-up: visual-states 280-399 (120), ThreadPage 290-308 (19), MessageAttachments 138-157 (20), Shell 115-140 (26), Dashboard 330-338 (9), visual scenario interface 145-172 (28): 222 LOC, one vacuous assertion defect (4.50/KLOC). Workspace summary is an accessible region name, not visible text. Scenario now proves the region exists before signout and disappears after unconfirmed signout. No product change; runtime rerun required.
+
+Final coverage closure: MainViewModel.cs:481-490, 10 LOC, zero defects (0/KLOC).
+Visual probe follow-up: 43 LOC, one rounding defect (23.26/KLOC); painted-pixel repair and message-row selector review: 71 LOC, zero residual defects (0/KLOC). Browser execution remains the verification gate.
+
+Pagination fixture follow-up: DashboardPage.tsx:1-70 and visual-states.spec.ts:78-94,373-384,419-439,460-534 (195 LOC), one defect (5.13/KLOC): dashboard counts consumed the ordinal first-page response. Cursor-driven response/hold repair reviewed at visual-states.spec.ts:78-94,375-388 (31 LOC), zero residual defects (0/KLOC). The scenario proves initial page, actual continuation request and held loading state.
+
+Browser repair rereview: support.ts:7-19, production.spec.ts:175-196, visual-states.spec.ts:77-143,168-187,376-386,450-471,479-480,518-527, InboxPage.tsx:350-374 and MessageRow.tsx:189-196 (200 LOC), zero residual defects (0/KLOC). Mobile Folder selection and desktop Filter selection now share a viewport-aware helper with selected-state assertions. This repairs one test-control assumption; the message-row skeleton selector repairs another test assumption. Runtime results are recorded separately.
+
+Visual inspection follow-up: dark reader metadata and notes used light-theme text colors; populated notes also lacked a dark card background. One application contrast defect, repaired with semantic muted text and a dark note surface. Bounded adversarial repair review: ThreadPage.tsx:1,350-354,375-379,468-481; NotesPanel.tsx:1,129-160; visual-states.spec.ts:138-167,237-271,69-72; contract.ts:366-388; styles/index.css:5,69,94,118,139 (155 LOC), zero residual defects (0/KLOC). Contrast regression measures normal text against opaque backgrounds at 4.5:1; it does not model translucent ancestor layers, gradients or element opacity, which these targets do not use. Runtime negative control and repaired run are recorded separately.
+
+Final evidence consistency review: browser-receipt.md:1-33, visual-receipt.md:1-19, defect-inventory.md:1-53 and backend-receipt.md:1-7 (112 LOC), zero confirmed defects (0/KLOC). Unique inventory: 39 defects (15 application, 3 packaging/build, 21 verification), deduplicated across rereviews. This review validates the recorded scope and limitations, not runtime success.

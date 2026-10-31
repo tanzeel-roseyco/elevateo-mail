@@ -1,3 +1,4 @@
+// AIDEV-NOTE: Secondary reader text uses theme-aware muted colors for contrast on dark surfaces.
 // Paginated plaintext conversation reader. Escaped-text-in-<pre> presentation follows the audited
 // first-party live reader; no HTML, Markdown, autolinks or remote images. Optional private
 // attachment metadata is explicit, and clean bytes pass only through the authorized proxy.
@@ -349,7 +350,7 @@ function ConversationReader({ mailboxId, threadId, readDirectMessage, attachment
                 {state.thread.unread && <Badge tone="accent" size="sm">Unread</Badge>}
               </div>
               <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-2">
-                <p className="text-xs text-zinc-500">
+                <p className="text-xs text-muted">
                   {state.thread.message_count} message{state.thread.message_count === 1 ? '' : 's'} in this conversation
                 </p>
                 <ReadStateControl
@@ -374,7 +375,7 @@ function ConversationReader({ mailboxId, threadId, readDirectMessage, attachment
               </div>
             )}
             {canCompose && (replyMessage === null || replyAddress(replyMessage) === null) && (
-              <p className="px-6 pb-4 text-xs text-zinc-500">
+              <p className="px-6 pb-4 text-xs text-muted">
                 {selectedMessageId === null ? 'A message with a sender is needed to reply.' : 'This selected message cannot be replied to yet.'}
               </p>
             )}
@@ -469,12 +470,12 @@ function MessageHeader({ message }: { message: Message }) {
       <Avatar name={name} size={10} shape="circle" />
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-semibold text-zinc-800 dark:text-white">{name}</p>
-        <p className="truncate text-xs text-zinc-500">
+        <p className="truncate text-xs text-muted">
           {message.sender?.display_name && message.sender.address ? `${message.sender.address} · ` : ''}
           {sameAddressLine(message)}
         </p>
       </div>
-      <time dateTime={message.sent_at ?? undefined} className="shrink-0 text-xs tabular-nums text-zinc-500">
+      <time dateTime={message.sent_at ?? undefined} className="shrink-0 text-xs tabular-nums text-muted">
         {message.sent_at === null ? 'No date recorded' : formatDateTime(message.sent_at)}
       </time>
     </header>

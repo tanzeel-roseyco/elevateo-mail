@@ -4,6 +4,20 @@
 // viewport provides instead of assuming the desktop rail.
 import { expect, type Page } from '@playwright/test'
 
+export async function setInboxFilter(page: Page, value: 'all' | 'unread'): Promise<void> {
+  // AIDEV-NOTE: InboxPage replaces filter pills with the Folder select below md (768px).
+  if ((page.viewportSize()?.width ?? 1280) < 768) {
+    const folder = page.getByRole('combobox', { name: 'Folder', exact: true })
+    await folder.selectOption(value)
+    await expect(folder).toHaveValue(value)
+  } else {
+    const filter = page.getByRole('navigation', { name: 'Filter', exact: true })
+      .getByRole('link', { name: value === 'all' ? 'All' : 'Unread', exact: true })
+    await filter.click()
+    await expect(filter).toHaveAttribute('aria-current', 'page')
+  }
+}
+
 function drawerTrigger(page: Page) {
   return page.getByRole('button', { name: 'Open navigation' })
 }

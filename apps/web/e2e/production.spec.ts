@@ -1,8 +1,9 @@
-// Authored, not executed: coordinator serves the actual production build artifact in Docker and
-// runs this spec against it (V7, D01). It must be the real `vite build` output; adapter-level unit
-// tests cannot stand in for this proof. Skips, visibly, when no artifact URL is provided.
+// Serve the actual production build artifact in Docker for this suite (V7, D01).
+// API responses are intercepted: this verifies the browser boundary, not backend integration.
+// Skips, visibly, when no artifact URL is provided.
 import { expect, test } from '@playwright/test'
-import { openMailbox } from './support'
+import { openMailbox, setInboxFilter } from './support'
+import { ThreadDetailPageSchema, ThreadPageSchema } from '../src/data/contract'
 
 const PRODUCTION_URL = process.env['ELEVATEO_PRODUCTION_URL']
 
@@ -54,6 +55,9 @@ const FIFTY_THREADS = {
     last_message_at: '2026-10-12T00:00:00Z',
     unread: i % 2 === 0,
     message_count: 1,
+    folder: 'inbox',
+    snoozed_until: null,
+    starred: false,
   })),
 }
 
@@ -76,6 +80,9 @@ const HOSTILE_THREAD = {
     subject_truncated: false,
     unread: true,
     message_count: 1,
+    folder: 'inbox',
+    snoozed_until: null,
+    starred: false,
   },
   messages: [
     {
@@ -99,6 +106,12 @@ const json = (body: unknown) => ({
 test.describe('production artifact', () => {
   test.skip(PRODUCTION_URL === undefined, 'ELEVATEO_PRODUCTION_URL not set; coordinator must serve the built artifact')
   test.use({ baseURL: PRODUCTION_URL })
+
+  test.beforeAll(() => {
+    // AIDEV-NOTE: Reject stale test payloads before browser assertions can mistake contract drift for a UI defect.
+    ThreadPageSchema.parse(FIFTY_THREADS)
+    ThreadDetailPageSchema.parse(HOSTILE_THREAD)
+  })
 
   test('a failing API produces an honest error with no fixture fallback or markers', async ({ page }) => {
     await page.route('**/v1/**', (route) => route.fulfill({ status: 503, contentType: 'application/json', body: JSON.stringify({ code: 'temporarily_unavailable', message: 'forced by test', request_id: 'e2e-1' }) }))
@@ -131,9 +144,10 @@ test.describe('production artifact', () => {
     await page.route('**/v1/threads/**', (route) => route.fulfill(json(HOSTILE_THREAD)))
     await page.goto('/')
     await openMailbox(page, 'Routed mailbox')
-    // Exact intended row: the full sender-and-subject line of row 1, so rows 10-19 cannot match.
-    await expect(page.getByText(/^Sender 1 — Routed conversation 1$/)).toBeVisible()
-    await page.locator('a[data-thread]').first().click()
+    // Match the exact subject within its row; sender and subject have separate responsive spans.
+    const firstRow = page.locator('a[data-thread]').filter({ has: page.getByText('Routed conversation 1', { exact: true }) })
+    await expect(firstRow).toBeVisible()
+    await firstRow.click()
     // The literal tag and URLs are visible as escaped inert text; nothing became live markup.
     await expect(page.getByText('<script>window.__pwned = 1</script>', { exact: false })).toBeVisible()
     await expect(page.getByText('https://hostile.invalid/tracking-pixel.png', { exact: false })).toBeVisible()
@@ -161,11 +175,9 @@ test.describe('production artifact', () => {
     await expect(page.getByRole('link', { name: /Routed conversation 50/ })).toBeVisible()
 
     const started = Date.now()
-    // exact filter-pill names: a substring 'Unread' also matches rows carrying the Unread badge.
-    await page.getByRole('link', { name: 'Unread', exact: true }).click()
-    await expect(page.getByRole('link', { name: 'Unread', exact: true })).toHaveAttribute('aria-current', 'page')
-    await page.getByRole('link', { name: 'All', exact: true }).click()
-    await expect(page.getByRole('link', { name: 'All', exact: true })).toHaveAttribute('aria-current', 'page')
+    // AIDEV-NOTE: Use the visible inbox control: mobile Folder select or desktop Filter pills.
+    await setInboxFilter(page, 'unread')
+    await setInboxFilter(page, 'all')
     const interactionMs = Date.now() - started
 
     const longTasks = await page.evaluate(() => (window as typeof window & { __longTasks: number[] }).__longTasks)
@@ -176,7 +188,7 @@ test.describe('production artifact', () => {
       body: JSON.stringify(
         {
           method:
-            'PerformanceObserver longtask (buffered) across initial 50-row render and two filter toggles; wall-clock of the toggles via Date.now around awaited aria-current assertions.',
+            'PerformanceObserver longtask (buffered) across initial 50-row render and two filter toggles; wall-clock of the toggles via Date.now around awaited selected-value or aria-current assertions.',
           rows: 50,
           interactionMs,
           longTaskCount: longTasks.length,
