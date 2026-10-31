@@ -78,7 +78,8 @@ scripts/dev up
 
 ## Testing
 
-All tests run in Docker, never on the host.
+All tests run in Docker, never on the host. Set `DOCKER_CONTEXT=desktop-linux` before these commands
+(PowerShell: `$env:DOCKER_CONTEXT='desktop-linux'`). Do not use fleet contexts for local verification.
 
 | Area | Command |
 | --- | --- |
@@ -100,7 +101,7 @@ Fill values in the order of [docs/credentials-last.md](docs/credentials-last.md)
 Before deploying, give the email-finder worker (`ELEVATEO_FINDER_PUBLIC_IP`) a different public IP from Mox.
 Its port-25 checks can get an IP blocklisted.
 
-## Current state (2026-10-30)
+## Current state (2026-11-01)
 
 | Area | State |
 | --- | --- |
@@ -108,6 +109,7 @@ Its port-25 checks can get an IP blocklisted.
 | Email finder | Implemented. Module gates passed (53 backend tests, 12 browser cases) |
 | Web, macOS, Windows, Android, iOS clients | Implemented, and all 71 review defects fixed. **Not yet built or tested:** lint, typecheck, tests, packaging and visual QA run in one final Docker pass. `apps/native/src-tauri/Cargo.lock` must be regenerated first. Review packets P24–P34 have not run |
 | Merged `main` | On `feature/final-readiness`: web gate passes (1,190 unit tests); fixture Playwright across four projects: 176 passed, 0 failed, 344 production-URL skips. Production browser coverage, visual QA, packaging and merged backend gates remain unverified |
+| Web PWA | Static-only offline shell, install guidance, safe update waiting and cross-window sign-out cleanup implemented. White/gold PWA UI and white launch metadata; broader theme removal remains on `feature-white-gold`. Docker and Chromium evidence: [PWA receipt](docs/completion/pwa-20261101/receipt.md). [Install guide](docs/product/install-app.md) |
 | Deployment | Not deployed. No live sends, DNS, MX or Cloudflare changes. Credentials are pending |
 | Known limits | Mac `.dmg` signing/notarization and the iOS app build need a macOS host. The Android emulator run needs about 8 GB free RAM |
 

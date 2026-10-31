@@ -8,6 +8,7 @@
 import { useCallback, useSyncExternalStore } from 'react'
 import type { z } from 'zod'
 import { useSession } from '@/app/session'
+import { SESSION_CLEARED_EVENT } from '@/pwa/sessionPrivacy'
 
 const PREFIX = 'elevateo.settings.'
 const listeners = new Set<() => void>()
@@ -21,6 +22,11 @@ const unsaved = new Set<string>()
 // AIDEV-NOTE: Another tab writing, removing or clearing storage must not leave this tab's cache
 // stale (review P2): drop the affected keys and re-render subscribers on every storage event.
 if (typeof window !== 'undefined') {
+  // AIDEV-NOTE: Session transition unmounts subscribers; notifying here could reload undeletable disk records.
+  window.addEventListener(SESSION_CLEARED_EVENT, () => {
+    cache.clear()
+    unsaved.clear()
+  })
   window.addEventListener('storage', (event) => {
     if (event.key === null) for (const key of [...cache.keys()]) { if (!unsaved.has(key)) cache.delete(key) }
     else if (event.key.startsWith(PREFIX) && !unsaved.has(event.key)) cache.delete(event.key)

@@ -6,6 +6,12 @@ This is an orientation to how the system works end to end. Detailed designs are 
 
 ## 1. Authority and boundaries
 
+The web PWA caches only integrity-checked, build-versioned static interface assets. Its worker bypasses API,
+authentication, attachments, query-bearing URLs and every write. It never stores mailbox responses or queues
+approvals. Updates wait for all windows to close; no worker claims or reloads a running client. Sign-out clears
+local Elevateo records and broadcasts a fence to other windows. Native desktop hosts retain their existing updater.
+See [installation and offline behavior](docs/product/install-app.md) and [PWA verification](docs/completion/pwa-20261101/receipt.md).
+
 The Rails application in `apps/server` and its PostgreSQL database are the only authority for users, mailbox access,
 drafts, send approval and delivery state. Every other component is an adapter:
 

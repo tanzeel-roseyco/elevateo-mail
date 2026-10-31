@@ -12,6 +12,21 @@ FE-01-R1 stage A repairs transport cancellation/MIME handling, operation-specifi
 
 ## Setup and verification
 
+The production PWA uses `scripts/pwa/build.ts` and `worker.js`, with install/update UI in `src/pwa`.
+The user guide is [install-app.md](../../docs/product/install-app.md). No API or authenticated response is cached.
+Serve the entire `dist` atomically, including versioned shell HTML, at the origin root over HTTPS.
+Keep old versioned assets available while old windows remain open. Serve `sw.js` and the manifest with revalidation;
+serve authentication/API/attachment responses with `Cache-Control: no-store`. These hosting checks remain server follow-ups.
+
+Set `DOCKER_CONTEXT=desktop-linux` for all local Docker commands. In the existing web test container, install
+Chromium with `npx playwright install --with-deps chromium`, then run
+`apt-get install -y xvfb xauth`, then `xvfb-run -a npx playwright test --config playwright.pwa.config.ts`
+after `npm run build`. The standalone checks install and launch real Chromium app windows using disposable profiles.
+This separate suite serves production output on container loopback, with no host server or real mailbox.
+`node e2e/pwa/capture.mjs` captures public manifest screenshots against that server; rebuild after capturing.
+On a busy shared Docker engine, `npm run test:coverage -- --maxWorkers=1` avoids resource-driven timeouts.
+Remove generated coverage before repeating lint in the same disposable workspace.
+
 All package versions and the resolved tree are committed in `package.json` and `package-lock.json`. Run application checks inside Docker, from the repository root:
 
 ```sh

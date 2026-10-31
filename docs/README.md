@@ -8,6 +8,7 @@ describe earlier stages. They are kept for context and do not describe the curre
 | Document | What it covers |
 | --- | --- |
 | [end-goal.md](end-goal.md) | The finished product, daily workflow and completion criteria |
+| [product/install-app.md](product/install-app.md) | Install the web app, offline limits, updates and troubleshooting |
 | [goals-and-traceability.md](goals-and-traceability.md) | Requirements traced to implementation |
 | [decisions/](decisions/) | Architecture decision records (mailbox ownership, local architecture) |
 | [business/financial-planning/](business/financial-planning/) | Cost model, pilot, growth and enterprise-readiness scenarios |

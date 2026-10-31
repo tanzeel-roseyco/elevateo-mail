@@ -1,6 +1,6 @@
 # Project state
 
-Updated 2026-10-30. Earlier entries are preserved verbatim in [docs/history/logs/state-log.md](docs/history/logs/state-log.md).
+Updated 2026-11-01. Earlier entries are preserved verbatim in [docs/history/logs/state-log.md](docs/history/logs/state-log.md).
 
 ## Summary
 
@@ -8,6 +8,14 @@ All Elevateo Mail work is consolidated in this repository. `main` contains the i
 self-hosted mail server, email finder, and web, macOS, Windows, Android and iOS clients. Nothing is deployed.
 The backend and the email finder have passed their Docker gates. The client work and the merged `main` have not
 been built or tested yet.
+
+## Web PWA branch
+
+Implemented install metadata/icons/screenshots, accessible white/gold install guidance, byte-verified static-only
+offline shell, deferred updates and session cleanup across windows. No mail/API/attachment caching or queued writes.
+The broader single-theme conversion remains on `feature-white-gold`. This branch does not change server code.
+Docker gate and production Chromium results, Lighthouse reports, visual QA and remaining device/hosting checks
+are recorded in [the PWA receipt](docs/completion/pwa-20261101/receipt.md).
 
 ## How main was assembled
 

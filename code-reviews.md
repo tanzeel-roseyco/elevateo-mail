@@ -2684,3 +2684,34 @@ Final application-chain repair review covered115 primary LOC (wrapper99, HTTP us
 Further correction to the historical SMTP fixture review: the coherent run exposed a second missed defect in the original33-LOC repair packet: committing historical DDL restored obsolete SMTP credential constraints and authority functions. Together with the previously recorded role defect, that packet had2 execution-discovered defects (60.61/KLOC). The replacement uses transaction rollback for the entire historical experiment, asserts exact current credential constraint restoration, then runs the separate worker against current schema. Independent final review covered28 method LOC, zero residual defects (0/KLOC). It supersedes the earlier ad hoc function replay repair.
 
 Final coherent local acceptance: standard1285/14595 (four protocol skips covered by separate Mox4/412), dedicated28/202, boot2/12, app-chain1/88, HTTP1/33, Mailpit2/107, Ruby contracts19/264, Resend stub3/26 and worker revocation drain all passed; Steep and RuboCop506files clean. Independent MCP11, Node contracts50, operations62, native8Rust/15Python/1Docker lifecycle, historical31/1531, encrypted restore and deployment dry-run also passed. Evidence: docs/completion/backend-20261030-receipt.md. Historical pending statements above describe earlier checkpoints and are superseded only within this final tested scope.
+
+
+## PWA reviews - 2026-11-01
+
+Bounded adversarial reviewers used the repository rubric and STANDARDS.md; lint owns formatting.
+Counts below are findings per pass (overlapping repair passes are not cumulative LOC coverage).
+
+| Packet | Reviewed lines | Defects | Defects/KLOC | Disposition |
+| --- | ---: | ---: | ---: | --- |
+| Design: draft/approval/settings state boundaries | 200 | 1 | 5.00 | Cleared persisted simulated settings at sign-out |
+| Worker/build/lifecycle/privacy/main | 142 | 1 | 7.04 | Storage failure cannot abort cleanup of the other store |
+| Install/frame/session/metadata/viewport | 200 | 2 | 10.00 | Clear storage before notification; preserve cleanup warning on every logout outcome |
+| Privacy repair/build/lifecycle/test server | 160 | 0 | 0 | Prior finding fixed |
+| Sign-out regression/browser tests and repair | 153 | 0 | 0 | Prior findings fixed |
+| Design: update test and worker security cases | 140 | 1 | 7.14 | Narrowed sentinel test claim; no claim of live drafts or approvals |
+| Browser harness/metadata/capture/audit | 97 | 0 | 0 | No production test endpoint or audit dependency |
+| White/gold shared controls and PWA UI/metadata | 200 | 0 | 0 | Owner design change; light-only QA |
+| Final disk-byte hashing and worker | 76 | 0 | 0 | Browser-discovered hash mismatch repaired; pending runtime rerun at review time |
+
+Browser validation separately found one build defect: Vite mutated preload references after generateBundle hashing.
+The 34-line build module now hashes final disk bytes in writeBundle (1 defect / 34 LOC = 29.41 defects/KLOC).
+The revised browser suite is the regression gate. Review coverage includes static allowlisting, private-response
+exclusion, failed installation, old-cache deletion, no forced reload/replay, sign-out across windows, cleanup failure,
+install dismissal/focus, safe areas, accessible statuses, and shared UI recipes. Design review compared natural
+activation with forced updates, and shell-only storage with offline mailbox storage; see the evidence receipt.
+No Obsidian connection was available, so no Obsidian simulation is claimed.
+
+Final PWA browser harness review: 103 lines, 0 defects, 0/KLOC. Persistent Chromium profiles and actual installed
+app windows replace private contexts and unsupported display-mode emulation. Cleanup runs in `finally`.
+Performance-delta review: 151 lines, 0 defects, 0/KLOC. Exact brand allowlist removes unused masters; a stable
+install offer row avoids prompt-driven layout shifts. Initial disabled-button behavior has a direct assertion.

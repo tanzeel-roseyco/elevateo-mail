@@ -5,6 +5,8 @@ import { defineConfig, devices } from '@playwright/test'
 // the authoring agent.
 export default defineConfig({
   testDir: './e2e',
+  // AIDEV-NOTE: PWA checks require production dist and their separate service-worker server/config.
+  testIgnore: '**/pwa/**',
   outputDir: './e2e/.results',
   fullyParallel: true,
   use: {

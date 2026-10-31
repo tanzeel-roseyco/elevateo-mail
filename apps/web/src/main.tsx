@@ -14,6 +14,9 @@ import { createV2EmailFinderGateway } from './data/v2EmailFinderGateway'
 import type { OutreachGateway } from './features/outreach/contract'
 import { AuthCompletePage } from './features/auth/AuthCompletePage'
 import './styles/index.css'
+import { PwaFrame } from './pwa/PwaFrame'
+import { registerPwa } from './pwa/lifecycle'
+import { detectDesktopHost } from './features/assistant/bridge'
 
 const root = document.getElementById('root')
 if (!root) throw new Error('Missing #root element')
@@ -37,8 +40,16 @@ const featureGateways: FeatureGateways = {
   // the proposed routes do not exist in contracts/v2 yet, so the pages show an honest unavailable
   // state. createHttpDeliveryReportsGateway() is ready to bind here once the endpoints ship.
 }
+const browserApp = !isAuthCompletePath(window.location.pathname) && !detectDesktopHost()
 createRoot(root).render(
   <StrictMode>
+    {browserApp && <PwaFrame />}
     {isAuthCompletePath(window.location.pathname) ? <AuthCompletePage gateway={gateway} /> : <App gateway={gateway} featureGateways={featureGateways} />}
   </StrictMode>,
 )
+
+// AIDEV-NOTE: Native hosts own their update notice; callbacks and fixture builds never register the worker.
+if (import.meta.env.PROD && browserApp) {
+  if (document.readyState === 'complete') void registerPwa()
+  else window.addEventListener('load', () => { void registerPwa() }, { once: true })
+}
