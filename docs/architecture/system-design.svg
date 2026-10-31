@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1010" width="1400" height="1010" role="img" aria-labelledby="t d" font-family="Arial, Helvetica, sans-serif">
+  <title id="t">Elevateo Mail system design</title>
+  <desc id="d">Clients and AI tools reach a Rails API, an auth proxy and a mailbox MCP server through an HTTPS edge. Workers share durable state in PostgreSQL and send and receive mail through Mox or Resend.</desc>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#171717"/></marker>
+    <style>
+      .b{fill:#fff;stroke:#A67C00;stroke-width:2}
+      .d{fill:#F5F5F4;stroke:#A67C00;stroke-width:3}
+      .x{fill:#fff;stroke:#171717;stroke-width:1.5;stroke-dasharray:6 4}
+      .c{fill:none;stroke:#A67C00;stroke-width:2;stroke-dasharray:3 5}
+      .l{fill:none;stroke:#171717;stroke-width:1.5;marker-end:url(#a)}
+      .h{font-size:15px;font-weight:700;fill:#171717;text-anchor:middle}
+      .s{font-size:12px;fill:#171717;text-anchor:middle}
+      .e{font-size:11px;fill:#171717;paint-order:stroke;stroke:#fff;stroke-width:4px}
+      .g{font-size:13px;font-weight:700;fill:#7A5B00}
+    </style>
+  </defs>
+  <rect width="1400" height="1010" fill="#fff"/>
+  <text x="60" y="38" font-size="24" font-weight="700" fill="#171717">Elevateo Mail system design</text>
+  <text x="60" y="60" font-size="13" fill="#171717">Production layout from ops/production/compose.yaml. Not deployed yet.</text>
+
+  <!-- Clients -->
+  <g>
+    <rect class="b" x="60" y="80" width="150" height="60"/><text class="h" x="135" y="106">Web and PWA</text><text class="s" x="135" y="125">React</text>
+    <rect class="b" x="225" y="80" width="150" height="60"/><text class="h" x="300" y="106">macOS</text><text class="s" x="300" y="125">Tauri</text>
+    <rect class="b" x="390" y="80" width="150" height="60"/><text class="h" x="465" y="106">Windows</text><text class="s" x="465" y="125">.NET, Avalonia</text>
+    <rect class="b" x="555" y="80" width="150" height="60"/><text class="h" x="630" y="106">Android</text><text class="s" x="630" y="125">APK</text>
+    <rect class="b" x="720" y="80" width="150" height="60"/><text class="h" x="795" y="106">iOS</text><text class="s" x="795" y="125">SwiftUI</text>
+    <rect class="x" x="885" y="80" width="155" height="60"/><text class="h" x="962" y="106">Claude, Codex</text><text class="s" x="962" y="125">Search, read, draft</text>
+  </g>
+  <rect class="b" x="60" y="175" width="980" height="50"/><text class="h" x="550" y="197">HTTPS edge</text><text class="s" x="550" y="215">TLS and routing to loopback ports. Provider to be confirmed</text>
+  <path class="l" d="M135 140V175"/><path class="l" d="M300 140V175"/><path class="l" d="M465 140V175"/><path class="l" d="M630 140V175"/><path class="l" d="M795 140V175"/><path class="l" d="M962 140V175"/>
+
+  <!-- Compose boundary -->
+  <rect class="c" x="50" y="275" width="1000" height="605"/>
+  <text class="g" x="570" y="296">Docker Compose project: elevateo-production</text>
+
+  <rect class="b" x="90" y="315" width="240" height="85"/><text class="h" x="210" y="345">Auth browser proxy</text><text class="s" x="210" y="367">Narrow public auth routes</text><text class="s" x="210" y="385">Port 4712</text>
+  <rect class="d" x="400" y="315" width="290" height="85"/><text class="h" x="545" y="345">Rails API</text><text class="s" x="545" y="367">Domain rules, authorization, approval</text><text class="s" x="545" y="385">launch-api, port 4709</text>
+  <rect class="b" x="760" y="315" width="250" height="85"/><text class="h" x="885" y="345">Mailbox MCP server</text><text class="s" x="885" y="367">No send tool, per-mailbox grants</text><text class="s" x="885" y="385">Port 4713</text>
+  <path class="l" d="M210 225V315"/><path class="l" d="M545 225V315"/><path class="l" d="M885 225V315"/>
+  <path class="l" d="M760 357H690"/>
+
+  <rect class="b" x="90" y="470" width="240" height="80"/><text class="h" x="210" y="500">Attachment gateway</text><text class="s" x="210" y="522">Private files and scanning state</text>
+  <rect class="d" x="400" y="470" width="290" height="80"/><text class="h" x="545" y="500">Rails worker</text><text class="s" x="545" y="522">Send ledger, IMAP sync, provider events</text>
+  <rect class="b" x="760" y="470" width="250" height="80"/><text class="h" x="885" y="500">Email finder worker</text><text class="s" x="885" y="522">Resumable jobs, capped SMTP probes</text>
+  <path class="l" d="M400 390L330 470"/><text class="e" x="282" y="440">attachments</text>
+
+  <rect class="b" x="90" y="640" width="240" height="90"/><text class="h" x="210" y="672">Supabase Storage</text><text class="s" x="210" y="694">Private objects</text><text class="s" x="210" y="712">with PostgREST</text>
+  <rect class="d" x="400" y="640" width="290" height="90"/><text class="h" x="545" y="672">PostgreSQL</text><text class="s" x="545" y="694">Mail, tenants, durable jobs, send intents</text><text class="s" x="545" y="712">Row-level security</text>
+  <rect class="b" x="760" y="640" width="250" height="90"/><text class="h" x="885" y="672">One-shot setup</text><text class="s" x="885" y="694">migrate, configure-auth,</text><text class="s" x="885" y="712">configure-storage</text>
+  <rect class="b" x="90" y="790" width="240" height="70"/><text class="h" x="210" y="820">Supabase Auth</text><text class="s" x="210" y="842">GoTrue, port 9999</text>
+  <text class="s" x="840" y="815" style="text-anchor:middle">API and workers run the same pinned backend image.</text>
+  <text class="s" x="840" y="835" style="text-anchor:middle">They coordinate through PostgreSQL, not direct calls.</text>
+
+  <path class="l" d="M210 550V640"/>
+  <path class="l" d="M330 530H350V625H430V640"/>
+  <path class="l" d="M400 380H370V610H460V640"/><text class="e" x="374" y="590">queries</text>
+  <path class="l" d="M545 550V640"/><text class="e" x="552" y="625">durable jobs</text>
+  <path class="l" d="M780 550V625H660V640"/>
+  <path class="l" d="M760 685H690"/>
+  <path class="l" d="M90 357H72V825H90"/>
+  <path class="l" d="M330 825H620V730"/>
+  <path class="l" d="M330 680H400"/>
+
+  <!-- External systems -->
+  <text class="g" x="1100" y="165">Outside the project</text>
+  <rect class="x" x="1100" y="180" width="260" height="70"/><text class="h" x="1230" y="210">Authentik SSO</text><text class="s" x="1230" y="232">Existing company sign-in</text>
+  <rect class="x" x="1100" y="295" width="260" height="70"/><text class="h" x="1230" y="325">Resend</text><text class="s" x="1230" y="347">Optional outbound and events</text>
+  <rect class="x" x="1100" y="395" width="260" height="60"/><text class="h" x="1230" y="420">Public web, DNS, MX</text><text class="s" x="1230" y="440">Finder discovery and checks</text>
+  <rect class="d" x="1100" y="490" width="260" height="90"/><text class="h" x="1230" y="522">Mox mail server</text><text class="s" x="1230" y="544">Self-hosted SMTP and IMAP</text><text class="s" x="1230" y="562">Same host, host networking</text>
+  <rect class="x" x="1100" y="660" width="260" height="70"/><text class="h" x="1230" y="690">Other mail servers</text><text class="s" x="1230" y="712">Internet email</text>
+
+  <path class="l" d="M640 315V258H1075V215H1100"/><text class="e" x="800" y="254">sign-in (OIDC)</text>
+  <path class="l" d="M660 470V435H1065V330H1100"/><text class="e" x="800" y="431">optional send</text>
+  <path class="l" d="M1010 490L1100 430"/>
+  <path class="l" d="M640 550V600H1230V580"/><text class="e" x="880" y="596">SMTP send, IMAP sync</text>
+  <path class="l" d="M1230 580V660"/><path class="l" d="M1200 660V580"/>
+
+  <!-- Legend -->
+  <g transform="translate(60 905)">
+    <rect class="d" x="0" y="0" width="28" height="18"/><text x="36" y="14" font-size="12" fill="#171717">Core component</text>
+    <rect class="b" x="170" y="0" width="28" height="18"/><text x="206" y="14" font-size="12" fill="#171717">Supporting component</text>
+    <rect class="x" x="375" y="0" width="28" height="18"/><text x="411" y="14" font-size="12" fill="#171717">External system</text>
+    <path class="l" d="M545 9H585"/><text x="593" y="14" font-size="12" fill="#171717">Call or data flow</text>
+    <text x="0" y="48" font-size="12" fill="#171717">Safety rules: every send needs a person's approval. Outbound starts in held mode. Limits are 30 sends per mailbox and 300 per user per day.</text>
+    <text x="0" y="68" font-size="12" fill="#171717">Mailpit is a test mail sink and is left out of this drawing. Message content is shown as plain text only.</text>
+  </g>
+</svg>

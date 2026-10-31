@@ -42,6 +42,10 @@ The production assembly is one Docker Compose project (`ops/production/compose.y
 host and public edge still need approval. Start with the [engineering handoff](docs/handoff/README.md)
 and [backend design](docs/backend-completion-design.md). Earlier architecture documents are historical.
 
+[System design drawing](docs/architecture/system-design.svg)
+
+![Elevateo Mail system design](docs/architecture/system-design.svg)
+
 ## Repository layout
 
 | Path | Contents |
@@ -104,6 +108,8 @@ Before enabling probes, give the finder a different public IP from Mox and verif
 `ELEVATEO_FINDER_PUBLIC_IP` does not configure that routing. Its port-25 checks can get an IP blocklisted.
 
 ## Current state (2026-11-01)
+
+This branch, `feature/final-integration`, merges all November 2026 work. The merged code has not passed its gates: the one attempt failed at the web contract check (since fixed) and was stopped for low memory before the backend gate started. Results below were recorded on their own branches, and some lines predate the merge.
 
 Schema integrity work on this branch covers the complete server DDL and query surface. New reversible migrations
 add relationship indexes and constraints, unify delivery suppression lookup, normalize finder work items, and
