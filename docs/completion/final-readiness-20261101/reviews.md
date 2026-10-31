@@ -78,3 +78,18 @@ Browser design review: playwright.config.ts:1-28, production.spec.ts:1-100, laun
 Batched boundary-test fixture follow-up: ConnectionsReadiness.test.tsx:1-36, 36 LOC, zero defects, 0/KLOC. Event-driven selection still distinguishes accepted 50 and rejected 51 selections. Full Docker runtime passes.
 
 Android resource-control review: 163 LOC, one defect (6.13/KLOC): APK entrypoint overrode caller limits. Repair review: 80 LOC, zero residual defects (0/KLOC). Three script-execution regressions pass in Docker; no actual OOM or APK success claimed.
+
+Native gate/manifest review: 69 LOC, zero defects (0/KLOC). Lockfile resolution alone does not prove compiler compatibility; the Linux compile gate remains authoritative. macOS packaging is not exercised by Linux helper tests.
+
+Evidence-tool review: 72 LOC (57 primary plus 15 context), two configuration defects (27.78/KLOC): mutable Swift image and missing production-preview readiness. Swift is now digest-pinned; preview checks process liveness and HTTP readiness. Follow-up covered 25 LOC and found one timeout omission (40/KLOC); curl now has a one-second maximum per attempt. These were review findings, not observed runtime failures. Counts include overlapping rereview context and must not be interpreted as unique product-code coverage.
+
+Final wrapper rereview: browser-gate.sh:1-16 and android-gate.sh:1-8, 24 LOC, zero residual defects (0/KLOC). Browser readiness is bounded to roughly 120 seconds including sleeps. Android staging owns its copied source and runs the builder unprivileged. Rust formatting failures are delegated to rustfmt; the formatter-only repair passes `cargo fmt --all -- --check` in Docker and is not counted as an adversarial design finding.
+
+Execution exposed two further verification defects: the native harness mounted Tauri's schema output directory read-only, and APIClientTests omitted Linux's FoundationNetworking import. The harness now builds an owned source copy; the existing redirect regression now compiles on Linux. Repair review covered native-gate.sh:1-24 and APIClientTests.swift:1-8,110-130 (53 LOC), zero residual defects (0/KLOC). The earlier 69-LOC native review missed the harness defect (corrected discovery density: 14.49/KLOC). Runtime reruns are recorded separately; review is not a test pass.
+
+Production-browser execution found stale thread payloads (missing folder/snooze/star fields) and a stale combined sender/subject selector: two test defects. Repair review covered production.spec.ts:1-159 (159 LOC), zero residual defects (0/KLOC). Schema preconditions now protect the hostile-content and 50-row regressions from silently testing rejected payloads. The prior browser review missed the fixture defect in its first-100-line coverage; production.spec.ts:1-100 has one execution-discovered defect (10/KLOC), while the old selector was outside that packet.
+
+Visual-state fixture repair review: visual-states.spec.ts:1-91, 91 LOC, zero residual defects (0/KLOC). Execution found the same stale-payload defect in this separate fixture builder; required folder/snooze/star fields and schema preconditions now match the contract. This is an additional affected fixture, not a new product defect. Browser rerun results remain separate from review findings.
+
+
+Swift wrapper/import repair review: 42 LOC, zero residual defects (0/KLOC). Runtime exposed one verification-wrapper defect: Python was invoked in the Swift-only image. The recipe now contains only Swift gates, and the three signing-helper tests passed separately in the Python-capable Docker image. Swift build and 36 tests pass; no iOS app build is claimed.

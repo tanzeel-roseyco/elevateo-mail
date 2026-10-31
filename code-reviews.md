@@ -2699,3 +2699,6 @@ unavailable; design scenarios were analytical, not Obsidian-backed. Web runtime 
 Web runtime follow-up: one invalid status-wrapper nesting defect repaired. Bounded repair review: 106 LOC, zero residual defects (0/KLOC). Batched boundary-test fixture follow-up: 36 LOC, zero defects (0/KLOC). Full Docker rerun: 1,195 tests pass. See the November 1 web receipt and review table.
 
 Android resource-control review: 163 LOC, one defect (6.13/KLOC): APK entrypoint overrode caller limits. Repair review: 80 LOC, zero residual defects (0/KLOC). Three script-execution regressions pass in Docker; no actual OOM or APK success claimed.
+
+
+Swift wrapper/import repair review: 42 LOC, zero residual defects (0/KLOC). Runtime exposed one verification-wrapper defect: Python was invoked in the Swift-only image. The recipe now contains only Swift gates, and the three signing-helper tests passed separately in the Python-capable Docker image. Swift build and 36 tests pass; no iOS app build is claimed.
