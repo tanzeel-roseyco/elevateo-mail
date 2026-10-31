@@ -8,7 +8,7 @@ All Elevateo Mail work is consolidated in this repository. `main` contains the i
 self-hosted mail server, email finder, and web, macOS, Windows, Android and iOS clients. Nothing is deployed.
 The backend and email finder passed their recorded historical Docker gates. On `feature/final-readiness`,
 Windows packaging, web unit/build, native Linux and iOS Core gates have now run; results and limitations
-are recorded below. Browser verification is complete; Android packaging is running without deployment.
+are recorded below. Browser and Android packaging verification are complete; platform/resource limitations are recorded. No deployment.
 
 ## How main was assembled
 
@@ -88,3 +88,10 @@ Native verification — 2026-11-01: Cargo.lock regenerated. Docker formatting, c
 ## Browser verification completed — 2026-11-01
 
 Final Docker matrix: 262 passed, 0 failed, 2 intentional desktop skips of mobile-only drawer cases; both mobile cases pass. Lint/typecheck, 42 focused ThreadPage tests and production build pass after the dark reader/note contrast repair. Negative control: 4 light cases pass, 4 dark cases fail before the repair; all eight pass afterward. Actual screenshots inspected at 1440/390 px in light/dark. Production-artifact tests use intercepted synthetic APIs, not a real backend. The backend harness removes volumes and cannot run under the current no-volume-touch instruction; low disk/RAM also precludes new backend builds. Android APK remains in progress. See [browser receipt](docs/completion/final-readiness-20261101/browser-receipt.md), [visual receipt](docs/completion/final-readiness-20261101/visual-receipt.md) and [backend limitation](docs/completion/final-readiness-20261101/backend-receipt.md). These results supersede earlier pending checkpoints.
+
+## Final client verification receipt — 2026-11-01
+
+All feasible client gates are recorded in [the final receipt](docs/completion/final-readiness-20261101/final-receipt.md), which supersedes earlier pending checkpoints. Android final rebuild passed: 69 Python helpers, 40 Rust tests, 7 release-configuration tests, Kotlin/Rust compile, package identity/trust/signature and manifest verification. Android lint passed with 0 errors, 36 warnings and 1 hint after removing unsupported generated TV advertising; its regression failed on old source and passed after repair. The x86_64 debug-signed isolated-QA APK is retained locally, not a production release. Unique repaired defects: 41 (15 application, 4 packaging/build, 22 verification); P24–P34, design review and bounded follow-ups are recorded in code-reviews.md.
+
+Mac packaging/signing/notarization and iOS application build require macOS. Android emulator/installed visual QA is blocked by Docker's 3.82 GiB RAM; real-backend browser coverage is blocked by the no-volume-touch instruction and disk/RAM constraints. Native strict `-D warnings` failed on 8 existing warnings; the final Clippy rules gate passed. Windows install/uninstall and authenticated native interaction remain unverified. No deployment or infrastructure mutation occurred. See receipts for exact commands, final counts, earlier failures, artifact hashes, screenshots and cleanup.
+Final cleanup: owned disposable containers removed; final image prune reclaimed 7.702 GB, builder prune 0 B. No volumes touched. Shared preview and active caches preserved; C: has 4.40 GB free. VHD compaction requires stopping Docker and was not attempted. [Cleanup receipt](docs/completion/final-readiness-20261101/cleanup-receipt.md).

@@ -20,13 +20,14 @@ This inventory deduplicates overlapping reviews and rereviews. Runtime results a
 14. Thread status wrappers produced invalid block-in-paragraph nesting.
 15. Dark reader metadata and notes had insufficient text contrast; note cards lacked a dark surface.
 
-## Packaging/build: 3
+## Packaging/build: 4
 
 1. Installer manifest enumeration failures were hidden.
 2. Persistent publish output included obsolete release files.
 3. Android APK entrypoint overrode caller resource limits.
+4. Generated Android manifest advertised unsupported TV launching, failing Android lint.
 
-## Verification: 21
+## Verification: 22
 
 1. Missing-items fixture had another invalid field, masking validation.
 2. Oversized token-response test used invalid JSON and a generic failure assertion.
@@ -49,5 +50,6 @@ This inventory deduplicates overlapping reviews and rereviews. Runtime results a
 19. Skeleton selector assumed generic div markup and missed message-row spans.
 20. Ordinal pagination fixture was consumed by dashboard-count requests.
 21. Mobile tests assumed the desktop Filter control existed.
+22. Android verification receipt omitted the historical negative-control script replay precondition.
 
-Total: **39 unique defects**. Review coverage/density uses packet LOC in `reviews.md`; overlapping rereview LOC is not unique-code coverage. Compile/analyzer/formatting repairs (CS8604, SignInFailure assertion, CA1861, unused mock parameter, two Clippy repairs, rustfmt) and PowerShell logger quoting are recorded execution failures, not additional defects in this inventory. Eight existing native dead-code warnings remain follow-ups.
+Total: **41 unique defects**. Review coverage/density uses packet LOC in `reviews.md`; overlapping rereview LOC is not unique-code coverage. Compile/analyzer/formatting repairs (CS8604, SignInFailure assertion, CA1861, unused mock parameter, two Clippy repairs, rustfmt) and PowerShell logger quoting are recorded execution failures, not additional defects in this inventory. Eight existing native dead-code warnings remain follow-ups.
