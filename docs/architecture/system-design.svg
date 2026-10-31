@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1010" width="1400" height="1010" role="img" aria-labelledby="t d" font-family="Arial, Helvetica, sans-serif">
-  <title id="t">Elevateo Mail system design</title>
+  <title id="t">Elevateo Mail</title>
   <desc id="d">Clients and AI tools reach a Rails API, an auth proxy and a mailbox MCP server through an HTTPS edge. Workers share durable state in PostgreSQL and send and receive mail through Mox or Resend.</desc>
   <defs>
     <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#171717"/></marker>
@@ -16,7 +16,7 @@
     </style>
   </defs>
   <rect width="1400" height="1010" fill="#fff"/>
-  <text x="60" y="38" font-size="24" font-weight="700" fill="#171717">Elevateo Mail system design</text>
+  <text x="60" y="38" font-size="24" font-weight="700" fill="#171717">Elevateo Mail</text>
   <text x="60" y="60" font-size="13" fill="#171717">Production layout from ops/production/compose.yaml. Not deployed yet.</text>
 
   <!-- Clients -->
