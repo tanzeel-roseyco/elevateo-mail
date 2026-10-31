@@ -34,6 +34,13 @@ Full gate verification, the existing finder-policy rollback failure and isolated
 [the receipt](docs/completion/modular-monolith-20261101/receipt.md); this is not a green full-gate claim.
 No database files or campaign/finder suppression SQL were changed. No push or deployment occurred.
 See [the module map and schema follow-up](docs/modular-architecture.md).
+## Web PWA branch
+
+Implemented install metadata/icons/screenshots, accessible white/gold install guidance, byte-verified static-only
+offline shell, deferred updates and session cleanup across windows. No mail/API/attachment caching or queued writes.
+The broader single-theme conversion remains on `feature-white-gold`. This branch does not change server code.
+Docker gate and production Chromium results, Lighthouse reports, visual QA and remaining device/hosting checks
+are recorded in [the PWA receipt](docs/completion/pwa-20261101/receipt.md).
 
 ## How main was assembled
 

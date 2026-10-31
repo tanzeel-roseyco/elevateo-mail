@@ -17,6 +17,11 @@ catalog, including private schemas and later ALTER statements. Finder jobs store
 delivery suppression keys are canonical lowercase while approved address snapshots retain their original semantics.
 Migrations 111?117 passed Docker up/down/up and the full backend gate; exact counts and retained exceptions are
 recorded in the [schema verification receipt](docs/completion/schema-integrity-20261101/).
+The web PWA caches only integrity-checked, build-versioned static interface assets. Its worker bypasses API,
+authentication, attachments, query-bearing URLs and every write. It never stores mailbox responses or queues
+approvals. Updates wait for all windows to close; no worker claims or reloads a running client. Sign-out clears
+local Elevateo records and broadcasts a fence to other windows. Native desktop hosts retain their existing updater.
+See [installation and offline behavior](docs/product/install-app.md) and [PWA verification](docs/completion/pwa-20261101/receipt.md).
 
 The Rails application in `apps/server` and its PostgreSQL database are the only authority for users, mailbox access,
 drafts, send approval and delivery state. Every other component is an adapter:

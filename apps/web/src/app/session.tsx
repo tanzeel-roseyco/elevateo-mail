@@ -4,6 +4,7 @@ import type { LoginInput, LogoutInput, RecoveryInput, Session } from '@/data/con
 import { GatewayError } from '@/data/errors'
 import { classifyFailure, type ActionResult } from './actionFailure'
 import { RequestScope } from './scope'
+import { clearSessionRecords } from '@/pwa/sessionPrivacy'
 
 /** Freshness cadence while ready and visible; timer, focus and visibility share this schedule. */
 export const SESSION_FRESHNESS_INTERVAL_MS = 30_000
@@ -98,6 +99,7 @@ export function SessionProvider({ gateway, children }: { gateway: MailroomGatewa
   const refreshUsedRef = useRef(false)
   const inFlightRef = useRef<InFlight | null>(null)
   const lastRequestStartRef = useRef(0)
+  const signOutChannel = useRef<BroadcastChannel | null>(null)
 
   const commit = useCallback((next: SessionState) => {
     stateRef.current = next
@@ -141,6 +143,20 @@ export function SessionProvider({ gateway, children }: { gateway: MailroomGatewa
     },
     [commit],
   )
+
+  // AIDEV-NOTE: Sign-out fences every open window, including installed PWA windows, before network logout.
+  useEffect(() => {
+    if (typeof BroadcastChannel === 'undefined') return
+    const channel = new BroadcastChannel('elevateo-session')
+    signOutChannel.current = channel
+    channel.onmessage = (event: MessageEvent<unknown>) => {
+      if (event.data !== 'sign-out') return
+      abortInFlight()
+      toUnauthenticated({ kind: 'session_ended' })
+      try { clearSessionRecords() } catch { commit({ status: 'error', message: 'Local session records could not be cleared. Close all app windows and clear this site’s browser data before sharing this device.' }) }
+    }
+    return () => { signOutChannel.current = null; channel.close() }
+  }, [abortInFlight, commit, toUnauthenticated])
 
   /**
    * One bounded challenge+refresh after a current 401 (contract README). Protected content is
@@ -414,6 +430,9 @@ export function SessionProvider({ gateway, children }: { gateway: MailroomGatewa
       // Fence first: nothing protected stays visible while the server answers (D2).
       scopeRef.current.invalidate()
       commit({ status: 'signing_out' })
+      signOutChannel.current?.postMessage('sign-out')
+      let localCleanupFailed = false
+      try { clearSessionRecords() } catch { localCleanupFailed = true }
       try {
         const signal = token.controller.signal
         // A session proves with its own token; a session-less identity proves with a bound challenge.
@@ -422,6 +441,7 @@ export function SessionProvider({ gateway, children }: { gateway: MailroomGatewa
         if (inFlightRef.current !== token) return { kind: 'superseded' }
         inFlightRef.current = null
         toUnauthenticated({ kind: 'signed_out', upstream: result.upstream_status })
+        if (localCleanupFailed) commit({ status: 'error', message: 'Signed out, but local records could not be cleared. Clear this site’s browser data before sharing this device.' })
         return { kind: 'ok' }
       } catch (error) {
         if (inFlightRef.current !== token) return { kind: 'superseded' }
@@ -430,10 +450,11 @@ export function SessionProvider({ gateway, children }: { gateway: MailroomGatewa
         if (failure.code === 'rejected') {
           // 401: the local session is already gone (expired, or global scope without a valid one).
           toUnauthenticated({ kind: 'session_ended' })
+          if (localCleanupFailed) commit({ status: 'error', message: 'Local records could not be cleared. Clear this site’s browser data before sharing this device.' })
           return { kind: 'ok' }
         }
-        if (session === null) commit({ status: 'no_organization' })
-        else commit({ status: 'sign_out_failed', message: failure.message, session })
+        if (session === null) commit(localCleanupFailed ? { status: 'error', message: 'Local records could not be cleared. Clear this site’s browser data before sharing this device.' } : { status: 'no_organization' })
+        else commit({ status: 'sign_out_failed', message: localCleanupFailed ? `${failure.message} Local records could not be cleared. Clear this site’s browser data before sharing this device.` : failure.message, session })
         return { kind: 'failed', failure }
       }
     },

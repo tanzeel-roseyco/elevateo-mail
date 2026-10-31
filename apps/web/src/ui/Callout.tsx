@@ -5,9 +5,11 @@ import type { ReactNode } from 'react'
 import { cx } from '@/lib/format'
 import { CheckCircleIcon, ExclamationTriangleIcon, InformationCircleIcon, XCircleIcon } from './icons'
 
-export type CalloutVariant = 'accent' | 'neutral' | 'danger' | 'warning' | 'success'
+export type CalloutVariant = 'brand-outline' | 'accent' | 'neutral' | 'danger' | 'warning' | 'success'
 
 const VARIANTS: Record<CalloutVariant, { panel: string; icon: ReactNode }> = {
+  // AIDEV-NOTE: Shared light-only notice recipe keeps PWA chrome aligned with the white/gold product design.
+  'brand-outline': { panel: 'border-(--color-accent) bg-white text-black', icon: <InformationCircleIcon className="size-5" /> },
   accent: { panel: 'border-gold-200 bg-gold-50 text-gold-800 dark:border-gold-400/30 dark:bg-gold-400/10 dark:text-gold-100', icon: <InformationCircleIcon className="size-5" /> },
   neutral: { panel: 'border-zinc-200 bg-zinc-50 text-zinc-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300', icon: <InformationCircleIcon className="size-5" /> },
   danger: { panel: 'border-red-200 bg-red-50 text-red-800 dark:border-red-400/30 dark:bg-red-400/10 dark:text-red-100', icon: <XCircleIcon className="size-5" /> },

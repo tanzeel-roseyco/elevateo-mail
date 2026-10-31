@@ -16,6 +16,11 @@ Jeison starts with the [engineering handoff](handoff/README.md), including setup
 | [goals-and-traceability.md](goals-and-traceability.md) | *(Historical)* Earlier requirements traceability |
 | [decisions/](decisions/) | *(Historical)* Mailbox ownership/local architecture decisions; TypeScript backend, WPF and Java proposals are superseded |
 | [business/financial-planning/](business/financial-planning/) | *(Historical)* Cost scenarios and CSV assumptions, not current prices or approved infrastructure |
+| [end-goal.md](end-goal.md) | The finished product, daily workflow and completion criteria |
+| [product/install-app.md](product/install-app.md) | Install the web app, offline limits, updates and troubleshooting |
+| [goals-and-traceability.md](goals-and-traceability.md) | Requirements traced to implementation |
+| [decisions/](decisions/) | Architecture decision records (mailbox ownership, local architecture) |
+| [business/financial-planning/](business/financial-planning/) | Cost model, pilot, growth and enterprise-readiness scenarios |
 
 ## Architecture and contracts
 

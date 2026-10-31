@@ -5,7 +5,7 @@
 import type { ButtonHTMLAttributes, ReactNode, Ref } from 'react'
 import { cx } from '@/lib/format'
 
-export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'subtle' | 'danger'
+export type ButtonVariant = 'brand-outline' | 'primary' | 'secondary' | 'outline' | 'ghost' | 'subtle' | 'danger'
 // `xs` is EmailGuard's h-10 button with 12px text (Get Help, View All …); `sm` is the h-8 control.
 export type ButtonSize = 'xs' | 'sm' | 'md'
 
@@ -13,6 +13,8 @@ const OUTLINE =
   'bg-white hover:bg-zinc-50 border border-zinc-200 border-b-zinc-300/80 text-zinc-800 shadow-xs dark:bg-zinc-700 dark:hover:bg-zinc-600/75 dark:border-white/10 dark:text-white'
 
 const VARIANTS: Record<ButtonVariant, string> = {
+  // AIDEV-NOTE: PWA controls use the white/gold recipe without changing existing product variants.
+  'brand-outline': 'bg-white text-black border border-(--color-accent) hover:bg-zinc-50',
   primary:
     'bg-(--color-accent) hover:bg-[color-mix(in_oklab,var(--color-accent),transparent_10%)] text-(--color-accent-foreground) border border-black/10 shadow-[inset_0_1px_rgb(255_255_255/0.2)]',
   outline: OUTLINE,

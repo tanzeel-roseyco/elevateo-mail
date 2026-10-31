@@ -220,13 +220,17 @@ h2[tabindex="-1"]:focus {
   padding-block: 0.625rem;
 }
 
-/* AIDEV-NOTE: FE-805 mobile/WebView frame. The app is online-only and served as one HTTPS page in
-   the native WebView, so the frame must fit the dynamic viewport (soft keyboard, browser chrome)
-   and respect device safe areas; index.html's viewport-fit=cover is a requested host change. */
+/* AIDEV-NOTE: WebView and installed shell share dynamic viewport and safe areas; mailbox access needs a network. */
 #root {
   min-height: 100dvh;
   padding-top: env(safe-area-inset-top);
   padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+@media (display-mode: standalone) {
+  html { overscroll-behavior-y: contain; }
 }
 
 /* Touch devices: 40px nav rows (DESIGN-SPEC Â§4 mobile) and 44px header controls, desktop density unchanged. */

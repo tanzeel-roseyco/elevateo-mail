@@ -79,7 +79,8 @@ scripts/dev up
 
 ## Testing
 
-All tests run in Docker, never on the host.
+All tests run in Docker, never on the host. Set `DOCKER_CONTEXT=desktop-linux` before these commands
+(PowerShell: `$env:DOCKER_CONTEXT='desktop-linux'`). Do not use fleet contexts for local verification.
 
 | Area | Command |
 | --- | --- |
@@ -122,6 +123,7 @@ on `feature/final-readiness` and schema-integrity/modular-boundary branches stil
 | Email finder | Implemented. Module gates passed (53 backend tests, 12 browser cases) |
 | Clients | Windows Docker build: 0 warnings/errors, 93 tests and 7 installer regressions pass; unsigned installer built, Avalonia views inspected at 960/1280 px. P24–P34 and design reviews completed with repairs. Web lint/types, 1,195 unit tests, production build and bundle budget pass. Android helper tests: 68 pass; build resource limits repaired. iOS Core: Swift build and 36 tests pass, plus 3 signing-helper tests. Native Linux: fmt/check/Clippy rules, 40 Rust and 14 helper tests pass; 8 compiler warnings remain. Browser QA and Android APK are in progress. [Evidence](docs/completion/final-readiness-20261101/windows-receipt.md) |
 | Merged `main` | On `feature/final-readiness`: web gate passes (1,190 unit tests); fixture Playwright across four projects: 176 passed, 0 failed, 344 production-URL skips. Production browser coverage, visual QA, packaging and merged backend gates remain unverified |
+| Web PWA | Static-only offline shell, install guidance, safe update waiting and cross-window sign-out cleanup implemented. White/gold PWA UI and white launch metadata; broader theme removal remains on `feature-white-gold`. Docker and Chromium evidence: [PWA receipt](docs/completion/pwa-20261101/receipt.md). [Install guide](docs/product/install-app.md) |
 | Deployment | Not deployed. No live sends, DNS, MX or Cloudflare changes. Credentials are pending |
 | Known limits | Mac `.dmg` signing/notarization and the iOS app build need a macOS host. The Android emulator run needs about 8 GB free RAM |
 
