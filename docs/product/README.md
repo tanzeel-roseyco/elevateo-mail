@@ -34,7 +34,7 @@ Messages always appear as plain text. Elevateo Mail does not render message HTML
 Every message needs a person's approval before it is queued.
 
 1. Write a new message, reply, reply all or forward. Your work is saved as a draft.
-2. Select the option to review the send.
+2. Select **Review send**. Simulated installations label this **Review simulated send**.
 3. Check the sender, purpose, all recipients, subject, message and attachments.
 4. Tick the confirmation box and approve.
 5. Follow the result on the send status page.
