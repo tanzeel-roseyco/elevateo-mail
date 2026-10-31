@@ -48,6 +48,28 @@ class CustomizeGeneratedTest(unittest.TestCase):
                 customize(self.project)
                 self.assertEqual(before, (self.activity.read_bytes(), self.manifest.read_bytes()))
 
+    def test_removes_tv_advertising_but_preserves_mobile_and_other_intents(self) -> None:
+        root = ET.fromstring(MANIFEST)
+        ET.SubElement(root, "uses-feature", {ANDROID + "name": "android.software.leanback"})
+        ET.SubElement(root, "uses-feature", {ANDROID + "name": "android.hardware.camera"})
+        activity = root.find("application/activity")
+        intent = ET.SubElement(activity, "intent-filter")
+        ET.SubElement(intent, "action", {ANDROID + "name": "android.intent.action.MAIN"})
+        for category in ("LAUNCHER", "LEANBACK_LAUNCHER", "DEFAULT"):
+            ET.SubElement(intent, "category", {ANDROID + "name": "android.intent.category." + category})
+        self.manifest.write_text(ET.tostring(root, encoding="unicode"))
+        customize(self.project)
+        actual = ET.parse(self.manifest).getroot()
+        self.assertEqual([n.get(ANDROID + "name") for n in actual.findall("uses-feature")],
+                         ["android.hardware.camera"])
+        self.assertEqual([n.get(ANDROID + "name") for n in actual.findall("application/activity/intent-filter/category")],
+                         ["android.intent.category.LAUNCHER", "android.intent.category.DEFAULT"])
+        self.assertEqual(actual.find("application/activity/intent-filter/action").get(ANDROID + "name"),
+                         "android.intent.action.MAIN")
+        before = self.manifest.read_bytes()
+        customize(self.project)
+        self.assertEqual(self.manifest.read_bytes(), before)
+
     def test_rejects_changed_template_or_package_without_partial_edits(self) -> None:
         for source in ("package com.attacker.app\n" + GENERATED_BODY,
                        "package com.elevateo.mail.qa\n" + GENERATED_BODY.replace("enableEdgeToEdge()", "")):

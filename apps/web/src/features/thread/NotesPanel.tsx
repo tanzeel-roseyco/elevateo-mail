@@ -1,3 +1,4 @@
+// AIDEV-NOTE: Secondary reader text uses theme-aware muted colors for contrast on dark surfaces.
 // Immutable plaintext internal notes (BE-02 D §7). Rendering is React text in a wrapping <pre>:
 // no HTML, Markdown, autolinks or remote resources. A new note is created under a caller id that
 // is kept for an exact retry when the outcome is uncertain; changing the text after that is a

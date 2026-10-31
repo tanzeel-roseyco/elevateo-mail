@@ -1,0 +1,1755 @@
+docker : ..+..+....+...........+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*.+...+...+++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++++++++++*...+.+.........+...+...+...........+...............+......+.......
+......+.....+...................+.....+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+At line:2 char:129
++ ... -20261101'; docker run --name elevateo-client-android-final-20261101  ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (..+..+....+.......+++++++++++++++:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+...........+...+.+...+......+.....+..........+...............+.....+......+...+...+.......+......+.....+....+..+.......
+......+...........+............+...+.+......+...+......+........+.+.........+..+.++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++*....+.+..+............+..........+.....+.+..+....+.....+.+..+.+++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++*.....+.............+..............+............+.+..+.......+...............+.....
++...+..........+.....................+.........+........+...+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++++++
+-----
+.+............+..+...+.+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*..+.+...............+..+......
+......+................+..............+.+..+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*..........
+........+...............+.+.....+...+.......+...+...+.....+...........................+...+..........+........+.......+
+.......................+.......+.....+...+.+..........................+.......+++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++
+....+......+.........+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*.......+.....+++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++++*.............................+..+......+.....................+.+.....+..
+.......+......+....+...+..+.+.....+...+....+......+...............+.....+....+............+...+..................+..+.+
+............+.........+......+...+........................+.....+......+.+.....................+...+.....+.+........+.+
+.........+...+.....+...+......................+...+..+.............+............+...+.....+.......+...............+....
+....+.......+.........+...........+.........+...+...............+...+....+..............+.+.....+..................+...
+.......+.....+.......+.....+.+...+..+...+....+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+-----
+Certificate request self-signature ok
+subject=CN = elevateo.qa.internal
+native static package boundary PASS
+..........................................
+----------------------------------------------------------------------
+Ran 42 tests in 0.158s
+
+OK
+..........................
+----------------------------------------------------------------------
+Ran 26 tests in 0.082s
+
+OK
+    Updating crates.io index
+ Downloading crates ...
+  Downloaded adler2 v2.0.1
+  Downloaded anyhow v1.0.104
+  Downloaded async-executor v1.14.0
+  Downloaded alloc-stdlib v0.3.0
+  Downloaded alloc-no-stdlib v3.0.0
+  Downloaded block-buffer v0.10.4
+  Downloaded gdkx11-sys v0.18.2
+  Downloaded gdkwayland-sys v0.18.2
+  Downloaded generic-array v0.14.7
+  Downloaded crypto-common v0.1.7
+  Downloaded gdkx11 v0.18.2
+  Downloaded cairo-sys-rs v0.18.2
+  Downloaded cfg-if v1.0.5
+  Downloaded futures-task v0.3.34
+  Downloaded async-broadcast v0.7.2
+  Downloaded cpufeatures v0.2.17
+  Downloaded getrandom v0.2.17
+  Downloaded event-listener-strategy v0.5.4
+  Downloaded equivalent v1.0.3
+  Downloaded dtoa-short v0.3.5
+  Downloaded cssparser-macros v0.7.1
+  Downloaded cargo-platform v0.1.9
+  Downloaded atomic-waker v1.1.2
+  Downloaded defmt-parser v1.1.0
+  Downloaded endi v1.1.1
+  Downloaded dpi v0.1.2
+  Downloaded futures-core v0.3.34
+  Downloaded errno v0.3.14
+  Downloaded fnv v1.0.7
+  Downloaded field-offset v0.3.6
+  Downloaded dirs-sys v0.5.0
+  Downloaded futures-macro v0.3.34
+  Downloaded hex v0.4.3
+  Downloaded futures-sink v0.3.34
+  Downloaded darling_macro v0.24.1
+  Downloaded dyn-clone v1.0.20
+  Downloaded dunce v1.0.5
+  Downloaded dlopen2_derive v0.4.3
+  Downloaded dirs v7.0.0
+  Downloaded futures-io v0.3.34
+  Downloaded gdk-pixbuf-sys v0.18.0
+  Downloaded bitflags v1.3.2
+  Downloaded blocking v1.7.0
+  Downloaded bit-vec v0.8.0
+  Downloaded bit-set v0.8.0
+  Downloaded atk-sys v0.18.2
+  Downloaded async-trait v0.1.92
+  Downloaded bs58 v0.5.1
+  Downloaded async-process v2.5.0
+  Downloaded concurrent-queue v2.5.0
+  Downloaded autocfg v1.5.1
+  Downloaded form_urlencoded v1.2.2
+  Downloaded async-signal v0.2.14
+  Downloaded cargo_metadata v0.19.2
+  Downloaded futures-executor v0.3.34
+  Downloaded dtoa v1.0.11
+  Downloaded displaydoc v0.2.7
+  Downloaded enumflags2 v0.7.12
+  Downloaded byteorder v1.5.0
+  Downloaded defmt-macros v1.2.0
+  Downloaded find-msvc-tools v0.1.15
+  Downloaded enumflags2_derive v0.7.12
+  Downloaded foldhash v0.2.0
+  Downloaded fastrand v2.5.0
+  Downloaded erased-serde v0.4.11
+  Downloaded dlopen2 v0.8.2
+  Downloaded fdeflate v0.3.7
+  Downloaded async-channel v2.5.0
+  Downloaded digest v0.10.7
+  Downloaded deranged v0.5.9
+  Downloaded async-recursion v1.2.0
+  Downloaded atk v0.18.2
+  Downloaded gdk-pixbuf v0.18.5
+  Downloaded proc-macro-crate v2.0.2
+  Downloaded proc-macro-crate v3.5.0
+  Downloaded rand_chacha v0.3.1
+  Downloaded ref-cast-impl v1.0.27
+  Downloaded cookie v0.18.2
+  Downloaded ident_case v1.0.1
+  Downloaded camino v1.2.6
+  Downloaded async-task v4.7.1
+  Downloaded gtk3-macros v0.18.2
+  Downloaded futures-channel v0.3.34
+  Downloaded filetime v0.2.29
+  Downloaded event-listener v5.4.2
+  Downloaded defmt v1.2.0
+  Downloaded bitflags v2.13.2
+  Downloaded async-io v2.6.0
+  Downloaded darling v0.24.1
+  Downloaded rustc_version v0.4.1
+  Downloaded rustc-hash v2.1.3
+  Downloaded async-lock v3.4.2
+  Downloaded ppv-lite86 v0.2.21
+  Downloaded embed-resource v3.0.12
+  Downloaded quote v1.0.47
+  Downloaded cfg-expr v0.15.8
+  Downloaded cargo_toml v1.0.1
+  Downloaded rand_core v0.6.4
+  Downloaded same-file v1.0.6
+  Downloaded proc-macro-error v1.0.4
+  Downloaded scopeguard v1.2.0
+  Downloaded cairo-rs v0.18.5
+  Downloaded heck v0.5.0
+  Downloaded crossbeam-utils v0.8.23
+  Downloaded ctor v1.0.13
+  Downloaded crc32fast v1.5.3
+  Downloaded futures-lite v2.6.1
+  Downloaded cssparser v0.37.0
+  Downloaded idna_adapter v1.2.2
+  Downloaded is-docker v0.2.0
+  Downloaded bytes v1.12.1
+  Downloaded serde_spanned v0.6.9
+  Downloaded serde_repr v0.1.21
+  Downloaded serialize-to-javascript-impl v0.1.2
+  Downloaded serialize-to-javascript v0.1.2
+  Downloaded serde_spanned v1.1.2
+  Downloaded itoa v1.0.18
+  Downloaded stable_deref_trait v1.2.1
+  Downloaded raw-window-handle v0.6.2
+  Downloaded schemars_derive v0.8.22
+  Downloaded siphasher v1.0.4
+  Downloaded subtle v2.6.1
+  Downloaded http-body v1.1.0
+  Downloaded string_cache_codegen v0.6.1
+  Downloaded serde-untagged v0.1.9
+  Downloaded strsim v0.11.1
+  Downloaded base64 v0.22.1
+  Downloaded polling v3.11.0
+  Downloaded serde_derive_internals v0.29.1
+  Downloaded base64 v0.23.1
+  Downloaded sha2 v0.10.9
+  Downloaded sync_wrapper v1.0.2
+  Downloaded slab v0.4.12
+  Downloaded rustls-pki-types v1.15.1
+  Downloaded proc-macro2 v1.0.107
+  Downloaded signal-hook-registry v1.4.8
+  Downloaded shlex v2.0.1
+  Downloaded servo_arc v0.4.3
+  Downloaded soup3-sys v0.5.0
+  Downloaded simd-adler32 v0.3.10
+  Downloaded javascriptcore-rs-sys v1.1.1
+  Downloaded string_cache v0.9.0
+  Downloaded is-wsl v0.4.0
+  Downloaded gdk-sys v0.18.2
+  Downloaded heck v0.4.1
+  Downloaded cfb v0.14.0
+  Downloaded flate2 v1.1.10
+  Downloaded dom_query v0.28.0
+  Downloaded semver v1.0.28
+  Downloaded gdk v0.18.2
+  Downloaded darling_core v0.24.1
+  Downloaded system-deps v6.2.2
+  Downloaded synstructure v0.14.0
+  Downloaded serde_with_macros v3.24.0
+  Downloaded toml_datetime v0.6.3
+  Downloaded rustls-platform-verifier v0.7.1
+  Downloaded soup3 v0.5.0
+  Downloaded smallvec v1.16.4
+  Downloaded phf_codegen v0.13.1
+  Downloaded tauri-plugin v2.7.2
+  Downloaded thiserror-impl v2.0.21
+  Downloaded thiserror v2.0.21
+  Downloaded tauri-winres v0.3.7
+  Downloaded parking v2.2.1
+  Downloaded derive_more v2.1.1
+  Downloaded crossbeam-channel v0.5.17
+  Downloaded thiserror-impl v1.0.69
+  Downloaded thiserror v1.0.69
+  Downloaded serde_core v1.0.229
+  Downloaded derive_more-impl v2.1.1
+  Downloaded serde_derive v1.0.229
+  Downloaded memoffset v0.9.1
+  Downloaded tower-layer v0.3.3
+  Downloaded tower-service v0.3.3
+  Downloaded openssl-probe v0.2.2
+  Downloaded tinystr v0.8.5
+  Downloaded toml_datetime v1.1.2+spec-1.1.0
+  Downloaded tokio-rustls v0.26.6
+  Downloaded toml_writer v1.1.3+spec-1.1.0
+  Downloaded try-lock v0.2.5
+  Downloaded percent-encoding v2.3.2
+  Downloaded num-conv v0.2.2
+  Downloaded version_check v0.9.5
+  Downloaded version-compare v0.2.1
+  Downloaded untrusted v0.9.0
+  Downloaded utf8_iter v1.1.0
+  Downloaded rand v0.8.8
+  Downloaded schemars v0.8.22
+  Downloaded tendril v0.5.1
+  Downloaded tempfile v3.27.0
+  Downloaded libappindicator-sys v0.9.0
+  Downloaded tauri-runtime v2.12.2
+  Downloaded tauri-codegen v2.7.4
+  Downloaded tauri-build v2.7.2
+  Downloaded target-lexicon v0.12.16
+  Downloaded socket2 v0.6.5
+  Downloaded selectors v0.38.0
+  Downloaded schemars v0.9.0
+  Downloaded phf_generator v0.13.1
+  Downloaded time-macros v0.2.32
+  Downloaded xattr v1.7.0
+  Downloaded typeid v1.0.3
+  Downloaded utf_types v1.0.0
+  Downloaded webkit2gtk-sys v2.0.2
+  Downloaded web-time v1.1.0
+  Downloaded yoke-derive v0.8.4
+  Downloaded zerofrom-derive v0.1.8
+  Downloaded new_debug_unreachable v1.0.6
+  Downloaded schemars v1.2.3
+  Downloaded tauri-plugin-opener v2.7.2
+  Downloaded serde v1.0.229
+  Downloaded dbus v0.9.12
+  Downloaded tauri-macros v2.7.4
+  Downloaded zcheapstr v1.2.0
+  Downloaded option-ext v0.2.0
+  Downloaded writeable v0.6.4
+  Downloaded zvariant_derive v5.15.1
+  Downloaded phf_shared v0.13.1
+  Downloaded tinyvec v1.13.3
+  Downloaded toml_parser v1.1.5+spec-1.1.0
+  Downloaded web_atoms v0.2.6
+  Downloaded rustls-webpki v0.103.16
+  Downloaded tauri-plugin-single-instance v2.5.5
+  Downloaded tauri-runtime-wry v2.12.3
+  Downloaded zbus_names v4.3.5
+  Downloaded tracing-core v0.1.36
+  Downloaded cc v1.10.0
+  Downloaded zeroize v1.9.1
+  Downloaded toml_edit v0.25.17+spec-1.1.0
+  Downloaded toml v1.1.8+spec-1.1.0
+  Downloaded tray-icon v0.25.1
+  Downloaded unicode-ident v1.0.27
+  Downloaded potential_utf v0.1.6
+  Downloaded yoke v0.8.4
+  Downloaded precomputed-hash v0.1.1
+  Downloaded tauri-plugin-updater v2.14.1
+  Downloaded powerfmt v0.2.1
+  Downloaded proc-macro-crate v1.3.1
+  Downloaded zbus_macros v5.19.0
+  Downloaded ref-cast v1.0.27
+  Downloaded proc-macro-error-attr v1.0.4
+  Downloaded zmij v1.0.23
+  Downloaded toml_edit v0.20.2
+  Downloaded webkit2gtk v2.0.2
+  Downloaded aho-corasick v1.1.5
+  Downloaded uuid v1.29.0
+  Downloaded url v2.5.8
+  Downloaded zerofrom v0.1.8
+  Downloaded want v0.3.2
+  Downloaded regex v1.13.1
+  Downloaded futures-util v0.3.34
+  Downloaded x11-dl v2.21.0
+  Downloaded x11 v2.21.0
+  Downloaded glob v0.3.4
+  Downloaded tower v0.5.3
+  Downloaded infer v0.22.0
+  Downloaded hyper-rustls v0.27.10
+  Downloaded ipnet v2.12.2
+  Downloaded zerotrie v0.2.5
+  Downloaded gobject-sys v0.18.0
+  Downloaded reqwest v0.13.5
+  Downloaded typenum v1.20.1
+  Downloaded libloading v0.7.4
+  Downloaded javascriptcore-rs v1.1.2
+  Downloaded serde_json v1.0.154
+  Downloaded pin-project-lite v0.2.17
+  Downloaded zvariant v5.15.1
+  Downloaded json-patch v4.2.0
+  Downloaded tauri-utils v2.10.2
+  Downloaded http-body-util v0.1.5
+  Downloaded zerovec v0.11.9
+  Downloaded phf_macros v0.13.1
+  Downloaded winnow v0.5.40
+  Downloaded tower-http v0.6.11
+  Downloaded chrono v0.4.45
+  Downloaded ordered-stream v0.2.0
+  Downloaded serde_with v3.24.0
+  Downloaded mime v0.3.17
+  Downloaded brotli-decompressor v6.2.0
+  Downloaded pkg-config v0.3.34
+  Downloaded pango-sys v0.18.0
+  Downloaded lock_api v0.4.14
+  Downloaded winnow v1.0.4
+  Downloaded piper v0.2.5
+  Downloaded zbus v5.19.0
+  Downloaded quick-xml v0.42.0
+  Downloaded minisign-verify v0.3.0
+  Downloaded syn v1.0.109
+  Downloaded zlib-rs v0.6.8
+  Downloaded wry v0.57.1
+  Downloaded time v0.3.55
+  Downloaded rustls-native-certs v0.8.5
+  Downloaded time-core v0.1.9
+  Downloaded walkdir v2.5.0
+  Downloaded syn v3.0.9
+  Downloaded tauri v2.12.3
+  Downloaded syn v2.0.119
+  Downloaded rustls v0.23.46
+  Downloaded regex-syntax v0.8.11
+  Downloaded zerocopy v0.8.63
+  Downloaded httparse v1.10.1
+  Downloaded rustix v1.1.6
+  Downloaded markup5ever v0.39.0
+  Downloaded tracing v0.1.44
+  Downloaded regex-automata v0.4.18
+  Downloaded parking_lot v0.12.5
+  Downloaded brotli v9.1.1
+  Downloaded phf v0.13.1
+  Downloaded litemap v0.8.3
+  Downloaded iana-time-zone v0.1.65
+  Downloaded parking_lot_core v0.9.12
+  Downloaded once_cell v1.21.4
+  Downloaded tokio v1.54.1
+  Downloaded zvariant_utils v4.2.0
+  Downloaded zerovec-derive v0.11.7
+  Downloaded glib-sys v0.18.1
+  Downloaded ring v0.17.14
+  Downloaded getrandom v0.4.3
+  Downloaded urlpattern v0.6.0
+  Downloaded tracing-attributes v0.1.31
+  Downloaded indexmap v1.9.3
+  Downloaded pango v0.18.3
+  Downloaded plist v1.10.3
+  Downloaded gio-sys v0.18.1
+  Downloaded jsonptr v0.7.1
+  Downloaded icu_normalizer_data v2.4.0
+  Downloaded open v5.4.5
+  Downloaded ico v0.6.0
+  Downloaded num-traits v0.2.19
+  Downloaded log v0.4.35
+  Downloaded libappindicator v0.9.0
+  Downloaded icu_provider v2.4.0
+  Downloaded glib-macros v0.18.5
+  Downloaded miniz_oxide v0.9.1
+  Downloaded keyring v3.6.3
+  Downloaded getrandom v0.3.4
+  Downloaded tar v0.4.46
+  Downloaded toml v0.8.2
+  Downloaded icu_locale_core v2.4.0
+  Downloaded miniz_oxide v0.8.9
+  Downloaded keyboard-types v0.8.3
+  Downloaded http v1.5.0
+  Downloaded hashbrown v0.12.3
+  Downloaded html5ever v0.39.0
+  Downloaded indexmap v2.14.2
+  Downloaded memchr v2.8.3
+  Downloaded toml_edit v0.19.15
+  Downloaded icu_collections v2.4.0
+  Downloaded jiff-core v0.1.1
+  Downloaded png v0.18.1
+  Downloaded mio v1.2.4
+  Downloaded idna v1.1.0
+  Downloaded gtk-sys v0.18.2
+  Downloaded hyper-util v0.1.21
+  Downloaded muda v0.20.0
+  Downloaded tokio-util v0.7.20
+  Downloaded icu_properties v2.4.0
+  Downloaded hyper v1.12.0
+  Downloaded hashbrown v0.17.1
+  Downloaded icu_properties_data v2.4.0
+  Downloaded gio v0.18.4
+  Downloaded glib v0.18.5
+  Downloaded tao v0.37.2
+  Downloaded gtk v0.18.2
+  Downloaded icu_normalizer v2.4.0
+  Downloaded jiff v0.2.38
+  Downloaded libc v0.2.191
+  Downloaded libdbus-sys v0.2.7
+  Downloaded linux-raw-sys v0.12.1
+   Compiling unicode-ident v1.0.27
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling syn v3.0.9
+   Compiling serde_core v1.0.229
+   Compiling serde_derive v1.0.229
+   Compiling serde v1.0.229
+   Compiling libc v0.2.191
+   Compiling equivalent v1.0.3
+   Compiling hashbrown v0.17.1
+   Compiling indexmap v2.14.2
+   Compiling smallvec v1.16.4
+   Compiling pkg-config v0.3.34
+   Compiling heck v0.5.0
+   Compiling toml_datetime v0.6.3
+   Compiling syn v2.0.119
+   Compiling winnow v0.5.40
+   Compiling serde_spanned v0.6.9
+   Compiling toml_edit v0.20.2
+   Compiling target-lexicon v0.12.16
+   Compiling cfg-expr v0.15.8
+   Compiling toml v0.8.2
+   Compiling version-compare v0.2.1
+   Compiling system-deps v6.2.2
+   Compiling cfg-if v1.0.5
+   Compiling synstructure v0.14.0
+   Compiling memchr v2.8.3
+   Compiling zerofrom-derive v0.1.8
+   Compiling zerofrom v0.1.8
+   Compiling yoke-derive v0.8.4
+   Compiling zerovec-derive v0.11.7
+   Compiling pin-project-lite v0.2.17
+   Compiling displaydoc v0.2.7
+   Compiling futures-core v0.3.34
+   Compiling itoa v1.0.18
+   Compiling version_check v0.9.5
+   Compiling writeable v0.6.4
+   Compiling litemap v0.8.3
+   Compiling utf_types v1.0.0
+   Compiling siphasher v1.0.4
+   Compiling utf8_iter v1.1.0
+   Compiling once_cell v1.21.4
+   Compiling autocfg v1.5.1
+   Compiling winnow v1.0.4
+   Compiling phf_shared v0.13.1
+   Compiling glib-sys v0.18.1
+   Compiling fastrand v2.5.0
+   Compiling icu_properties_data v2.4.0
+   Compiling icu_normalizer_data v2.4.0
+   Compiling phf_generator v0.13.1
+   Compiling stable_deref_trait v1.2.1
+   Compiling gobject-sys v0.18.0
+   Compiling bitflags v2.13.2
+   Compiling slab v0.4.12
+   Compiling bytes v1.12.1
+   Compiling semver v1.0.28
+   Compiling zmij v1.0.23
+   Compiling yoke v0.8.4
+   Compiling toml_parser v1.1.5+spec-1.1.0
+   Compiling gio-sys v0.18.1
+   Compiling toml_datetime v1.1.2+spec-1.1.0
+   Compiling zerovec v0.11.9
+   Compiling parking_lot_core v0.9.12
+   Compiling http v1.5.0
+   Compiling phf_macros v0.13.1
+   Compiling futures-macro v0.3.34
+   Compiling log v0.4.35
+   Compiling futures-task v0.3.34
+   Compiling futures-util v0.3.34
+   Compiling scopeguard v1.2.0
+   Compiling thiserror v2.0.21
+   Compiling num-conv v0.2.2
+   Compiling time-core v0.1.9
+   Compiling lock_api v0.4.14
+   Compiling tinystr v0.8.5
+   Compiling phf_codegen v0.13.1
+   Compiling proc-macro-error-attr v1.0.4
+   Compiling thiserror-impl v2.0.21
+   Compiling syn v1.0.109
+   Compiling ident_case v1.0.1
+   Compiling powerfmt v0.2.1
+   Compiling strsim v0.11.1
+   Compiling typeid v1.0.3
+   Compiling deranged v0.5.9
+   Compiling darling_core v0.24.1
+   Compiling icu_locale_core v2.4.0
+   Compiling potential_utf v0.1.6
+   Compiling zerotrie v0.2.5
+   Compiling proc-macro-error v1.0.4
+   Compiling toml_writer v1.1.3+spec-1.1.0
+   Compiling erased-serde v0.4.11
+   Compiling futures-io v0.3.34
+   Compiling base64 v0.23.1
+   Compiling icu_provider v2.4.0
+   Compiling icu_collections v2.4.0
+   Compiling darling_macro v0.24.1
+   Compiling futures-channel v0.3.34
+   Compiling aho-corasick v1.1.5
+   Compiling gdk-sys v0.18.2
+   Compiling regex-syntax v0.8.11
+   Compiling web-time v1.1.0
+   Compiling find-msvc-tools v0.1.15
+   Compiling new_debug_unreachable v1.0.6
+   Compiling fnv v1.0.7
+   Compiling shlex v2.0.1
+   Compiling getrandom v0.4.3
+   Compiling cc v1.10.0
+   Compiling regex-automata v0.4.18
+   Compiling darling v0.24.1
+   Compiling phf v0.13.1
+   Compiling rustc_version v0.4.1
+   Compiling string_cache_codegen v0.6.1
+   Compiling precomputed-hash v0.1.1
+   Compiling alloc-no-stdlib v3.0.0
+   Compiling serde_json v1.0.154
+   Compiling thiserror v1.0.69
+   Compiling alloc-stdlib v0.3.0
+   Compiling web_atoms v0.2.6
+   Compiling parking_lot v0.12.5
+   Compiling serde_with_macros v3.24.0
+   Compiling regex v1.13.1
+   Compiling icu_normalizer v2.4.0
+   Compiling icu_properties v2.4.0
+   Compiling quick-xml v0.42.0
+   Compiling proc-macro-crate v2.0.2
+   Compiling thiserror-impl v1.0.69
+   Compiling heck v0.4.1
+   Compiling anyhow v1.0.104
+   Compiling glib-macros v0.18.5
+   Compiling idna_adapter v1.2.2
+   Compiling string_cache v0.9.0
+   Compiling brotli-decompressor v6.2.0
+   Compiling futures-executor v0.3.34
+   Compiling pango-sys v0.18.0
+   Compiling gdk-pixbuf-sys v0.18.0
+   Compiling cairo-sys-rs v0.18.2
+   Compiling serde_spanned v1.1.2
+   Compiling dunce v1.0.5
+   Compiling percent-encoding v2.3.2
+   Compiling same-file v1.0.6
+   Compiling dtoa v1.0.11
+   Compiling dtoa-short v0.3.5
+   Compiling walkdir v2.5.0
+   Compiling form_urlencoded v1.2.2
+   Compiling toml v1.1.8+spec-1.1.0
+   Compiling glib v0.18.5
+   Compiling brotli v9.1.1
+   Compiling idna v1.1.0
+   Compiling uuid v1.29.0
+   Compiling tendril v0.5.1
+   Compiling selectors v0.38.0
+   Compiling indexmap v1.9.3
+   Compiling atk-sys v0.18.2
+   Compiling derive_more-impl v2.1.1
+   Compiling cssparser-macros v0.7.1
+   Compiling ctor v1.0.13
+   Compiling glob v0.3.4
+   Compiling camino v1.2.6
+   Compiling cssparser v0.37.0
+   Compiling derive_more v2.1.1
+   Compiling markup5ever v0.39.0
+   Compiling url v2.5.8
+   Compiling servo_arc v0.4.3
+   Compiling serde_derive_internals v0.29.1
+   Compiling rustc-hash v2.1.3
+   Compiling bit-vec v0.8.0
+   Compiling schemars v0.8.22
+   Compiling hashbrown v0.12.3
+   Compiling bit-set v0.8.0
+   Compiling schemars_derive v0.8.22
+   Compiling html5ever v0.39.0
+   Compiling cfb v0.14.0
+   Compiling jsonptr v0.7.1
+   Compiling time v0.3.55
+   Compiling cargo-platform v0.1.9
+   Compiling gio v0.18.4
+   Compiling foldhash v0.2.0
+   Compiling crossbeam-utils v0.8.23
+   Compiling dyn-clone v1.0.20
+   Compiling tauri-utils v2.10.2
+   Compiling dom_query v0.28.0
+   Compiling cargo_metadata v0.19.2
+   Compiling plist v1.10.3
+   Compiling serde-untagged v0.1.9
+   Compiling json-patch v4.2.0
+   Compiling infer v0.22.0
+   Compiling urlpattern v0.6.0
+   Compiling serde_with v3.24.0
+   Compiling gtk-sys v0.18.2
+   Compiling option-ext v0.2.0
+   Compiling dirs-sys v0.5.0
+   Compiling memoffset v0.9.1
+   Compiling parking v2.2.1
+   Compiling dirs v7.0.0
+   Compiling gdk-pixbuf v0.18.5
+   Compiling pango v0.18.3
+   Compiling cairo-rs v0.18.5
+   Compiling field-offset v0.3.6
+   Compiling toml_edit v0.19.15
+   Compiling mio v1.2.4
+   Compiling socket2 v0.6.5
+   Compiling adler2 v2.0.1
+   Compiling rustix v1.1.6
+   Compiling tokio v1.54.1
+   Compiling proc-macro-crate v1.3.1
+   Compiling gdk v0.18.2
+   Compiling embed-resource v3.0.12
+   Compiling generic-array v0.14.7
+   Compiling javascriptcore-rs-sys v1.1.1
+   Compiling soup3-sys v0.5.0
+   Compiling gtk v0.18.2
+   Compiling simd-adler32 v0.3.10
+   Compiling linux-raw-sys v0.12.1
+   Compiling tauri-winres v0.3.7
+   Compiling gtk3-macros v0.18.2
+   Compiling atk v0.18.2
+   Compiling cargo_toml v1.0.1
+   Compiling time-macros v0.2.32
+   Compiling getrandom v0.2.17
+   Compiling webkit2gtk-sys v2.0.2
+   Compiling x11 v2.21.0
+   Compiling crc32fast v1.5.3
+   Compiling typenum v1.20.1
+   Compiling tauri-build v2.7.2
+   Compiling ring v0.17.14
+   Compiling toml_edit v0.25.17+spec-1.1.0
+   Compiling gdkx11-sys v0.18.2
+   Compiling enumflags2_derive v0.7.12
+   Compiling bitflags v1.3.2
+   Compiling atomic-waker v1.1.2
+   Compiling proc-macro-crate v3.5.0
+   Compiling miniz_oxide v0.9.1
+   Compiling event-listener v5.4.2
+   Compiling concurrent-queue v2.5.0
+   Compiling dpi v0.1.2
+   Compiling zvariant_utils v4.2.0
+   Compiling cookie v0.18.2
+   Compiling x11-dl v2.21.0
+   Compiling libdbus-sys v0.2.7
+   Compiling zeroize v1.9.1
+   Compiling rustls-pki-types v1.15.1
+   Compiling zvariant_derive v5.15.1
+   Compiling event-listener-strategy v0.5.4
+   Compiling flate2 v1.1.10
+   Compiling javascriptcore-rs v1.1.2
+   Compiling soup3 v0.5.0
+   Compiling tauri v2.12.3
+   Compiling crypto-common v0.1.7
+   Compiling block-buffer v0.10.4
+   Compiling futures-lite v2.6.1
+   Compiling miniz_oxide v0.8.9
+   Compiling fdeflate v0.3.7
+   Compiling tracing-core v0.1.36
+   Compiling tracing-attributes v0.1.31
+   Compiling raw-window-handle v0.6.2
+   Compiling untrusted v0.9.0
+   Compiling endi v1.1.1
+   Compiling tracing v0.1.44
+   Compiling png v0.18.1
+   Compiling digest v0.10.7
+   Compiling webkit2gtk v2.0.2
+   Compiling crossbeam-channel v0.5.17
+   Compiling tauri-plugin v2.7.2
+   Compiling http-body v1.1.0
+   Compiling async-io v2.6.0
+   Compiling dlopen2_derive v0.4.3
+   Compiling cpufeatures v0.2.17
+   Compiling httparse v1.10.1
+   Compiling wry v0.57.1
+   Compiling rustls v0.23.46
+   Compiling byteorder v1.5.0
+   Compiling tauri-runtime v2.12.2
+   Compiling ico v0.6.0
+   Compiling sha2 v0.10.9
+   Compiling dlopen2 v0.8.2
+   Compiling dbus v0.9.12
+   Compiling rustls-webpki v0.103.16
+   Compiling gdkx11 v0.18.2
+   Compiling enumflags2 v0.7.12
+   Compiling polling v3.11.0
+   Compiling gdkwayland-sys v0.18.2
+   Compiling errno v0.3.14
+   Compiling zcheapstr v1.2.0
+   Compiling subtle v2.6.1
+   Compiling muda v0.20.0
+   Compiling async-task v4.7.1
+   Compiling try-lock v0.2.5
+   Compiling tauri-runtime-wry v2.12.3
+   Compiling tower-service v0.3.3
+   Compiling getrandom v0.3.4
+   Compiling want v0.3.2
+   Compiling zvariant v5.15.1
+   Compiling signal-hook-registry v1.4.8
+   Compiling tao v0.37.2
+   Compiling tauri-codegen v2.7.4
+   Compiling async-channel v2.5.0
+   Compiling keyboard-types v0.8.3
+   Compiling serialize-to-javascript-impl v0.1.2
+   Compiling serde_repr v0.1.21
+   Compiling zerocopy v0.8.63
+   Compiling serialize-to-javascript v0.1.2
+   Compiling hyper v1.12.0
+   Compiling tauri-macros v2.7.4
+   Compiling async-signal v0.2.14
+   Compiling zbus_names v4.3.5
+   Compiling async-lock v3.4.2
+   Compiling piper v0.2.5
+   Compiling sync_wrapper v1.0.2
+   Compiling mime v0.3.17
+   Compiling openssl-probe v0.2.2
+   Compiling tower-layer v0.3.3
+   Compiling ipnet v2.12.2
+   Compiling hyper-util v0.1.21
+   Compiling tower v0.5.3
+   Compiling rustls-native-certs v0.8.5
+   Compiling blocking v1.7.0
+   Compiling async-process v2.5.0
+   Compiling zbus_macros v5.19.0
+   Compiling tokio-rustls v0.26.6
+   Compiling async-executor v1.14.0
+   Compiling tauri-plugin-opener v2.7.2
+   Compiling tauri-plugin-updater v2.14.1
+   Compiling async-broadcast v0.7.2
+   Compiling is-docker v0.2.0
+   Compiling ordered-stream v0.2.0
+   Compiling async-recursion v1.2.0
+   Compiling async-trait v0.1.92
+   Compiling futures-sink v0.3.34
+   Compiling hex v0.4.3
+   Compiling zbus v5.19.0
+   Compiling tokio-util v0.7.20
+   Compiling is-wsl v0.4.0
+   Compiling hyper-rustls v0.27.10
+   Compiling ppv-lite86 v0.2.21
+   Compiling rustls-platform-verifier v0.7.1
+   Compiling tower-http v0.6.11
+   Compiling http-body-util v0.1.5
+   Compiling rand_core v0.6.4
+   Compiling xattr v1.7.0
+   Compiling filetime v0.2.29
+   Compiling tar v0.4.46
+   Compiling rand_chacha v0.3.1
+   Compiling reqwest v0.13.5
+   Compiling open v5.4.5
+   Compiling elevateo-native v0.1.0 (/work/apps/native/src-tauri)
+   Compiling tempfile v3.27.0
+   Compiling minisign-verify v0.3.0
+   Compiling rand v0.8.8
+   Compiling tauri-plugin-single-instance v2.5.5
+   Compiling keyring v3.6.3
+   Compiling base64 v0.22.1
+warning: fields `access_token` and `expires_in_secs` are never read
+   --> src/auth.rs:212:9
+    |
+210 | pub struct TokenSet {
+    |            -------- fields in this struct
+211 |     /// Kept in memory only; never persisted.
+212 |     pub access_token: String,
+    |         ^^^^^^^^^^^^
+...
+215 |     pub expires_in_secs: u64,
+    |         ^^^^^^^^^^^^^^^
+    |
+    = note: `TokenSet` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored
+during dead code analysis
+    = note: `#[warn(dead_code)]` on by default
+
+warning: variant `Rejected` is never constructed
+   --> src/auth.rs:222:5
+    |
+219 | pub enum ExchangeError {
+    |          ------------- variant in this enum
+...
+222 |     Rejected(String),
+    |     ^^^^^^^^
+    |
+    = note: `ExchangeError` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored
+during dead code analysis
+
+warning: constant `NATIVE_SESSIONS_PATH` is never used
+   --> src/auth.rs:230:11
+    |
+230 | pub const NATIVE_SESSIONS_PATH: &str = "/v1/native/sessions";
+    |           ^^^^^^^^^^^^^^^^^^^^
+
+warning: field `0` is never read
+   --> src/auth.rs:246:17
+    |
+246 |     Unavailable(String),
+    |     ----------- ^^^^^^
+    |     |
+    |     field in this variant
+    |
+    = note: `StoreError` has a derived impl for the trait `Debug`, but this is intentionally ignored during dead code
+analysis
+help: consider changing the field to be of unit type to suppress this warning while preserving the field numbering, or
+remove the field
+    |
+246 -     Unavailable(String),
+246 +     Unavailable(()),
+    |
+
+warning: method `load_refresh` is never used
+   --> src/auth.rs:251:8
+    |
+249 | pub trait CredentialStore: Send + Sync {
+    |           --------------- method in this trait
+250 |     fn save_refresh(&self, refresh_token: &str) -> Result<(), StoreError>;
+251 |     fn load_refresh(&self) -> Result<Option<String>, StoreError>;
+    |        ^^^^^^^^^^^^
+
+warning: function `archive_current_bundle` is never used
+   --> src/update.rs:167:8
+    |
+167 | pub fn archive_current_bundle(app_bundle: &Path, archive: &Path) -> io::Result<()> {
+    |        ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `restore_previous_bundle` is never used
+   --> src/update.rs:178:8
+    |
+178 | pub fn restore_previous_bundle(app_bundle: &Path, archive: &Path) -> io::Result<()> {
+    |        ^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `copy_dir_recursive` is never used
+   --> src/update.rs:210:4
+    |
+210 | fn copy_dir_recursive(from: &Path, to: &Path) -> io::Result<()> {
+    |    ^^^^^^^^^^^^^^^^^^
+
+warning: `elevateo-native` (lib) generated 8 warnings
+warning: `elevateo-native` (lib test) generated 5 warnings (5 duplicates)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 7m 50s
+     Running unittests src/lib.rs (/artifacts/cargo-target/debug/deps/elevateo_native-79a2c20160b9e1a0)
+
+running 40 tests
+test auth::tests::abandoning_the_login_cancels_its_listener ... ok
+test auth::tests::authorize_url_carries_state_and_s256_challenge ... ok
+test auth::tests::authorize_url_ignores_the_issuer_application_path ... ok
+test auth::tests::authorize_url_rejects_cleartext_and_credential_issuers ... ok
+test auth::tests::cancelled_or_expired_listener_stops_and_disconnects_the_receiver ... ok
+test auth::tests::conforms_to_shared_auth_vectors ... ok
+test auth::tests::empty_code_is_a_provider_error ... ok
+test auth::tests::exchange_port_reports_contract_unavailable ... ok
+test auth::tests::expired_pending_login_is_rejected ... ok
+test auth::tests::loopback_listener_parses_one_callback ... ok
+test auth::tests::matching_callback_completes_and_yields_grant ... ok
+test auth::tests::newer_login_replaces_the_older_pending_one ... ok
+test auth::tests::oversized_request_line_is_rejected_and_listener_keeps_serving ... ok
+test auth::tests::pkce_challenge_is_s256_of_verifier ... ok
+test auth::tests::provider_error_callback_keeps_state_and_error_without_a_code ... ok
+test auth::tests::replayed_callback_is_rejected_after_first_completion ... ok
+test auth::tests::stalled_client_cannot_block_the_genuine_callback ... ok
+test auth::tests::state_mismatch_is_rejected_and_burns_the_pending_login ... ok
+test auth::tests::stray_request_gets_404_and_does_not_consume_the_listener ... ok
+test config::tests::accepts_exact_public_https_origin ... ok
+test config::tests::candidate_marker_cannot_promote_qa_host ... ok
+test config::tests::fixture_and_unmarked_artifacts_cannot_launch ... ok
+test config::tests::isolated_qa_requires_debug_and_the_exact_origin ... ok
+test config::tests::rejects_cleartext_local_and_placeholder ... ok
+test config::tests::rejects_credentials_path_and_query ... ok
+test config::tests::rejects_missing_whitespace_ip_and_oversized_origins ... ok
+test navigation::tests::configured_identity_provider_origin_can_navigate_for_sso ... ok
+test navigation::tests::downgraded_and_local_schemes_are_denied ... ok
+test navigation::tests::identity_provider_lookalikes_and_cleartext_are_denied ... ok
+test navigation::tests::identity_provider_origin_parses_only_safe_https_issuers ... ok
+test navigation::tests::other_origins_and_lookalikes_are_denied ... ok
+test navigation::tests::same_origin_routes_can_navigate ... ok
+test update::tests::corrupt_or_unreadable_marker_is_an_error_not_absence ... ok
+test update::tests::failed_launch_without_archive_cannot_roll_back ... ok
+test update::tests::failed_restore_keeps_the_current_bundle_and_leaves_no_staging ... ok
+test update::tests::healthy_update_gets_its_first_launch_and_is_kept_after_reporting_ready ... ok
+test update::tests::install_is_blocked_while_busy_or_before_the_web_ui_reported ... ok
+test update::tests::marker_clear_is_idempotent ... ok
+test update::tests::restore_copies_from_a_separate_archive_location_and_cleans_up ... ok
+test update::tests::update_that_never_reaches_ready_rolls_back_on_the_following_start ... ok
+
+test result: ok. 40 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.53s
+
+     Running unittests src/main.rs (/artifacts/cargo-target/debug/deps/elevateo_native-e5671b6c252e1609)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests elevateo_native
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Compiling quote v1.0.47
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.27
+   Compiling syn v3.0.9
+   Compiling serde_core v1.0.229
+   Compiling serde_derive v1.0.229
+   Compiling serde v1.0.229
+   Compiling libc v0.2.191
+   Compiling hashbrown v0.17.1
+   Compiling equivalent v1.0.3
+   Compiling indexmap v2.14.2
+   Compiling smallvec v1.16.4
+   Compiling pkg-config v0.3.34
+   Compiling heck v0.5.0
+   Compiling toml_datetime v0.6.3
+   Compiling syn v2.0.119
+   Compiling winnow v0.5.40
+   Compiling serde_spanned v0.6.9
+   Compiling toml_edit v0.20.2
+   Compiling target-lexicon v0.12.16
+   Compiling cfg-expr v0.15.8
+   Compiling toml v0.8.2
+   Compiling version-compare v0.2.1
+   Compiling system-deps v6.2.2
+   Compiling synstructure v0.14.0
+   Compiling zerofrom-derive v0.1.8
+   Compiling yoke-derive v0.8.4
+   Compiling zerovec-derive v0.11.7
+   Compiling version_check v0.9.5
+   Compiling pin-project-lite v0.2.17
+   Compiling displaydoc v0.2.7
+   Compiling futures-core v0.3.34
+   Compiling siphasher v1.0.4
+   Compiling autocfg v1.5.1
+   Compiling icu_properties_data v2.4.0
+   Compiling icu_normalizer_data v2.4.0
+   Compiling phf_shared v0.13.1
+   Compiling glib-sys v0.18.1
+   Compiling once_cell v1.21.4
+   Compiling fastrand v2.5.0
+   Compiling phf_generator v0.13.1
+   Compiling stable_deref_trait v1.2.1
+   Compiling gobject-sys v0.18.0
+   Compiling zmij v1.0.23
+   Compiling cfg-if v1.0.5
+   Compiling bitflags v2.13.2
+   Compiling memchr v2.8.3
+   Compiling slab v0.4.12
+   Compiling zerofrom v0.1.8
+   Compiling semver v1.0.28
+   Compiling winnow v1.0.4
+   Compiling yoke v0.8.4
+   Compiling toml_parser v1.1.5+spec-1.1.0
+   Compiling gio-sys v0.18.1
+   Compiling toml_datetime v1.1.2+spec-1.1.0
+   Compiling parking_lot_core v0.9.12
+   Compiling zerovec v0.11.9
+   Compiling thiserror v2.0.21
+   Compiling phf_macros v0.13.1
+   Compiling futures-macro v0.3.34
+   Compiling typeid v1.0.3
+   Compiling futures-task v0.3.34
+   Compiling futures-util v0.3.34
+   Compiling thiserror-impl v2.0.21
+   Compiling time-core v0.1.9
+   Compiling num-conv v0.2.2
+   Compiling tinystr v0.8.5
+   Compiling phf_codegen v0.13.1
+   Compiling proc-macro-error-attr v1.0.4
+   Compiling utf_types v1.0.0
+   Compiling ident_case v1.0.1
+   Compiling litemap v0.8.3
+   Compiling erased-serde v0.4.11
+   Compiling syn v1.0.109
+   Compiling strsim v0.11.1
+   Compiling itoa v1.0.18
+   Compiling writeable v0.6.4
+   Compiling getrandom v0.4.3
+   Compiling icu_locale_core v2.4.0
+   Compiling darling_core v0.24.1
+   Compiling utf8_iter v1.1.0
+   Compiling potential_utf v0.1.6
+   Compiling zerotrie v0.2.5
+   Compiling proc-macro-error v1.0.4
+   Compiling futures-io v0.3.34
+   Compiling icu_provider v2.4.0
+   Compiling icu_collections v2.4.0
+   Compiling darling_macro v0.24.1
+   Compiling futures-channel v0.3.34
+   Compiling gdk-sys v0.18.2
+   Compiling find-msvc-tools v0.1.15
+   Compiling anyhow v1.0.104
+   Compiling shlex v2.0.1
+   Compiling new_debug_unreachable v1.0.6
+   Compiling scopeguard v1.2.0
+   Compiling lock_api v0.4.14
+   Compiling cc v1.10.0
+   Compiling darling v0.24.1
+   Compiling phf v0.13.1
+   Compiling rustc_version v0.4.1
+   Compiling string_cache_codegen v0.6.1
+   Compiling thiserror v1.0.69
+   Compiling serde_json v1.0.154
+   Compiling precomputed-hash v0.1.1
+   Compiling web_atoms v0.2.6
+   Compiling serde_with_macros v3.24.0
+   Compiling parking_lot v0.12.5
+   Compiling icu_normalizer v2.4.0
+   Compiling icu_properties v2.4.0
+   Compiling proc-macro-crate v2.0.2
+   Compiling thiserror-impl v1.0.69
+   Compiling heck v0.4.1
+   Compiling glib-macros v0.18.5
+   Compiling idna_adapter v1.2.2
+   Compiling string_cache v0.9.0
+   Compiling futures-executor v0.3.34
+   Compiling pango-sys v0.18.0
+   Compiling gdk-pixbuf-sys v0.18.0
+   Compiling cairo-sys-rs v0.18.2
+   Compiling serde_spanned v1.1.2
+   Compiling toml_writer v1.1.3+spec-1.1.0
+   Compiling percent-encoding v2.3.2
+   Compiling dtoa v1.0.11
+   Compiling log v0.4.35
+   Compiling dtoa-short v0.3.5
+   Compiling form_urlencoded v1.2.2
+   Compiling toml v1.1.8+spec-1.1.0
+   Compiling glib v0.18.5
+   Compiling idna v1.1.0
+   Compiling uuid v1.29.0
+   Compiling tendril v0.5.1
+   Compiling selectors v0.38.0
+   Compiling aho-corasick v1.1.5
+   Compiling indexmap v1.9.3
+   Compiling atk-sys v0.18.2
+   Compiling derive_more-impl v2.1.1
+   Compiling cssparser-macros v0.7.1
+   Compiling alloc-no-stdlib v3.0.0
+   Compiling regex-syntax v0.8.11
+   Compiling camino v1.2.6
+   Compiling bytes v1.12.1
+   Compiling regex-automata v0.4.18
+   Compiling alloc-stdlib v0.3.0
+   Compiling cssparser v0.37.0
+   Compiling derive_more v2.1.1
+   Compiling markup5ever v0.39.0
+   Compiling url v2.5.8
+   Compiling servo_arc v0.4.3
+   Compiling serde_derive_internals v0.29.1
+   Compiling hashbrown v0.12.3
+   Compiling rustc-hash v2.1.3
+   Compiling web-time v1.1.0
+   Compiling deranged v0.5.9
+   Compiling schemars v0.8.22
+   Compiling powerfmt v0.2.1
+   Compiling bit-vec v0.8.0
+   Compiling fnv v1.0.7
+   Compiling cfb v0.14.0
+   Compiling bit-set v0.8.0
+   Compiling time v0.3.55
+   Compiling schemars_derive v0.8.22
+   Compiling html5ever v0.39.0
+   Compiling brotli-decompressor v6.2.0
+   Compiling regex v1.13.1
+   Compiling jsonptr v0.7.1
+   Compiling quick-xml v0.42.0
+   Compiling generic-array v0.14.7
+   Compiling cargo-platform v0.1.9
+   Compiling dyn-clone v1.0.20
+   Compiling dunce v1.0.5
+   Compiling same-file v1.0.6
+   Compiling base64 v0.23.1
+   Compiling tauri-utils v2.10.2
+   Compiling gio v0.18.4
+   Compiling foldhash v0.2.0
+   Compiling crossbeam-utils v0.8.23
+   Compiling dom_query v0.28.0
+   Compiling plist v1.10.3
+   Compiling http v1.5.0
+   Compiling walkdir v2.5.0
+   Compiling cargo_metadata v0.19.2
+   Compiling json-patch v4.2.0
+   Compiling urlpattern v0.6.0
+   Compiling brotli v9.1.1
+   Compiling serde-untagged v0.1.9
+   Compiling infer v0.22.0
+   Compiling serde_with v3.24.0
+   Compiling gtk-sys v0.18.2
+   Compiling ctor v1.0.13
+   Compiling glob v0.3.4
+   Compiling memoffset v0.9.1
+   Compiling parking v2.2.1
+   Compiling gdk-pixbuf v0.18.5
+   Compiling pango v0.18.3
+   Compiling cairo-rs v0.18.5
+   Compiling field-offset v0.3.6
+   Compiling toml_edit v0.19.15
+   Compiling mio v1.2.4
+   Compiling socket2 v0.6.5
+   Compiling rustix v1.1.6
+   Compiling option-ext v0.2.0
+   Compiling proc-macro-crate v1.3.1
+   Compiling dirs-sys v0.5.0
+   Compiling tokio v1.54.1
+   Compiling gdk v0.18.2
+   Compiling embed-resource v3.0.12
+   Compiling javascriptcore-rs-sys v1.1.1
+   Compiling soup3-sys v0.5.0
+   Compiling gtk v0.18.2
+   Compiling linux-raw-sys v0.12.1
+   Compiling simd-adler32 v0.3.10
+   Compiling tauri-winres v0.3.7
+   Compiling dirs v7.0.0
+   Compiling gtk3-macros v0.18.2
+   Compiling atk v0.18.2
+   Compiling cargo_toml v1.0.1
+   Compiling time-macros v0.2.32
+   Compiling getrandom v0.2.17
+   Compiling webkit2gtk-sys v2.0.2
+   Compiling x11 v2.21.0
+   Compiling adler2 v2.0.1
+   Compiling crc32fast v1.5.3
+   Compiling typenum v1.20.1
+   Compiling tauri-build v2.7.2
+   Compiling ring v0.17.14
+   Compiling toml_edit v0.25.17+spec-1.1.0
+   Compiling gdkx11-sys v0.18.2
+   Compiling enumflags2_derive v0.7.12
+   Compiling atomic-waker v1.1.2
+   Compiling bitflags v1.3.2
+   Compiling proc-macro-crate v3.5.0
+   Compiling miniz_oxide v0.9.1
+   Compiling event-listener v5.4.2
+   Compiling concurrent-queue v2.5.0
+   Compiling dpi v0.1.2
+   Compiling zvariant_utils v4.2.0
+   Compiling cookie v0.18.2
+   Compiling libdbus-sys v0.2.7
+   Compiling x11-dl v2.21.0
+   Compiling zeroize v1.9.1
+   Compiling rustls-pki-types v1.15.1
+   Compiling zvariant_derive v5.15.1
+   Compiling event-listener-strategy v0.5.4
+   Compiling flate2 v1.1.10
+   Compiling javascriptcore-rs v1.1.2
+   Compiling soup3 v0.5.0
+   Compiling tauri v2.12.3
+   Compiling block-buffer v0.10.4
+   Compiling crypto-common v0.1.7
+   Compiling miniz_oxide v0.8.9
+   Compiling fdeflate v0.3.7
+   Compiling futures-lite v2.6.1
+   Compiling tracing-core v0.1.36
+   Compiling tracing-attributes v0.1.31
+   Compiling untrusted v0.9.0
+   Compiling raw-window-handle v0.6.2
+   Compiling tracing v0.1.44
+   Compiling png v0.18.1
+   Compiling digest v0.10.7
+   Compiling webkit2gtk v2.0.2
+   Compiling http-body v1.1.0
+   Compiling crossbeam-channel v0.5.17
+   Compiling tauri-plugin v2.7.2
+   Compiling async-io v2.6.0
+   Compiling dlopen2_derive v0.4.3
+   Compiling cpufeatures v0.2.17
+   Compiling tauri-runtime v2.12.2
+   Compiling byteorder v1.5.0
+   Compiling wry v0.57.1
+   Compiling httparse v1.10.1
+   Compiling rustls v0.23.46
+   Compiling ico v0.6.0
+   Compiling sha2 v0.10.9
+   Compiling dlopen2 v0.8.2
+   Compiling dbus v0.9.12
+   Compiling rustls-webpki v0.103.16
+   Compiling gdkx11 v0.18.2
+   Compiling enumflags2 v0.7.12
+   Compiling polling v3.11.0
+   Compiling gdkwayland-sys v0.18.2
+   Compiling errno v0.3.14
+   Compiling zcheapstr v1.2.0
+   Compiling endi v1.1.1
+   Compiling try-lock v0.2.5
+   Compiling getrandom v0.3.4
+   Compiling tower-service v0.3.3
+   Compiling subtle v2.6.1
+   Compiling async-task v4.7.1
+   Compiling muda v0.20.0
+   Compiling tauri-runtime-wry v2.12.3
+   Compiling want v0.3.2
+   Compiling zvariant v5.15.1
+   Compiling signal-hook-registry v1.4.8
+   Compiling tao v0.37.2
+   Compiling tauri-codegen v2.7.4
+   Compiling async-channel v2.5.0
+   Compiling keyboard-types v0.8.3
+   Compiling serialize-to-javascript-impl v0.1.2
+   Compiling serde_repr v0.1.21
+   Compiling zerocopy v0.8.63
+   Compiling serialize-to-javascript v0.1.2
+   Compiling hyper v1.12.0
+   Compiling tauri-macros v2.7.4
+   Compiling async-signal v0.2.14
+   Compiling zbus_names v4.3.5
+   Compiling async-lock v3.4.2
+   Compiling piper v0.2.5
+   Compiling sync_wrapper v1.0.2
+   Compiling mime v0.3.17
+   Compiling tower-layer v0.3.3
+   Compiling openssl-probe v0.2.2
+   Compiling ipnet v2.12.2
+   Compiling hyper-util v0.1.21
+   Compiling rustls-native-certs v0.8.5
+   Compiling tower v0.5.3
+   Compiling blocking v1.7.0
+   Compiling async-process v2.5.0
+   Compiling zbus_macros v5.19.0
+   Compiling tokio-rustls v0.26.6
+   Compiling async-executor v1.14.0
+   Compiling tauri-plugin-opener v2.7.2
+   Compiling tauri-plugin-updater v2.14.1
+   Compiling async-broadcast v0.7.2
+   Compiling is-docker v0.2.0
+   Compiling ordered-stream v0.2.0
+   Compiling async-trait v0.1.92
+   Compiling async-recursion v1.2.0
+   Compiling hex v0.4.3
+   Compiling futures-sink v0.3.34
+   Compiling tokio-util v0.7.20
+   Compiling zbus v5.19.0
+   Compiling is-wsl v0.4.0
+   Compiling hyper-rustls v0.27.10
+   Compiling ppv-lite86 v0.2.21
+   Compiling tower-http v0.6.11
+   Compiling rustls-platform-verifier v0.7.1
+   Compiling http-body-util v0.1.5
+   Compiling rand_core v0.6.4
+   Compiling xattr v1.7.0
+   Compiling filetime v0.2.29
+   Compiling tar v0.4.46
+   Compiling rand_chacha v0.3.1
+   Compiling reqwest v0.13.5
+   Compiling tempfile v3.27.0
+   Compiling open v5.4.5
+   Compiling elevateo-native v0.1.0 (/work/apps/native/src-tauri)
+   Compiling minisign-verify v0.3.0
+   Compiling rand v0.8.8
+   Compiling tauri-plugin-single-instance v2.5.5
+   Compiling keyring v3.6.3
+   Compiling base64 v0.22.1
+warning: fields `access_token` and `expires_in_secs` are never read
+   --> src/auth.rs:212:9
+    |
+210 | pub struct TokenSet {
+    |            -------- fields in this struct
+211 |     /// Kept in memory only; never persisted.
+212 |     pub access_token: String,
+    |         ^^^^^^^^^^^^
+...
+215 |     pub expires_in_secs: u64,
+    |         ^^^^^^^^^^^^^^^
+    |
+    = note: `TokenSet` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored
+during dead code analysis
+    = note: `#[warn(dead_code)]` on by default
+
+warning: variant `Rejected` is never constructed
+   --> src/auth.rs:222:5
+    |
+219 | pub enum ExchangeError {
+    |          ------------- variant in this enum
+...
+222 |     Rejected(String),
+    |     ^^^^^^^^
+    |
+    = note: `ExchangeError` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored
+during dead code analysis
+
+warning: constant `NATIVE_SESSIONS_PATH` is never used
+   --> src/auth.rs:230:11
+    |
+230 | pub const NATIVE_SESSIONS_PATH: &str = "/v1/native/sessions";
+    |           ^^^^^^^^^^^^^^^^^^^^
+
+warning: field `0` is never read
+   --> src/auth.rs:246:17
+    |
+246 |     Unavailable(String),
+    |     ----------- ^^^^^^
+    |     |
+    |     field in this variant
+    |
+    = note: `StoreError` has a derived impl for the trait `Debug`, but this is intentionally ignored during dead code
+analysis
+help: consider changing the field to be of unit type to suppress this warning while preserving the field numbering, or
+remove the field
+    |
+246 -     Unavailable(String),
+246 +     Unavailable(()),
+    |
+
+warning: method `load_refresh` is never used
+   --> src/auth.rs:251:8
+    |
+249 | pub trait CredentialStore: Send + Sync {
+    |           --------------- method in this trait
+250 |     fn save_refresh(&self, refresh_token: &str) -> Result<(), StoreError>;
+251 |     fn load_refresh(&self) -> Result<Option<String>, StoreError>;
+    |        ^^^^^^^^^^^^
+
+warning: function `archive_current_bundle` is never used
+   --> src/update.rs:167:8
+    |
+167 | pub fn archive_current_bundle(app_bundle: &Path, archive: &Path) -> io::Result<()> {
+    |        ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `restore_previous_bundle` is never used
+   --> src/update.rs:178:8
+    |
+178 | pub fn restore_previous_bundle(app_bundle: &Path, archive: &Path) -> io::Result<()> {
+    |        ^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `copy_dir_recursive` is never used
+   --> src/update.rs:210:4
+    |
+210 | fn copy_dir_recursive(from: &Path, to: &Path) -> io::Result<()> {
+    |    ^^^^^^^^^^^^^^^^^^
+
+warning: `elevateo-native` (lib) generated 8 warnings
+warning: `elevateo-native` (lib test) generated 5 warnings (5 duplicates)
+    Finished `release` profile [optimized] target(s) in 33m 16s
+     Running unittests src/lib.rs (/artifacts/cargo-target/release/deps/elevateo_native-c67eff767913cf0f)
+
+running 7 tests
+test config::tests::accepts_exact_public_https_origin ... ok
+test config::tests::candidate_marker_cannot_promote_qa_host ... ok
+test config::tests::fixture_and_unmarked_artifacts_cannot_launch ... ok
+test config::tests::isolated_qa_requires_debug_and_the_exact_origin ... ok
+test config::tests::rejects_cleartext_local_and_placeholder ... ok
+test config::tests::rejects_credentials_path_and_query ... ok
+test config::tests::rejects_missing_whitespace_ip_and_oversized_origins ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 33 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (/artifacts/cargo-target/release/deps/elevateo_native-bccdeb4d61ebe43c)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+        Info Using installed NDK: /opt/android-sdk/ndk/28.2.13676358
+        Info Installing Android Rust targets...
+        Info Installing target armv7-linux-androideabi
+info: downloading component 'rust-std' for 'armv7-linux-androideabi'
+info: installing component 'rust-std' for 'armv7-linux-androideabi'
+        Info Installing target i686-linux-android
+info: downloading component 'rust-std' for 'i686-linux-android'
+info: installing component 'rust-std' for 'i686-linux-android'
+Generating Android Studio project...
+        Info "/work/apps/native/src-tauri" relative to "/work/apps/native/src-tauri/gen/android/elevateo_native" is
+"../../../"
+victory: Project generated successfully!
+    Make cool apps! 🌻 🐕 🎉
+        Info Using installed NDK: /opt/android-sdk/ndk/28.2.13676358
+        Info Looking up installed tauri packages to check mismatched versions...
+[1m[32m Downloading[0m crates ...
+[1m[32m  Downloaded[0m cesu8 v1.1.0
+[1m[32m  Downloaded[0m tao-macros v0.1.4
+[1m[32m  Downloaded[0m ndk-context v0.1.1
+[1m[32m  Downloaded[0m simdutf8 v0.1.5
+[1m[32m  Downloaded[0m jni-sys-macros v0.4.1
+[1m[32m  Downloaded[0m android_system_properties v0.1.6
+[1m[32m  Downloaded[0m rustls-platform-verifier-android v0.2.0
+[1m[32m  Downloaded[0m jni-sys v0.4.1
+[1m[32m  Downloaded[0m num_enum v0.7.6
+[1m[32m  Downloaded[0m jni-macros v0.22.4
+[1m[32m  Downloaded[0m jni-sys v0.3.1
+[1m[32m  Downloaded[0m num_enum_derive v0.7.6
+[1m[32m  Downloaded[0m rustversion v1.0.23
+[1m[32m  Downloaded[0m ndk v0.9.0
+[1m[32m  Downloaded[0m jni v0.21.1
+[1m[32m  Downloaded[0m combine v4.6.9
+[1m[32m  Downloaded[0m jni v0.22.4
+[1m[32m  Downloaded[0m simd_cesu8 v1.2.0
+[1m[32m  Downloaded[0m ndk-sys v0.6.0+11769913
+[1m[32m   Compiling[0m proc-macro2 v1.0.107
+[1m[32m   Compiling[0m quote v1.0.47
+[1m[32m   Compiling[0m syn v3.0.9
+[1m[32m   Compiling[0m libc v0.2.191
+[1m[32m   Compiling[0m synstructure v0.14.0
+[1m[32m   Compiling[0m syn v2.0.119
+[1m[32m   Compiling[0m zerofrom-derive v0.1.8
+[1m[32m   Compiling[0m serde_derive v1.0.229
+[1m[32m   Compiling[0m serde_core v1.0.229
+[1m[32m   Compiling[0m yoke-derive v0.8.4
+[1m[32m   Compiling[0m zerovec-derive v0.11.7
+[1m[32m   Compiling[0m phf_shared v0.13.1
+[1m[32m   Compiling[0m displaydoc v0.2.7
+[1m[32m   Compiling[0m fastrand v2.5.0
+[1m[32m   Compiling[0m phf_generator v0.13.1
+[1m[32m   Compiling[0m icu_normalizer_data v2.4.0
+[1m[32m   Compiling[0m icu_properties_data v2.4.0
+[1m[32m   Compiling[0m serde v1.0.229
+[1m[32m   Compiling[0m phf_macros v0.13.1
+[1m[32m   Compiling[0m phf_codegen v0.13.1
+[1m[32m   Compiling[0m parking_lot_core v0.9.12
+[1m[32m   Compiling[0m stable_deref_trait v1.2.1
+[1m[32m   Compiling[0m zmij v1.0.23
+[1m[32m   Compiling[0m zerofrom v0.1.8
+[1m[32m   Compiling[0m smallvec v1.16.4
+[1m[32m   Compiling[0m yoke v0.8.4
+[1m[32m   Compiling[0m string_cache_codegen v0.6.1
+[1m[32m   Compiling[0m version_check v0.9.5
+[1m[32m   Compiling[0m toml_parser v1.1.5+spec-1.1.0
+[1m[32m   Compiling[0m web_atoms v0.2.6
+[1m[32m   Compiling[0m zerovec v0.11.9
+[1m[32m   Compiling[0m toml_datetime v1.1.2+spec-1.1.0
+[1m[32m   Compiling[0m thiserror v2.0.21
+[1m[32m   Compiling[0m typeid v1.0.3
+[1m[32m   Compiling[0m itoa v1.0.18
+[1m[32m   Compiling[0m memchr v2.8.3
+[1m[32m   Compiling[0m cfg-if v1.0.5
+[1m[32m   Compiling[0m tinystr v0.8.5
+[1m[32m   Compiling[0m bytes v1.12.1
+[1m[32m   Compiling[0m thiserror-impl v2.0.21
+[1m[32m   Compiling[0m ident_case v1.0.1
+[1m[32m   Compiling[0m strsim v0.11.1
+[1m[32m   Compiling[0m erased-serde v0.4.11
+[1m[32m   Compiling[0m darling_core v0.24.1
+[1m[32m   Compiling[0m icu_locale_core v2.4.0
+[1m[32m   Compiling[0m potential_utf v0.1.6
+[1m[32m   Compiling[0m generic-array v0.14.7
+[1m[32m   Compiling[0m zerotrie v0.2.5
+[1m[32m   Compiling[0m selectors v0.38.0
+[1m[32m   Compiling[0m derive_more-impl v2.1.1
+[1m[32m   Compiling[0m cssparser-macros v0.7.1
+[1m[32m   Compiling[0m icu_provider v2.4.0
+[1m[32m   Compiling[0m icu_collections v2.4.0
+[1m[32m   Compiling[0m darling_macro v0.24.1
+[1m[32m   Compiling[0m new_debug_unreachable v1.0.6
+[1m[32m   Compiling[0m anyhow v1.0.104
+[1m[32m   Compiling[0m darling v0.24.1
+[1m[32m   Compiling[0m phf v0.13.1
+[1m[32m   Compiling[0m utf_types v1.0.0
+[1m[32m   Compiling[0m getrandom v0.4.3
+[1m[32m   Compiling[0m writeable v0.6.4
+[1m[32m   Compiling[0m precomputed-hash v0.1.1
+[1m[32m   Compiling[0m serde_json v1.0.154
+[1m[32m   Compiling[0m litemap v0.8.3
+[1m[32m   Compiling[0m utf8_iter v1.1.0
+[1m[32m   Compiling[0m serde_with_macros v3.24.0
+[1m[32m   Compiling[0m parking_lot v0.12.5
+[1m[32m   Compiling[0m icu_properties v2.4.0
+[1m[32m   Compiling[0m icu_normalizer v2.4.0
+[1m[32m   Compiling[0m semver v1.0.28
+[1m[32m   Compiling[0m siphasher v1.0.4
+[1m[32m   Compiling[0m idna_adapter v1.2.2
+[1m[32m   Compiling[0m string_cache v0.9.0
+[1m[32m   Compiling[0m serde_spanned v1.1.2
+[1m[32m   Compiling[0m autocfg v1.5.1
+[1m[32m   Compiling[0m percent-encoding v2.3.2
+[1m[32m   Compiling[0m bitflags v2.13.2
+[1m[32m   Compiling[0m log v0.4.35
+[1m[32m   Compiling[0m dtoa v1.0.11
+[1m[32m   Compiling[0m toml v1.1.8+spec-1.1.0
+[1m[32m   Compiling[0m dtoa-short v0.3.5
+[1m[32m   Compiling[0m form_urlencoded v1.2.2
+[1m[32m   Compiling[0m indexmap v1.9.3
+[1m[32m   Compiling[0m uuid v1.29.0
+[1m[32m   Compiling[0m idna v1.1.0
+[1m[32m   Compiling[0m tendril v0.5.1
+[1m[32m   Compiling[0m camino v1.2.6
+[1m[32m   Compiling[0m markup5ever v0.39.0
+[1m[32m   Compiling[0m url v2.5.8
+[1m[32m   Compiling[0m cssparser v0.37.0
+[1m[32m   Compiling[0m derive_more v2.1.1
+[1m[32m   Compiling[0m http v1.5.0
+[1m[32m   Compiling[0m servo_arc v0.4.3
+[1m[32m   Compiling[0m serde_derive_internals v0.29.1
+[1m[32m   Compiling[0m futures-core v0.3.34
+[1m[32m   Compiling[0m hashbrown v0.12.3
+[1m[32m   Compiling[0m schemars v0.8.22
+[1m[32m   Compiling[0m rustc-hash v2.1.3
+[1m[32m   Compiling[0m pin-project-lite v0.2.17
+[1m[32m   Compiling[0m bit-vec v0.8.0
+[1m[32m   Compiling[0m time v0.3.55
+[1m[32m   Compiling[0m bit-set v0.8.0
+[1m[32m   Compiling[0m cfb v0.14.0
+[1m[32m   Compiling[0m schemars_derive v0.8.22
+[1m[32m   Compiling[0m html5ever v0.39.0
+[1m[32m   Compiling[0m jsonptr v0.7.1
+[1m[32m   Compiling[0m cargo-platform v0.1.9
+[1m[32m   Compiling[0m jni-sys-macros v0.4.1
+[1m[32m   Compiling[0m tauri-utils v2.10.2
+[1m[32m   Compiling[0m dyn-clone v1.0.20
+[1m[32m   Compiling[0m foldhash v0.2.0
+[1m[32m   Compiling[0m scopeguard v1.2.0
+[1m[32m   Compiling[0m jni-sys v0.3.1
+[1m[32m   Compiling[0m lock_api v0.4.14
+[1m[32m   Compiling[0m dom_query v0.28.0
+[1m[32m   Compiling[0m plist v1.10.3
+[1m[32m   Compiling[0m jni-sys v0.4.1
+[1m[32m   Compiling[0m cargo_metadata v0.19.2
+[1m[32m   Compiling[0m json-patch v4.2.0
+[1m[32m   Compiling[0m urlpattern v0.6.0
+[1m[32m   Compiling[0m serde-untagged v0.1.9
+[1m[32m   Compiling[0m infer v0.22.0
+[1m[32m   Compiling[0m serde_with v3.24.0
+[1m[32m   Compiling[0m simd-adler32 v0.3.10
+[1m[32m   Compiling[0m shlex v2.0.1
+[1m[32m   Compiling[0m thiserror v1.0.69
+[1m[32m   Compiling[0m find-msvc-tools v0.1.15
+[1m[32m   Compiling[0m cc v1.10.0
+[1m[32m   Compiling[0m rustc_version v0.4.1
+[1m[32m   Compiling[0m toml_edit v0.25.17+spec-1.1.0
+[1m[32m   Compiling[0m time-macros v0.2.32
+[1m[32m   Compiling[0m socket2 v0.6.5
+[1m[32m   Compiling[0m mio v1.2.4
+[1m[32m   Compiling[0m thiserror-impl v1.0.69
+[1m[32m   Compiling[0m time-core v0.1.9
+[1m[32m   Compiling[0m crc32fast v1.5.3
+[1m[32m   Compiling[0m rustversion v1.0.23
+[1m[32m   Compiling[0m powerfmt v0.2.1
+[1m[32m   Compiling[0m num-conv v0.2.2
+[1m[32m   Compiling[0m deranged v0.5.9
+[1m[32m   Compiling[0m base64 v0.23.1
+[1m[32m   Compiling[0m typenum v1.20.1
+[1m[32m   Compiling[0m dirs-sys v0.5.0
+[1m[32m   Compiling[0m tokio v1.54.1
+[1m[32m   Compiling[0m proc-macro-crate v3.5.0
+[1m[32m   Compiling[0m embed-resource v3.0.12
+[1m[32m   Compiling[0m aho-corasick v1.1.5
+[1m[32m   Compiling[0m alloc-no-stdlib v3.0.0
+[1m[32m   Compiling[0m regex-syntax v0.8.11
+[1m[32m   Compiling[0m crossbeam-utils v0.8.23
+[1m[32m   Compiling[0m regex-automata v0.4.18
+[1m[32m   Compiling[0m alloc-stdlib v0.3.0
+[1m[32m   Compiling[0m tauri-winres v0.3.7
+[1m[32m   Compiling[0m num_enum_derive v0.7.6
+[1m[32m   Compiling[0m dirs v7.0.0
+[1m[32m   Compiling[0m miniz_oxide v0.9.1
+[1m[32m   Compiling[0m http-body v1.1.0
+[1m[32m   Compiling[0m cargo_toml v1.0.1
+[1m[32m   Compiling[0m combine v4.6.9
+[1m[32m   Compiling[0m cookie v0.18.2
+[1m[32m   Compiling[0m futures-task v0.3.34
+[1m[32m   Compiling[0m fnv v1.0.7
+[1m[32m   Compiling[0m web-time v1.1.0
+[1m[32m   Compiling[0m httparse v1.10.1
+[1m[32m   Compiling[0m equivalent v1.0.3
+[1m[32m   Compiling[0m hashbrown v0.17.1
+[1m[32m   Compiling[0m slab v0.4.12
+[1m[32m   Compiling[0m winnow v1.0.4
+[1m[32m   Compiling[0m cesu8 v1.1.0
+[1m[32m   Compiling[0m raw-window-handle v0.6.2
+[1m[32m   Compiling[0m jni v0.21.1
+[1m[32m   Compiling[0m futures-util v0.3.34
+[1m[32m   Compiling[0m indexmap v2.14.2
+[1m[32m   Compiling[0m tauri-build v2.7.2
+[1m[32m   Compiling[0m flate2 v1.1.10
+[1m[32m   Compiling[0m num_enum v0.7.6
+[1m[32m   Compiling[0m brotli-decompressor v6.2.0
+[1m[32m   Compiling[0m regex v1.13.1
+[1m[32m   Compiling[0m block-buffer v0.10.4
+[1m[32m   Compiling[0m crypto-common v0.1.7
+[1m[32m   Compiling[0m miniz_oxide v0.8.9
+[1m[32m   Compiling[0m ndk-sys v0.6.0+11769913
+[1m[32m   Compiling[0m fdeflate v0.3.7
+[1m[32m   Compiling[0m quick-xml v0.42.0
+[1m[32m   Compiling[0m dpi v0.1.2
+[1m[32m   Compiling[0m tower-service v0.3.3
+[1m[32m   Compiling[0m once_cell v1.21.4
+[1m[32m   Compiling[0m try-lock v0.2.5
+[1m[32m   Compiling[0m toml_writer v1.1.3+spec-1.1.0
+[1m[32m   Compiling[0m same-file v1.0.6
+[1m[32m   Compiling[0m zerocopy v0.8.63
+[1m[32m   Compiling[0m walkdir v2.5.0
+[1m[32m   Compiling[0m want v0.3.2
+[1m[32m   Compiling[0m tracing-core v0.1.36
+[1m[32m   Compiling[0m png v0.18.1
+[1m[32m   Compiling[0m ndk v0.9.0
+[1m[32m   Compiling[0m digest v0.10.7
+[1m[32m   Compiling[0m crossbeam-channel v0.5.17
+[1m[32m   Compiling[0m brotli v9.1.1
+[1m[32m   Compiling[0m sync_wrapper v1.0.2
+[1m[32m   Compiling[0m tao-macros v0.1.4
+[1m[32m   Compiling[0m dunce v1.0.5
+[1m[32m   Compiling[0m cpufeatures v0.2.17
+[1m[32m   Compiling[0m tauri-runtime v2.12.2
+[1m[32m   Compiling[0m tower-layer v0.3.3
+[1m[32m   Compiling[0m byteorder v1.5.0
+[1m[32m   Compiling[0m wry v0.57.1
+[1m[32m   Compiling[0m ctor v1.0.13
+[1m[32m   Compiling[0m atomic-waker v1.1.2
+[1m[32m   Compiling[0m glob v0.3.4
+[1m[32m   Compiling[0m hyper v1.12.0
+[1m[32m   Compiling[0m ico v0.6.0
+[1m[32m   Compiling[0m sha2 v0.10.9
+[1m[32m   Compiling[0m tower v0.5.3
+[1m[32m   Compiling[0m tracing v0.1.44
+[1m[32m   Compiling[0m tauri v2.12.3
+[1m[32m   Compiling[0m futures-channel v0.3.34
+[1m[32m   Compiling[0m getrandom v0.2.17
+[1m[32m   Compiling[0m ndk-context v0.1.1
+[1m[32m   Compiling[0m getrandom v0.3.4
+[1m[32m   Compiling[0m ipnet v2.12.2
+[1m[32m   Compiling[0m futures-sink v0.3.34
+[1m[32m   Compiling[0m option-ext v0.2.0
+[1m[32m   Compiling[0m tauri-runtime-wry v2.12.3
+[1m[32m   Compiling[0m tokio-util v0.7.20
+[1m[32m   Compiling[0m hyper-util v0.1.21
+[1m[32m   Compiling[0m tao v0.37.2
+[1m[32m   Compiling[0m rand_core v0.6.4
+[1m[32m   Compiling[0m ppv-lite86 v0.2.21
+[1m[32m   Compiling[0m tower-http v0.6.11
+[1m[32m   Compiling[0m tauri-codegen v2.7.4
+[1m[32m   Compiling[0m http-body-util v0.1.5
+[1m[32m   Compiling[0m serialize-to-javascript-impl v0.1.2
+[1m[32m   Compiling[0m serialize-to-javascript v0.1.2
+[1m[32m   Compiling[0m reqwest v0.13.5
+[1m[32m   Compiling[0m tauri-macros v2.7.4
+[1m[32m   Compiling[0m rand_chacha v0.3.1
+[1m[32m   Compiling[0m elevateo-native v0.1.0 (/work/apps/native/src-tauri)
+[1m[32m   Compiling[0m serde_repr v0.1.21
+[1m[32m   Compiling[0m heck v0.5.0
+[1m[32m   Compiling[0m mime v0.3.17
+[1m[32m   Compiling[0m rand v0.8.8
+[1m[32m   Compiling[0m base64 v0.22.1
+[1m[32m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 3m 36s
+        Info symlinking lib "/artifacts/cargo-target/x86_64-linux-android/debug/libelevateo_native.so" in jniLibs dir
+"/work/apps/native/src-tauri/gen/android/app/src/main/jniLibs/x86_64"
+        Info "/artifacts/cargo-target/x86_64-linux-android/debug/libelevateo_native.so" requires shared lib
+"libandroid.so"
+        Info "/artifacts/cargo-target/x86_64-linux-android/debug/libelevateo_native.so" requires shared lib "libdl.so"
+        Info "/artifacts/cargo-target/x86_64-linux-android/debug/libelevateo_native.so" requires shared lib "liblog.so"
+        Info "/artifacts/cargo-target/x86_64-linux-android/debug/libelevateo_native.so" requires shared lib "libm.so"
+        Info "/artifacts/cargo-target/x86_64-linux-android/debug/libelevateo_native.so" requires shared lib "libc.so"
+        Info symlink at "/work/apps/native/src-tauri/gen/android/app/src/main/jniLibs/x86_64/libelevateo_native.so"
+points to "/artifacts/cargo-target/x86_64-linux-android/debug/libelevateo_native.so"
+Fetching distribution.
+Downloading https://services.gradle.org/distributions/gradle-9.6.1-bin.zip
+.............10%.............20%..............30%.............40%..............50%.............60%.............70%..............80%.............90%..............100%
+WARNING: The option setting 'android.proguard.failOnMissingFiles=false' is deprecated.
+The current default is 'true'.
+It will be removed in version 10.0 of the Android Gradle plugin.
+Add android.sync.suppressAgpWarnings=UNSUPPORTED_PROJECT_OPTION_USE to the gradle.properties file to suppress this warning.
+WARNING: The option setting 'android.builtInKotlin=false' is deprecated.
+The current default is 'true'.
+It will be removed in version 10.0 of the Android Gradle plugin.
+Add android.sync.suppressAgpWarnings=UNSUPPORTED_PROJECT_OPTION_USE to the gradle.properties file to suppress this warning.
+WARNING: The option setting 'android.newDsl=false' is deprecated.
+The current default is 'true'.
+It will be removed in version 10.0 of the Android Gradle plugin.
+Add android.sync.suppressAgpWarnings=UNSUPPORTED_PROJECT_OPTION_USE to the gradle.properties file to suppress this warning.
+WARNING: API 'applicationVariants' is obsolete and has been replaced with 'AndroidComponentsExtension'.
+It will be removed in version 10.0 of the Android Gradle plugin.
+The legacy variant API is disabled by default in AGP 9.0, but can be re-enabled by adding
+    android.newDsl=false
+to this project's gradle.properties file.
+For more information, see http://developer.android.com/build/r/new-dsl.
+
+To determine what is calling applicationVariants, use -Pandroid.debug.obsoleteApi=true on the command line to display more information.
+Add android.sync.suppressAgpWarnings=DEPRECATED_DSL to the gradle.properties file to suppress this warning.
+WARNING: API 'testVariants' is obsolete and has been replaced with 'AndroidComponentsExtension'.
+It will be removed in version 10.0 of the Android Gradle plugin.
+The legacy variant API is disabled by default in AGP 9.0, but can be re-enabled by adding
+    android.newDsl=false
+to this project's gradle.properties file.
+For more information, see http://developer.android.com/build/r/new-dsl.
+
+To determine what is calling testVariants, use -Pandroid.debug.obsoleteApi=true on the command line to display more information.
+Add android.sync.suppressAgpWarnings=DEPRECATED_DSL to the gradle.properties file to suppress this warning.
+WARNING: API 'unitTestVariants' is obsolete and has been replaced with 'AndroidComponentsExtension'.
+It will be removed in version 10.0 of the Android Gradle plugin.
+The legacy variant API is disabled by default in AGP 9.0, but can be re-enabled by adding
+    android.newDsl=false
+to this project's gradle.properties file.
+For more information, see http://developer.android.com/build/r/new-dsl.
+
+To determine what is calling unitTestVariants, use -Pandroid.debug.obsoleteApi=true on the command line to display more information.
+Add android.sync.suppressAgpWarnings=DEPRECATED_DSL to the gradle.properties file to suppress this warning.
+w: file:///work/apps/native/src-tauri/gen/android/app/build.gradle.kts:17:1: 'fun Project.android(configure: Action<BaseAppModuleExtension>): Unit' is deprecated. Replaced by com.android.build.api.dsl.ApplicationExtension.
+This class is not used for the public extensions in AGP when android.newDsl=true, which is the default in AGP 9.0, and will be removed in AGP 10.0.
+WARNING: API 'libraryVariants' is obsolete and has been replaced with 'AndroidComponentsExtension'.
+It will be removed in version 10.0 of the Android Gradle plugin.
+The legacy variant API is disabled by default in AGP 9.0, but can be re-enabled by adding
+    android.newDsl=false
+to this project's gradle.properties file.
+For more information, see http://developer.android.com/build/r/new-dsl.
+
+To determine what is calling libraryVariants, use -Pandroid.debug.obsoleteApi=true on the command line to display more information.
+Add android.sync.suppressAgpWarnings=DEPRECATED_DSL to the gradle.properties file to suppress this warning.
+w: file:///artifacts/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/tauri-2.12.3/mobile/android/build.gradle.kts:8:1: 'fun Project.android(configure: Action<LibraryExtension>): Unit' is deprecated. Replaced by com.android.build.api.dsl.LibraryExtension.
+This class is not used for the public extensions in AGP when android.newDsl=true, which is the default in AGP 9.0, and will be removed in AGP 10.0.
+w: file:///artifacts/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/tauri-2.12.3/mobile/android/src/main/java/app/tauri/AppPlugin.kt:35:37 'fun onBackPressed(): Unit' is deprecated. Deprecated in Java.
+w: file:///artifacts/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/tauri-2.12.3/mobile/android/src/main/java/app/tauri/plugin/Plugin.kt:125:5 'fun onDestroy(): Unit' is deprecated. use onDestroy(activity: AppCompatActivity) instead.
+w: file:///artifacts/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/tauri-2.12.3/mobile/android/src/main/java/app/tauri/plugin/Plugin.kt:130:5 'fun onRestart(): Unit' is deprecated. use onRestart(activity: AppCompatActivity) instead.
+w: file:///artifacts/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/tauri-2.12.3/mobile/android/src/main/java/app/tauri/plugin/Plugin.kt:135:5 'fun onPause(): Unit' is deprecated. use onPause(activity: AppCompatActivity) instead.
+w: file:///artifacts/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/tauri-2.12.3/mobile/android/src/main/java/app/tauri/plugin/Plugin.kt:140:5 'fun onResume(): Unit' is deprecated. use onResume(activity: AppCompatActivity) instead.
+w: file:///artifacts/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/tauri-2.12.3/mobile/android/src/main/java/app/tauri/plugin/Plugin.kt:145:5 'fun onStop(): Unit' is deprecated. use onStop(activity: AppCompatActivity) instead.
+w: file:///artifacts/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/tauri-2.12.3/mobile/android/src/main/java/app/tauri/plugin/PluginHandle.kt:159:22 Java type mismatch: inferred type is 'Class<in CapturedType(*)!>?', but 'Class<*>' was expected.
+w: file:///work/apps/native/src-tauri/gen/android/app/src/main/java/com/elevateo/mail/qa/generated/RustWebView.kt:26:18 'var databaseEnabled: Boolean' is deprecated. Deprecated in Java.
+w: file:///work/apps/native/src-tauri/gen/android/app/src/main/java/com/elevateo/mail/qa/generated/WryActivity.kt:69:46 'fun onBackPressed(): Unit' is deprecated. This method has been deprecated in favor of using the
+      {@link OnBackPressedDispatcher} via {@link #getOnBackPressedDispatcher()}.
+      The OnBackPressedDispatcher controls how back button events are dispatched
+      to one or more {@link OnBackPressedCallback} objects.
+/work/apps/native/src-tauri/gen/android/app/src/debug/AndroidManifest.xml:4:5-6:86 Warning:
+	application@android:networkSecurityConfig was tagged at AndroidManifest.xml:4 to replace other declarations but no other declaration present
+        Info connection; remote_addr=127.0.0.1:59406 conn_id=0
+[1m[32m        Info[0m Using installed NDK: /opt/android-sdk/ndk/28.2.13676358
+[1m[32m   Compiling[0m wry v0.57.1
+[1m[32m   Compiling[0m tauri v2.12.3
+[1m[32m   Compiling[0m tauri-runtime-wry v2.12.3
+[1m[32m   Compiling[0m elevateo-native v0.1.0 (/work/apps/native/src-tauri)
+[1m[32m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 44.83s
+[1m[32m        Info[0m symlinking lib "/artifacts/cargo-target/x86_64-linux-android/debug/libelevateo_native.so" in
+jniLibs dir "/work/apps/native/src-tauri/gen/android/app/src/main/jniLibs/x86_64"
+[1m[32m        Info[0m "/artifacts/cargo-target/x86_64-linux-android/debug/libelevateo_native.so" requires shared
+lib "libandroid.so"
+[1m[32m        Info[0m "/artifacts/cargo-target/x86_64-linux-android/debug/libelevateo_native.so" requires shared
+lib "libdl.so"
+[1m[32m        Info[0m "/artifacts/cargo-target/x86_64-linux-android/debug/libelevateo_native.so" requires shared
+lib "liblog.so"
+[1m[32m        Info[0m "/artifacts/cargo-target/x86_64-linux-android/debug/libelevateo_native.so" requires shared
+lib "libm.so"
+[1m[32m        Info[0m "/artifacts/cargo-target/x86_64-linux-android/debug/libelevateo_native.so" requires shared
+lib "libc.so"
+Configuration cache entry stored.
+    Finished 1 APK at:
+        /work/apps/native/src-tauri/gen/android/app/build/outputs/apk/universal/debug/app-universal-debug.apk
+
+Verifies
+Verified using v1 scheme (JAR signing): false
+Verified using v2 scheme (APK Signature Scheme v2): true
+Verified using v3 scheme (APK Signature Scheme v3): false
+Verified using v3.1 scheme (APK Signature Scheme v3.1): false
+Verified using v4 scheme (APK Signature Scheme v4): false
+Verified for SourceStamp: false
+Number of signers: 1
+Signer #1 certificate DN: C=US, O=Android, CN=Android Debug
+Signer #1 certificate SHA-256 digest: 8d5c1db942f36278a93b2811f765ab9057255d23c4c3c996e135ec076ef42228
+Signer #1 certificate SHA-1 digest: de3a719655c40035fc6375032ac06cd39fc72818
+Signer #1 certificate MD5 digest: 17fb0fbd45d094d45c7e55b815847097
+Signer #1 key algorithm: RSA
+Signer #1 key size (bits): 2048
+Signer #1 public key SHA-256 digest: 1bfc5e2e56bde6aab13f36b23e0ae9fe821f130ac39e5076f45e50aadb192c86
+Signer #1 public key SHA-1 digest: 2733d25d3ba0e9d2c6ea04d82c23cc7527f6e183
+Signer #1 public key MD5 digest: aff257b0f4d6cbe28b2f769bf01c8e9d
+isolated QA packaged identity, permissions, trust and CA PASS
+UNSIGNED DRY RUN: no release-signing environment; QA APK keeps the ephemeral debug signature
+3f6a9a80cd776eacf9576a7a95cf9fcd5121604d828d3a9ccf7d4ed4cc6a4f91  /artifacts/elevateo-android-x86_64-qa.apk

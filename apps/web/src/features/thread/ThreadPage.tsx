@@ -1,3 +1,4 @@
+// AIDEV-NOTE: Secondary reader text uses theme-aware muted colors for contrast on dark surfaces.
 // Paginated plaintext conversation reader. Escaped-text-in-<pre> presentation follows the audited
 // first-party live reader; no HTML, Markdown, autolinks or remote images. Optional private
 // attachment metadata is explicit, and clean bytes pass only through the authorized proxy.

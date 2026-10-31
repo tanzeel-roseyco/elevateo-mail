@@ -1,7 +1,7 @@
 # Final readiness review evidence
 
 All reviewers used the user's adversarial rubric and STANDARDS. Formatting belongs to linters.
-Reviews are read-only; runtime verification is recorded separately. LOC counts are physical reviewed lines.
+Review findings describe static inspection; delegated repairs and runtime verification are recorded separately. LOC counts are physical reviewed lines.
 
 | Packet | Exact source ranges (relative to apps/windows) | LOC | Defects | Defects/KLOC |
 | --- | --- | ---: | ---: | ---: |
@@ -96,3 +96,27 @@ Swift wrapper/import repair review: 42 LOC, zero residual defects (0/KLOC). Runt
 
 
 Native gate follow-up: 49 LOC, one unchecked-directory defect (20.41/KLOC). Four cd operations now stop on failure; a Docker regression exercises all four. Repair review: 49 LOC, zero residual defects (0/KLOC). Formatting and two Clippy style repairs were delegated to tools. Final native gate passes, with eight existing compiler dead-code warnings explicitly retained as follow-up; strict warnings gate did not pass.
+
+Browser verification follow-up: visual-states.spec.ts pre-edit ranges 95-280, 400-420, 434-446 and 450-485: 256 LOC, three test defects (11.72/KLOC): OKLCH unsupported by the contrast probe, missing public SSO-status fixture, and ambiguous Unread navigation. Added positive/transparent/no-op OKLCH regressions, password-enabled status fixture and Filter-scoped selectors. Separate production.spec.ts:140-208 repair review: 69 LOC, zero residual defects (0/KLOC). Runtime rerun is required; these are not passing test claims.
+
+Sign-out visual oracle follow-up: visual-states 280-399 (120), ThreadPage 290-308 (19), MessageAttachments 138-157 (20), Shell 115-140 (26), Dashboard 330-338 (9), visual scenario interface 145-172 (28): 222 LOC, one vacuous assertion defect (4.50/KLOC). Workspace summary is an accessible region name, not visible text. Scenario now proves the region exists before signout and disappears after unconfirmed signout. No product change; runtime rerun required.
+
+Coverage closure: MainViewModel.cs:481-490 reviewed separately (10 LOC, zero defects, 0/KLOC).
+Visual probe follow-up: visual-states.spec.ts:95-137 (43 LOC), one quantized-RGBA recompositing defect (23.26/KLOC). Repair compares painted pixels. Repair plus message-row skeleton selector review: visual-states.spec.ts:95-148 and MessageRow.tsx:186-202 (71 LOC), zero residual defects (0/KLOC). Existing transparent/no-op/OKLCH regressions remain required.
+
+Pagination fixture follow-up: DashboardPage.tsx:1-70 and visual-states.spec.ts:78-94,373-384,419-439,460-534 (195 LOC), one defect (5.13/KLOC): dashboard counts consumed the ordinal first-page response. Cursor-driven response/hold repair reviewed at visual-states.spec.ts:78-94,375-388 (31 LOC), zero residual defects (0/KLOC). The scenario proves initial page, actual continuation request and held loading state.
+
+Browser repair rereview: support.ts:7-19, production.spec.ts:175-196, visual-states.spec.ts:77-143,168-187,376-386,450-471,479-480,518-527, InboxPage.tsx:350-374 and MessageRow.tsx:189-196 (200 LOC), zero residual defects (0/KLOC). Mobile Folder selection and desktop Filter selection now share a viewport-aware helper with selected-state assertions. This repairs one test-control assumption; the message-row skeleton selector repairs another test assumption. Runtime results are recorded separately.
+
+Visual inspection follow-up: dark reader metadata and notes used light-theme text colors; populated notes also lacked a dark card background. One application contrast defect, repaired with semantic muted text and a dark note surface. Bounded adversarial repair review: ThreadPage.tsx:1,350-354,375-379,468-481; NotesPanel.tsx:1,129-160; visual-states.spec.ts:138-167,237-271,69-72; contract.ts:366-388; styles/index.css:5,69,94,118,139 (155 LOC), zero residual defects (0/KLOC). Contrast regression measures normal text against opaque backgrounds at 4.5:1; it does not model translucent ancestor layers, gradients or element opacity, which these targets do not use. Runtime negative control and repaired run are recorded separately.
+
+Final evidence consistency review: browser-receipt.md:1-33, visual-receipt.md:1-19, defect-inventory.md:1-53 and backend-receipt.md:1-7 (112 LOC), zero confirmed defects (0/KLOC). Unique inventory: 39 defects (15 application, 3 packaging/build, 21 verification), deduplicated across rereviews. This review validates the recorded scope and limitations, not runtime success.
+
+Consolidated receipt review: final-receipt.md:1-35 (35 LOC), zero confirmed defects (0/KLOC). Client counts, warning limits and separation of intercepted browser coverage from backend integration agree with client receipts. Android result and cleanup remained pending at review time.
+
+Android APK/lint wrapper review: android-gate.sh:1-12 and android-lint.sh:1-11 (23 LOC), zero confirmed defects (0/KLOC). Fresh APK and restart lint exit codes are separate evidence; artifact existence selects lint mode and is not itself packaging proof.
+
+### Android generated-TV repair review (2026-11-01)
+
+The initial Android lint gate found two errors from one packaging defect: Tauri advertised TV launching without TV support. The customizer now removes only the leanback feature/category. One Docker regression failed against old source and passed after repair; all six customization tests pass. Independent adversarial rereview covered 61 LOC (`customize_generated.py:43–74`, `test_customize_generated.py:42–70`): 0 additional defects, 0/KLOC. Finding density for this repair packet: 1/61 = 16.39/KLOC; overlapping rereview is not unique coverage. Mobile launcher, other actions/categories/features, permission checks and idempotence remain covered. Android lint then passed (66 tasks; 12 executed, 54 up-to-date).
+Final receipt adversarial review: 115 lines across Android gate/lint scripts, Android/final/cleanup receipts; 1 documentation defect (8.70/KLOC), repaired by documenting the historical negative-control precondition and separate final lint replay command. No new product defects. The minor hash-position wording was corrected. Total unique inventory now 41 (including this verification documentation defect).
