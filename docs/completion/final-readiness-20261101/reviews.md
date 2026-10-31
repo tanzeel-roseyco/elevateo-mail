@@ -93,3 +93,6 @@ Visual-state fixture repair review: visual-states.spec.ts:1-91, 91 LOC, zero res
 
 
 Swift wrapper/import repair review: 42 LOC, zero residual defects (0/KLOC). Runtime exposed one verification-wrapper defect: Python was invoked in the Swift-only image. The recipe now contains only Swift gates, and the three signing-helper tests passed separately in the Python-capable Docker image. Swift build and 36 tests pass; no iOS app build is claimed.
+
+
+Native gate follow-up: 49 LOC, one unchecked-directory defect (20.41/KLOC). Four cd operations now stop on failure; a Docker regression exercises all four. Repair review: 49 LOC, zero residual defects (0/KLOC). Formatting and two Clippy style repairs were delegated to tools. Final native gate passes, with eight existing compiler dead-code warnings explicitly retained as follow-up; strict warnings gate did not pass.

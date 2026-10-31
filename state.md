@@ -79,3 +79,6 @@ Android resource-limit repair — 2026-11-01: the APK entrypoint now preserves c
 
 
 iOS Core verification — 2026-11-01: Linux Swift build and 36 tests pass; three signing-helper tests pass separately in the Python-capable Docker image. Fixed the Linux FoundationNetworking import. The first combined wrapper exited 127 after Swift passed because Python was absent; the recorded recipe now runs Swift only. iOS app packaging remains macOS-only. See docs/completion/final-readiness-20261101/ios-receipt.md.
+
+
+Native verification — 2026-11-01: Cargo.lock regenerated. Docker formatting, compile check, Clippy rules, 40 Rust tests, 14 macOS helper tests and one wrapper regression pass. Eight compiler dead-code warnings remain; strict -D warnings failed and is not claimed passing. macOS packaging/signing remains unavailable. See docs/completion/final-readiness-20261101/native-receipt.md.
