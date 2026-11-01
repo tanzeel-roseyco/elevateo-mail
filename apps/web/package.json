@@ -21,30 +21,30 @@
     "check:api:v2": "openapi-typescript ../../contracts/v2/openapi.json --output src/data/generated/api-v2.d.ts --check"
   },
   "dependencies": {
-    "@radix-ui/react-dialog": "1.2.0",
-    "react": "19.3.0",
-    "react-dom": "19.3.0",
-    "react-router": "7.18.4",
-    "zod": "4.6.5"
+    "@radix-ui/react-dialog": "1.3.1",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "react-router": "8.5.1",
+    "zod": "4.6.7"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
-    "@playwright/test": "1.64.0",
+    "@playwright/test": "1.64.1",
     "@tailwindcss/vite": "4.3.3",
     "@testing-library/react": "16.3.3",
-    "@types/node": "24.19.2",
+    "@types/node": "26.6.6",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
-    "@vitejs/plugin-react": "5.2.0",
-    "@vitest/coverage-v8": "4.1.11",
-    "eslint": "10.12.0",
+    "@vitejs/plugin-react": "6.1.2",
+    "@vitest/coverage-v8": "5.0.5",
+    "eslint": "10.13.0",
     "eslint-plugin-react-hooks": "7.1.1",
-    "jsdom": "26.1.0",
+    "jsdom": "30.1.3",
     "openapi-typescript": "7.13.0",
     "tailwindcss": "4.3.3",
-    "typescript": "5.9.3",
-    "typescript-eslint": "8.71.1",
-    "vite": "7.3.6",
-    "vitest": "4.1.11"
+    "typescript": "7.0.2",
+    "typescript-eslint": "8.72.1",
+    "vite": "8.3.5",
+    "vitest": "5.0.5"
   }
 }
