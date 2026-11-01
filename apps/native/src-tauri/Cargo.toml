@@ -18,8 +18,8 @@ tauri = "=2.12.3"
 url = "=2.5.8"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
-sha2 = "0.10"
-base64 = "0.22"
+sha2 = "0.11"
+base64 = "0.23"
 rand = "0.8"
 
 # Desktop-only: the Android/iOS fixture lanes compile the crate without these plugins or keyring.
