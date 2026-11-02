@@ -64,8 +64,9 @@ Production is one Docker Compose project (`ops/production/compose.yaml`) on the 
 
 ## Getting started
 
-Requirements: Docker Desktop and Git. Toolchains are pinned inside the images: Node 24 (`apps/web/docker/test.Dockerfile`)
-and Ruby 3.4 (`apps/server/Dockerfile`).
+Requirements: Docker Desktop, Git and Git LFS (`git lfs install` once; evidence binaries under `docs/completion` and
+packaged installers are LFS pointers). Toolchains are pinned inside the images: Node 24 (`.nvmrc`,
+`apps/web/docker/test.Dockerfile`) and Ruby 3.4 (`apps/server/Dockerfile`).
 
 ```sh
 # Web client against simulated data (no backend needed)
@@ -83,7 +84,7 @@ All tests run in Docker, never on the host.
 | Area | Command |
 | --- | --- |
 | Web | `docker build -f apps/web/docker/test.Dockerfile -t elevateo-web-check . && docker run --rm elevateo-web-check` from the repository root (contract check, lint, typecheck, unit with coverage, build, bundle budget) |
-| Web browser | `cd apps/web && npm run test:e2e` inside the Playwright container (see `apps/web/playwright.config.ts`) |
+| Web browser | `cd apps/web && npm run test:e2e` inside the Playwright container. Only viewport/motion evidence specs run under the `desktop-1440`, `narrow-390` and `reduced-motion` projects; everything else runs once on `desktop` (see `apps/web/playwright.config.ts`) |
 | Backend | `python ops/tests/completion/local_backend.py --execute-final-gate --mox-image <id>` (full gate: tests, Steep, RuboCop, migrations). Image build steps are in [the backend receipt](docs/completion/backend-20261030-receipt.md) |
 | Mail chain | `python ops/tests/completion/local_app_chain.py` and `ops/tests/completion/mox_protocol.py` (real SMTP/IMAP) |
 | Restore drill | `python ops/tests/completion/local_restore.py` |
@@ -100,7 +101,7 @@ Fill values in the order of [docs/credentials-last.md](docs/credentials-last.md)
 Before deploying, give the email-finder worker (`ELEVATEO_FINDER_PUBLIC_IP`) a different public IP from Mox.
 Its port-25 checks can get an IP blocklisted.
 
-## Current state (2026-11-01)
+## Current state (2026-11-02)
 
 | Area | State |
 | --- | --- |
@@ -109,6 +110,7 @@ Its port-25 checks can get an IP blocklisted.
 | Clients | Windows Docker build: 0 warnings/errors, 93 tests and 7 installer regressions pass; unsigned installer built, Avalonia views inspected at 960/1280 px. P24–P34 and design reviews completed with repairs. Web lint/types, 1,195 unit tests, production build and bundle budget pass. Android: 69 helper tests, 40 Rust tests and 7 release-config tests pass; APK and lint pass (0 errors, 36 warnings). iOS Core: Swift build and 36 tests pass, plus 3 signing-helper tests. Native Linux: fmt/check/Clippy rules, 40 Rust and 14 helper tests pass; 8 compiler warnings remain. Browser: 262 passed, 0 failed, 2 intentional skips; desktop/mobile screenshots inspected and dark reader contrast repaired. Final verification recorded; emulator and real-backend browser coverage are blocked by resource/volume constraints. [Evidence](docs/completion/final-readiness-20261101/final-receipt.md) |
 | October 31 checkpoint (historical) | 1,190 web unit tests; fixture Playwright across four projects: 176 passed, 0 failed, 344 production-URL skips. Superseded by the November 1 client results above; this is not merged-main verification |
 | Local Docker | Owner-authorized cleanup and VHD compaction complete: VHD 10.01 GB, C: free 51.33 GB; Docker stopped, volumes preserved. |
+| Efficiency pass (2026-11-02) | Web: in-flight GET dedupe, split session contexts, memoised message rows, gated finder polling, initial-JS budget. Tooling: cached two-stage images (server 960 MB to 498 MB), Playwright screenshots on failure only and viewport projects scoped to four specs, path-gated CI matrix, trimmed Docker context, LFS for evidence binaries. Web Docker gate passes. Server query/worker/streaming items are blocked on Codex re-authentication; see [state.md](state.md) |
 | Deployment | Not deployed. No live sends, DNS, MX or Cloudflare changes. Credentials are pending |
 | Known limits | Mac `.dmg` signing/notarization and the iOS app build need a macOS host. The Android emulator run needs about 8 GB free RAM |
 

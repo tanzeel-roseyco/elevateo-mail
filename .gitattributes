@@ -3,3 +3,11 @@ third_party/manifests/*.json linguist-generated
 
 # AIDEV-NOTE: Preserve root-owned vault mirror bytes exactly across platforms.
 obsidian.md -text
+
+# AIDEV-NOTE: Evidence binaries go through LFS so screenshots and recordings stop growing the pack.
+# Existing tracked binaries stay as-is; only newly added files under these paths are LFS pointers.
+docs/completion/**/*.png filter=lfs diff=lfs merge=lfs -text
+docs/completion/**/*.webm filter=lfs diff=lfs merge=lfs -text
+docs/completion/**/*.zip filter=lfs diff=lfs merge=lfs -text
+apps/android/artifacts/*.apk filter=lfs diff=lfs merge=lfs -text
+apps/windows/artifacts/*.exe filter=lfs diff=lfs merge=lfs -text

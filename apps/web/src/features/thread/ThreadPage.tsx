@@ -12,6 +12,7 @@ import { GatewayError, isApiError } from '@/data/errors'
 import { useMailbox } from '@/app/mailboxes'
 import { useGateway, useSession } from '@/app/session'
 import { draftIntentKey, formatRecipients, useDraftIntent } from '@/app/draftIntent'
+import { appendUnique } from '@/domain/appendUnique'
 import { edit, newDraftBuffer } from '@/domain/draftOperation'
 import { forwardBody, forwardSubject, replyAllRecipients, replySubject, usableAddress } from '@/domain/replyComposition'
 import { isSnoozing, parseThreadView, type ThreadView } from '@/domain/threadFolders'
@@ -191,11 +192,10 @@ function ConversationReader({ mailboxId, threadId, readDirectMessage, attachment
         setState((prev) => {
           // A reset replaces accumulated messages with the fresh first page (FE-R10).
           const existing = append && !outcome.replace && prev.status === 'ready' ? prev.messages : []
-          const seen = new Set(existing.map((m) => m.id))
           return {
             status: 'ready',
             thread: outcome.page.thread,
-            messages: [...existing, ...outcome.page.messages.filter((m) => !seen.has(m.id))],
+            messages: appendUnique(existing, outcome.page.messages),
             nextCursor: outcome.page.next_cursor,
             loadingMore: false,
             pageError: null,

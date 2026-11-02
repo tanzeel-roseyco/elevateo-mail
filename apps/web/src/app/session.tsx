@@ -36,11 +36,9 @@ export function sessionIdentityKey(session: Session): string {
   return [session.actor.id, session.organization.id, session.context_id, session.authorization_version].join('\n')
 }
 
-export interface SessionController {
-  state: SessionState
+/** The part of the controller that never changes identity after mount; safe to read without re-rendering on state. */
+export interface SessionActions {
   scope: RequestScope
-  /** Headers context while ready, otherwise null; it is consistency data, not authority. */
-  context: ReadContext | null
   /** Explicit user retry / re-login bootstrap; replenishes the one recovery allowance. */
   refresh(): void
   /**
@@ -58,6 +56,15 @@ export interface SessionController {
   switchOrganization(organizationId: string): Promise<ActionResult>
 }
 
+/** The state half: changes on every session transition and on each context renewal. */
+export interface SessionSnapshot {
+  state: SessionState
+  /** Headers context while ready, otherwise null; it is consistency data, not authority. */
+  context: ReadContext | null
+}
+
+export interface SessionController extends SessionSnapshot, SessionActions {}
+
 type SessionRequestKind = 'bootstrap' | 'retry' | 'recovery' | 'freshness' | 'refresh' | 'login' | 'recovery_request' | 'logout' | 'switch'
 interface InFlight {
   kind: SessionRequestKind
@@ -65,7 +72,10 @@ interface InFlight {
 }
 
 const GatewayContext = createContext<MailroomGateway | null>(null)
-const SessionContext = createContext<SessionController | null>(null)
+// AIDEV-NOTE: State and actions live in separate contexts so action-only consumers (menus, row
+// writes, feature policies) do not re-render on every session commit; useSession joins both.
+const SessionStateContext = createContext<SessionSnapshot | null>(null)
+const SessionActionsContext = createContext<SessionActions | null>(null)
 
 export function useGateway(): MailroomGateway {
   const gateway = useContext(GatewayContext)
@@ -73,8 +83,18 @@ export function useGateway(): MailroomGateway {
   return gateway
 }
 
+/** Only the stable actions; a consumer of this hook never re-renders on a session state change. */
+export function useSessionActions(): SessionActions {
+  const actions = useContext(SessionActionsContext)
+  if (!actions) throw new Error('SessionContext missing')
+  return actions
+}
+
 export function useSession(): SessionController {
-  const controller = useContext(SessionContext)
+  const snapshot = useContext(SessionStateContext)
+  const actions = useContext(SessionActionsContext)
+  // Memoised on both halves so a consumer's own memo/effect deps see a new object only on a state commit.
+  const controller = useMemo<SessionController | null>(() => (snapshot && actions ? { ...snapshot, ...actions } : null), [snapshot, actions])
   if (!controller) throw new Error('SessionContext missing')
   return controller
 }
@@ -451,14 +471,18 @@ export function SessionProvider({ gateway, children }: { gateway: MailroomGatewa
     [contextId, authorizationVersion, readEpoch],
   )
 
-  const controller = useMemo<SessionController>(
-    () => ({ state, scope: scopeRef.current, context, refresh, handleError, signIn, requestRecovery, signOut, switchOrganization }),
-    [state, context, refresh, handleError, signIn, requestRecovery, signOut, switchOrganization],
+  const snapshot = useMemo<SessionSnapshot>(() => ({ state, context }), [state, context])
+  // Every member is a useCallback on the stable gateway, so this object is created once per provider.
+  const actions = useMemo<SessionActions>(
+    () => ({ scope: scopeRef.current, refresh, handleError, signIn, requestRecovery, signOut, switchOrganization }),
+    [refresh, handleError, signIn, requestRecovery, signOut, switchOrganization],
   )
 
   return (
     <GatewayContext.Provider value={gateway}>
-      <SessionContext.Provider value={controller}>{children}</SessionContext.Provider>
+      <SessionActionsContext.Provider value={actions}>
+        <SessionStateContext.Provider value={snapshot}>{children}</SessionStateContext.Provider>
+      </SessionActionsContext.Provider>
     </GatewayContext.Provider>
   )
 }

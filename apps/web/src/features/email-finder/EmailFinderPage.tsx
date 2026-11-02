@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, useSearchParams } from 'react-router'
 import { useProtectedRequest } from '@/app/protectedRequest'
 import { useFeatureGateways } from '@/app/featureGateways'
@@ -10,6 +10,14 @@ import { FinderKindSchema, FinderRequestSchema, type EmailFinderGateway, type Fi
   type FinderHealth, type FinderSuppression } from './contract'
 import { FinderForms, FINDER_LABELS, SuppressionForm } from './FinderForms'
 import { FinderHealthPanel, FinderJobList, FinderJobView } from './FinderResults'
+
+/** Cadence of the background job refresh while at least one job is still queued or running. */
+export const FINDER_POLL_INTERVAL_MS = 15_000
+
+/** A job that will never change again; polling exists only for the others. */
+function isTerminalJob(job: FinderJob): boolean {
+  return job.status === 'completed' || job.status === 'failed'
+}
 
 export function EmailFinderPage() {
   const { emailFinder } = useFeatureGateways()
@@ -39,31 +47,48 @@ function FinderWorkspace({ gateway }: { gateway: EmailFinderGateway }) {
   const [revision, refresh] = useState(0)
 
   // AIDEV-NOTE: Session-keyed workspace and protected requests prevent stale tenant data after an account switch.
+  // `loadRef` is a token for the current load identity: a result from an earlier gateway/job/revision
+  // is dropped, and an unmounted workspace sets no state. `loadingRef` collapses overlapping loads.
+  const loadRef = useRef(0)
+  const loadingRef = useRef(false)
+  const load = useCallback(async () => {
+    if (loadingRef.current) return
+    loadingRef.current = true
+    const token = loadRef.current
+    const result = await request(async (ctx, signal) => {
+      const [healthPage, jobPage, suppressionPage, detail] = await Promise.all([
+        gateway.health(ctx, signal), gateway.jobs(ctx, signal), gateway.suppressions(ctx, signal),
+        jobId === null ? Promise.resolve(null) : gateway.job(jobId, ctx, signal),
+      ])
+      return { healthPage, jobPage, suppressionPage, detail }
+    }).finally(() => {
+      // Released however the request ends; a superseded load leaves the flag to the cleanup that superseded it.
+      if (loadRef.current === token) loadingRef.current = false
+    })
+    if (loadRef.current !== token) return
+    if (result.kind === 'ok') {
+      setLoadError(null)
+      setHealth(result.value.healthPage); setJobs(result.value.jobPage.items)
+      setSuppressions(result.value.suppressionPage.items); setSelected(result.value.detail)
+    } else if (result.kind === 'failed') setLoadError('Could not load finder data. Check your access and try Refresh.')
+  }, [gateway, request, jobId])
+
   useEffect(() => {
-    let active = true
-    let loading = false
-    const load = async () => {
-      if (loading) return
-      loading = true
-      const result = await request(async (ctx, signal) => {
-        const [healthPage, jobPage, suppressionPage, detail] = await Promise.all([
-          gateway.health(ctx, signal), gateway.jobs(ctx, signal), gateway.suppressions(ctx, signal),
-          jobId === null ? Promise.resolve(null) : gateway.job(jobId, ctx, signal),
-        ])
-        return { healthPage, jobPage, suppressionPage, detail }
-      })
-      loading = false
-      if (!active) return
-      if (result.kind === 'ok') {
-        setLoadError(null)
-        setHealth(result.value.healthPage); setJobs(result.value.jobPage.items)
-        setSuppressions(result.value.suppressionPage.items); setSelected(result.value.detail)
-      } else if (result.kind === 'failed') setLoadError('Could not load finder data. Check your access and try Refresh.')
-    }
     void load()
-    const timer = window.setInterval(() => { void load() }, 15_000)
-    return () => { active = false; window.clearInterval(timer) }
-  }, [gateway, request, jobId, revision])
+    return () => { loadRef.current += 1; loadingRef.current = false }
+  }, [load, revision])
+
+  // AIDEV-NOTE: Background polling runs only while some listed or selected job is still queued or
+  // running, and a tick is skipped while the tab is hidden (same gate as session freshness); a
+  // return to visibility refreshes at once instead of waiting for the next tick.
+  const hasActiveJob = (jobs?.some((job) => !isTerminalJob(job)) ?? false) || (selected !== null && !isTerminalJob(selected))
+  useEffect(() => {
+    if (!hasActiveJob) return
+    const tick = () => { if (!document.hidden) void load() }
+    const timer = window.setInterval(tick, FINDER_POLL_INTERVAL_MS)
+    document.addEventListener('visibilitychange', tick)
+    return () => { window.clearInterval(timer); document.removeEventListener('visibilitychange', tick) }
+  }, [hasActiveJob, load])
 
   const submit = async (input: unknown) => {
     const parsed = FinderRequestSchema.safeParse(input)

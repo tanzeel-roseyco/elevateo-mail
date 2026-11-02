@@ -1,0 +1,5 @@
+ Test Files  106 passed (106)
+✓ built in 4.82s
+OK   entry assets/app-DKI2d6R3.js: 193.8 KB (budget 500.0 KB)
+OK   initial JS for assets/app-DKI2d6R3.js: 575.8 KB across 6 chunk(s) (budget 900.0 KB)
+check:bundle passed: every entry chunk is within the 500 KB budget and its initial JS within 900 KB.

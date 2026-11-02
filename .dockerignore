@@ -10,3 +10,13 @@ ops/local
 apps/windows/**/bin
 apps/windows/**/obj
 apps/windows/artifacts
+# AIDEV-NOTE: Root-context builds (web test image, Android image) only write artifacts/ via a runtime
+# mount and never read these paths; excluding them trims roughly 250 MB per build context upload.
+apps/android/artifacts
+apps/native/**/target
+apps/web/e2e/.results
+docs/completion
+docs/history
+third_party
+.planning
+reports

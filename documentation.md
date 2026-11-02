@@ -130,3 +130,13 @@ Mac packaging/signing/notarization and iOS application build require macOS. Andr
 Final cleanup: owned disposable containers removed; final image prune reclaimed 7.702 GB, builder prune 0 B. No volumes touched. Shared preview and active caches preserved; C: has 4.40 GB free. VHD compaction requires stopping Docker and was not attempted. [Cleanup receipt](docs/completion/final-readiness-20261101/cleanup-receipt.md).
 
 Owner-authorized follow-up cleanup completed: Docker stopped, unused build cache/images/networks pruned, VHD compacted successfully to 10.01 GB, C: free 51.33 GB. Volumes and source archives preserved. See the updated [cleanup receipt](docs/completion/final-readiness-20261101/cleanup-receipt.md).
+
+## Efficiency pass — 2026-11-02
+
+- Web transport shares one fetch between concurrent identical GETs (same path, byte budget, headers, schema and error schema). Results are read-only by contract; a caller's abort withdraws only that caller. Writes are never shared. See `apps/web/src/data/http/transport.ts`.
+- `useSession()` is unchanged; `useSessionActions()` gives action-only components (user menu, workspace switcher, sign-in, feature routes) a context that never changes after mount.
+- `MessageRow` is memoised and takes id-based callbacks; pages build them with `useRowHandlers`. Thread links come from `threadHref()`.
+- Playwright: `e2e/viewport-specs.ts` lists the specs that run under `desktop-1440`, `narrow-390` and `reduced-motion`; `src/test/viewport-specs.test.ts` fails if a spec reads `testInfo.project.name` without being listed.
+- Bundle budget: entry chunk 500 KB and initial JS (entry plus static imports) 900 KB, both minified, enforced by `npm run check:bundle`.
+- CI: jobs run only when their paths changed (`dorny/paths-filter`); gating is job-level `if:` so skipped jobs still report. Node version lives in `.nvmrc`.
+- Git LFS is required for new evidence binaries under `docs/completion` and for packaged APKs/installers.

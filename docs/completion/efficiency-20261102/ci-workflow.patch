@@ -1,0 +1,108 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index a7018bea..6d24def3 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -1,5 +1,9 @@
+ # AIDEV-NOTE: Mirrors the fleet-02 gates that need no database: web checks, Ruby lint and Steep, secret scan.
+ # The Ruby test suites need the pinned Supabase stack and still run on fleet-02 (ops/tests/be02/test-suites.sh).
++# AIDEV-NOTE: Jobs are gated on changed paths so a docs-only change runs only the secret scan; the Node
++# version comes from the root .nvmrc so CI and apps/web/docker/test.Dockerfile cannot drift apart.
++# AIDEV-NOTE: Gating is `if:` on job outputs, not `paths:` on the trigger, so a skipped job still reports
++# and counts as passing for any future required check (require the per-matrix names such as "Web lint").
+ name: CI
+ 
+ on:
+@@ -15,9 +19,37 @@ concurrency:
+   cancel-in-progress: true
+ 
+ jobs:
++  changes:
++    name: Detect changed areas
++    runs-on: ubuntu-latest
++    outputs:
++      web: ${{ steps.filter.outputs.web }}
++      server: ${{ steps.filter.outputs.server }}
++    steps:
++      - uses: actions/checkout@v4
++      - uses: dorny/paths-filter@v3
++        id: filter
++        with:
++          filters: |
++            web:
++              - 'apps/web/**'
++              - 'contracts/**'
++              - '.nvmrc'
++              - '.github/workflows/ci.yml'
++            server:
++              - 'apps/server/**'
++              - 'contracts/**'
++              - '.github/workflows/ci.yml'
++
+   web:
+-    name: Web lint, typecheck, contracts, tests
++    name: Web ${{ matrix.check }}
++    needs: changes
++    if: needs.changes.outputs.web == 'true'
+     runs-on: ubuntu-latest
++    strategy:
++      fail-fast: false
++      matrix:
++        check: [lint, typecheck, contracts, test, build]
+     defaults:
+       run:
+         working-directory: apps/web
+@@ -25,25 +57,33 @@ jobs:
+       - uses: actions/checkout@v4
+       - uses: actions/setup-node@v4
+         with:
+-          node-version: 22
++          node-version-file: .nvmrc
+           cache: npm
+           cache-dependency-path: apps/web/package-lock.json
+       - run: npm ci --no-audit --no-fund
+-      - run: npm run lint
+-      - run: npm run typecheck
+-      - run: npm run check:api
+-      - run: npm run check:api:v2
+-      - run: npm test
++      - if: matrix.check == 'lint'
++        run: npm run lint
++      - if: matrix.check == 'typecheck'
++        run: npm run typecheck
++      - if: matrix.check == 'contracts'
++        run: npm run check:api && npm run check:api:v2
++      - if: matrix.check == 'test'
++        run: npm test
++      - if: matrix.check == 'build'
++        run: npm run build && npm run check:bundle
+ 
+   server-static:
+     name: Server RuboCop lint and Steep
++    needs: changes
++    if: needs.changes.outputs.server == 'true'
+     runs-on: ubuntu-latest
+     defaults:
+       run:
+         working-directory: apps/server
+     steps:
+       - uses: actions/checkout@v4
+-      - run: sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends libpq-dev libyaml-dev
++      # No apt step: Gemfile.lock resolves pg to the x86_64-linux precompiled gem (bundled libpq) and
++      # setup-ruby's prebuilt Ruby already carries psych, so no native headers are compiled here.
+       - uses: ruby/setup-ruby@v1
+         with:
+           ruby-version: "3.4.11"
+@@ -58,8 +98,11 @@ jobs:
+     steps:
+       - uses: actions/checkout@v4
+         with:
++          # Full history is needed for the push scan and for the PR base..head range below.
+           fetch-depth: 0
+-      - name: Scan history
++      - name: Scan (pull requests scan only their commit range)
++        env:
++          LOG_OPTS: ${{ github.event_name == 'pull_request' && format('--log-opts={0}..{1}', github.event.pull_request.base.sha, github.event.pull_request.head.sha) || '' }}
+         run: >
+           docker run --rm -v "$PWD:/repo:ro" ghcr.io/gitleaks/gitleaks:v8.21.2
+-          detect --source /repo --config /repo/.gitleaks.toml --redact --no-banner --exit-code 1
++          detect --source /repo --config /repo/.gitleaks.toml --redact --no-banner --exit-code 1 $LOG_OPTS
