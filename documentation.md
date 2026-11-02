@@ -41,6 +41,8 @@ rendered as plain text only.
 
 1. A user writes a draft. Drafts carry an expected version and an operation ID, so retries and concurrent edits cannot overwrite each other.
 2. Send review creates an **immutable approved snapshot** of sender, recipients, subject, text and attachments.
+   A second human does not have to approve every send: any member holding `approve_send` on the mailbox, the
+   composer included, approves it. The review exists to freeze the exact bytes that go out, not to add a gate.
 3. The worker **atomically reserves budget** before any external I/O: 30 per mailbox and 300 per user per UTC day
    (`ELEVATEO_MAILBOX_DAILY_SEND_LIMIT`, `ELEVATEO_USER_DAILY_SEND_LIMIT`). Suppressed and non-consented recipients are rejected.
 4. The transport runs under a lease, through Mox SMTP or Resend depending on `ELEVATEO_OUTBOUND_MODE`
