@@ -7,12 +7,13 @@
 // AIDEV-NOTE: The URL `filter` carries the folder view and is passed to the server unchanged
 // (BE-05: all seven views are server filters). Every row action is a confirmed server write; a
 // row leaves the list only when the server's answer no longer matches this view (matchesView).
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router'
 import type { ThreadPage, ThreadSummary } from '@/data/contract'
 import { GatewayError, isApiError } from '@/data/errors'
 import { useGateway, useSession } from '@/app/session'
 import { useMailbox } from '@/app/mailboxes'
+import { appendUnique } from '@/domain/appendUnique'
 import { matchesView, type FolderFacts } from '@/domain/threadFolders'
 import { newTraversalBudget, readPage } from '@/lib/readPage'
 import { cx } from '@/lib/format'
@@ -25,6 +26,7 @@ import { composeDraftPath, isTypingTarget, parseView, useInboxReport, viewPath, 
 import { MessageRow, MessageRowSkeleton } from './MessageRow'
 import { canSnoozeIn, folderActionsFor, type RowAction } from './rowActions'
 import { SnoozeMenu } from './SnoozeMenu'
+import { useRowHandlers } from './useRowHandlers'
 import { useThreadMutations } from './useThreadMutations'
 
 type ListState =
@@ -32,6 +34,9 @@ type ListState =
   | { status: 'ready'; items: ThreadSummary[]; nextCursor: string | null; loadingMore: boolean; pageError: string | null }
   | { status: 'unavailable' }
   | { status: 'error'; message: string }
+
+// One shared empty list for every non-ready frame, so memos and row handlers keyed on `visible` do not churn.
+const NO_ROWS: readonly ThreadSummary[] = []
 
 const VIEW_ORDER: readonly InboxView[] = ['all', 'unread', 'starred', 'snoozed', 'archive', 'spam', 'trash']
 
@@ -133,11 +138,9 @@ function MailboxThreadList({ mailboxId, view }: { mailboxId: string; view: Inbox
         }
         setState((prev) => {
           // A reset replaces accumulated rows with the fresh first page (FE-R08); otherwise an
-          // append merges. Concurrent updates may reorder summaries; deduplicate by thread id.
+          // append merges, deduplicated by thread id (appendUnique).
           const existing = append && !outcome.replace && prev.status === 'ready' ? prev.items : []
-          const seen = new Set(existing.map((t) => t.id))
-          const merged = [...existing, ...outcome.page.items.filter((t) => !seen.has(t.id))]
-          return { status: 'ready', items: merged, nextCursor: outcome.page.next_cursor, loadingMore: false, pageError: null }
+          return { status: 'ready', items: appendUnique(existing, outcome.page.items), nextCursor: outcome.page.next_cursor, loadingMore: false, pageError: null }
         })
       })
     },
@@ -154,20 +157,24 @@ function MailboxThreadList({ mailboxId, view }: { mailboxId: string; view: Inbox
   // and reach handleError. Abort supplements ownership checks (D3).
   useLayoutEffect(() => () => abortRef.current?.abort(), [])
 
+  const visible: readonly ThreadSummary[] = state.status === 'ready' ? state.items : NO_ROWS
+  const hasMore = state.status === 'ready' && state.nextCursor !== null
+
   // Folder badge: unread rows loaded so far, "+" while the server has more (a lower bound).
   // Only the inbox views count towards the Inbox badge; archive/spam/trash unread rows do not.
+  // AIDEV-NOTE: The effect depends only on what it reports, so a loadingMore/pageError/selection
+  // commit does not refilter the rows or re-report an unchanged badge.
+  const unreadCount = useMemo(() => visible.reduce((count, t) => (t.unread ? count + 1 : count), 0), [visible])
+  const ready = state.status === 'ready'
   useEffect(() => {
     if (!report) return
-    if (state.status !== 'ready' || (view !== 'all' && view !== 'unread')) {
+    if (!ready || (view !== 'all' && view !== 'unread')) {
       report.report(null)
       return
     }
-    const unread = state.items.filter((t) => t.unread).length
-    report.report({ unread: `${unread}${state.nextCursor !== null ? '+' : ''}` })
+    report.report({ unread: `${unreadCount}${hasMore ? '+' : ''}` })
     return () => report.report(null)
-  }, [report, state, view])
-
-  const visible: ThreadSummary[] = state.status === 'ready' ? state.items : []
+  }, [report, ready, unreadCount, hasMore, view])
 
   /**
    * Apply a server-confirmed change to one row. The row stays while it still matches this view
@@ -237,18 +244,20 @@ function MailboxThreadList({ mailboxId, view }: { mailboxId: string; view: Inbox
   }
   const bulkRead = (read: boolean) => bulk(async (thread) => (thread.unread !== read ? 'ok' : setRead(thread, read)))
 
-  const toggleSelect = (id: string, checked: boolean) =>
+  const toggleSelect = useCallback((id: string, checked: boolean) =>
     setSelected((prev) => {
       const next = new Set(prev)
       if (checked) next.add(id)
       else next.delete(id)
       return next
-    })
+    }), [])
   const allSelected = visible.length > 0 && visible.every((t) => selected.has(t.id))
   const someSelected = visible.some((t) => selected.has(t.id))
-  const actions = folderActionsFor(view)
+  const actions = useMemo(() => folderActionsFor(view), [view])
   const snoozable = canSnoozeIn(view)
   const canWrite = mutations.canWrite
+
+  const rowHandlers = useRowHandlers({ visible, begin, star, setRead, move, snooze })
 
   // Roving focus plus Gmail keys over the conversation links: ↓/j, ↑/k move; o opens; x selects;
   // s stars; Shift+U marks unread; e archives, ! reports spam, # deletes (when the view offers
@@ -299,12 +308,9 @@ function MailboxThreadList({ mailboxId, view }: { mailboxId: string; view: Inbox
     event.preventDefault()
   }
 
-  // The active view travels into the reader so its back link can restore it (FE-R11).
-  const viewSuffix = view === 'all' ? '' : `?filter=${view}`
   const canCompose = mailbox?.capabilities.compose === true
   const unavailable = state.status === 'unavailable'
-  const ready = state.status === 'ready'
-  const more = ready && state.nextCursor !== null ? '+' : ''
+  const more = hasMore ? '+' : ''
   const rangeLabel = ready ? `1–${visible.length}${more} of ${visible.length}${more}` : ''
 
   return (
@@ -412,15 +418,16 @@ function MailboxThreadList({ mailboxId, view }: { mailboxId: string; view: Inbox
                   <MessageRow
                     key={thread.id}
                     thread={thread}
-                    to={`/mailboxes/${mailboxId}/threads/${thread.id}${viewSuffix}`}
+                    mailboxId={mailboxId}
+                    filter={view}
                     current={threadId === thread.id}
                     selected={selected.has(thread.id)}
-                    onSelect={(checked) => toggleSelect(thread.id, checked)}
-                    onStar={canWrite ? () => { begin(); void star(thread) } : undefined}
-                    onToggleRead={canWrite ? () => { begin(); void setRead(thread, thread.unread) } : undefined}
+                    onSelect={toggleSelect}
+                    onStar={canWrite ? rowHandlers.onStar : undefined}
+                    onToggleRead={canWrite ? rowHandlers.onToggleRead : undefined}
                     actions={actions}
-                    onAction={canWrite ? (action) => { begin(); void move(thread, action) } : undefined}
-                    onSnooze={canWrite && snoozable ? (at) => { begin(); void snooze(thread, at) } : undefined}
+                    onAction={canWrite ? rowHandlers.onAction : undefined}
+                    onSnooze={canWrite && snoozable ? rowHandlers.onSnooze : undefined}
                     busy={mutations.busy.has(thread.id)}
                   />
                 ))}

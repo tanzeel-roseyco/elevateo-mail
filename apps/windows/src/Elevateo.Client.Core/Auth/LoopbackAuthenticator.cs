@@ -1,4 +1,5 @@
 using System.Net;
+using System.Net.Sockets;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
@@ -40,7 +41,7 @@ public sealed class SignInResult
 
 /// <summary>
 /// RFC 8252 authorization-code + PKCE sign-in via the system browser and a loopback redirect.
-/// AIDEV-NOTE: HttpListener binds 127.0.0.1 on an OS-assigned port; redirect_uri uses that exact port.
+/// AIDEV-NOTE: a TCP loopback socket uses an OS-assigned port without administrator HTTP.sys reservations.
 /// The browser launcher and token-endpoint handler are injected so tests run without a real browser.
 /// </summary>
 public sealed class LoopbackAuthenticator
@@ -69,8 +70,9 @@ public sealed class LoopbackAuthenticator
         var pkce = PkceMaterial.Create();
         var validator = new AuthCallbackValidator(pkce.State, AttemptLifetime, _clock);
 
-        using var listener = new HttpListener();
-        var port = StartOnFreePort(listener);
+        using var listener = new TcpListener(IPAddress.Loopback, 0);
+        listener.Start();
+        var port = ((IPEndPoint)listener.LocalEndpoint).Port;
         var redirectUri = $"http://127.0.0.1:{port}/callback";
 
         var authorizeUrl = new UriBuilder(_config.OidcAuthorizeEndpoint)
@@ -95,10 +97,22 @@ public sealed class LoopbackAuthenticator
             // Serve callbacks until one is accepted or the attempt is burned/expired.
             while (code is null)
             {
-                var context = await listener.GetContextAsync().WaitAsync(timeout.Token).ConfigureAwait(false);
-                var query = HttpUtility.ParseQueryString(context.Request.Url?.Query ?? string.Empty);
+                using var client = await listener.AcceptTcpClientAsync(timeout.Token).ConfigureAwait(false);
+                using var callbackTimeout = CancellationTokenSource.CreateLinkedTokenSource(timeout.Token);
+                callbackTimeout.CancelAfter(TimeSpan.FromSeconds(5));
+                var stream = client.GetStream();
+                string? target;
+                try
+                {
+                    target = await ReadCallbackTargetAsync(stream, callbackTimeout.Token).ConfigureAwait(false);
+                }
+                catch (IOException) { continue; } // disconnected unrelated browser request
+                catch (OperationCanceledException) when (!timeout.IsCancellationRequested) { continue; }
+                if (target is null) continue;
+                var query = HttpUtility.ParseQueryString(target[(target.IndexOf('?') + 1)..]);
                 var result = validator.Validate(query["state"], query["code"], query["error"]);
-                await RespondAsync(context.Response, result.Outcome).ConfigureAwait(false);
+                // AIDEV-NOTE: browser acknowledgement is best effort; accepted state still reaches the exchange.
+                await RespondAsync(stream, result.Outcome, callbackTimeout.Token).ConfigureAwait(false);
 
                 switch (result.Outcome)
                 {
@@ -126,9 +140,11 @@ public sealed class LoopbackAuthenticator
 
     private async Task<SignInResult> ExchangeCodeAsync(string code, string redirectUri, string verifier, CancellationToken ct)
     {
-        using var http = new HttpClient(_tokenHandler, disposeHandler: false) { Timeout = _config.RequestTimeout };
+        // AIDEV-NOTE: token responses are small; cap success and error buffering before any string allocation.
+        using var http = new HttpClient(_tokenHandler, disposeHandler: false)
+        { Timeout = _config.RequestTimeout, MaxResponseContentBufferSize = 65_536 };
         // AIDEV-NOTE: the server, not this client, redeems the code with the IdP and binds it to the
-        // verifier/redirect/client (contract-requests §2, shared with the Mac and iOS clients).
+        // verifier/redirect/client (contract-requests section 2, shared with the Mac and iOS clients).
         using var request = new HttpRequestMessage(HttpMethod.Post, _config.NativeSessionsEndpoint)
         {
             Content = JsonContent.Create(
@@ -171,7 +187,8 @@ public sealed class LoopbackAuthenticator
             if (tokens is null
                 || !string.Equals(tokens.TokenType, "Bearer", StringComparison.OrdinalIgnoreCase)
                 || tokens.ExpiresIn <= 0
-                || string.IsNullOrEmpty(tokens.AccessToken))
+                || !TokenValidation.IsBearerToken(tokens.AccessToken)
+                || tokens.RefreshToken is { Length: 0 })
             {
                 return SignInResult.Fail("The sign-in service returned an invalid response.");
             }
@@ -181,26 +198,23 @@ public sealed class LoopbackAuthenticator
         }
     }
 
-    private static int StartOnFreePort(HttpListener listener)
+    internal static async Task<string?> ReadCallbackTargetAsync(Stream stream, CancellationToken ct)
     {
-        // HttpListener cannot ask the OS for a port, so probe random ephemeral ports.
-        for (var attempt = 0; attempt < 20; attempt++)
+        // AIDEV-NOTE: bound both header bytes and read time; a local slow client cannot hold the attempt forever.
+        var bytes = new byte[16_384];
+        var length = 0;
+        while (length < bytes.Length)
         {
-            var port = Random.Shared.Next(49152, 65535);
-            listener.Prefixes.Clear();
-            listener.Prefixes.Add($"http://127.0.0.1:{port}/");
-            try
-            {
-                listener.Start();
-                return port;
-            }
-            catch (HttpListenerException)
-            {
-                // port in use; try another
-            }
+            var read = await stream.ReadAsync(bytes.AsMemory(length, 1), ct).ConfigureAwait(false);
+            if (read == 0) return null;
+            length += read;
+            if (length < 4 || bytes[length - 4] != 13 || bytes[length - 3] != 10
+                || bytes[length - 2] != 13 || bytes[length - 1] != 10) continue;
+            var line = Encoding.ASCII.GetString(bytes, 0, length).Split("\r\n", 2)[0].Split(' ');
+            return line.Length == 3 && line[0] == "GET" && line[1].StartsWith("/callback?", StringComparison.Ordinal)
+                && line[2] == "HTTP/1.1" ? line[1] : null;
         }
-
-        throw new InvalidOperationException("No free loopback port found for the sign-in callback.");
+        return null;
     }
 
     private static string FailureMessage(CallbackOutcome outcome) => outcome switch
@@ -211,19 +225,22 @@ public sealed class LoopbackAuthenticator
         _ => "The sign-in response was incomplete. Start sign-in again.",
     };
 
-    private static async Task RespondAsync(HttpListenerResponse response, CallbackOutcome outcome)
+    internal static async Task RespondAsync(Stream stream, CallbackOutcome outcome, CancellationToken ct)
     {
         var (status, text) = outcome switch
         {
-            CallbackOutcome.Accepted => (200, "Sign-in complete. You can close this tab and return to Elevateo Mail."),
-            CallbackOutcome.Replayed => (409, "This sign-in link was already used."),
-            _ => (400, "Sign-in failed. Return to Elevateo Mail and try again."),
+            CallbackOutcome.Accepted => ("200 OK", "Sign-in complete. You can close this tab and return to Elevateo Mail."),
+            CallbackOutcome.Replayed => ("409 Conflict", "This sign-in link was already used."),
+            _ => ("400 Bad Request", "Sign-in failed. Return to Elevateo Mail and try again."),
         };
-        response.StatusCode = status;
-        response.ContentType = "text/plain; charset=utf-8";
-        var bytes = Encoding.UTF8.GetBytes(text);
-        response.ContentLength64 = bytes.Length;
-        await response.OutputStream.WriteAsync(bytes).ConfigureAwait(false);
-        response.OutputStream.Close();
+        var body = Encoding.UTF8.GetBytes(text);
+        var header = Encoding.ASCII.GetBytes($"HTTP/1.1 {status}\r\nContent-Type: text/plain; charset=utf-8\r\nContent-Length: {body.Length}\r\nConnection: close\r\n\r\n");
+        try
+        {
+            await stream.WriteAsync(header, ct).ConfigureAwait(false);
+            await stream.WriteAsync(body, ct).ConfigureAwait(false);
+        }
+        catch (IOException) { /* A disconnected browser cannot revoke an already accepted callback. */ }
+        catch (OperationCanceledException) { /* Acknowledgement deadline does not invalidate the accepted code. */ }
     }
 }

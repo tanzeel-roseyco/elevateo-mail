@@ -488,7 +488,8 @@ describe('online-only shell hygiene (FE-805)', () => {
     renderShell(createFixtureGateway())
     await screen.findByText('Synthetic organization A')
     const main = document.getElementById('main') as HTMLElement
-    const inbox = screen.getByRole('link', { name: 'Fixture inbox' })
+    // Mailboxes load after the organization name renders, so the link must be awaited.
+    const inbox = await screen.findByRole('link', { name: 'Fixture inbox' })
     inbox.focus()
     fireEvent.click(inbox)
     await screen.findByText('outlet-content')

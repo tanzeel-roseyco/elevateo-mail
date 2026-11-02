@@ -1,11 +1,12 @@
-// Authored, not executed: visual-evidence capture for the FE01 read-checkpoint states listed in
+// Visual-evidence capture for the FE01 read-checkpoint states listed in
 // docs/visual-qa-matrix.md. Runs against the served production artifact exactly like
 // production.spec.ts (routed synthetic payloads only; no product source change) and saves one
 // full-page screenshot per scenario × theme × project to e2e/.results/visual/ for the parent's
 // human inspection. Assertions pin that each intended state is actually on screen before the
 // capture, so a wrong screenshot fails rather than silently photographing the wrong state.
 import { expect, test, type Page } from '@playwright/test'
-import { openMailbox } from './support'
+import { openMailbox, setInboxFilter } from './support'
+import { ThreadDetailPageSchema, ThreadPageSchema } from '../src/data/contract'
 
 const PRODUCTION_URL = process.env['ELEVATEO_PRODUCTION_URL']
 
@@ -40,6 +41,9 @@ const summary = (i: number) => ({
   last_message_at: '2026-10-12T00:00:00Z',
   unread: i % 2 === 0,
   message_count: 1,
+  folder: 'inbox',
+  snoozed_until: null,
+  starred: false,
 })
 const threadsPage = (count: number, cursor: string | null) => ({
   ...envelope,
@@ -59,7 +63,7 @@ const readerMessage = (i: number, truncated = false) => ({
 const threadDetail = (messages: unknown[], cursor: string | null, truncatedSubject = false) => ({
   ...envelope,
   next_cursor: cursor,
-  thread: { id: THREAD_ID, mailbox_id: MAILBOX_ID, subject: 'Visual conversation 1', subject_truncated: truncatedSubject, unread: true, message_count: messages.length + (cursor === null ? 0 : 1) },
+  thread: { id: THREAD_ID, mailbox_id: MAILBOX_ID, subject: 'Visual conversation 1', subject_truncated: truncatedSubject, unread: true, message_count: messages.length + (cursor === null ? 0 : 1), folder: 'inbox', snoozed_until: null, starred: false },
   messages,
 })
 const assignment = { ...envelope, thread_id: THREAD_ID, mailbox_id: MAILBOX_ID,
@@ -73,17 +77,17 @@ const HOSTILE_BODY = ['<script>window.__pwned = 1</script>', 'Visit https://host
 
 // One reply per matching request, in order; the last repeats. 'hold' leaves the request pending
 // (unanswered until test teardown), freezing the transient state for the screenshot. A function
-// reply chooses the body from the actual request URL (e.g. the unread filter query).
+// reply chooses a response or hold from the request URL (e.g. a filter or pagination cursor).
 type Fulfilled = { body: unknown; status?: number }
-type Reply = 'hold' | Fulfilled | ((url: URL) => Fulfilled)
+type Reply = 'hold' | Fulfilled | ((url: URL) => 'hold' | Fulfilled)
 const apiError = (code: string, status = 503): Reply => ({ status, body: { code, message: 'forced by visual QA', request_id: 'vq-1' } })
 async function sequence(page: Page, matcher: (url: URL) => boolean, replies: Reply[]): Promise<void> {
   let call = 0
   await page.route(matcher, (route) => {
     const next = replies[Math.min(call, replies.length - 1)]!
     call += 1
-    if (next === 'hold') return // deliberately unanswered: the state under capture is the pending one
     const reply = typeof next === 'function' ? next(new URL(route.request().url())) : next
+    if (reply === 'hold') return // deliberately unanswered: the state under capture is the pending one
     return route.fulfill({ status: reply.status ?? 200, contentType: 'application/json', body: JSON.stringify(reply.body) })
   })
 }
@@ -94,9 +98,17 @@ async function sequence(page: Page, matcher: (url: URL) => boolean, replies: Rep
 // painted fill. The probe rejects fully transparent fills outright and otherwise compares the
 // alpha-composited EFFECTIVE color against the backdrop.
 const CONTRAST_PROBE = (el: Element) => {
+  const canvas = document.createElement('canvas')
+  canvas.width = canvas.height = 1
+  const context = canvas.getContext('2d', { willReadFrequently: true })
   const parse = (c: string) => {
-    const m = /rgba?\(\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)(?:[,/\s]+([\d.]+))?\s*\)/.exec(c)
-    return m ? { r: +m[1]!, g: +m[2]!, b: +m[3]!, a: m[4] === undefined ? 1 : +m[4]! } : null
+    // AIDEV-NOTE: Let the browser convert CSS colors, including Tailwind OKLCH, to comparable sRGB pixels.
+    if (!context || !CSS.supports('color', c)) return null
+    context.clearRect(0, 0, 1, 1)
+    context.fillStyle = c
+    context.fillRect(0, 0, 1, 1)
+    const pixel = context.getImageData(0, 0, 1, 1).data
+    return { r: pixel[0]!, g: pixel[1]!, b: pixel[2]!, a: pixel[3]! / 255 }
   }
   const bg = getComputedStyle(el).backgroundColor
   let node: HTMLElement | null = (el as HTMLElement).parentElement
@@ -109,15 +121,54 @@ const CONTRAST_PROBE = (el: Element) => {
   if (behind === '') behind = getComputedStyle(document.body).backgroundColor
   const fill = parse(bg)
   const back = parse(behind)
-  if (!fill || !back) return { ok: false, reason: `unparseable computed colors: '${bg}' over '${behind}'` }
+  if (!context || !fill || !back) return { ok: false, reason: `unparseable computed colors: '${bg}' over '${behind}'` }
   if (fill.a === 0) return { ok: false, reason: `skeleton fill is fully transparent: ${bg}` }
-  const over = (f: number, b: number) => f * fill.a + b * (1 - fill.a)
-  const delta = Math.abs(over(fill.r, back.r) - back.r) + Math.abs(over(fill.g, back.g) - back.g) + Math.abs(over(fill.b, back.b) - back.b)
+  // AIDEV-NOTE: Compare painted pixels; recompositing sampled RGBA introduces rounding artifacts.
+  context.clearRect(0, 0, 1, 1)
+  context.fillStyle = behind
+  context.fillRect(0, 0, 1, 1)
+  const backdrop = context.getImageData(0, 0, 1, 1).data
+  context.fillStyle = bg
+  context.fillRect(0, 0, 1, 1)
+  const painted = context.getImageData(0, 0, 1, 1).data
+  const delta = Math.abs(painted[0]! - backdrop[0]!) + Math.abs(painted[1]! - backdrop[1]!) + Math.abs(painted[2]! - backdrop[2]!)
   return { ok: delta > 0, reason: `effective fill ${bg} over ${behind} (channel delta ${delta.toFixed(2)})` }
 }
 
+const TEXT_CONTRAST_PROBE = (el: Element) => {
+  // AIDEV-NOTE: Canvas converts OKLCH to sRGB; measure text against its nearest opaque painted background.
+  const canvas = document.createElement('canvas')
+  canvas.width = canvas.height = 1
+  const context = canvas.getContext('2d', { willReadFrequently: true })!
+  const pixel = (color: string) => {
+    context.clearRect(0, 0, 1, 1)
+    context.fillStyle = color
+    context.fillRect(0, 0, 1, 1)
+    return context.getImageData(0, 0, 1, 1).data
+  }
+  let node: Element | null = el
+  let background: Uint8ClampedArray | null = null
+  while (node) {
+    const candidate = pixel(getComputedStyle(node).backgroundColor)
+    if (candidate[3] === 255) { background = candidate; break }
+    node = node.parentElement
+  }
+  if (!background) throw new Error('Text contrast requires an opaque backdrop')
+  const backdrop = background
+  const foreground = pixel(getComputedStyle(el).color)
+  const alpha = foreground[3]! / 255
+  const luminance = (channels: number[]) => channels.map((channel) => {
+    const value = channel / 255
+    return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4
+  }).reduce((sum, value, index) => sum + value * [0.2126, 0.7152, 0.0722][index]!, 0)
+  const back = luminance([backdrop[0]!, backdrop[1]!, backdrop[2]!])
+  const front = luminance([0, 1, 2].map((index) => foreground[index]! * alpha + backdrop[index]! * (1 - alpha)))
+  return (Math.max(front, back) + 0.05) / (Math.min(front, back) + 0.05)
+}
+
 async function assertSkeletonContrasts(page: Page, statusName: string): Promise<void> {
-  const bar = page.getByRole('status', { name: statusName }).locator('div[aria-hidden] > div').first()
+  // AIDEV-NOTE: Generic blocks and message-row spans share a pulse fill, but have different markup.
+  const bar = page.getByRole('status', { name: statusName }).locator('[aria-hidden] .animate-pulse').first()
   await expect(bar).toBeVisible()
   const verdict = await bar.evaluate(CONTRAST_PROBE)
   expect(verdict.ok, verdict.reason).toBe(true)
@@ -125,7 +176,7 @@ async function assertSkeletonContrasts(page: Page, statusName: string): Promise<
 
 interface Scenario {
   name: string
-  routes: Partial<Record<'session' | 'mailboxes' | 'threads' | 'thread' | 'assignment' | 'notes' | 'challenge' | 'refresh' | 'login' | 'logout' | 'organizations', Reply[]>>
+  routes: Partial<Record<'session' | 'mailboxes' | 'threads' | 'thread' | 'assignment' | 'notes' | 'challenge' | 'refresh' | 'login' | 'logout' | 'organizations' | 'sso', Reply[]>>
   /** none: stay on the shell; mailbox: open 'Visual mailbox'; thread: then open the first row. */
   nav: 'none' | 'mailbox' | 'thread'
   /** Open the drawer first below md so sidebar-only states are visible for the capture. */
@@ -148,7 +199,7 @@ const SCENARIOS: Scenario[] = [
   {
     name: 'inbox-unread-filter-active',
     // The unread request must carry filter=unread and receive an unread-only payload, so the
-    // capture proves read rows are gone — not the same mixed list under a highlighted pill.
+    // capture proves read rows are gone with the selected mobile or desktop filter.
     routes: {
       threads: [(url) => {
         const page = threadsPage(3, null)
@@ -157,10 +208,9 @@ const SCENARIOS: Scenario[] = [
     },
     nav: 'mailbox',
     awaitRequest: 'filter=unread',
-    act: async (page) => page.getByRole('link', { name: 'Unread', exact: true }).click(),
+    act: async (page) => setInboxFilter(page, 'unread'),
     expectVisible: { text: 'Visual conversation 1' }, // unread (index 0)
     assert: async (page) => {
-      await expect(page.getByRole('link', { name: 'Unread', exact: true })).toHaveAttribute('aria-current', 'page')
       await expect(page.getByRole('link', { name: /Visual conversation 3/ })).toBeVisible() // unread (index 2)
       await expect(page.getByRole('link', { name: /Visual conversation 2/ })).toHaveCount(0) // read row excluded
     },
@@ -196,6 +246,26 @@ const SCENARIOS: Scenario[] = [
       await expect(page.getByRole('region', { name: 'Assignment' }).getByRole('alert')).toHaveCount(0)
       await expect(page.getByRole('region', { name: 'Internal notes' }).getByRole('alert')).toHaveCount(0)
       await expect(page.getByText('1 message in this conversation')).toBeVisible()
+      const notesRegion = page.getByRole('region', { name: 'Internal notes' })
+      for (const text of [page.locator('article time').first(), page.getByText('1 message in this conversation'),
+        notesRegion.getByText('No notes yet.'), notesRegion.getByText('Plain text only, visible to people who can read this mailbox. Notes cannot be edited or deleted.')]) {
+        await expect(text).toBeVisible()
+        expect(await text.evaluate(TEXT_CONTRAST_PROBE)).toBeGreaterThanOrEqual(4.5)
+      }
+    },
+  },
+  {
+    name: 'reader-populated-note',
+    routes: { notes: [{ body: { ...notes, items: [{ id: '00000000-0000-4000-8000-0000000000c1',
+      author_id: SESSION.actor.id, body_text: 'Visual internal note', version: 1, created_at: '2026-10-13T00:00:00Z' }] } }] },
+    nav: 'thread',
+    expectVisible: { text: 'Visual internal note' },
+    assert: async (page) => {
+      const card = page.getByRole('region', { name: 'Internal notes' }).getByRole('listitem')
+      for (const text of [card.locator('p'), card.locator('pre')]) {
+        await expect(text).toBeVisible()
+        expect(await text.evaluate(TEXT_CONTRAST_PROBE)).toBeGreaterThanOrEqual(4.5)
+      }
     },
   },
   { name: 'session-loading', routes: { session: ['hold'] }, nav: 'none', expectVisible: { status: 'Loading session' }, assert: (page) => assertSkeletonContrasts(page, 'Loading session') },
@@ -308,12 +378,14 @@ const SCENARIOS: Scenario[] = [
     routes: { logout: [apiError('temporarily_unavailable')] },
     nav: 'none',
     act: async (page) => {
+      // AIDEV-NOTE: Prove the protected region exists before asserting its removal after failed sign-out.
+      await expect(page.getByRole('region', { name: 'Workspace summary' })).toBeVisible()
       const narrow = (page.viewportSize()?.width ?? 1280) < 1024
       await page.getByRole('button', { name: narrow ? 'Account menu' : 'Account and sign-out' }).click()
       await page.getByRole('menuitem', { name: 'Sign out', exact: true }).click()
     },
     expectVisible: { text: 'Sign-out was not confirmed' },
-    assert: async (page) => expect(page.getByText('Workspace summary')).toHaveCount(0),
+    assert: async (page) => expect(page.getByRole('region', { name: 'Workspace summary' })).toHaveCount(0),
   },
   { name: 'session-error', routes: { session: [apiError('internal_error', 500)] }, nav: 'none', expectVisible: { text: 'The session could not be loaded' } },
   // context_changed on the mailbox list consumes the one recovery; a held session refetch freezes 'recovering'.
@@ -355,8 +427,10 @@ const SCENARIOS: Scenario[] = [
   { name: 'inbox-error', routes: { threads: [apiError('internal_error', 500)] }, nav: 'mailbox', expectVisible: { text: 'Conversations could not be loaded' } },
   {
     name: 'inbox-loading-more',
-    routes: { threads: [{ body: threadsPage(3, 'cursor_visual_more') }, 'hold'] },
+    // AIDEV-NOTE: Dashboard unread counts also request threads; hold only the actual continuation request.
+    routes: { threads: [(url) => url.searchParams.get('cursor') === 'cursor_visual_more' ? 'hold' : { body: threadsPage(3, 'cursor_visual_more') }] },
     nav: 'mailbox',
+    awaitRequest: 'cursor=cursor_visual_more',
     act: async (page) => page.getByRole('button', { name: 'Show more conversations' }).click(),
     expectVisible: { text: 'Loading…' },
   },
@@ -411,6 +485,7 @@ const ROUTE_MATCHERS = {
   login: (url: URL) => url.pathname.endsWith('/v1/auth/login'),
   logout: (url: URL) => url.pathname.endsWith('/v1/auth/logout'),
   organizations: (url: URL) => url.pathname.endsWith('/v1/organizations'),
+  sso: (url: URL) => url.pathname.endsWith('/v1/auth/sso/status'),
 } as const
 const CHALLENGE = { csrf_token: 'visual_challenge_0123456789', expires_at: '2026-10-13T00:05:00Z' }
 const ORGANIZATIONS = { ...envelope, next_cursor: null, items: [SESSION.organization, { id: '00000000-0000-4000-8000-0000000000b2', name: 'Second organization' }] }
@@ -418,6 +493,12 @@ const ORGANIZATIONS = { ...envelope, next_cursor: null, items: [SESSION.organiza
 test.describe('read-checkpoint visual states (capture for human inspection)', () => {
   test.skip(PRODUCTION_URL === undefined, 'ELEVATEO_PRODUCTION_URL not set; coordinator must serve the built artifact')
   test.use({ baseURL: PRODUCTION_URL })
+
+  test.beforeAll(() => {
+    // AIDEV-NOTE: Validate baseline payloads before scenario mutations so contract drift cannot hide intended states.
+    ThreadPageSchema.parse(threadsPage(3, null))
+    ThreadDetailPageSchema.parse(threadDetail([readerMessage(0)], null))
+  })
 
   // In-spec oracle regression (review P2): the probe itself must reject a fully transparent fill
   // and a composite that lands exactly on the backdrop, and accept a genuinely distinct fill.
@@ -427,11 +508,17 @@ test.describe('read-checkpoint visual states (capture for human inspection)', ()
         '<div id="transparent" style="background:rgba(0,0,0,0)"></div>' +
         '<div id="noop" style="background:rgba(255,255,255,0.5)"></div>' +
         '<div id="distinct" style="background:#e4e4e7"></div>' +
+        '<div id="oklch" style="background:oklch(70% 0 0)"></div>' +
+        '<div id="oklch-noop" style="background:oklch(100% 0 0 / 50%)"></div>' +
+        '<div id="oklch-transparent" style="background:oklch(70% 0 0 / 0%)"></div>' +
       '</div>',
     )
     expect((await page.locator('#transparent').evaluate(CONTRAST_PROBE)).ok, 'transparent fill must fail').toBe(false)
     expect((await page.locator('#noop').evaluate(CONTRAST_PROBE)).ok, 'composite equal to backdrop must fail').toBe(false)
     expect((await page.locator('#distinct').evaluate(CONTRAST_PROBE)).ok, 'distinct opaque fill must pass').toBe(true)
+    expect((await page.locator('#oklch').evaluate(CONTRAST_PROBE)).ok, 'distinct OKLCH fill must pass').toBe(true)
+    expect((await page.locator('#oklch-noop').evaluate(CONTRAST_PROBE)).ok, 'OKLCH composite equal to backdrop must fail').toBe(false)
+    expect((await page.locator('#oklch-transparent').evaluate(CONTRAST_PROBE)).ok, 'transparent OKLCH fill must fail').toBe(false)
   })
 
   for (const theme of ['light', 'dark'] as const) {
@@ -455,6 +542,8 @@ test.describe('read-checkpoint visual states (capture for human inspection)', ()
             login: [{ body: { session: SESSION, access_expires_at: '2026-10-13T01:00:00Z' } }],
             logout: [{ body: { local_revoked: true, upstream_status: 'pending' } }],
             organizations: [{ body: ORGANIZATIONS }],
+            // AIDEV-NOTE: Password scenarios require the public sign-in options endpoint before the form renders.
+            sso: [{ body: { enabled: false, provider: null, password_login_enabled: true } }],
           }
           await sequence(page, ROUTE_MATCHERS[key], scenario.routes[key] ?? defaults[key])
         }

@@ -8,7 +8,7 @@
 import { useMemo, type ReactElement } from 'react'
 import { useProtectedRequest } from '../protectedRequest'
 import { policeOutreachGateway } from '../outreachSessionPolicy'
-import { useSession } from '../session'
+import { useSessionActions } from '../session'
 import { useFeatureGateways } from '../featureGateways'
 import { buildFeatureRegistry, type FeatureRegistration } from '../featureRegistry'
 import { createOutreachFeatureModule } from '@/features/outreach/featureModule'
@@ -25,7 +25,7 @@ export interface FeatureModule extends FeatureRegistration {
 // exactOptionalPropertyTypes forbids passing `undefined` explicitly, hence the conditional spreads.
 function useOutreachProps(): OutreachPageProps {
   const { context, proof } = useProtectedRequest()
-  const { scope, handleError } = useSession()
+  const { scope, handleError } = useSessionActions()
   const { outreach: raw } = useFeatureGateways()
   // AIDEV-NOTE: FE-805 central session policy. Celeste's pages call the gateway directly, so every
   // operation is policed through SessionProvider.handleError (401 -> restoring access, 409 -> recovery).

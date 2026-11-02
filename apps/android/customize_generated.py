@@ -55,6 +55,14 @@ def customize(project: Path) -> None:
     if not uses:
         root.insert(0, ET.Element("uses-permission", {ANDROID + "name": NETWORK_STATE}))
     targets[0].set(ANDROID + "windowSoftInputMode", "adjustResize")
+    # AIDEV-NOTE: The phone/tablet shell has no TV navigation; Tauri's default TV launcher must not advertise it.
+    for feature in root.findall("uses-feature"):
+        if feature.get(ANDROID + "name") == "android.software.leanback":
+            root.remove(feature)
+    for intent in targets[0].findall("intent-filter"):
+        for category in intent.findall("category"):
+            if category.get(ANDROID + "name") == "android.intent.category.LEANBACK_LAUNCHER":
+                intent.remove(category)
     ET.register_namespace("android", ANDROID[1:-1])
     activity.write_text(replacement, encoding="utf-8")
     tree.write(manifest, encoding="unicode", xml_declaration=True)

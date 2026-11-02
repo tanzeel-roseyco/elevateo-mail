@@ -1,0 +1,2 @@
+0:0 777 /src
+0:0 777 /src/ops/tests/be02/run.py

@@ -1,8 +1,8 @@
-import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { MemoryRouter } from 'react-router'
 import type { EmailFinderGateway, FinderJob } from './contract'
-import { EmailFinderPage } from './EmailFinderPage'
+import { EmailFinderPage, FINDER_POLL_INTERVAL_MS } from './EmailFinderPage'
 import { ResultView } from './FinderResults'
 
 const harness = vi.hoisted(() => ({ gateway: undefined as EmailFinderGateway | undefined,
@@ -110,5 +110,74 @@ describe('email finder workspace', () => {
     expect(container.querySelector('img')).toBeNull()
     expect(container.querySelector('a')).toBeNull()
     expect(screen.getByText('<img src=x onerror=alert(1)>')).toBeTruthy()
+  })
+})
+
+// Background polling: only while a job is queued or running, and never while the tab is hidden.
+describe('email finder background polling', () => {
+  beforeEach(() => vi.useFakeTimers())
+  afterEach(() => {
+    vi.useRealTimers()
+    Reflect.deleteProperty(document, 'hidden')
+  })
+  const flush = () => act(async () => { await vi.advanceTimersByTimeAsync(0) })
+  const tick = () => act(async () => { await vi.advanceTimersByTimeAsync(FINDER_POLL_INTERVAL_MS) })
+  const activeJobs = () => { if (harness.gateway) harness.gateway.jobs = vi.fn(async () => ({ items: [job] })) }
+
+  it('does not poll when no job is queued or running', async () => {
+    open('/email-finder?mode=jobs')
+    await flush()
+    expect(harness.gateway?.jobs).toHaveBeenCalledTimes(1)
+    await tick()
+    await tick()
+    expect(harness.gateway?.jobs).toHaveBeenCalledTimes(1)
+  })
+
+  it('polls every interval while a job is still running', async () => {
+    activeJobs()
+    open('/email-finder?mode=jobs')
+    await flush()
+    expect(harness.gateway?.jobs).toHaveBeenCalledTimes(1)
+    await tick()
+    expect(harness.gateway?.jobs).toHaveBeenCalledTimes(2)
+    await tick()
+    expect(harness.gateway?.jobs).toHaveBeenCalledTimes(3)
+  })
+
+  it('skips ticks while the tab is hidden and refreshes once it is visible again', async () => {
+    activeJobs()
+    let hidden = true
+    Object.defineProperty(document, 'hidden', { configurable: true, get: () => hidden })
+    open('/email-finder?mode=jobs')
+    await flush()
+    expect(harness.gateway?.jobs).toHaveBeenCalledTimes(1)
+    await tick()
+    expect(harness.gateway?.jobs).toHaveBeenCalledTimes(1)
+    hidden = false
+    await act(async () => { document.dispatchEvent(new Event('visibilitychange')); await vi.advanceTimersByTimeAsync(0) })
+    expect(harness.gateway?.jobs).toHaveBeenCalledTimes(2)
+  })
+
+  it('stops polling once the job reaches a terminal state', async () => {
+    if (harness.gateway) harness.gateway.jobs = vi.fn().mockResolvedValueOnce({ items: [job] }).mockResolvedValue({ items: [{ ...job, status: 'completed', completed: 1 }] })
+    open('/email-finder?mode=jobs')
+    await flush()
+    await tick()
+    expect(harness.gateway?.jobs).toHaveBeenCalledTimes(2)
+    await tick()
+    await tick()
+    expect(harness.gateway?.jobs).toHaveBeenCalledTimes(2)
+  })
+
+  it('keeps polling after a failed tick and shows the load error', async () => {
+    activeJobs()
+    if (harness.gateway) harness.gateway.health = vi.fn().mockResolvedValueOnce(health).mockRejectedValueOnce(new Error('offline')).mockResolvedValue(health)
+    open('/email-finder?mode=jobs')
+    await flush()
+    await tick()
+    expect(screen.getByText(/Could not load finder data/)).toBeTruthy()
+    await tick()
+    expect(harness.gateway?.jobs).toHaveBeenCalledTimes(3)
+    expect(screen.queryByText(/Could not load finder data/)).toBeNull()
   })
 })

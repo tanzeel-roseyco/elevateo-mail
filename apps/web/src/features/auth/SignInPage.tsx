@@ -9,7 +9,7 @@
 // Presentation: a centred Flux card on the zinc-50 canvas (DESIGN-SPEC §5.3/§5.5).
 import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } from 'react'
 import { classifyFailure, type ActionFailure } from '@/app/actionFailure'
-import { useGateway, useSession, type SignedOutNotice } from '@/app/session'
+import { useGateway, useSession, useSessionActions, type SignedOutNotice } from '@/app/session'
 import type { MailroomGateway } from '@/data/gateway'
 import {
   isSsoProviderUnsupported,
@@ -324,7 +324,7 @@ interface PasswordEntryProps {
 
 /** Password sign-in and recovery request. Only rendered when the server reports password login enabled. */
 function PasswordEntry({ mode, onMode, email, onEmail, describedBy, locked, secondary }: PasswordEntryProps) {
-  const { signIn, requestRecovery } = useSession()
+  const { signIn, requestRecovery } = useSessionActions()
   const [password, setPassword] = useState('')
   const [busy, setBusy] = useState(false)
   const [failure, setFailure] = useState<ActionFailure | null>(null)

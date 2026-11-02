@@ -1,0 +1,346 @@
+=== rustup component add rustfmt clippy
+docker : info: component 'rustfmt' for target 'x86_64-unknown-linux-gnu' is up to date
+At line:2 char:393
++ ... EXITCODE }; docker start -a elevateo-client-native-gate-20261101 2>&1 ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (info: component...' is up to date:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+info: component 'clippy' for target 'x86_64-unknown-linux-gnu' is up to date
+GATE_EXIT=0
+=== cargo fmt --all -- --check
+GATE_EXIT=0
+=== cargo test --locked
+   Compiling elevateo-native v0.1.0 (/work/apps/native/src-tauri)
+warning: fields `access_token` and `expires_in_secs` are never read
+   --> src/auth.rs:212:9
+    |
+210 | pub struct TokenSet {
+    |            -------- fields in this struct
+211 |     /// Kept in memory only; never persisted.
+212 |     pub access_token: String,
+    |         ^^^^^^^^^^^^
+...
+215 |     pub expires_in_secs: u64,
+    |         ^^^^^^^^^^^^^^^
+    |
+    = note: `TokenSet` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored 
+during dead code analysis
+    = note: `#[warn(dead_code)]` on by default
+
+warning: variant `Rejected` is never constructed
+   --> src/auth.rs:222:5
+    |
+219 | pub enum ExchangeError {
+    |          ------------- variant in this enum
+...
+222 |     Rejected(String),
+    |     ^^^^^^^^
+    |
+    = note: `ExchangeError` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored 
+during dead code analysis
+
+warning: constant `NATIVE_SESSIONS_PATH` is never used
+   --> src/auth.rs:230:11
+    |
+230 | pub const NATIVE_SESSIONS_PATH: &str = "/v1/native/sessions";
+    |           ^^^^^^^^^^^^^^^^^^^^
+
+warning: field `0` is never read
+   --> src/auth.rs:246:17
+    |
+246 |     Unavailable(String),
+    |     ----------- ^^^^^^
+    |     |
+    |     field in this variant
+    |
+    = note: `StoreError` has a derived impl for the trait `Debug`, but this is intentionally ignored during dead code 
+analysis
+help: consider changing the field to be of unit type to suppress this warning while preserving the field numbering, or 
+remove the field
+    |
+246 -     Unavailable(String),
+246 +     Unavailable(()),
+    |
+
+warning: method `load_refresh` is never used
+   --> src/auth.rs:251:8
+    |
+249 | pub trait CredentialStore: Send + Sync {
+    |           --------------- method in this trait
+250 |     fn save_refresh(&self, refresh_token: &str) -> Result<(), StoreError>;
+251 |     fn load_refresh(&self) -> Result<Option<String>, StoreError>;
+    |        ^^^^^^^^^^^^
+
+warning: function `archive_current_bundle` is never used
+   --> src/update.rs:167:8
+    |
+167 | pub fn archive_current_bundle(app_bundle: &Path, archive: &Path) -> io::Result<()> {
+    |        ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `restore_previous_bundle` is never used
+   --> src/update.rs:178:8
+    |
+178 | pub fn restore_previous_bundle(app_bundle: &Path, archive: &Path) -> io::Result<()> {
+    |        ^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `copy_dir_recursive` is never used
+   --> src/update.rs:210:4
+    |
+210 | fn copy_dir_recursive(from: &Path, to: &Path) -> io::Result<()> {
+    |    ^^^^^^^^^^^^^^^^^^
+
+warning: `elevateo-native` (lib) generated 8 warnings
+warning: `elevateo-native` (lib test) generated 5 warnings (5 duplicates)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 46.66s
+     Running unittests src/lib.rs (/tmp/native-target/debug/deps/elevateo_native-79a2c20160b9e1a0)
+
+running 40 tests
+test auth::tests::abandoning_the_login_cancels_its_listener ... ok
+test auth::tests::authorize_url_carries_state_and_s256_challenge ... ok
+test auth::tests::authorize_url_ignores_the_issuer_application_path ... ok
+test auth::tests::authorize_url_rejects_cleartext_and_credential_issuers ... ok
+test auth::tests::cancelled_or_expired_listener_stops_and_disconnects_the_receiver ... ok
+test auth::tests::conforms_to_shared_auth_vectors ... ok
+test auth::tests::empty_code_is_a_provider_error ... ok
+test auth::tests::exchange_port_reports_contract_unavailable ... ok
+test auth::tests::expired_pending_login_is_rejected ... ok
+test auth::tests::loopback_listener_parses_one_callback ... ok
+test auth::tests::matching_callback_completes_and_yields_grant ... ok
+test auth::tests::newer_login_replaces_the_older_pending_one ... ok
+test auth::tests::oversized_request_line_is_rejected_and_listener_keeps_serving ... ok
+test auth::tests::pkce_challenge_is_s256_of_verifier ... ok
+test auth::tests::provider_error_callback_keeps_state_and_error_without_a_code ... ok
+test auth::tests::replayed_callback_is_rejected_after_first_completion ... ok
+test auth::tests::stalled_client_cannot_block_the_genuine_callback ... ok
+test auth::tests::state_mismatch_is_rejected_and_burns_the_pending_login ... ok
+test auth::tests::stray_request_gets_404_and_does_not_consume_the_listener ... ok
+test config::tests::accepts_exact_public_https_origin ... ok
+test config::tests::candidate_marker_cannot_promote_qa_host ... ok
+test config::tests::fixture_and_unmarked_artifacts_cannot_launch ... ok
+test config::tests::isolated_qa_requires_debug_and_the_exact_origin ... ok
+test config::tests::rejects_cleartext_local_and_placeholder ... ok
+test config::tests::rejects_credentials_path_and_query ... ok
+test config::tests::rejects_missing_whitespace_ip_and_oversized_origins ... ok
+test navigation::tests::configured_identity_provider_origin_can_navigate_for_sso ... ok
+test navigation::tests::downgraded_and_local_schemes_are_denied ... ok
+test navigation::tests::identity_provider_lookalikes_and_cleartext_are_denied ... ok
+test navigation::tests::identity_provider_origin_parses_only_safe_https_issuers ... ok
+test navigation::tests::other_origins_and_lookalikes_are_denied ... ok
+test navigation::tests::same_origin_routes_can_navigate ... ok
+test update::tests::corrupt_or_unreadable_marker_is_an_error_not_absence ... ok
+test update::tests::failed_launch_without_archive_cannot_roll_back ... ok
+test update::tests::failed_restore_keeps_the_current_bundle_and_leaves_no_staging ... ok
+test update::tests::healthy_update_gets_its_first_launch_and_is_kept_after_reporting_ready ... ok
+test update::tests::install_is_blocked_while_busy_or_before_the_web_ui_reported ... ok
+test update::tests::marker_clear_is_idempotent ... ok
+test update::tests::restore_copies_from_a_separate_archive_location_and_cleans_up ... ok
+test update::tests::update_that_never_reaches_ready_rolls_back_on_the_following_start ... ok
+
+test result: ok. 40 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.49s
+
+     Running unittests src/main.rs (/tmp/native-target/debug/deps/elevateo_native-e5671b6c252e1609)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests elevateo_native
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+GATE_EXIT=0
+=== cargo check --locked
+    Checking elevateo-native v0.1.0 (/work/apps/native/src-tauri)
+warning: fields `access_token` and `expires_in_secs` are never read
+   --> src/auth.rs:212:9
+    |
+210 | pub struct TokenSet {
+    |            -------- fields in this struct
+211 |     /// Kept in memory only; never persisted.
+212 |     pub access_token: String,
+    |         ^^^^^^^^^^^^
+...
+215 |     pub expires_in_secs: u64,
+    |         ^^^^^^^^^^^^^^^
+    |
+    = note: `TokenSet` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored 
+during dead code analysis
+    = note: `#[warn(dead_code)]` on by default
+
+warning: variant `Rejected` is never constructed
+   --> src/auth.rs:222:5
+    |
+219 | pub enum ExchangeError {
+    |          ------------- variant in this enum
+...
+222 |     Rejected(String),
+    |     ^^^^^^^^
+    |
+    = note: `ExchangeError` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored 
+during dead code analysis
+
+warning: constant `NATIVE_SESSIONS_PATH` is never used
+   --> src/auth.rs:230:11
+    |
+230 | pub const NATIVE_SESSIONS_PATH: &str = "/v1/native/sessions";
+    |           ^^^^^^^^^^^^^^^^^^^^
+
+warning: field `0` is never read
+   --> src/auth.rs:246:17
+    |
+246 |     Unavailable(String),
+    |     ----------- ^^^^^^
+    |     |
+    |     field in this variant
+    |
+    = note: `StoreError` has a derived impl for the trait `Debug`, but this is intentionally ignored during dead code 
+analysis
+help: consider changing the field to be of unit type to suppress this warning while preserving the field numbering, or 
+remove the field
+    |
+246 -     Unavailable(String),
+246 +     Unavailable(()),
+    |
+
+warning: method `load_refresh` is never used
+   --> src/auth.rs:251:8
+    |
+249 | pub trait CredentialStore: Send + Sync {
+    |           --------------- method in this trait
+250 |     fn save_refresh(&self, refresh_token: &str) -> Result<(), StoreError>;
+251 |     fn load_refresh(&self) -> Result<Option<String>, StoreError>;
+    |        ^^^^^^^^^^^^
+
+warning: function `archive_current_bundle` is never used
+   --> src/update.rs:167:8
+    |
+167 | pub fn archive_current_bundle(app_bundle: &Path, archive: &Path) -> io::Result<()> {
+    |        ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `restore_previous_bundle` is never used
+   --> src/update.rs:178:8
+    |
+178 | pub fn restore_previous_bundle(app_bundle: &Path, archive: &Path) -> io::Result<()> {
+    |        ^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `copy_dir_recursive` is never used
+   --> src/update.rs:210:4
+    |
+210 | fn copy_dir_recursive(from: &Path, to: &Path) -> io::Result<()> {
+    |    ^^^^^^^^^^^^^^^^^^
+
+warning: `elevateo-native` (lib) generated 8 warnings
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.35s
+GATE_EXIT=0
+=== cargo clippy --locked --all-targets -- -D clippy::all
+    Checking elevateo-native v0.1.0 (/work/apps/native/src-tauri)
+warning: fields `access_token` and `expires_in_secs` are never read
+   --> src/auth.rs:212:9
+    |
+210 | pub struct TokenSet {
+    |            -------- fields in this struct
+211 |     /// Kept in memory only; never persisted.
+212 |     pub access_token: String,
+    |         ^^^^^^^^^^^^
+...
+215 |     pub expires_in_secs: u64,
+    |         ^^^^^^^^^^^^^^^
+    |
+    = note: `TokenSet` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored 
+during dead code analysis
+    = note: `#[warn(dead_code)]` on by default
+
+warning: variant `Rejected` is never constructed
+   --> src/auth.rs:222:5
+    |
+219 | pub enum ExchangeError {
+    |          ------------- variant in this enum
+...
+222 |     Rejected(String),
+    |     ^^^^^^^^
+    |
+    = note: `ExchangeError` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored 
+during dead code analysis
+
+warning: constant `NATIVE_SESSIONS_PATH` is never used
+   --> src/auth.rs:230:11
+    |
+230 | pub const NATIVE_SESSIONS_PATH: &str = "/v1/native/sessions";
+    |           ^^^^^^^^^^^^^^^^^^^^
+
+warning: field `0` is never read
+   --> src/auth.rs:246:17
+    |
+246 |     Unavailable(String),
+    |     ----------- ^^^^^^
+    |     |
+    |     field in this variant
+    |
+    = note: `StoreError` has a derived impl for the trait `Debug`, but this is intentionally ignored during dead code 
+analysis
+help: consider changing the field to be of unit type to suppress this warning while preserving the field numbering, or 
+remove the field
+    |
+246 -     Unavailable(String),
+246 +     Unavailable(()),
+    |
+
+warning: method `load_refresh` is never used
+   --> src/auth.rs:251:8
+    |
+249 | pub trait CredentialStore: Send + Sync {
+    |           --------------- method in this trait
+250 |     fn save_refresh(&self, refresh_token: &str) -> Result<(), StoreError>;
+251 |     fn load_refresh(&self) -> Result<Option<String>, StoreError>;
+    |        ^^^^^^^^^^^^
+
+warning: function `archive_current_bundle` is never used
+   --> src/update.rs:167:8
+    |
+167 | pub fn archive_current_bundle(app_bundle: &Path, archive: &Path) -> io::Result<()> {
+    |        ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `restore_previous_bundle` is never used
+   --> src/update.rs:178:8
+    |
+178 | pub fn restore_previous_bundle(app_bundle: &Path, archive: &Path) -> io::Result<()> {
+    |        ^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `copy_dir_recursive` is never used
+   --> src/update.rs:210:4
+    |
+210 | fn copy_dir_recursive(from: &Path, to: &Path) -> io::Result<()> {
+    |    ^^^^^^^^^^^^^^^^^^
+
+warning: `elevateo-native` (lib) generated 8 warnings
+warning: `elevateo-native` (lib test) generated 5 warnings (5 duplicates)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.01s
+GATE_EXIT=0
+=== python3 ../ci/verify_boundary.py
+native static package boundary PASS
+GATE_EXIT=0
+=== python3 -m unittest test_macos_release test_validate_macos_config
+..............
+----------------------------------------------------------------------
+Ran 14 tests in 0.258s
+
+OK
+GATE_EXIT=0
+=== python3 -m unittest discover -s . -p test_*.py
+..........................................
+----------------------------------------------------------------------
+Ran 42 tests in 0.355s
+
+OK
+GATE_EXIT=0
+=== python3 -m unittest discover -s . -p test_*.py
+..........................
+----------------------------------------------------------------------
+Ran 26 tests in 0.248s
+
+OK
+GATE_EXIT=0
+FAILED_GATES=0

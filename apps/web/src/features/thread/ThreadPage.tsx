@@ -1,3 +1,4 @@
+// AIDEV-NOTE: Secondary reader text uses theme-aware muted colors for contrast on dark surfaces.
 // Paginated plaintext conversation reader. Escaped-text-in-<pre> presentation follows the audited
 // first-party live reader; no HTML, Markdown, autolinks or remote images. Optional private
 // attachment metadata is explicit, and clean bytes pass only through the authorized proxy.
@@ -11,6 +12,7 @@ import { GatewayError, isApiError } from '@/data/errors'
 import { useMailbox } from '@/app/mailboxes'
 import { useGateway, useSession } from '@/app/session'
 import { draftIntentKey, formatRecipients, useDraftIntent } from '@/app/draftIntent'
+import { appendUnique } from '@/domain/appendUnique'
 import { edit, newDraftBuffer } from '@/domain/draftOperation'
 import { forwardBody, forwardSubject, replyAllRecipients, replySubject, usableAddress } from '@/domain/replyComposition'
 import { isSnoozing, parseThreadView, type ThreadView } from '@/domain/threadFolders'
@@ -190,11 +192,10 @@ function ConversationReader({ mailboxId, threadId, readDirectMessage, attachment
         setState((prev) => {
           // A reset replaces accumulated messages with the fresh first page (FE-R10).
           const existing = append && !outcome.replace && prev.status === 'ready' ? prev.messages : []
-          const seen = new Set(existing.map((m) => m.id))
           return {
             status: 'ready',
             thread: outcome.page.thread,
-            messages: [...existing, ...outcome.page.messages.filter((m) => !seen.has(m.id))],
+            messages: appendUnique(existing, outcome.page.messages),
             nextCursor: outcome.page.next_cursor,
             loadingMore: false,
             pageError: null,
@@ -349,7 +350,7 @@ function ConversationReader({ mailboxId, threadId, readDirectMessage, attachment
                 {state.thread.unread && <Badge tone="accent" size="sm">Unread</Badge>}
               </div>
               <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-2">
-                <p className="text-xs text-zinc-500">
+                <p className="text-xs text-muted">
                   {state.thread.message_count} message{state.thread.message_count === 1 ? '' : 's'} in this conversation
                 </p>
                 <ReadStateControl
@@ -366,15 +367,15 @@ function ConversationReader({ mailboxId, threadId, readDirectMessage, attachment
                   directResult?.status === 'error' ? (
                     <div role="alert"><Callout variant="danger" actions={<Button size="sm" onClick={() => setDirectRetry((count) => count + 1)}>Retry message</Button>}>The message could not be loaded.</Callout></div>
                   ) : (
-                    <p role="status"><Callout variant="neutral">{directResult?.status === 'unavailable' ? 'This message is unavailable in this conversation.' : 'Loading selected message…'}</Callout></p>
+                    <div role="status"><Callout variant="neutral">{directResult?.status === 'unavailable' ? 'This message is unavailable in this conversation.' : 'Loading selected message…'}</Callout></div>
                   )
                 ) : (
-                  <p role="status"><Callout variant="neutral">{state.nextCursor === null ? 'This message is unavailable in this conversation.' : 'This message is on a later page. Show more messages to find it.'}</Callout></p>
+                  <div role="status"><Callout variant="neutral">{state.nextCursor === null ? 'This message is unavailable in this conversation.' : 'This message is on a later page. Show more messages to find it.'}</Callout></div>
                 )}
               </div>
             )}
             {canCompose && (replyMessage === null || replyAddress(replyMessage) === null) && (
-              <p className="px-6 pb-4 text-xs text-zinc-500">
+              <p className="px-6 pb-4 text-xs text-muted">
                 {selectedMessageId === null ? 'A message with a sender is needed to reply.' : 'This selected message cannot be replied to yet.'}
               </p>
             )}
@@ -469,12 +470,12 @@ function MessageHeader({ message }: { message: Message }) {
       <Avatar name={name} size={10} shape="circle" />
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-semibold text-zinc-800 dark:text-white">{name}</p>
-        <p className="truncate text-xs text-zinc-500">
+        <p className="truncate text-xs text-muted">
           {message.sender?.display_name && message.sender.address ? `${message.sender.address} · ` : ''}
           {sameAddressLine(message)}
         </p>
       </div>
-      <time dateTime={message.sent_at ?? undefined} className="shrink-0 text-xs tabular-nums text-zinc-500">
+      <time dateTime={message.sent_at ?? undefined} className="shrink-0 text-xs tabular-nums text-muted">
         {message.sent_at === null ? 'No date recorded' : formatDateTime(message.sent_at)}
       </time>
     </header>

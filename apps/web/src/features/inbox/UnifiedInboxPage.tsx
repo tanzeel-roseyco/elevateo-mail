@@ -11,13 +11,14 @@
 // AIDEV-NOTE: One mailbox skips the unified list and redirects to that mailbox's ordinary inbox page.
 // Like InboxPage, the list owner is keyed by the view so a filter change starts from a fresh loading
 // state and the previous read is aborted in the unmount commit (D3/D4).
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Link, Navigate, useNavigate, useSearchParams } from 'react-router'
 import type { Mailbox, OrganizationThreadPage, ThreadSummary } from '@/data/contract'
 import { GatewayError, isApiError } from '@/data/errors'
 import { useGateway, useSession } from '@/app/session'
 import { useMailboxes } from '@/app/mailboxes'
 import { SearchBox } from '@/app/SearchBox'
+import { appendUnique } from '@/domain/appendUnique'
 import { matchesView, type FolderFacts } from '@/domain/threadFolders'
 import { cx } from '@/lib/format'
 import { newTraversalBudget, readPage } from '@/lib/readPage'
@@ -29,8 +30,12 @@ import { PageHeader } from '@/ui/PageHeader'
 import { ArrowPathIcon, InboxIcon, StarIcon } from '@/ui/icons'
 import { isTypingTarget, parseView, VIEW_LABELS, type InboxView } from './inboxContext'
 import { MessageRow, MessageRowSkeleton } from './MessageRow'
+import { useRowHandlers } from './useRowHandlers'
 import { canSnoozeIn, folderActionsFor, type RowAction } from './rowActions'
 import { useMailboxThreadWrites } from './useThreadMutations'
+
+// One shared empty list for every non-ready frame, so row handlers keyed on `visible` do not churn.
+const NO_ROWS: readonly ThreadSummary[] = []
 
 const VIEW_ORDER: readonly InboxView[] = ['all', 'unread', 'starred', 'snoozed', 'archive', 'spam', 'trash']
 
@@ -135,9 +140,7 @@ function UnifiedList({ view, mailboxes }: { view: InboxView; mailboxes: readonly
           // A cursor reset replaces accumulated rows with the fresh first page; an append merges onto
           // the live rows (which already hold confirmed star/read/folder changes), deduplicated by id.
           const existing = append && !outcome.replace && prev.status === 'ready' ? prev.items : []
-          const seen = new Set(existing.map((t) => t.id))
-          const merged = [...existing, ...outcome.page.items.filter((t) => !seen.has(t.id))]
-          return { status: 'ready', items: merged, nextCursor: outcome.page.next_cursor, loadingMore: false, pageError: null }
+          return { status: 'ready', items: appendUnique(existing, outcome.page.items), nextCursor: outcome.page.next_cursor, loadingMore: false, pageError: null }
         })
       })
     },
@@ -151,7 +154,7 @@ function UnifiedList({ view, mailboxes }: { view: InboxView; mailboxes: readonly
   useLayoutEffect(() => () => abortRef.current?.abort(), [])
 
   const ready = state.status === 'ready'
-  const visible: ThreadSummary[] = ready ? state.items : []
+  const visible: readonly ThreadSummary[] = ready ? state.items : NO_ROWS
 
   /**
    * Apply a confirmed change; the row leaves once it no longer matches the view (Gmail). When the
@@ -192,9 +195,11 @@ function UnifiedList({ view, mailboxes }: { view: InboxView; mailboxes: readonly
     if (outcome.kind === 'ok') reconcile(thread, { starred: outcome.value.starred })
   }
 
-  const actions = folderActionsFor(view)
+  const actions = useMemo(() => folderActionsFor(view), [view])
   const snoozable = canSnoozeIn(view)
   const canWrite = writes.canWrite
+
+  const rowHandlers = useRowHandlers({ visible, begin, star, setRead, move, snooze })
 
   // Same roving keys as the mailbox list (j/k, o, s, Shift+U, e/!/#); selection keys are absent
   // because this view has no bulk toolbar.
@@ -296,14 +301,14 @@ function UnifiedList({ view, mailboxes }: { view: InboxView; mailboxes: readonly
               <MessageRow
                 key={thread.id}
                 thread={thread}
-                to={`/mailboxes/${thread.mailbox_id}/threads/${thread.id}${view === 'all' ? '' : `?filter=${view}`}`}
+                filter={view}
                 mailboxName={nameOf(thread.mailbox_id)}
                 selected={false}
-                onStar={canWrite ? () => { begin(); void star(thread) } : undefined}
-                onToggleRead={canWrite ? () => { begin(); void setRead(thread, thread.unread) } : undefined}
+                onStar={canWrite ? rowHandlers.onStar : undefined}
+                onToggleRead={canWrite ? rowHandlers.onToggleRead : undefined}
                 actions={actions}
-                onAction={canWrite ? (action) => { begin(); void move(thread, action) } : undefined}
-                onSnooze={canWrite && snoozable ? (at) => { begin(); void snooze(thread, at) } : undefined}
+                onAction={canWrite ? rowHandlers.onAction : undefined}
+                onSnooze={canWrite && snoozable ? rowHandlers.onSnooze : undefined}
                 busy={writes.busy.has(thread.id)}
               />
             ))}

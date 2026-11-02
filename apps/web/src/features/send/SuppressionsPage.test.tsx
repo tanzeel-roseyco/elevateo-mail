@@ -1,5 +1,5 @@
-import { render, screen } from '@testing-library/react'
-import { MemoryRouter, Route, Routes } from 'react-router'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { Link, MemoryRouter, Route, Routes } from 'react-router'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { SessionProvider } from '@/app/session'
 import { FeatureGatewaysProvider } from '@/app/featureGateways'
@@ -16,6 +16,7 @@ function renderPage(port: DeliveryReportsGateway | undefined, query = '') {
     <SessionProvider gateway={createFixtureGateway()}>
       <FeatureGatewaysProvider value={port === undefined ? {} : { deliveryReports: port }}>
         <MemoryRouter initialEntries={[`/mailboxes/${CD.mailboxId}/suppressions${query}`]}>
+          <Link to={`/mailboxes/${CD.mailboxId}/suppressions?q=other`}>Other search</Link>
           <Routes><Route path="/mailboxes/:mailboxId/suppressions" element={<SuppressionsPage />} /></Routes>
         </MemoryRouter>
       </FeatureGatewaysProvider>
@@ -41,6 +42,16 @@ describe('SuppressionsPage', () => {
     renderPage(port({ listSuppressions: vi.fn(async () => { throw new GatewayError('transport', 'network', 'down') }) }))
     expect(await screen.findByText('Suppressions could not be loaded')).toBeTruthy()
     expect(screen.getByRole('button', { name: 'Try again' })).toBeTruthy()
+  })
+
+  it('replaces an unsent search draft when the URL query changes', async () => {
+    const p = port()
+    renderPage(p, '?q=annoyed')
+    await screen.findByText('annoyed@example.invalid')
+    fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'unsent draft' } })
+    fireEvent.click(screen.getByRole('link', { name: 'Other search' }))
+    await waitFor(() => expect(p.listSuppressions).toHaveBeenLastCalledWith(expect.anything(), expect.any(String), { q: 'other' }, expect.any(AbortSignal)))
+    expect((screen.getByRole('searchbox') as HTMLInputElement).value).toBe('other')
   })
 
   it('shows an honest unavailable state in production without support', async () => {

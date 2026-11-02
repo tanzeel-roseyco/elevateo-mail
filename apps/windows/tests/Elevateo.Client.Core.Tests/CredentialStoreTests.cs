@@ -41,4 +41,46 @@ public class CredentialStoreTests
         Assert.Throws<ArgumentException>(() => store.WriteRefreshToken(""));
         Assert.Null(store.ReadRefreshToken());
     }
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void Establish_WithoutRefresh_ErasesPreviousCredential(bool previousSession)
+    {
+        var store = new InMemoryTokenStore();
+        var session = new AuthSession(store);
+        store.WriteRefreshToken("account-a");
+        if (previousSession) session.Establish(new SignInSuccess("a", DateTimeOffset.UtcNow.AddMinutes(5), "account-a"));
+        session.Establish(new SignInSuccess("b", DateTimeOffset.UtcNow.AddMinutes(5), null));
+        Assert.Equal("b", session.AccessToken);
+        Assert.Null(store.ReadRefreshToken());
+    }
+
+    [Theory]
+    [InlineData("refresh")]
+    [InlineData(null)]
+    public void Establish_StorageFailure_DoesNotPublishAccessToken(string? refresh)
+    {
+        var session = new AuthSession(new ThrowingStore());
+        Assert.Throws<IOException>(() => session.Establish(new SignInSuccess("b", DateTimeOffset.UtcNow, refresh)));
+        Assert.False(session.IsSignedIn);
+        Assert.Null(session.AccessToken);
+    }
+
+    [Fact]
+    public void Establish_EmptyRefresh_PreservesPreviousSession()
+    {
+        var store = new InMemoryTokenStore();
+        var session = new AuthSession(store);
+        session.Establish(new SignInSuccess("a", DateTimeOffset.UtcNow, "old"));
+        Assert.Throws<ArgumentException>(() => session.Establish(new SignInSuccess("b", DateTimeOffset.UtcNow, "")));
+        Assert.Equal("a", session.AccessToken);
+        Assert.Equal("old", store.ReadRefreshToken());
+    }
+
+    private sealed class ThrowingStore : ITokenStore
+    {
+        public string? ReadRefreshToken() => null;
+        public void WriteRefreshToken(string refreshToken) => throw new IOException("credential storage failed");
+        public void Erase() => throw new IOException("credential erase failed");
+    }
 }

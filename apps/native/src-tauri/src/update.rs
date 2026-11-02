@@ -107,9 +107,12 @@ pub fn read_marker(dir: &Path) -> io::Result<Option<LaunchMarker>> {
         Err(e) if e.kind() == io::ErrorKind::NotFound => return Ok(None),
         Err(e) => return Err(e),
     };
-    serde_json::from_str(&raw)
-        .map(Some)
-        .map_err(|e| io::Error::new(io::ErrorKind::InvalidData, format!("update marker is corrupt: {e}")))
+    serde_json::from_str(&raw).map(Some).map_err(|e| {
+        io::Error::new(
+            io::ErrorKind::InvalidData,
+            format!("update marker is corrupt: {e}"),
+        )
+    })
 }
 
 pub fn write_marker(dir: &Path, marker: &LaunchMarker) -> io::Result<()> {
@@ -235,7 +238,10 @@ mod tests {
     use super::*;
 
     fn marker(phase: MarkerPhase) -> LaunchMarker {
-        LaunchMarker { updated_to: "0.2.0".into(), phase }
+        LaunchMarker {
+            updated_to: "0.2.0".into(),
+            phase,
+        }
     }
 
     /// Simulates one process start the way lib.rs does it and returns the decision taken.
@@ -268,7 +274,10 @@ mod tests {
 
     #[test]
     fn failed_launch_without_archive_cannot_roll_back() {
-        assert_eq!(post_launch_action(Some(&marker(MarkerPhase::Launched)), false), PostLaunchAction::FailedNoArchive);
+        assert_eq!(
+            post_launch_action(Some(&marker(MarkerPhase::Launched)), false),
+            PostLaunchAction::FailedNoArchive
+        );
         assert_eq!(post_launch_action(None, true), PostLaunchAction::None);
     }
 
@@ -277,8 +286,14 @@ mod tests {
         let dir = tempdir("corrupt");
         assert_eq!(read_marker(&dir).unwrap(), None);
         fs::write(dir.join(MARKER_FILE), "{\"updated_to\":").unwrap();
-        assert_eq!(read_marker(&dir).unwrap_err().kind(), io::ErrorKind::InvalidData);
-        assert!(mark_ready(&dir).is_err(), "readiness must not report success over a corrupt marker");
+        assert_eq!(
+            read_marker(&dir).unwrap_err().kind(),
+            io::ErrorKind::InvalidData
+        );
+        assert!(
+            mark_ready(&dir).is_err(),
+            "readiness must not report success over a corrupt marker"
+        );
         // A directory where the file should be is unreadable as a marker, not "no update pending".
         fs::remove_file(dir.join(MARKER_FILE)).unwrap();
         fs::create_dir(dir.join(MARKER_FILE)).unwrap();
@@ -297,9 +312,24 @@ mod tests {
     #[test]
     fn install_is_blocked_while_busy_or_before_the_web_ui_reported() {
         assert_eq!(gate_install(None), InstallGate::BlockedUnknown);
-        assert_eq!(gate_install(Some(BusyState { unsaved_draft: true, send_in_progress: false })), InstallGate::BlockedBusy);
-        assert_eq!(gate_install(Some(BusyState { unsaved_draft: false, send_in_progress: true })), InstallGate::BlockedBusy);
-        assert_eq!(gate_install(Some(BusyState::default())), InstallGate::Proceed);
+        assert_eq!(
+            gate_install(Some(BusyState {
+                unsaved_draft: true,
+                send_in_progress: false
+            })),
+            InstallGate::BlockedBusy
+        );
+        assert_eq!(
+            gate_install(Some(BusyState {
+                unsaved_draft: false,
+                send_in_progress: true
+            })),
+            InstallGate::BlockedBusy
+        );
+        assert_eq!(
+            gate_install(Some(BusyState::default())),
+            InstallGate::Proceed
+        );
     }
 
     #[test]
@@ -313,7 +343,10 @@ mod tests {
         fs::create_dir_all(archive.join("Contents")).unwrap();
         fs::write(archive.join("Contents").join("version"), "good").unwrap();
         restore_previous_bundle(&bundle, &archive).unwrap();
-        assert_eq!(fs::read_to_string(bundle.join("Contents").join("version")).unwrap(), "good");
+        assert_eq!(
+            fs::read_to_string(bundle.join("Contents").join("version")).unwrap(),
+            "good"
+        );
         assert!(!bundle.join("version").exists());
         assert!(!archive.exists());
         assert!(!bundle.with_extension("failed-update").exists());
@@ -328,12 +361,18 @@ mod tests {
         fs::write(bundle.join("version"), "current").unwrap();
         let missing_archive = root.join("absent").join(PREVIOUS_BUNDLE_NAME);
         assert!(restore_previous_bundle(&bundle, &missing_archive).is_err());
-        assert_eq!(fs::read_to_string(bundle.join("version")).unwrap(), "current");
+        assert_eq!(
+            fs::read_to_string(bundle.join("version")).unwrap(),
+            "current"
+        );
         assert!(!bundle.with_extension("restore-staging").exists());
     }
 
     fn tempdir(name: &str) -> PathBuf {
-        let dir = std::env::temp_dir().join(format!("elevateo-update-test-{}-{name}", std::process::id()));
+        let dir = std::env::temp_dir().join(format!(
+            "elevateo-update-test-{}-{name}",
+            std::process::id()
+        ));
         let _ = fs::remove_dir_all(&dir);
         fs::create_dir_all(&dir).unwrap();
         dir

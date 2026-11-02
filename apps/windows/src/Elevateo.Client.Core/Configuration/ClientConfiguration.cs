@@ -5,7 +5,7 @@ public sealed class ClientConfiguration
 {
     public Uri ApiBaseUri { get; }
     public Uri OidcAuthorizeEndpoint { get; }
-    /// <summary>Server-side code exchange (docs/contract-requests.md §2), derived from the API base.</summary>
+    /// <summary>Server-side code exchange (docs/contract-requests.md section 2), derived from the API base.</summary>
     public Uri NativeSessionsEndpoint => new(ApiBaseUri, "v1/native/sessions");
     public string OidcClientId { get; }
     public TimeSpan RequestTimeout { get; }
@@ -41,6 +41,12 @@ public sealed class ClientConfiguration
             throw new ArgumentOutOfRangeException(nameof(requestTimeout), "Timeout must be in (0s, 5m].");
         }
 
+        if (!string.IsNullOrEmpty(api.Query) || !string.IsNullOrEmpty(api.Fragment))
+        {
+            throw new ArgumentException("API base URL must not contain a query or fragment.", nameof(apiBaseUrl));
+        }
+        // AIDEV-NOTE: relative API routes must preserve a configured deployment path prefix.
+        api = new Uri(api.AbsoluteUri.TrimEnd('/') + "/");
         return new ClientConfiguration(api, authorize, oidcClientId.Trim(), timeout);
     }
 

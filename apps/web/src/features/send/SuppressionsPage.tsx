@@ -53,7 +53,8 @@ export function SuppressionsPage() {
         A suppressed address is blocked from every future send until an administrator removes it on the server. Suppressions are added automatically after a hard bounce or a spam complaint, or manually by an administrator.
       </Callout>
       <form className="mb-6 flex max-w-md items-end gap-3" onSubmit={(event) => { event.preventDefault(); submit(new FormData(event.currentTarget).get('q') as string) }}>
-        <Field id="suppression-search" label="Search address"><TextInput id="suppression-search" name="q" type="search" defaultValue={q} placeholder="name@example.com" autoComplete="off" /></Field>
+        {/* AIDEV-NOTE: URL navigation must replace any unsent search draft with the active query. */}
+        <Field id="suppression-search" label="Search address"><TextInput key={q} id="suppression-search" name="q" type="search" defaultValue={q} placeholder="name@example.com" autoComplete="off" /></Field>
         <Button type="submit" variant="primary">Search</Button>
       </form>
       {organizationId === null ? (

@@ -233,6 +233,21 @@ describe('continuation and reset (FE-R08/R09)', () => {
     await screen.findByRole('heading', { name: 'This mailbox is unavailable', level: 2 })
     expect(screen.queryAllByRole('link').filter((link) => link.hasAttribute('data-thread'))).toHaveLength(0)
   })
+
+  it('a star clicked after a page merge writes against the latest thread state, not the first render', async () => {
+    const { gateway } = pagedGateway([threadPage(['A row'], 'c2'), threadPage(['B row'], null)])
+    const write = vi.spyOn(gateway, 'setThreadStar').mockImplementation(async (_ctx, _proof, threadId, input) =>
+      ({ context_id: 'context_A_0123456789', authorization_version: 'authz_A_0123456789', thread_id: threadId, mailbox_id: MB, starred: input.starred, star_version: 1, updated_at: null }))
+    renderInbox(gateway)
+    await screen.findByRole('link', { name: /A row/ })
+    fireEvent.click(screen.getByRole('button', { name: /^Star A row/ }))
+    await screen.findByRole('button', { name: /^Unstar A row/, pressed: true })
+    fireEvent.click(screen.getByRole('button', { name: 'Show more conversations' }))
+    await screen.findByRole('link', { name: /B row/ })
+    fireEvent.click(screen.getByRole('button', { name: /^Unstar A row/ }))
+    await waitFor(() => expect(write).toHaveBeenCalledTimes(2))
+    expect(write.mock.calls[1]?.[3]).toEqual({ mailbox_id: MB, starred: false })
+  })
 })
 
 describe('cross-navigation stale outcomes (D4)', () => {

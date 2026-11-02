@@ -63,7 +63,6 @@ export function Shell() {
   useDesktopReady(identity !== null)
   const signOutLocally = useCallback(() => void signOut('local'), [signOut])
   useDesktopSignOut(signOutLocally)
-  const updateNotice = useDesktopUpdateNotice()
   // AIDEV-NOTE: An SSO callback failure that lands on an already-signed-in browser must not sit in
   // the URL until a later sign-out shows it as a stale alert; drop it once the app renders.
   useEffect(() => {
@@ -149,6 +148,7 @@ export function Shell() {
 }
 
 function ProtectedShell({ session, replacedIdentity }: { session: Session; replacedIdentity: boolean }) {
+  const updateNotice = useDesktopUpdateNotice()
   const gateway = useGateway()
   const { scope, context, handleError, refresh } = useSession()
   const { pathname } = useLocation()

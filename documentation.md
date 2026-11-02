@@ -90,3 +90,53 @@ Detail: [docs/desktop-and-connectors.md](docs/desktop-and-connectors.md).
 
 All tests run in Docker; commands are in the README "Testing" table. Verification receipts per milestone are in
 [docs/completion/](docs/completion/). Review records and defect density are in [code-reviews.md](code-reviews.md).
+
+## Client verification checkpoint — 2026-11-01
+
+Windows: Docker Release build passes with 0 warnings/errors; 93 tests pass (0 failed/skipped),
+7 installer regressions pass, and the unsigned win-x64 self-contained NSIS installer builds.
+The installer is retained locally in apps/windows/artifacts (not committed). Actual Avalonia views
+were rendered and inspected at 960/1280 px. Native Windows launch exposes the sign-in UI, but the
+computer-use provider captured an overlapping window; those captures were discarded and native
+screenshot verification remains limited. No live authentication was performed.
+P24–P34 and dedicated design reviews ran in bounded packets; repairs and exact coverage are in
+[review evidence](docs/completion/final-readiness-20261101/reviews.md). Web repairs await their Docker gate.
+Cargo.lock regeneration, remaining client gates and web visual/backend browser coverage remain in progress.
+Evidence: [Windows receipt](docs/completion/final-readiness-20261101/windows-receipt.md).
+
+## Client web verification checkpoint — 2026-11-01
+
+Docker Desktop final web gate passed: lint, typecheck, 1,195 tests / 99 files, production build and bundle budget. Five product defects repaired with regressions; browser visual verification remains pending. See docs/completion/final-readiness-20261101/web-receipt.md. Native/Android/iOS verification remains in progress; no deployment.
+
+
+Android resource-limit repair — 2026-11-01: the APK entrypoint now preserves caller Cargo/Gradle limits with conservative defaults. Docker tests: 42 package + 26 build/helper tests pass, including three executable configuration regressions. APK/emulator results remain pending/not run respectively. See November 1 evidence.
+
+
+iOS Core verification — 2026-11-01: Linux Swift build and 36 tests pass; three signing-helper tests pass separately in the Python-capable Docker image. Fixed the Linux FoundationNetworking import. The first combined wrapper exited 127 after Swift passed because Python was absent; the recorded recipe now runs Swift only. iOS app packaging remains macOS-only. See docs/completion/final-readiness-20261101/ios-receipt.md.
+
+
+Native verification — 2026-11-01: Cargo.lock regenerated. Docker formatting, compile check, Clippy rules, 40 Rust tests, 14 macOS helper tests and one wrapper regression pass. Eight compiler dead-code warnings remain; strict -D warnings failed and is not claimed passing. macOS packaging/signing remains unavailable. See docs/completion/final-readiness-20261101/native-receipt.md.
+
+
+## Browser verification completed — 2026-11-01
+
+Final Docker matrix: 262 passed, 0 failed, 2 intentional desktop skips of mobile-only drawer cases; both mobile cases pass. Lint/typecheck, 42 focused ThreadPage tests and production build pass after the dark reader/note contrast repair. Negative control: 4 light cases pass, 4 dark cases fail before the repair; all eight pass afterward. Actual screenshots inspected at 1440/390 px in light/dark. Production-artifact tests use intercepted synthetic APIs, not a real backend. The backend harness removes volumes and cannot run under the current no-volume-touch instruction; low disk/RAM also precludes new backend builds. Android APK remains in progress. See [browser receipt](docs/completion/final-readiness-20261101/browser-receipt.md), [visual receipt](docs/completion/final-readiness-20261101/visual-receipt.md) and [backend limitation](docs/completion/final-readiness-20261101/backend-receipt.md). These results supersede earlier pending checkpoints.
+
+## Final client verification receipt — 2026-11-01
+
+All feasible client gates are recorded in [the final receipt](docs/completion/final-readiness-20261101/final-receipt.md), which supersedes earlier pending checkpoints. Android final rebuild passed: 69 Python helpers, 40 Rust tests, 7 release-configuration tests, Kotlin/Rust compile, package identity/trust/signature and manifest verification. Android lint passed with 0 errors, 36 warnings and 1 hint after removing unsupported generated TV advertising; its regression failed on old source and passed after repair. The x86_64 debug-signed isolated-QA APK is retained locally, not a production release. Unique repaired defects: 41 (15 application, 4 packaging/build, 22 verification); P24–P34, design review and bounded follow-ups are recorded in code-reviews.md.
+
+Mac packaging/signing/notarization and iOS application build require macOS. Android emulator/installed visual QA is blocked by Docker's 3.82 GiB RAM; real-backend browser coverage is blocked by the no-volume-touch instruction and disk/RAM constraints. Native strict `-D warnings` failed on 8 existing warnings; the final Clippy rules gate passed. Windows install/uninstall and authenticated native interaction remain unverified. No deployment or infrastructure mutation occurred. See receipts for exact commands, final counts, earlier failures, artifact hashes, screenshots and cleanup.
+Final cleanup: owned disposable containers removed; final image prune reclaimed 7.702 GB, builder prune 0 B. No volumes touched. Shared preview and active caches preserved; C: has 4.40 GB free. VHD compaction requires stopping Docker and was not attempted. [Cleanup receipt](docs/completion/final-readiness-20261101/cleanup-receipt.md).
+
+Owner-authorized follow-up cleanup completed: Docker stopped, unused build cache/images/networks pruned, VHD compacted successfully to 10.01 GB, C: free 51.33 GB. Volumes and source archives preserved. See the updated [cleanup receipt](docs/completion/final-readiness-20261101/cleanup-receipt.md).
+
+## Efficiency pass — 2026-11-02
+
+- Web transport shares one fetch between concurrent identical GETs (same path, byte budget, headers, schema and error schema). Results are read-only by contract; a caller's abort withdraws only that caller. Writes are never shared. See `apps/web/src/data/http/transport.ts`.
+- `useSession()` is unchanged; `useSessionActions()` gives action-only components (user menu, workspace switcher, sign-in, feature routes) a context that never changes after mount.
+- `MessageRow` is memoised and takes id-based callbacks; pages build them with `useRowHandlers`. Thread links come from `threadHref()`.
+- Playwright: `e2e/viewport-specs.ts` lists the specs that run under `desktop-1440`, `narrow-390` and `reduced-motion`; `src/test/viewport-specs.test.ts` fails if a spec reads `testInfo.project.name` without being listed.
+- Bundle budget: entry chunk 500 KB and initial JS (entry plus static imports) 900 KB, both minified, enforced by `npm run check:bundle`.
+- CI: jobs run only when their paths changed (`dorny/paths-filter`); gating is job-level `if:` so skipped jobs still report. Node version lives in `.nvmrc`.
+- Git LFS is required for new evidence binaries under `docs/completion` and for packaged APKs/installers.

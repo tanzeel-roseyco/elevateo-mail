@@ -1,0 +1,11 @@
+docker : ...
+At line:2 char:38
++ ... top-linux'; docker run --rm --memory=256m --cpus=0.5 --mount "type=bi ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (...:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+----------------------------------------------------------------------
+Ran 3 tests in 0.043s
+
+OK

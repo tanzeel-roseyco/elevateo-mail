@@ -1,0 +1,126 @@
+Building for debugging...
+[0/1] Write swift-version-24593BA9C3E375BF.txt
+Build complete! (0.36s)
+docker : Building for debugging...
+At line:2 char:333
++ ... ive.Count); docker start -a elevateo-client-ios-core-20261101 2>&1 |  ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Building for debugging...:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[0/14] Write swift-version-24593BA9C3E375BF.txt
+[1/14] Write sources
+[2/13] Wrapping AST for CryptoBoringWrapper for debugging
+[4/14] Emitting module ElevateoCoreTests
+[5/18] Compiling ElevateoCoreTests APIClientTests.swift
+[6/18] Compiling ElevateoCoreTests AuthFlowTests.swift
+[7/18] Compiling ElevateoCoreTests DraftTests.swift
+[8/18] Compiling ElevateoCoreTests TestSupport.swift
+[9/19] Wrapping AST for Crypto for debugging
+[10/19] Wrapping AST for ElevateoCoreTests for debugging
+[11/19] /workspace/ios/ElevateoCore/.build/x86_64-unknown-linux-gnu/debug/ElevateoCorePackageDiscoveredTests.derived/al
+l-discovered-tests.swift
+[12/19] Write sources
+[14/20] Emitting module ElevateoCorePackageDiscoveredTests
+[15/22] Compiling ElevateoCorePackageDiscoveredTests ElevateoCoreTests.swift
+[16/22] Compiling ElevateoCorePackageDiscoveredTests all-discovered-tests.swift
+[17/23] /workspace/ios/ElevateoCore/.build/x86_64-unknown-linux-gnu/debug/ElevateoCorePackageTests.derived/runner.swift
+[18/23] Wrapping AST for ElevateoCorePackageDiscoveredTests for debugging
+[19/23] Write sources
+[21/24] Emitting module ElevateoCorePackageTests
+[22/25] Compiling ElevateoCorePackageTests runner.swift
+[23/26] Wrapping AST for ElevateoCorePackageTests for debugging
+[24/26] Write Objects.LinkFileList
+[25/26] Linking ElevateoCorePackageTests.xctest
+Build complete! (4.60s)
+Test Suite 'All tests' started at 2026-10-31 15:42:30.376
+Test Suite 'debug.xctest' started at 2026-10-31 15:42:30.394
+Test Suite 'APIClientTests' started at 2026-10-31 15:42:30.395
+Test Case 'APIClientTests.testBoundedBodyStopsAtTheLimit' started at 2026-10-31 15:42:30.395
+Test Case 'APIClientTests.testBoundedBodyStopsAtTheLimit' passed (0.001 seconds)
+Test Case 'APIClientTests.testContractInvalidPagesAreRejected' started at 2026-10-31 15:42:30.395
+Test Case 'APIClientTests.testContractInvalidPagesAreRejected' passed (0.003 seconds)
+Test Case 'APIClientTests.testCursorPagerAppendsDeduplicatedPages' started at 2026-10-31 15:42:30.398
+Test Case 'APIClientTests.testCursorPagerAppendsDeduplicatedPages' passed (0.0 seconds)
+Test Case 'APIClientTests.testCursorPagerReportsAndClearsPaginationFailure' started at 2026-10-31 15:42:30.399
+Test Case 'APIClientTests.testCursorPagerReportsAndClearsPaginationFailure' passed (0.0 seconds)
+Test Case 'APIClientTests.testListThreadsDecodesValidPage' started at 2026-10-31 15:42:30.399
+Test Case 'APIClientTests.testListThreadsDecodesValidPage' passed (0.003 seconds)
+Test Case 'APIClientTests.testLogoutPostsTheContractedRequest' started at 2026-10-31 15:42:30.402
+Test Case 'APIClientTests.testLogoutPostsTheContractedRequest' passed (0.0 seconds)
+Test Case 'APIClientTests.testMalformedJSONThrowsInvalidResponse' started at 2026-10-31 15:42:30.402
+Test Case 'APIClientTests.testMalformedJSONThrowsInvalidResponse' passed (0.0 seconds)
+Test Case 'APIClientTests.testOversizedErrorBodyIsRejected' started at 2026-10-31 15:42:30.402
+Test Case 'APIClientTests.testOversizedErrorBodyIsRejected' passed (0.0 seconds)
+Test Case 'APIClientTests.testOversizedSuccessBodyIsRejectedWithTheRouteLimit' started at 2026-10-31 15:42:30.403
+Test Case 'APIClientTests.testOversizedSuccessBodyIsRejectedWithTheRouteLimit' passed (0.0 seconds)
+Test Case 'APIClientTests.testPageForAnotherMailboxOrContextIsRejected' started at 2026-10-31 15:42:30.403
+Test Case 'APIClientTests.testPageForAnotherMailboxOrContextIsRejected' passed (0.001 seconds)
+Test Case 'APIClientTests.testRedirectPolicyAllowsOnlySameOrigin' started at 2026-10-31 15:42:30.404
+Test Case 'APIClientTests.testRedirectPolicyAllowsOnlySameOrigin' passed (0.0 seconds)
+Test Case 'APIClientTests.testRefreshInvalidatesAnOutstandingContinuation' started at 2026-10-31 15:42:30.404
+Test Case 'APIClientTests.testRefreshInvalidatesAnOutstandingContinuation' passed (0.0 seconds)
+Test Case 'APIClientTests.testRejectedRedirectIsTyped' started at 2026-10-31 15:42:30.404
+Test Case 'APIClientTests.testRejectedRedirectIsTyped' passed (0.0 seconds)
+Test Case 'APIClientTests.testUnauthenticatedMapsToSessionExpired' started at 2026-10-31 15:42:30.404
+Test Case 'APIClientTests.testUnauthenticatedMapsToSessionExpired' passed (0.0 seconds)
+Test Suite 'APIClientTests' passed at 2026-10-31 15:42:30.405
+	 Executed 14 tests, with 0 failures (0 unexpected) in 0.01 (0.01) seconds
+Test Suite 'AuthFlowTests' started at 2026-10-31 15:42:30.405
+Test Case 'AuthFlowTests.testCallbackToAnotherDestinationIsRejectedWithoutBurningTheAttempt' started at 2026-10-31 15:42:30.405
+Test Case 'AuthFlowTests.testCallbackToAnotherDestinationIsRejectedWithoutBurningTheAttempt' passed (0.001 seconds)
+Test Case 'AuthFlowTests.testCleartextAuthorizationEndpointIsRejectedBeforeBuildingTheURL' started at 2026-10-31 15:42:30.405
+Test Case 'AuthFlowTests.testCleartextAuthorizationEndpointIsRejectedBeforeBuildingTheURL' passed (0.0 seconds)
+Test Case 'AuthFlowTests.testClientSettingsValidation' started at 2026-10-31 15:42:30.406
+Test Case 'AuthFlowTests.testClientSettingsValidation' passed (0.0 seconds)
+Test Case 'AuthFlowTests.testConformsToSharedAuthVectors' started at 2026-10-31 15:42:30.406
+Test Case 'AuthFlowTests.testConformsToSharedAuthVectors' passed (0.001 seconds)
+Test Case 'AuthFlowTests.testExpiredCallbackIsRejected' started at 2026-10-31 15:42:30.407
+Test Case 'AuthFlowTests.testExpiredCallbackIsRejected' passed (0.0 seconds)
+Test Case 'AuthFlowTests.testReplayedCallbackIsRejected' started at 2026-10-31 15:42:30.407
+Test Case 'AuthFlowTests.testReplayedCallbackIsRejected' passed (0.0 seconds)
+Test Case 'AuthFlowTests.testRestoreSupersededBySignOutIsDiscarded' started at 2026-10-31 15:42:30.408
+Test Case 'AuthFlowTests.testRestoreSupersededBySignOutIsDiscarded' passed (0.051 seconds)
+Test Case 'AuthFlowTests.testRestoreThenSignOutRevokesAndClearsEverything' started at 2026-10-31 15:42:30.459
+Test Case 'AuthFlowTests.testRestoreThenSignOutRevokesAndClearsEverything' passed (0.001 seconds)
+Test Case 'AuthFlowTests.testSignOutClearsLocallyWhenTheServerCannotConfirm' started at 2026-10-31 15:42:30.460
+Test Case 'AuthFlowTests.testSignOutClearsLocallyWhenTheServerCannotConfirm' passed (0.001 seconds)
+Test Case 'AuthFlowTests.testSignOutReportsCredentialStorageFailure' started at 2026-10-31 15:42:30.461
+Test Case 'AuthFlowTests.testSignOutReportsCredentialStorageFailure' passed (0.001 seconds)
+Test Case 'AuthFlowTests.testStateMismatchIsRejectedWithoutBurningPendingAttempt' started at 2026-10-31 15:42:30.461
+Test Case 'AuthFlowTests.testStateMismatchIsRejectedWithoutBurningPendingAttempt' passed (0.001 seconds)
+Test Case 'AuthFlowTests.testValidCallbackReturnsCodeBoundToVerifier' started at 2026-10-31 15:42:30.462
+Test Case 'AuthFlowTests.testValidCallbackReturnsCodeBoundToVerifier' passed (0.0 seconds)
+Test Suite 'AuthFlowTests' passed at 2026-10-31 15:42:30.462
+	 Executed 12 tests, with 0 failures (0 unexpected) in 0.057 (0.057) seconds
+Test Suite 'DraftTests' started at 2026-10-31 15:42:30.463
+Test Case 'DraftTests.testConflictRequiresReconciliationBeforeSaving' started at 2026-10-31 15:42:30.463
+Test Case 'DraftTests.testConflictRequiresReconciliationBeforeSaving' passed (0.001 seconds)
+Test Case 'DraftTests.testConsecutiveSavesAdvanceVersionWithNewOperations' started at 2026-10-31 15:42:30.463
+Test Case 'DraftTests.testConsecutiveSavesAdvanceVersionWithNewOperations' passed (0.0 seconds)
+Test Case 'DraftTests.testContractInvalidSaveResultIsRejected' started at 2026-10-31 15:42:30.464
+Test Case 'DraftTests.testContractInvalidSaveResultIsRejected' passed (0.001 seconds)
+Test Case 'DraftTests.testCreateReplyDraftSucceeds' started at 2026-10-31 15:42:30.464
+Test Case 'DraftTests.testCreateReplyDraftSucceeds' passed (0.0 seconds)
+Test Case 'DraftTests.testLostResponseReplaysTheSamePayloadDespiteEdits' started at 2026-10-31 15:42:30.465
+Test Case 'DraftTests.testLostResponseReplaysTheSamePayloadDespiteEdits' passed (0.0 seconds)
+Test Case 'DraftTests.testNetworkFailureIsSurfaced' started at 2026-10-31 15:42:30.465
+Test Case 'DraftTests.testNetworkFailureIsSurfaced' passed (0.0 seconds)
+Test Case 'DraftTests.testNullRecipientFieldsAreEncodedAsExplicitNull' started at 2026-10-31 15:42:30.466
+Test Case 'DraftTests.testNullRecipientFieldsAreEncodedAsExplicitNull' passed (0.0 seconds)
+Test Case 'DraftTests.testSaveResultForAnotherOperationIsRejected' started at 2026-10-31 15:42:30.466
+Test Case 'DraftTests.testSaveResultForAnotherOperationIsRejected' passed (0.0 seconds)
+Test Case 'DraftTests.testSavedIndicatorTracksTheAcknowledgedContent' started at 2026-10-31 15:42:30.466
+Test Case 'DraftTests.testSavedIndicatorTracksTheAcknowledgedContent' passed (0.0 seconds)
+Test Case 'DraftTests.testVersionConflictMapsToTypedConflict' started at 2026-10-31 15:42:30.467
+Test Case 'DraftTests.testVersionConflictMapsToTypedConflict' passed (0.0 seconds)
+Test Suite 'DraftTests' passed at 2026-10-31 15:42:30.467
+	 Executed 10 tests, with 0 failures (0 unexpected) in 0.004 (0.004) seconds
+Test Suite 'debug.xctest' passed at 2026-10-31 15:42:30.467
+	 Executed 36 tests, with 0 failures (0 unexpected) in 0.072 (0.072) seconds
+Test Suite 'All tests' passed at 2026-10-31 15:42:30.467
+	 Executed 36 tests, with 0 failures (0 unexpected) in 0.072 (0.072) seconds
+◇ Test run started.
+↳ Testing Library Version: 6.0.3 (18c42c19cac3faf)
+✔ Test run with 0 tests passed after 0.001 seconds.
+sh: 1: python3: not found

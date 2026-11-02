@@ -1,0 +1,129 @@
+
+> @elevateo/web@0.1.0-read.1 build
+> tsc -p tsconfig.json --noEmit && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+docker : node_modules/zod/v4/core/util.js (400:0): A comment
+At line:2 char:545
++ ... TEXITCODE}; docker run --name elevateo-client-browser-20261101 --memo ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node_modules/zo...0:0): A comment:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+
+"// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on
+`Number`, so the bare object literal survived into every bundle."
+
+in "node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the
+comment. The comment will be removed to avoid issues.
+node_modules/zod/v4/core/regexes.js (74:0): A comment
+
+"/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+ * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+ * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+
+in "node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of
+the comment. The comment will be removed to avoid issues.
+âœ“ 324 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                 0.85 kB â”‚ gzip:  0.38 kB
+dist/.vite/manifest.json                       10.96 kB â”‚ gzip:  1.27 kB
+dist/assets/app-Cad_wMLI.css                   78.81 kB â”‚ gzip: 11.98 kB
+dist/assets/UnavailableSetting-B2iQchzZ.js      0.45 kB â”‚ gzip:  0.30 kB
+dist/assets/Breadcrumbs-CuGUwALX.js             0.74 kB â”‚ gzip:  0.43 kB
+dist/assets/sendConsent-CDdZ1nf6.js             1.00 kB â”‚ gzip:  0.56 kB
+dist/assets/CodeBlock-BkWM72CA.js               1.51 kB â”‚ gzip:  0.77 kB
+dist/assets/ComposeWindow-DW67Z0H3.js           1.63 kB â”‚ gzip:  0.83 kB
+dist/assets/PersonalSettingsPage-Bx2a5W3h.js    4.20 kB â”‚ gzip:  1.78 kB
+dist/assets/SearchPage-Cp5y769a.js              4.63 kB â”‚ gzip:  2.03 kB
+dist/assets/SuppressionsPage-Djl4wOd0.js        5.35 kB â”‚ gzip:  2.28 kB
+dist/assets/DraftsPage-NRT_D43E.js              5.40 kB â”‚ gzip:  2.16 kB
+dist/assets/BouncesPage-DdwGYCIq.js             5.53 kB â”‚ gzip:  2.35 kB
+dist/assets/SequencePage-C8iQQzNh.js            6.57 kB â”‚ gzip:  2.57 kB
+dist/assets/MembersPage-myDdkL0g.js             7.22 kB â”‚ gzip:  3.06 kB
+dist/assets/UnifiedInboxPage-BMjniq2k.js        9.36 kB â”‚ gzip:  3.68 kB
+dist/assets/CampaignRunsPage-CiNg9Q8F.js       10.10 kB â”‚ gzip:  3.88 kB
+dist/assets/AdministrationPage-6KutvKFq.js     10.60 kB â”‚ gzip:  3.78 kB
+dist/assets/SendStatusPage-Do-lIt74.js         11.28 kB â”‚ gzip:  3.66 kB
+dist/assets/SendReviewPage-CQuUIt08.js         11.36 kB â”‚ gzip:  3.95 kB
+dist/assets/vendor-CTdyrM6S.js                 12.80 kB â”‚ gzip:  4.91 kB
+dist/assets/EmailFinderPage-DzLFJltU.js        13.18 kB â”‚ gzip:  4.77 kB
+dist/assets/DraftEditorPage-CRVbgNlv.js        17.21 kB â”‚ gzip:  6.22 kB
+dist/assets/OutreachPages-Dwf98KW5.js          22.38 kB â”‚ gzip:  6.31 kB
+dist/assets/radix-CYzEupTz.js                  26.93 kB â”‚ gzip:  8.97 kB
+dist/assets/HelpRoutes-CodViUPk.js             27.10 kB â”‚ gzip:  9.35 kB
+dist/assets/ThreadPage-Cuxd-QQj.js             31.08 kB â”‚ gzip:  9.57 kB
+dist/assets/router-BO77BYMJ.js                 39.54 kB â”‚ gzip: 14.26 kB
+dist/assets/SettingsRoutes-DLMvmuF0.js         55.16 kB â”‚ gzip: 15.99 kB
+dist/assets/zod-C_rs46U9.js                    89.68 kB â”‚ gzip: 25.54 kB
+dist/assets/app-DLiP6Rv2.js                   196.26 kB â”‚ gzip: 58.93 kB
+dist/assets/react--YlFthuv.js                 222.24 kB â”‚ gzip: 69.18 kB
+âœ“ built in 7.97s
+npm notice
+npm notice New major version of npm available! 11.19.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice
+
+Running 260 tests using 1 worker
+
+  âœ˜    1 [desktop-1440] â€º e2e/collaboration.spec.ts:70:1 â€º the C/D mailbox exposes Drafts and Members; the read-only inbox does not (8.0s)
+  âœ“    2 [desktop-1440] â€º e2e/collaboration.spec.ts:83:1 â€º a new draft is created by an explicit save and then listed (5.7s)
+  âœ“    3 [desktop-1440] â€º e2e/collaboration.spec.ts:101:1 â€º a definitive conflict never overwrites: my text is kept and rebase re-enables saving (4.4s)
+  âœ“    4 [desktop-1440] â€º e2e/collaboration.spec.ts:120:1 â€º an uncertain save keeps the text and the ledger lookup does not invent certainty (4.3s)
+  âœ“    5 [desktop-1440] â€º e2e/collaboration.spec.ts:140:1 â€º read state, assignment and an inert note inside the reader (4.8s)
+  âœ“    6 [desktop-1440] â€º e2e/collaboration.spec.ts:168:1 â€º a persistently unconfirmed note stays frozen for retry and can be deliberately abandoned (3.2s)
+  âœ“    7 [desktop-1440] â€º e2e/collaboration.spec.ts:187:1 â€º membership: add a reader at the current revision; the last manager is protected (3.2s)
+  âœ“    8 [desktop-1440] â€º e2e/collaboration.spec.ts:201:1 â€º search is literal, scoped by URL, and links into the reader (3.5s)
+  âœ“    9 [desktop-1440] â€º e2e/collaboration.spec.ts:215:1 â€º no horizontal overflow on the C/D views at 390px, each route captured after its own ready assertion (4.4s)
+  âœ“   10 [desktop-1440] â€º e2e/collaboration.spec.ts:226:1 â€º dark theme C/D views, each route captured after its own ready assertion (5.9s)
+  âœ“   11 [desktop-1440] â€º e2e/collaboration.spec.ts:237:1 â€º dark theme recovery states: the conflict and the uncertain attempt, each from a freshly scripted load (6.6s)
+  âœ“   12 [desktop-1440] â€º e2e/consent-send.spec.ts:20:1 â€º resend review without consent evidence is blocked with a visible reason (1.8s)
+  âœ“   13 [desktop-1440] â€º e2e/consent-send.spec.ts:32:1 â€º live bounced send shows provider state and suppression reason without simulated labels (1.4s)
+  âœ“   14 [desktop-1440] â€º e2e/email-finder.spec.ts:35:1 â€º finder forms, progress and results work at every viewport (5.2s)
+  âœ“   15 [desktop-1440] â€º e2e/email-finder.spec.ts:56:1 â€º blocked sources are never displayed as not found (3.2s)
+  âœ“   16 [desktop-1440] â€º e2e/email-finder.spec.ts:66:1 â€º API failures retain an explicit retry state (2.9s)
+  âœ“   17 [desktop-1440] â€º e2e/live-send.spec.ts:10:1 â€º live attachment scan, consent approval and delivery evidence (4.3s)
+  âœ“   18 [desktop-1440] â€º e2e/production.spec.ts:103:3 â€º production artifact â€º a failing API produces an honest error with no fixture fallback or markers (1.2s)
+  âœ“   19 [desktop-1440] â€º e2e/production.spec.ts:112:3 â€º production artifact â€º a hard network failure also stays on the deliberate error, never fixtures (1.8s)
+  âœ˜   20 [desktop-1440] â€º e2e/production.spec.ts:120:3 â€º production artifact â€º hostile plaintext renders as inert escaped text in the reader; every request stays on the artifact origin (7.5s)
+  âœ˜   21 [desktop-1440] â€º e2e/production.spec.ts:147:3 â€º production artifact â€º 50-row interaction and long-task baseline (7.9s)
+  âœ“   22 [desktop-1440] â€º e2e/read.spec.ts:7:1 â€º fixture entry is visibly labelled and shows the simulated-mail indicator (3.3s)
+  âœ“   23 [desktop-1440] â€º e2e/read.spec.ts:14:1 â€º keyboard traversal: skip link, mailbox, conversation, reader focus (5.4s)
+  âœ“   24 [desktop-1440] â€º e2e/read.spec.ts:30:1 â€º no horizontal overflow at 390px and readable empty state (3.4s)
+  âœ“   25 [desktop-1440] â€º e2e/read.spec.ts:38:1 â€º real keyboard traversal: Tab reaches the skip link, Enter lands on main (5.2s)
+  âœ“   26 [desktop-1440] â€º e2e/read.spec.ts:47:1 â€º real keyboard navigation: Tab reaches a conversation row and Enter opens its reader (10.4s)
+  âœ“   27 [desktop-1440] â€º e2e/read.spec.ts:72:3 â€º mobile drawer at 390px (V8/D6) â€º contains Tab and Shift+Tab, excludes the background, Escape restores the trigger (3.8s)
+  âœ“   28 [desktop-1440] â€º e2e/read.spec.ts:101:3 â€º mobile drawer at 390px (V8/D6) â€º selecting a mailbox in the drawer closes it and shows that mailbox (3.2s)
+  âœ“   29 [desktop-1440] â€º e2e/read.spec.ts:115:3 â€º mobile drawer at 390px (V8/D6) â€º populated inbox at 390px has no horizontal overflow (2.9s)
+  âœ“   30 [desktop-1440] â€º e2e/read.spec.ts:129:3 â€º accent text meets 4.5:1 on its surfaces in the light theme (3.1s)
+  âœ“   31 [desktop-1440] â€º e2e/read.spec.ts:129:3 â€º accent text meets 4.5:1 on its surfaces in the dark theme (3.0s)
+  âœ“   32 [desktop-1440] â€º e2e/read.spec.ts:325:1 â€º animations respect the reduced-motion preference (FE-R16) (4.1s)
+  âœ“   33 [desktop-1440] â€º e2e/read.spec.ts:364:1 â€º no request leaves for remote hosts while reading hostile content (2.9s)
+  âœ“   34 [desktop-1440] â€º e2e/read.spec.ts:388:3 â€º People, workspace members and Personal Details show simulated data at 1440px (2.9s)
+  âœ“   35 [desktop-1440] â€º e2e/read.spec.ts:388:3 â€º People, workspace members and Personal Details show simulated data at 390px (2.8s)
+  âœ“   36 [desktop-1440] â€º e2e/read.spec.ts:407:1 â€º without simulated ports Personal Details shows its error state, not invented data (3.0s)
+  âœ“   37 [desktop-1440] â€º e2e/session.spec.ts:11:1 â€º a signed-out fixture session shows the sign-in form after one refresh attempt, with no stored credential (1.7s)
+  âœ“   38 [desktop-1440] â€º e2e/session.spec.ts:20:1 â€º keyboard sign-in: Tab through email and password, Enter submits, the shell appears (2.1s)
+  âœ“   39 [desktop-1440] â€º e2e/session.spec.ts:43:1 â€º a rejected sign-in announces one generic alert, clears the password and keeps the email (2.4s)
+  âœ“   40 [desktop-1440] â€º e2e/session.spec.ts:56:1 â€º a 503 on sign-in keeps the typed entries and claims no save (2.2s)
+  âœ“   41 [desktop-1440] â€º e2e/session.spec.ts:66:1 â€º a refresh that succeeds reaches the shell without the sign-in form (2.0s)
+  âœ“   42 [desktop-1440] â€º e2e/session.spec.ts:72:1 â€º a valid identity without an organization is an explicit state that can sign out (1.9s)
+  âœ“   43 [desktop-1440] â€º e2e/session.spec.ts:79:1 â€º recovery reads the same for any address (2.3s)
+  âœ“   44 [desktop-1440] â€º e2e/session.spec.ts:89:1 â€º workspace switcher: Escape closes it, an explicit switch replaces the identity, sign-out fences the shell (2.8s)
+  âœ“   45 [desktop-1440] â€º e2e/session.spec.ts:127:1 â€º the completion form sets a password once and never reads the URL (2.1s)
+  âœ“   46 [desktop-1440] â€º e2e/session.spec.ts:143:1 â€º no horizontal overflow on the sign-in and completion forms at 390px (1.8s)
+  âœ“   47 [desktop-1440] â€º e2e/sso.spec.ts:12:1 â€º single sign-on and password entries: gold primary button, separator, form; SSO starts a top-level navigation (3.3s)
+  âœ“   48 [desktop-1440] â€º e2e/sso.spec.ts:48:1 â€º single sign-on only: no password fields, explanatory line (1.8s)
+  âœ“   49 [desktop-1440] â€º e2e/sso.spec.ts:60:1 â€º callback failure: generic alert, parameter removed from the address bar (2.0s)
+  âœ“   50 [desktop-1440] â€º e2e/sso.spec.ts:69:1 â€º status failure fails closed with a retry card (1.9s)
+  âœ“   51 [desktop-1440] â€º e2e/sso.spec.ts:77:1 â€º no entry enabled shows the empty state (1.5s)
+  âœ“   52 [desktop-1440] â€º e2e/visual-states.spec.ts:424:3 â€º read-checkpoint visual states (capture for human inspection) â€º contrast probe rejects transparent and no-op fills (239ms)
+  âœ“   53 [desktop-1440] â€º e2e/visual-states.spec.ts:439:7 â€º read-checkpoint visual states (capture for human inspection) â€º shell-ready (light) (1.7s)
+  âœ˜   54 [desktop-1440] â€º e2e/visual-states.spec.ts:439:7 â€º read-checkpoint visual states (capture for human inspection) â€º inbox-ready (light) (6.6s)
+  âœ˜   55 [desktop-1440] â€º e2e/visual-states.spec.ts:439:7 â€º read-checkpoint visual states (capture for human inspection) â€º inbox-unread-filter-active (light) (3.2s)
+  -   56 [desktop-1440] â€º e2e/visual-states.spec.ts:439:7 â€º read-checkpoint visual states (capture for human inspection) â€º drawer-open-populated (light)
+  âœ˜   57 [desktop-1440] â€º e2e/visual-states.spec.ts:439:7 â€º read-checkpoint visual states (capture for human inspection) â€º reader-ready-hostile (light) (6.9s)
+  âœ˜   58 [desktop-1440] â€º e2e/visual-states.spec.ts:439:7 â€º read-checkpoint visual states (capture for human inspection) â€º session-loading (light) (1.3s)

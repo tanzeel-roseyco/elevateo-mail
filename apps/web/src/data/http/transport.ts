@@ -132,6 +132,80 @@ export async function requestJson<S extends z.ZodType>(
   return (await requestJsonWithStatus(path, schema, maxBytes, options)).data
 }
 
+const ABORTED = () => new GatewayError('transport', 'aborted', 'The request was cancelled.')
+
+/** One module-level default so every caller without an injected fetch shares the same dedupe table. */
+const defaultFetch: FetchLike = (input, init) => fetch(input, init)
+
+/** Everything a validated request needs to be dispatched; built once per call, before any sharing. */
+interface PreparedRequest<S extends z.ZodType> {
+  readonly path: string
+  readonly schema: S
+  readonly maxBytes: number
+  readonly fetchImpl: FetchLike
+  readonly method: JsonMethod
+  readonly headers: Record<string, string> | undefined
+  readonly hasBody: boolean
+  readonly serializedBody: string | undefined
+  readonly errorSchema: ErrorEnvelopeSchema
+}
+
+interface InFlightGet {
+  readonly schema: z.ZodType
+  readonly errorSchema: ErrorEnvelopeSchema
+  readonly controller: AbortController
+  promise: Promise<JsonResult<unknown>>
+  /** Callers still waiting; the shared fetch is aborted only when this reaches zero. */
+  subscribers: number
+}
+
+// AIDEV-NOTE: In-flight dedupe for GETs only: concurrent identical requests (same transport, path,
+// byte budget and headers) share one fetch, and the entry disappears the moment it settles, so
+// nothing stale is ever served and `cache: 'no-store'` stays in force. Keyed on the fetch
+// implementation so injected test transports never share with one another or with production.
+// Sharing also requires the SAME schema and errorSchema object references (module-level constants
+// in contract.ts); a different reference runs its own request rather than cross-validating.
+// AIDEV-NOTE: Subscribers receive the same parsed `data` object by reference. Results are read-only
+// for every GET caller: pages copy on merge (appendUnique) and never sort/splice fetched arrays.
+const inFlightGets = new WeakMap<FetchLike, Map<string, InFlightGet>>()
+
+function inFlightKey(request: PreparedRequest<z.ZodType>): string {
+  // Header order must not split the key: the context pair is spread in different orders by callers.
+  const sorted = Object.entries(request.headers ?? {}).sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))
+  return `GET ${request.path} ${request.maxBytes} ${JSON.stringify(sorted)}`
+}
+
+/**
+ * Waits on a shared GET for one caller. A caller's abort only withdraws that caller; the shared
+ * fetch itself is aborted once every subscriber has withdrawn, which keeps the single-caller
+ * behaviour (abort cancels the fetch and releases the body) exactly as before.
+ */
+async function joinInFlight<T>(entry: InFlightGet, signal: AbortSignal | undefined): Promise<T> {
+  const shared = entry.promise as Promise<T>
+  if (signal === undefined) return shared
+  let onAbort = () => {}
+  const withdrawn = new Promise<never>((_resolve, reject) => {
+    onAbort = () => {
+      entry.subscribers -= 1
+      if (entry.subscribers === 0) entry.controller.abort(ABORTED())
+      reject(ABORTED())
+    }
+    signal.addEventListener('abort', onAbort, { once: true })
+  })
+  try {
+    return await Promise.race([shared, withdrawn])
+  } finally {
+    signal.removeEventListener('abort', onAbort)
+  }
+}
+
+/** A GET joins an entry only while it is alive and validates with the very same schema objects. */
+function canShare(entry: InFlightGet | undefined, request: PreparedRequest<z.ZodType>): boolean {
+  // AIDEV-NOTE: An entry whose last subscriber withdrew is already aborted but lingers until its
+  // `.finally` runs; a newcomer must start a fresh fetch rather than inherit that cancellation.
+  return entry !== undefined && !entry.controller.signal.aborted && entry.schema === request.schema && entry.errorSchema === request.errorSchema
+}
+
 export async function requestJsonWithStatus<S extends z.ZodType>(
   path: string,
   schema: S,
@@ -139,12 +213,11 @@ export async function requestJsonWithStatus<S extends z.ZodType>(
   options: RequestOptions,
 ): Promise<JsonResult<z.output<S>>> {
   if (!/^\/v(?:1|2)\//.test(path)) throw new GatewayError('transport', 'network', 'Only relative versioned API paths are allowed.')
-  if (options.signal?.aborted) throw new GatewayError('transport', 'aborted', 'The request was cancelled.')
+  if (options.signal?.aborted) throw ABORTED()
   const hasBody = 'body' in options
   const method: JsonMethod = options.method ?? (hasBody ? 'POST' : 'GET')
   if (hasBody && (method === 'GET' || method === 'DELETE')) throw new GatewayError('transport', 'malformed', `${method} cannot carry a body.`)
   if (!hasBody && (method === 'POST' || method === 'PUT')) throw new GatewayError('transport', 'malformed', `${method} requires a JSON body.`)
-  const errorSchema = options.errorSchema ?? ErrorSchema
   let serializedBody: string | undefined
   if (hasBody) {
     serializedBody = JSON.stringify(options.body)
@@ -154,11 +227,59 @@ export async function requestJsonWithStatus<S extends z.ZodType>(
       throw new GatewayError('transport', 'oversized', 'The request exceeded its size limit.')
     }
   }
-  const fetchImpl = options.fetchImpl ?? ((input, init) => fetch(input, init))
-  const controller = new AbortController()
+  const request: PreparedRequest<S> = {
+    path, schema, maxBytes, method, hasBody, serializedBody,
+    fetchImpl: options.fetchImpl ?? defaultFetch,
+    headers: options.headers,
+    errorSchema: options.errorSchema ?? ErrorSchema,
+  }
+
+  if (method !== 'GET') {
+    // Writes are never shared: each carries its own proof and intent (idempotency is the server's).
+    const controller = new AbortController()
+    const onOuterAbort = () => controller.abort(ABORTED())
+    options.signal?.addEventListener('abort', onOuterAbort, { once: true })
+    try {
+      return await performRequest(request, controller)
+    } finally {
+      options.signal?.removeEventListener('abort', onOuterAbort)
+    }
+  }
+
+  let table = inFlightGets.get(request.fetchImpl)
+  if (table === undefined) {
+    table = new Map()
+    inFlightGets.set(request.fetchImpl, table)
+  }
+  const key = inFlightKey(request)
+  const registered = table.get(key)
+  // Computed before branching: a predicate-style narrowing would erase the occupant in the else branch.
+  const slotFree = registered === undefined || registered.controller.signal.aborted
+  let entry: InFlightGet
+  if (registered !== undefined && canShare(registered, request)) {
+    entry = registered
+  } else {
+    const controller = new AbortController()
+    const created: InFlightGet = { schema, errorSchema: request.errorSchema, controller, subscribers: 0, promise: Promise.resolve(undefined as never) }
+    const owner = table
+    // The removal is registered before any caller can await the result, so a follow-up request
+    // issued from a caller's continuation always fetches again.
+    created.promise = performRequest(request, controller).finally(() => {
+      if (owner.get(key) === created) owner.delete(key)
+    })
+    // The slot is taken over only when it is free or its occupant is already dying; a live entry
+    // with different schema objects keeps the slot and this request runs unshared.
+    if (slotFree) table.set(key, created)
+    entry = created
+  }
+  entry.subscribers += 1
+  return joinInFlight<JsonResult<z.output<S>>>(entry, options.signal)
+}
+
+/** Performs one bounded request on `controller`; the caller owns outer-signal wiring and sharing. */
+async function performRequest<S extends z.ZodType>(request: PreparedRequest<S>, controller: AbortController): Promise<JsonResult<z.output<S>>> {
+  const { path, schema, maxBytes, fetchImpl, method, hasBody, serializedBody, errorSchema } = request
   const timeout = setTimeout(() => controller.abort(new GatewayError('transport', 'timeout', 'The request timed out.')), REQUEST_TIMEOUT_MS)
-  const onOuterAbort = () => controller.abort(new GatewayError('transport', 'aborted', 'The request was cancelled.'))
-  options.signal?.addEventListener('abort', onOuterAbort, { once: true })
   let response: Response | undefined
   try {
     // AIDEV-NOTE: Race both fetch and reads so even an abort-ignoring implementation obeys the same deadline.
@@ -168,8 +289,8 @@ export async function requestJsonWithStatus<S extends z.ZodType>(
         cache: 'no-store',
         redirect: 'manual',
         headers: hasBody
-          ? { Accept: 'application/json', 'Content-Type': 'application/json', ...options.headers }
-          : { Accept: 'application/json', ...options.headers },
+          ? { Accept: 'application/json', 'Content-Type': 'application/json', ...request.headers }
+          : { Accept: 'application/json', ...request.headers },
         ...(serializedBody === undefined ? {} : { body: serializedBody }),
         signal: controller.signal,
       }).then((received) => {
@@ -202,7 +323,6 @@ export async function requestJsonWithStatus<S extends z.ZodType>(
     throw new GatewayError('transport', 'network', 'The server response could not be read.')
   } finally {
     clearTimeout(timeout)
-    options.signal?.removeEventListener('abort', onOuterAbort)
     if (response) discardBody(response.body)
   }
 }

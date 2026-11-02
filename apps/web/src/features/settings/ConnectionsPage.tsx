@@ -22,7 +22,7 @@ import type {
   ConnectorGrantsGateway,
   ConnectorScope,
 } from '@/data/connectorGrantsContract'
-import { CONNECTOR_CLIENT_KINDS } from '@/data/connectorGrantsContract'
+import { CONNECTOR_CLIENT_KINDS, CONNECTOR_GRANT_MAX_MAILBOXES } from '@/data/connectorGrantsContract'
 import type { ReadContext } from '@/data/gateway'
 import { cx, formatDateTime } from '@/lib/format'
 import { EmptyState, ErrorState, Skeleton } from '@/ui/Async'
@@ -36,7 +36,7 @@ import { Modal } from '@/ui/Modal'
 import { SectionHeader } from '@/ui/PageHeader'
 import { useToast } from '@/ui/Toast'
 import { CommandLineIcon, ExclamationTriangleIcon, PlusIcon } from '@/ui/icons'
-import { INTEGRATIONS } from './IntegrationsPages'
+import { INTEGRATIONS, PlannedConnectorNotice } from './IntegrationsPages'
 import { SimulatedAdapterNotice } from './SettingsLayout'
 import { UnavailableSetting, useSimulatedSettings } from './UnavailableSetting'
 
@@ -93,6 +93,8 @@ function ConnectionsManager({ gateway }: { gateway: ConnectorGrantsGateway }) {
   // AIDEV-NOTE: One in-flight write owns the busy marker; a stale completion releases only its token.
   const [busy, setBusy] = useState(false)
   const writeTokenRef = useRef(0)
+  // AIDEV-NOTE: session guards do not order reloads; only the newest list request may publish grants.
+  const listTokenRef = useRef(0)
 
   const mailboxFilter = params.get('mailbox')
   const focusId = params.get('connection')
@@ -106,10 +108,11 @@ function ConnectionsManager({ gateway }: { gateway: ConnectorGrantsGateway }) {
   const nameFor = useCallback((mailboxId: string, fallback: string) => mailboxNames.get(mailboxId) ?? fallback, [mailboxNames])
 
   const load = useCallback(async () => {
+    const token = ++listTokenRef.current
     setList({ status: 'loading' })
     setWriteError(null)
     const outcome = await request((ctx, signal) => gateway.listConnectorGrants(ctx, signal))
-    if (outcome.kind === 'stale') return
+    if (outcome.kind === 'stale' || listTokenRef.current !== token) return
     if (outcome.kind === 'failed') {
       setList({ status: 'error', message: describeFailure(outcome.error, 'read').message })
       return
@@ -427,7 +430,7 @@ interface GrantDialogProps {
 /** Per-mailbox selection in the grant form: included, and whether draft:write is added to mailbox:read. */
 type MailboxChoice = { included: boolean; draft: boolean }
 
-function GrantDialog({ open, mailboxes, busy, onOpenChange, onCreate }: GrantDialogProps) {
+export function GrantDialog({ open, mailboxes, busy, onOpenChange, onCreate }: GrantDialogProps) {
   const id = useId()
   const [clientName, setClientName] = useState('')
   const [clientKind, setClientKind] = useState<ConnectorClientKind>('claude')
@@ -454,6 +457,8 @@ function GrantDialog({ open, mailboxes, busy, onOpenChange, onCreate }: GrantDia
     if (name === '' || name.length > 120) return setError('Enter a name for this connection (1 to 120 characters).')
     const selected = mailboxes.filter((mailbox) => choices[mailbox.id]?.included)
     if (selected.length === 0) return setError('Choose at least one mailbox to share.')
+    // AIDEV-NOTE: mirror the proposed gateway contract so over-limit selections get actionable feedback.
+    if (selected.length > CONNECTOR_GRANT_MAX_MAILBOXES) return setError(`Choose at most ${CONNECTOR_GRANT_MAX_MAILBOXES} mailboxes per connection. Remove some selections and try again.`)
     const days = EXPIRY_OPTIONS.find((option) => option.value === expiry)?.days ?? null
     const input: ConnectorGrantCreateInput = {
       client_name: name,
@@ -556,13 +561,14 @@ function SecretDialog({ secret, onClose }: { secret: { clientName: string; value
   )
 }
 
-/** Static "how to connect a client" reference, preserved from the previous MCP integration page. */
-function ConnectClientReference() {
+/** Planned connection workflow; package availability and credentials must match the integration detail page. */
+export function ConnectClientReference() {
   const mcp = INTEGRATIONS.find((integration) => integration.slug === 'mcp')
   if (mcp === undefined) return null
   return (
     <section aria-label="Connect a client" className="space-y-4">
       <SectionHeader title="Connect a client" subtitle={mcp.intro} className="mb-0" />
+      <PlannedConnectorNotice />
       {mcp.steps.map((step, index) => (
         <Card key={step.title}>
           <h3 className="text-base font-medium text-zinc-800 dark:text-white">{index + 1}. {step.title}</h3>

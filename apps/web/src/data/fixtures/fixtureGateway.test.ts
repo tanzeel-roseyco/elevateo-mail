@@ -2,10 +2,49 @@ import { describe, expect, expectTypeOf, it } from 'vitest'
 import type { AuthChallenge, AuthLifecycle, AuthLogout, MailboxPage, OrganizationPage, OrganizationThreadPage, Session, ThreadDetailPage, ThreadPage } from '../contract'
 import type { ReadContext } from '../gateway'
 import { createFixtureGateway } from './fixtureGateway'
+import { CD_FIXTURE } from './collaborationState'
 
 const context: ReadContext = { contextId: 'context_A_0123456789', authorizationVersion: 'authz_A_0123456789' }
 const mailbox = '00000000-0000-4000-8000-000000000021'
 const thread = '00000000-0000-4000-8000-000000000031'
+
+describe('fixture assignee options', () => {
+  it('paginates the eligible targets and accepts a returned target for assignment', async () => {
+    const gateway = createFixtureGateway()
+    const signal = new AbortController().signal
+    const first = await gateway.listMailboxAssigneeOptions(context, CD_FIXTURE.mailboxId, { limit: 1 }, signal)
+    expect(first).toMatchObject({ context_id: context.contextId, authorization_version: context.authorizationVersion,
+      mailbox_id: CD_FIXTURE.mailboxId, items: [{ user_id: CD_FIXTURE.actorId }], next_cursor: CD_FIXTURE.actorId })
+    const second = await gateway.listMailboxAssigneeOptions(context, CD_FIXTURE.mailboxId,
+      { limit: 1, cursor: first.next_cursor! }, signal)
+    expect(second.items).toEqual([{ user_id: CD_FIXTURE.readerId }])
+    expect(second.next_cursor).toBeNull()
+    const assigned = await gateway.setThreadAssignment(context, { csrfToken: 'synthetic_challenge_token_00000001' },
+      CD_FIXTURE.threadId, { mailbox_id: CD_FIXTURE.mailboxId, assignee_id: second.items[0]!.user_id,
+        expected_assignment_version: 0 }, signal)
+    expect(assigned.assignee_id).toBe(CD_FIXTURE.readerId)
+  })
+
+  it('rejects unknown mailboxes, stale contexts, and cancelled reads', async () => {
+    const gateway = createFixtureGateway()
+    const signal = new AbortController().signal
+    await expect(gateway.listMailboxAssigneeOptions(context, CD_FIXTURE.threadId, {}, signal))
+      .rejects.toMatchObject({ code: 'not_available' })
+    await expect(gateway.listMailboxAssigneeOptions({ ...context, contextId: 'another_context_0123456789' }, mailbox, {}, signal))
+      .rejects.toMatchObject({ code: 'context_changed' })
+    const controller = new AbortController()
+    controller.abort()
+    await expect(gateway.listMailboxAssigneeOptions(context, mailbox, {}, controller.signal))
+      .rejects.toMatchObject({ code: 'aborted' })
+  })
+
+  it.each([{ limit: 0 }, { limit: 51 }, { limit: 1.5 }, { cursor: 'unknown' }])(
+    'rejects invalid pagination %j', async (query) => {
+      await expect(createFixtureGateway().listMailboxAssigneeOptions(context, mailbox, query, new AbortController().signal))
+        .rejects.toMatchObject({ code: 'malformed' })
+    },
+  )
+})
 
 // AIDEV-NOTE: Exercise adapter operations, not only schemas; compilation must also preserve each concrete DTO.
 describe('operation-specific fixture validation', () => {

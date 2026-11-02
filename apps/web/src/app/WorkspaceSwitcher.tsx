@@ -8,10 +8,10 @@ import { Skeleton } from '@/ui/Async'
 import { Button, IconButton } from '@/ui/Button'
 import { CheckMiniIcon, ChevronUpDownMiniIcon, MagnifyingGlassMiniIcon, XMarkMiniIcon } from '@/ui/icons'
 import { useOrganizations } from './organizations'
-import { useSession } from './session'
+import { useSessionActions } from './session'
 
 export function WorkspaceSwitcher({ session }: { session: Session }) {
-  const { switchOrganization } = useSession()
+  const { switchOrganization } = useSessionActions()
   const [open, setOpen] = useState(false)
   const [attempt, setAttempt] = useState(0)
   const [query, setQuery] = useState('')

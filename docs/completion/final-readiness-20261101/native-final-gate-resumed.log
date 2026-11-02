@@ -1,0 +1,645 @@
+=== rustup component add rustfmt clippy
+docker : info: component 'rustfmt' for target 'x86_64-unknown-linux-gnu' is up to date
+At line:2 char:38
++ ... top-linux'; docker start -a elevateo-client-native-gate-20261101 2>&1 ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (info: component...' is up to date:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+info: component 'clippy' for target 'x86_64-unknown-linux-gnu' is up to date
+GATE_EXIT=0
+=== cargo fmt --all -- --check
+GATE_EXIT=0
+=== cargo test --locked
+warning: fields `access_token` and `expires_in_secs` are never read
+   --> src/auth.rs:212:9
+    |
+210 | pub struct TokenSet {
+    |            -------- fields in this struct
+211 |     /// Kept in memory only; never persisted.
+212 |     pub access_token: String,
+    |         ^^^^^^^^^^^^
+...
+215 |     pub expires_in_secs: u64,
+    |         ^^^^^^^^^^^^^^^
+    |
+    = note: `TokenSet` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored 
+during dead code analysis
+    = note: `#[warn(dead_code)]` on by default
+
+warning: variant `Rejected` is never constructed
+   --> src/auth.rs:222:5
+    |
+219 | pub enum ExchangeError {
+    |          ------------- variant in this enum
+...
+222 |     Rejected(String),
+    |     ^^^^^^^^
+    |
+    = note: `ExchangeError` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored 
+during dead code analysis
+
+warning: constant `NATIVE_SESSIONS_PATH` is never used
+   --> src/auth.rs:230:11
+    |
+230 | pub const NATIVE_SESSIONS_PATH: &str = "/v1/native/sessions";
+    |           ^^^^^^^^^^^^^^^^^^^^
+
+warning: field `0` is never read
+   --> src/auth.rs:246:17
+    |
+246 |     Unavailable(String),
+    |     ----------- ^^^^^^
+    |     |
+    |     field in this variant
+    |
+    = note: `StoreError` has a derived impl for the trait `Debug`, but this is intentionally ignored during dead code 
+analysis
+help: consider changing the field to be of unit type to suppress this warning while preserving the field numbering, or 
+remove the field
+    |
+246 -     Unavailable(String),
+246 +     Unavailable(()),
+    |
+
+warning: method `load_refresh` is never used
+   --> src/auth.rs:251:8
+    |
+249 | pub trait CredentialStore: Send + Sync {
+    |           --------------- method in this trait
+250 |     fn save_refresh(&self, refresh_token: &str) -> Result<(), StoreError>;
+251 |     fn load_refresh(&self) -> Result<Option<String>, StoreError>;
+    |        ^^^^^^^^^^^^
+
+warning: function `archive_current_bundle` is never used
+   --> src/update.rs:167:8
+    |
+167 | pub fn archive_current_bundle(app_bundle: &Path, archive: &Path) -> io::Result<()> {
+    |        ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `restore_previous_bundle` is never used
+   --> src/update.rs:178:8
+    |
+178 | pub fn restore_previous_bundle(app_bundle: &Path, archive: &Path) -> io::Result<()> {
+    |        ^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `copy_dir_recursive` is never used
+   --> src/update.rs:210:4
+    |
+210 | fn copy_dir_recursive(from: &Path, to: &Path) -> io::Result<()> {
+    |    ^^^^^^^^^^^^^^^^^^
+
+warning: `elevateo-native` (lib) generated 8 warnings
+warning: `elevateo-native` (lib test) generated 5 warnings (5 duplicates)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.84s
+     Running unittests src/lib.rs (/tmp/native-target/debug/deps/elevateo_native-79a2c20160b9e1a0)
+
+running 40 tests
+test auth::tests::abandoning_the_login_cancels_its_listener ... ok
+test auth::tests::authorize_url_carries_state_and_s256_challenge ... ok
+test auth::tests::authorize_url_ignores_the_issuer_application_path ... ok
+test auth::tests::authorize_url_rejects_cleartext_and_credential_issuers ... ok
+test auth::tests::cancelled_or_expired_listener_stops_and_disconnects_the_receiver ... ok
+test auth::tests::conforms_to_shared_auth_vectors ... ok
+test auth::tests::empty_code_is_a_provider_error ... ok
+test auth::tests::exchange_port_reports_contract_unavailable ... ok
+test auth::tests::expired_pending_login_is_rejected ... ok
+test auth::tests::loopback_listener_parses_one_callback ... ok
+test auth::tests::matching_callback_completes_and_yields_grant ... ok
+test auth::tests::newer_login_replaces_the_older_pending_one ... ok
+test auth::tests::oversized_request_line_is_rejected_and_listener_keeps_serving ... ok
+test auth::tests::pkce_challenge_is_s256_of_verifier ... ok
+test auth::tests::provider_error_callback_keeps_state_and_error_without_a_code ... ok
+test auth::tests::replayed_callback_is_rejected_after_first_completion ... ok
+test auth::tests::stalled_client_cannot_block_the_genuine_callback ... ok
+test auth::tests::state_mismatch_is_rejected_and_burns_the_pending_login ... ok
+test auth::tests::stray_request_gets_404_and_does_not_consume_the_listener ... ok
+test config::tests::accepts_exact_public_https_origin ... ok
+test config::tests::candidate_marker_cannot_promote_qa_host ... ok
+test config::tests::fixture_and_unmarked_artifacts_cannot_launch ... ok
+test config::tests::isolated_qa_requires_debug_and_the_exact_origin ... ok
+test config::tests::rejects_cleartext_local_and_placeholder ... ok
+test config::tests::rejects_credentials_path_and_query ... ok
+test config::tests::rejects_missing_whitespace_ip_and_oversized_origins ... ok
+test navigation::tests::configured_identity_provider_origin_can_navigate_for_sso ... ok
+test navigation::tests::downgraded_and_local_schemes_are_denied ... ok
+test navigation::tests::identity_provider_lookalikes_and_cleartext_are_denied ... ok
+test navigation::tests::identity_provider_origin_parses_only_safe_https_issuers ... ok
+test navigation::tests::other_origins_and_lookalikes_are_denied ... ok
+test navigation::tests::same_origin_routes_can_navigate ... ok
+test update::tests::corrupt_or_unreadable_marker_is_an_error_not_absence ... ok
+test update::tests::failed_launch_without_archive_cannot_roll_back ... ok
+test update::tests::failed_restore_keeps_the_current_bundle_and_leaves_no_staging ... ok
+test update::tests::healthy_update_gets_its_first_launch_and_is_kept_after_reporting_ready ... ok
+test update::tests::install_is_blocked_while_busy_or_before_the_web_ui_reported ... ok
+test update::tests::marker_clear_is_idempotent ... ok
+test update::tests::restore_copies_from_a_separate_archive_location_and_cleans_up ... ok
+test update::tests::update_that_never_reaches_ready_rolls_back_on_the_following_start ... ok
+
+test result: ok. 40 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.53s
+
+     Running unittests src/main.rs (/tmp/native-target/debug/deps/elevateo_native-e5671b6c252e1609)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests elevateo_native
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+GATE_EXIT=0
+=== cargo check --locked
+   Compiling icu_locale_core v2.4.0
+   Compiling utf8_iter v1.1.0
+   Compiling potential_utf v0.1.6
+   Compiling zerotrie v0.2.5
+    Checking futures-io v0.3.34
+   Compiling icu_provider v2.4.0
+   Compiling icu_collections v2.4.0
+   Compiling proc-macro-error-attr v1.0.4
+   Compiling syn v1.0.109
+   Compiling darling_macro v0.24.1
+    Checking futures-channel v0.3.34
+    Checking zerofrom v0.1.8
+   Compiling gdk-sys v0.18.2
+    Checking stable_deref_trait v1.2.1
+   Compiling scopeguard v1.2.0
+   Compiling lock_api v0.4.14
+    Checking yoke v0.8.4
+   Compiling darling v0.24.1
+   Compiling proc-macro-error v1.0.4
+   Compiling phf v0.13.1
+   Compiling parking_lot_core v0.9.12
+   Compiling rustc_version v0.4.1
+   Compiling string_cache_codegen v0.6.1
+   Compiling icu_properties_data v2.4.0
+   Compiling icu_normalizer_data v2.4.0
+   Compiling icu_normalizer v2.4.0
+   Compiling icu_properties v2.4.0
+   Compiling web_atoms v0.2.6
+   Compiling parking_lot v0.12.5
+   Compiling serde_with_macros v3.24.0
+   Compiling zmij v1.0.23
+   Compiling proc-macro-crate v2.0.2
+   Compiling thiserror-impl v1.0.69
+   Compiling glib-macros v0.18.5
+    Checking thiserror v1.0.69
+   Compiling serde_json v1.0.154
+   Compiling string_cache v0.9.0
+   Compiling idna_adapter v1.2.2
+    Checking zerovec v0.11.9
+   Compiling getrandom v0.4.3
+    Checking futures-executor v0.3.34
+   Compiling cairo-sys-rs v0.18.2
+   Compiling gdk-pixbuf-sys v0.18.0
+   Compiling pango-sys v0.18.0
+   Compiling serde_spanned v1.1.2
+   Compiling log v0.4.35
+   Compiling toml_writer v1.1.3+spec-1.1.0
+   Compiling form_urlencoded v1.2.2
+   Compiling toml v1.1.8+spec-1.1.0
+    Checking glib v0.18.5
+   Compiling uuid v1.29.0
+   Compiling idna v1.1.0
+   Compiling selectors v0.38.0
+   Compiling aho-corasick v1.1.5
+   Compiling atk-sys v0.18.2
+   Compiling derive_more-impl v2.1.1
+   Compiling cssparser-macros v0.7.1
+   Compiling regex-syntax v0.8.11
+    Checking bytes v1.12.1
+   Compiling alloc-no-stdlib v3.0.0
+    Checking itoa v1.0.18
+   Compiling alloc-stdlib v0.3.0
+   Compiling regex-automata v0.4.18
+   Compiling cssparser v0.37.0
+   Compiling derive_more v2.1.1
+   Compiling markup5ever v0.39.0
+   Compiling url v2.5.8
+   Compiling typeid v1.0.3
+   Compiling thiserror v2.0.21
+   Compiling serde_derive_internals v0.29.1
+   Compiling fnv v1.0.7
+   Compiling powerfmt v0.2.1
+   Compiling deranged v0.5.9
+   Compiling web-time v1.1.0
+   Compiling cfb v0.14.0
+   Compiling time v0.3.55
+   Compiling indexmap v1.9.3
+   Compiling schemars_derive v0.8.22
+   Compiling erased-serde v0.4.11
+   Compiling html5ever v0.39.0
+   Compiling regex v1.13.1
+   Compiling brotli-decompressor v6.2.0
+    Checking tinystr v0.8.5
+   Compiling jsonptr v0.7.1
+   Compiling quick-xml v0.42.0
+   Compiling cargo-platform v0.1.9
+   Compiling dunce v1.0.5
+   Compiling base64 v0.23.1
+   Compiling same-file v1.0.6
+    Checking litemap v0.8.3
+    Checking utf_types v1.0.0
+    Checking writeable v0.6.4
+   Compiling dom_query v0.28.0
+   Compiling walkdir v2.5.0
+   Compiling plist v1.10.3
+   Compiling schemars v0.8.22
+   Compiling http v1.5.0
+   Compiling cargo_metadata v0.19.2
+   Compiling json-patch v4.2.0
+   Compiling brotli v9.1.1
+   Compiling urlpattern v0.6.0
+   Compiling serde-untagged v0.1.9
+   Compiling infer v0.22.0
+   Compiling serde_with v3.24.0
+   Compiling anyhow v1.0.104
+   Compiling gtk-sys v0.18.2
+   Compiling ctor v1.0.13
+   Compiling glob v0.3.4
+   Compiling tauri-utils v2.10.2
+    Checking crossbeam-utils v0.8.23
+    Checking gio v0.18.4
+    Checking percent-encoding v2.3.2
+    Checking parking v2.2.1
+    Checking pango v0.18.3
+    Checking gdk-pixbuf v0.18.5
+    Checking cairo-rs v0.18.5
+   Compiling field-offset v0.3.6
+   Compiling toml_edit v0.19.15
+    Checking mio v1.2.4
+    Checking socket2 v0.6.5
+    Checking winnow v1.0.4
+   Compiling option-ext v0.2.0
+   Compiling once_cell v1.21.4
+   Compiling proc-macro-crate v1.3.1
+   Compiling dirs-sys v0.5.0
+    Checking tokio v1.54.1
+    Checking gdk v0.18.2
+    Checking memoffset v0.9.1
+   Compiling embed-resource v3.0.12
+   Compiling soup3-sys v0.5.0
+   Compiling javascriptcore-rs-sys v1.1.1
+    Checking fastrand v2.5.0
+    Checking linux-raw-sys v0.12.1
+    Checking rustix v1.1.6
+   Compiling gtk v0.18.2
+   Compiling tauri-winres v0.3.7
+   Compiling dirs v7.0.0
+   Compiling gtk3-macros v0.18.2
+    Checking atk v0.18.2
+   Compiling cargo_toml v1.0.1
+   Compiling time-macros v0.2.32
+    Checking getrandom v0.2.17
+   Compiling webkit2gtk-sys v2.0.2
+   Compiling adler2 v2.0.1
+   Compiling typenum v1.20.1
+    Checking num-conv v0.2.2
+    Checking time-core v0.1.9
+   Compiling generic-array v0.14.7
+   Compiling tauri-build v2.7.2
+   Compiling toml_edit v0.25.17+spec-1.1.0
+   Compiling gdkx11-sys v0.18.2
+   Compiling enumflags2_derive v0.7.12
+    Checking bitflags v1.3.2
+    Checking atomic-waker v1.1.2
+   Compiling proc-macro-crate v3.5.0
+    Checking x11 v2.21.0
+   Compiling crc32fast v1.5.3
+   Compiling miniz_oxide v0.9.1
+    Checking event-listener v5.4.2
+    Checking concurrent-queue v2.5.0
+    Checking dpi v0.1.2
+   Compiling zvariant_utils v4.2.0
+    Checking equivalent v1.0.3
+    Checking siphasher v1.0.4
+    Checking zeroize v1.9.1
+    Checking hashbrown v0.17.1
+    Checking unicode-ident v1.0.27
+    Checking proc-macro2 v1.0.107
+    Checking indexmap v2.14.2
+    Checking rustls-pki-types v1.15.1
+    Checking phf_shared v0.13.1
+   Compiling zvariant_derive v5.15.1
+    Checking event-listener-strategy v0.5.4
+   Compiling flate2 v1.1.10
+    Checking javascriptcore-rs v1.1.2
+    Checking soup3 v0.5.0
+   Compiling tauri v2.12.3
+   Compiling block-buffer v0.10.4
+   Compiling crypto-common v0.1.7
+   Compiling miniz_oxide v0.8.9
+    Checking futures-lite v2.6.1
+    Checking toml_parser v1.1.5+spec-1.1.0
+    Checking tracing-core v0.1.36
+    Checking toml_datetime v1.1.2+spec-1.1.0
+   Compiling tracing-attributes v0.1.31
+    Checking raw-window-handle v0.6.2
+    Checking untrusted v0.9.0
+    Checking ring v0.17.14
+    Checking tracing v0.1.44
+   Compiling png v0.18.1
+   Compiling digest v0.10.7
+    Checking webkit2gtk v2.0.2
+    Checking cookie v0.18.2
+    Checking x11-dl v2.21.0
+    Checking libdbus-sys v0.2.7
+    Checking quote v1.0.47
+    Checking http-body v1.1.0
+    Checking crossbeam-channel v0.5.17
+   Compiling tauri-plugin v2.7.2
+    Checking semver v1.0.28
+   Compiling dlopen2_derive v0.4.3
+   Compiling cpufeatures v0.2.17
+   Compiling sha2 v0.10.9
+   Compiling ico v0.6.0
+   Compiling wry v0.57.1
+    Checking dlopen2 v0.8.2
+    Checking syn v3.0.9
+    Checking dbus v0.9.12
+    Checking rustls-webpki v0.103.16
+    Checking gdkx11 v0.18.2
+   Compiling enumflags2 v0.7.12
+    Checking polling v3.11.0
+    Checking gdkwayland-sys v0.18.2
+    Checking errno v0.3.14
+   Compiling zcheapstr v1.2.0
+    Checking tower-service v0.3.3
+    Checking async-task v4.7.1
+    Checking subtle v2.6.1
+    Checking try-lock v0.2.5
+   Compiling endi v1.1.1
+   Compiling zvariant v5.15.1
+    Checking want v0.3.2
+    Checking rustls v0.23.46
+    Checking signal-hook-registry v1.4.8
+    Checking tao v0.37.2
+    Checking async-io v2.6.0
+    Checking httparse v1.10.1
+   Compiling tauri-codegen v2.7.4
+    Checking tauri-runtime v2.12.2
+    Checking async-channel v2.5.0
+    Checking keyboard-types v0.8.3
+   Compiling serialize-to-javascript-impl v0.1.2
+   Compiling serde_repr v0.1.21
+    Checking serialize-to-javascript v0.1.2
+    Checking muda v0.20.0
+    Checking tauri-runtime-wry v2.12.3
+   Compiling tauri-macros v2.7.4
+    Checking hyper v1.12.0
+    Checking async-signal v0.2.14
+    Checking getrandom v0.3.4
+   Compiling zbus_names v4.3.5
+    Checking async-lock v3.4.2
+    Checking piper v0.2.5
+    Checking sync_wrapper v1.0.2
+    Checking heck v0.5.0
+    Checking mime v0.3.17
+    Checking ipnet v2.12.2
+    Checking openssl-probe v0.2.2
+    Checking tower-layer v0.3.3
+    Checking tower v0.5.3
+    Checking rustls-native-certs v0.8.5
+    Checking hyper-util v0.1.21
+    Checking blocking v1.7.0
+    Checking async-process v2.5.0
+   Compiling zbus_macros v5.19.0
+    Checking zerocopy v0.8.63
+    Checking tokio-rustls v0.26.6
+    Checking async-executor v1.14.0
+   Compiling tauri-plugin-updater v2.14.1
+   Compiling tauri-plugin-opener v2.7.2
+    Checking async-broadcast v0.7.2
+    Checking is-docker v0.2.0
+    Checking ordered-stream v0.2.0
+   Compiling async-recursion v1.2.0
+   Compiling async-trait v0.1.92
+    Checking futures-sink v0.3.34
+    Checking hex v0.4.3
+    Checking simd-adler32 v0.3.10
+    Checking zbus v5.19.0
+    Checking tokio-util v0.7.20
+    Checking is-wsl v0.4.0
+    Checking hyper-rustls v0.27.10
+    Checking ppv-lite86 v0.2.21
+    Checking rustls-platform-verifier v0.7.1
+    Checking tower-http v0.6.11
+    Checking http-body-util v0.1.5
+    Checking rand_core v0.6.4
+    Checking xattr v1.7.0
+    Checking filetime v0.2.29
+    Checking tar v0.4.46
+    Checking tempfile v3.27.0
+    Checking rand_chacha v0.3.1
+    Checking reqwest v0.13.5
+    Checking open v5.4.5
+   Compiling elevateo-native v0.1.0 (/work/apps/native/src-tauri)
+    Checking minisign-verify v0.3.0
+    Checking rand v0.8.8
+    Checking tauri-plugin-single-instance v2.5.5
+    Checking keyring v3.6.3
+    Checking base64 v0.22.1
+warning: fields `access_token` and `expires_in_secs` are never read
+   --> src/auth.rs:212:9
+    |
+210 | pub struct TokenSet {
+    |            -------- fields in this struct
+211 |     /// Kept in memory only; never persisted.
+212 |     pub access_token: String,
+    |         ^^^^^^^^^^^^
+...
+215 |     pub expires_in_secs: u64,
+    |         ^^^^^^^^^^^^^^^
+    |
+    = note: `TokenSet` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored 
+during dead code analysis
+    = note: `#[warn(dead_code)]` on by default
+
+warning: variant `Rejected` is never constructed
+   --> src/auth.rs:222:5
+    |
+219 | pub enum ExchangeError {
+    |          ------------- variant in this enum
+...
+222 |     Rejected(String),
+    |     ^^^^^^^^
+    |
+    = note: `ExchangeError` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored 
+during dead code analysis
+
+warning: constant `NATIVE_SESSIONS_PATH` is never used
+   --> src/auth.rs:230:11
+    |
+230 | pub const NATIVE_SESSIONS_PATH: &str = "/v1/native/sessions";
+    |           ^^^^^^^^^^^^^^^^^^^^
+
+warning: field `0` is never read
+   --> src/auth.rs:246:17
+    |
+246 |     Unavailable(String),
+    |     ----------- ^^^^^^
+    |     |
+    |     field in this variant
+    |
+    = note: `StoreError` has a derived impl for the trait `Debug`, but this is intentionally ignored during dead code 
+analysis
+help: consider changing the field to be of unit type to suppress this warning while preserving the field numbering, or 
+remove the field
+    |
+246 -     Unavailable(String),
+246 +     Unavailable(()),
+    |
+
+warning: method `load_refresh` is never used
+   --> src/auth.rs:251:8
+    |
+249 | pub trait CredentialStore: Send + Sync {
+    |           --------------- method in this trait
+250 |     fn save_refresh(&self, refresh_token: &str) -> Result<(), StoreError>;
+251 |     fn load_refresh(&self) -> Result<Option<String>, StoreError>;
+    |        ^^^^^^^^^^^^
+
+warning: function `archive_current_bundle` is never used
+   --> src/update.rs:167:8
+    |
+167 | pub fn archive_current_bundle(app_bundle: &Path, archive: &Path) -> io::Result<()> {
+    |        ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `restore_previous_bundle` is never used
+   --> src/update.rs:178:8
+    |
+178 | pub fn restore_previous_bundle(app_bundle: &Path, archive: &Path) -> io::Result<()> {
+    |        ^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `copy_dir_recursive` is never used
+   --> src/update.rs:210:4
+    |
+210 | fn copy_dir_recursive(from: &Path, to: &Path) -> io::Result<()> {
+    |    ^^^^^^^^^^^^^^^^^^
+
+warning: `elevateo-native` (lib) generated 8 warnings
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 2m 46s
+GATE_EXIT=0
+=== cargo clippy --locked --all-targets -- -D warnings
+   Compiling elevateo-native v0.1.0 (/work/apps/native/src-tauri)
+error: fields `access_token` and `expires_in_secs` are never read
+   --> src/auth.rs:212:9
+    |
+210 | pub struct TokenSet {
+    |            -------- fields in this struct
+211 |     /// Kept in memory only; never persisted.
+212 |     pub access_token: String,
+    |         ^^^^^^^^^^^^
+...
+215 |     pub expires_in_secs: u64,
+    |         ^^^^^^^^^^^^^^^
+    |
+    = note: `TokenSet` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored 
+during dead code analysis
+    = note: `-D dead-code` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(dead_code)]`
+
+error: variant `Rejected` is never constructed
+   --> src/auth.rs:222:5
+    |
+219 | pub enum ExchangeError {
+    |          ------------- variant in this enum
+...
+222 |     Rejected(String),
+    |     ^^^^^^^^
+    |
+    = note: `ExchangeError` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored 
+during dead code analysis
+
+error: constant `NATIVE_SESSIONS_PATH` is never used
+   --> src/auth.rs:230:11
+    |
+230 | pub const NATIVE_SESSIONS_PATH: &str = "/v1/native/sessions";
+    |           ^^^^^^^^^^^^^^^^^^^^
+
+error: field `0` is never read
+   --> src/auth.rs:246:17
+    |
+246 |     Unavailable(String),
+    |     ----------- ^^^^^^
+    |     |
+    |     field in this variant
+    |
+    = note: `StoreError` has a derived impl for the trait `Debug`, but this is intentionally ignored during dead code 
+analysis
+help: consider changing the field to be of unit type to suppress this warning while preserving the field numbering, or 
+remove the field
+    |
+246 -     Unavailable(String),
+246 +     Unavailable(()),
+    |
+
+error: method `load_refresh` is never used
+   --> src/auth.rs:251:8
+    |
+249 | pub trait CredentialStore: Send + Sync {
+    |           --------------- method in this trait
+250 |     fn save_refresh(&self, refresh_token: &str) -> Result<(), StoreError>;
+251 |     fn load_refresh(&self) -> Result<Option<String>, StoreError>;
+    |        ^^^^^^^^^^^^
+
+error: function `archive_current_bundle` is never used
+   --> src/update.rs:167:8
+    |
+167 | pub fn archive_current_bundle(app_bundle: &Path, archive: &Path) -> io::Result<()> {
+    |        ^^^^^^^^^^^^^^^^^^^^^^
+
+error: function `restore_previous_bundle` is never used
+   --> src/update.rs:178:8
+    |
+178 | pub fn restore_previous_bundle(app_bundle: &Path, archive: &Path) -> io::Result<()> {
+    |        ^^^^^^^^^^^^^^^^^^^^^^^
+
+error: function `copy_dir_recursive` is never used
+   --> src/update.rs:210:4
+    |
+210 | fn copy_dir_recursive(from: &Path, to: &Path) -> io::Result<()> {
+    |    ^^^^^^^^^^^^^^^^^^
+
+error: the borrowed expression implements the required traits
+   --> src/lib.rs:207:36
+    |
+207 |             .initialization_script(&init_script(&approved.origin().ascii_serialization()))
+    |                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: change this to: 
+`init_script(&approved.origin().ascii_serialization())`
+    |
+    = help: for further information visit 
+https://rust-lang.github.io/rust-clippy/master/index.html#needless_borrows_for_generic_args
+    = note: `-D clippy::needless-borrows-for-generic-args` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::needless_borrows_for_generic_args)]`
+
+error: could not compile `elevateo-native` (lib) due to 9 previous errors
+GATE_EXIT=101
+=== python3 ../ci/verify_boundary.py
+native static package boundary PASS
+GATE_EXIT=0
+=== python3 -m unittest test_macos_release test_validate_macos_config
+..............
+----------------------------------------------------------------------
+Ran 14 tests in 0.236s
+
+OK
+GATE_EXIT=0
+=== python3 -m unittest discover -s . -p test_*.py
+..........................................
+----------------------------------------------------------------------
+Ran 42 tests in 0.368s
+
+OK
+GATE_EXIT=0
+=== python3 -m unittest discover -s . -p test_*.py
+..........................
+----------------------------------------------------------------------
+Ran 26 tests in 0.234s
+
+OK
+GATE_EXIT=0
+FAILED_GATES=1

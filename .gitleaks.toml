@@ -25,4 +25,8 @@ paths = [
 ]
 regexes = [
   '''^[a-f0-9]{64}$''',
+  # Allowlist regexes match the captured secret, not the line: bare SHA-1 and MD5 digests (apksigner
+  # prints the disposable QA signing key's public-key digests in evidence logs) are hashes, not keys.
+  '''^[a-f0-9]{40}$''',
+  '''^[a-f0-9]{32}$''',
 ]

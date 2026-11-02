@@ -30,17 +30,15 @@ export const INTEGRATIONS: readonly Integration[] = [
     slug: 'mcp',
     title: 'Connections',
     text: 'Grant AI clients (Claude, Codex) access to your mailboxes, and revoke it',
-    intro: 'The Model Context Protocol server exposes read-only mailbox tools (list conversations, read a message, search) to an MCP-capable assistant. Every call runs under the signed-in actor and the same permissions as this app.',
+    intro: 'The planned connection workflow gives an MCP-capable assistant read access and optional draft access only to the mailboxes you select. It does not grant permission to send mail.',
     steps: [
-      { title: 'Install the server', text: 'The server ships as a small package that runs next to your assistant.', code: 'npm install --global @elevateo/mcp-server', language: 'bash' },
-      { title: 'Create an API token', text: 'Generate an api-user token on the Developer API page and keep it in your secret manager.' },
+      { title: 'Wait for a supported connector release', text: 'The assistant package and installation commands for this workflow are not published yet.' },
+      { title: 'Choose mailboxes and permissions', text: 'When connector grants are supported, grant the connection only the mailboxes it needs. Fixture grants are simulated and cannot connect a real assistant.' },
       {
         title: 'Register the server with your assistant',
-        text: 'Add the server to the assistant configuration. The URL points at the gateway this app talks to.',
-        code: '{\n  "mcpServers": {\n    "elevateo": {\n      "command": "elevateo-mcp",\n      "env": { "ELEVATEO_API_URL": "https://mail.example.test/api", "ELEVATEO_API_TOKEN": "<token>" }\n    }\n  }\n}',
-        language: 'json',
+        text: 'A supported connector will use the one-time connection secret displayed after granting access. Store it securely; it is distinct from an api-user token on the Developer API page. Follow the released connector instructions when available.',
       },
-      { title: 'Try a tool', text: 'Ask the assistant to list unread conversations in a mailbox you can read. Writes (drafts, sends) stay in this app.' },
+      { title: 'Check access after setup', text: 'Once a supported connector is available, verify that it can read only selected mailboxes and write drafts only where permitted. Sending is not a connector permission.' },
     ],
   },
   {
@@ -67,6 +65,16 @@ export function IntegrationsPage() {
   )
 }
 
+// AIDEV-NOTE: both connection entry points share the availability warning to avoid presenting plans as setup steps.
+export function PlannedConnectorNotice() {
+  return (
+    <Callout variant="neutral" heading="Planned connector setup">
+      These steps describe a planned connector workflow. The package names and commands are not published yet.
+      This web app uses session sign-in; connection secrets are a separate credential and fixture secrets are simulated.
+    </Callout>
+  )
+}
+
 export function IntegrationDetailPage() {
   const { slug } = useParams<{ slug: string }>()
   const integration = INTEGRATIONS.find((candidate) => candidate.slug === slug)
@@ -82,9 +90,7 @@ export function IntegrationDetailPage() {
   }
   return (
     <div className="max-w-3xl space-y-6">
-      <Callout variant="neutral" heading="Not connected in this build">
-        The steps below describe the planned connector. The package names and commands are not published yet, and the gateway accepts session sign-in only.
-      </Callout>
+      <PlannedConnectorNotice />
       <Card>
         <p className="text-sm text-zinc-800 dark:text-zinc-200">{integration.intro}</p>
       </Card>

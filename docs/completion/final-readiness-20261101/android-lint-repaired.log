@@ -1,0 +1,129 @@
+docker : F
+At line:12 char:113
++ ... top-linux'; docker start -a elevateo-client-android-final-20261101 2> ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (F:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+======================================================================
+FAIL: test_removes_tv_advertising_but_preserves_mobile_and_other_intents
+(test_customize_generated.CustomizeGeneratedTest.test_removes_tv_advertising_but_preserves_mobile_and_other_intents)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/apps/android/test_customize_generated.py", line 59, in
+test_removes_tv_advertising_but_preserves_mobile_and_other_intents
+    self.assertEqual([n.get(ANDROID + "name") for n in actual.findall("uses-feature")],
+AssertionError: Lists differ: ['android.software.leanback', 'android.hardware.camera'] != ['android.hardware.camera']
+
+First differing element 0:
+'android.software.leanback'
+'android.hardware.camera'
+
+First list contains 1 additional elements.
+First extra element 1:
+'android.hardware.camera'
+
+- ['android.software.leanback', 'android.hardware.camera']
++ ['android.hardware.camera']
+
+----------------------------------------------------------------------
+Ran 1 test in 0.003s
+
+FAILED (failures=1)
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.031s
+
+OK
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.6.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build
+Reusing configuration cache.
+> Task :tauri-android:preBuild UP-TO-DATE
+> Task :tauri-android:preDebugBuild UP-TO-DATE
+> Task :tauri-android:checkDebugAarMetadata UP-TO-DATE
+> Task :tauri-android:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :tauri-android:generateDebugBuildConfig UP-TO-DATE
+> Task :tauri-android:generateDebugResources UP-TO-DATE
+> Task :tauri-android:packageDebugResources UP-TO-DATE
+> Task :tauri-android:processDebugNavigationResources UP-TO-DATE
+> Task :tauri-android:parseDebugLocalResources UP-TO-DATE
+> Task :tauri-android:generateDebugRFile UP-TO-DATE
+> Task :tauri-android:compileDebugKotlin UP-TO-DATE
+> Task :tauri-android:extractDebugAnnotations UP-TO-DATE
+> Task :tauri-android:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :tauri-android:generateDebugAssets UP-TO-DATE
+> Task :tauri-android:mergeDebugAssets UP-TO-DATE
+> Task :tauri-android:javaPreCompileDebug UP-TO-DATE
+> Task :tauri-android:compileDebugJavaWithJavac UP-TO-DATE
+> Task :tauri-android:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :tauri-android:mergeDebugConsumerProguardFiles UP-TO-DATE
+> Task :tauri-android:prepareDebugArtProfile UP-TO-DATE
+> Task :tauri-android:prepareLintJarForPublish UP-TO-DATE
+> Task :tauri-android:processDebugManifest UP-TO-DATE
+> Task :tauri-android:processDebugJavaRes UP-TO-DATE
+> Task :tauri-android:mergeDebugJavaResource UP-TO-DATE
+> Task :tauri-android:syncDebugLibJars UP-TO-DATE
+> Task :tauri-android:writeDebugAarMetadata UP-TO-DATE
+> Task :tauri-android:bundleDebugLocalLintAar UP-TO-DATE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preUniversalDebugBuild UP-TO-DATE
+> Task :app:generateUniversalDebugBuildConfig UP-TO-DATE
+> Task :app:generateUniversalDebugResources UP-TO-DATE
+> Task :app:packageUniversalDebugResources UP-TO-DATE
+> Task :app:processUniversalDebugNavigationResources UP-TO-DATE
+> Task :app:parseUniversalDebugLocalResources UP-TO-DATE
+> Task :app:generateUniversalDebugRFile UP-TO-DATE
+> Task :tauri-android:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :app:compileUniversalDebugKotlin UP-TO-DATE
+> Task :app:javaPreCompileUniversalDebug UP-TO-DATE
+> Task :app:compileUniversalDebugJavaWithJavac UP-TO-DATE
+> Task :app:checkUniversalDebugAarMetadata UP-TO-DATE
+> Task :app:mapUniversalDebugSourceSetPaths UP-TO-DATE
+> Task :app:compileUniversalDebugNavigationResources UP-TO-DATE
+> Task :app:mergeUniversalDebugResources UP-TO-DATE
+> Task :app:createUniversalDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksUniversalDebug UP-TO-DATE
+> Task :tauri-android:extractDeepLinksDebug UP-TO-DATE
+
+> Task :app:processUniversalDebugMainManifest
+/work/apps/native/src-tauri/gen/android/app/src/debug/AndroidManifest.xml:4:5-6:86 Warning:
+	application@android:networkSecurityConfig was tagged at AndroidManifest.xml:4 to replace other declarations but no other declaration present
+
+> Task :app:processUniversalDebugManifest
+> Task :app:processUniversalDebugManifestForPackage
+> Task :tauri-android:mapDebugSourceSetPaths UP-TO-DATE
+> Task :tauri-android:compileDebugLibraryResources UP-TO-DATE
+> Task :app:processUniversalDebugResources
+> Task :app:bundleUniversalDebugClassesToCompileJar UP-TO-DATE
+> Task :app:preUniversalDebugAndroidTestBuild SKIPPED
+> Task :tauri-android:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :tauri-android:createFullJarDebug UP-TO-DATE
+> Task :tauri-android:writeDebugLintModelMetadata UP-TO-DATE
+> Task :app:generateUniversalDebugAndroidTestLintModel
+> Task :app:extractProguardFiles UP-TO-DATE
+> Task :tauri-android:extractProguardFiles UP-TO-DATE
+> Task :tauri-android:generateDebugLintModel UP-TO-DATE
+> Task :app:generateUniversalDebugLintReportModel
+> Task :app:preUniversalDebugUnitTestBuild UP-TO-DATE
+> Task :app:generateUniversalDebugUnitTestLintModel
+> Task :tauri-android:lintAnalyzeDebug UP-TO-DATE
+> Task :app:lintAnalyzeUniversalDebug
+> Task :app:lintAnalyzeUniversalDebugAndroidTest
+> Task :app:lintAnalyzeUniversalDebugUnitTest
+> Task :tauri-android:preDebugAndroidTestBuild UP-TO-DATE
+> Task :tauri-android:generateDebugAndroidTestLintModel UP-TO-DATE
+> Task :tauri-android:preDebugUnitTestBuild UP-TO-DATE
+> Task :tauri-android:generateDebugUnitTestLintModel UP-TO-DATE
+> Task :tauri-android:lintAnalyzeDebugAndroidTest UP-TO-DATE
+> Task :tauri-android:lintAnalyzeDebugUnitTest UP-TO-DATE
+
+> Task :app:lintReportUniversalDebug
+Wrote HTML report to file:///work/apps/native/src-tauri/gen/android/app/build/reports/lint-results-universalDebug.html
+Wrote SARIF report to file:///work/apps/native/src-tauri/gen/android/app/build/reports/lint-results-universalDebug.sarif
+
+> Task :app:lintUniversalDebug
+
+BUILD SUCCESSFUL in 44s
+66 actionable tasks: 12 executed, 54 up-to-date
+Configuration cache entry reused.

@@ -40,17 +40,20 @@ analyzers are on via `Directory.Build.props`.
 
 ## Build, test and installer (Docker only)
 
-```sh
-# from the repository root
-docker build -t elevateo-win-build apps/windows/build
-
-# tests
-docker run --rm -v "$PWD/apps/windows:/workspace" elevateo-win-build \
-  dotnet test Elevateo.Windows.sln -c Release
-
-# unsigned installer dry run (no signing env vars set)
-docker run --rm -v "$PWD/apps/windows:/workspace" elevateo-win-build \
-  bash build/build-installer.sh
+```powershell
+# From the repository root; restore packages during image build, then verify offline.
+$env:DOCKER_CONTEXT='desktop-linux'
+docker build --memory=4g -t elevateo-windows-p27-p34:toolchain apps/windows/build
+$env:DOCKER_CONTEXT='desktop-linux'
+docker build --memory=4g -f apps/windows/build/verification.Dockerfile -t elevateo-windows-p27-p34:verify .
+New-Item -ItemType Directory -Force apps/windows/artifacts | Out-Null
+$env:DOCKER_CONTEXT='desktop-linux'
+docker run --rm --network=none --memory=4g -e ELEVATEO_VISUAL_EVIDENCE=/workspace/artifacts/p27-p34 -v "${PWD}/apps/windows/artifacts:/workspace/artifacts" elevateo-windows-p27-p34:verify bash -c 'set -e; bash tests/installer-regressions.sh; bash build/build-installer.sh'
+# After inspecting artifacts, remove only these disposable images, then build cache (never volumes).
+$env:DOCKER_CONTEXT='desktop-linux'
+docker image rm elevateo-windows-p27-p34:verify elevateo-windows-p27-p34:toolchain
+$env:DOCKER_CONTEXT='desktop-linux'
+docker builder prune -a -f
 ```
 
 Output lands in `apps/windows/artifacts/`. The API base URL ships as the placeholder

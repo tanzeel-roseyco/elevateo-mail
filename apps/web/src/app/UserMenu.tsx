@@ -6,7 +6,7 @@ import { cx } from '@/lib/format'
 import { Avatar } from '@/ui/Avatar'
 import { ArrowRightStartOnRectangleIcon, ChevronUpDownMiniIcon, ShieldCheckIcon, UserIcon } from '@/ui/icons'
 import { Menu, MenuItem, MenuLink, MenuRadio, MenuSeparator } from '@/ui/Menu'
-import { useSession } from './session'
+import { useSessionActions } from './session'
 
 interface UserMenuProps {
   session: Session
@@ -20,7 +20,7 @@ interface UserMenuProps {
 }
 
 export function UserMenu({ session, compact = false, side = 'top', className, label = 'Account and sign-out' }: UserMenuProps) {
-  const { signOut } = useSession()
+  const { signOut } = useSessionActions()
   const name = session.actor.display_name ?? 'Unnamed user'
   return (
     <Menu

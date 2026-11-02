@@ -93,6 +93,9 @@ public sealed class ElevateoApiClient : IElevateoApiClient, IDisposable
         CancellationToken ct) where T : class
     {
         using var request = new HttpRequestMessage(method, relativePath);
+        // AIDEV-NOTE: bind returned data to this request's context, even if another bootstrap completes meanwhile.
+        var expectedContext = _contextId;
+        var expectedVersion = _authorizationVersion;
         // AIDEV-NOTE: request id enables server-side correlation without logging payloads client-side.
         request.Headers.TryAddWithoutValidation("X-Request-Id", Guid.NewGuid().ToString("N"));
 
@@ -104,14 +107,14 @@ public sealed class ElevateoApiClient : IElevateoApiClient, IDisposable
 
         if (withContext)
         {
-            if (_contextId is null || _authorizationVersion is null)
+            if (expectedContext is null || expectedVersion is null)
             {
                 return ApiResult<T>.Fail(new ApiError(ApiErrorKind.ContextChanged,
                     "Session bootstrap missing; call GetSessionAsync first."));
             }
 
-            request.Headers.TryAddWithoutValidation("X-Session-Context", _contextId);
-            request.Headers.TryAddWithoutValidation("X-Authorization-Version", _authorizationVersion);
+            request.Headers.TryAddWithoutValidation("X-Session-Context", expectedContext);
+            request.Headers.TryAddWithoutValidation("X-Authorization-Version", expectedVersion);
         }
 
         if (withCsrf)
@@ -131,10 +134,13 @@ public sealed class ElevateoApiClient : IElevateoApiClient, IDisposable
             request.Content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
         }
 
+        // AIDEV-NOTE: ResponseHeadersRead ends HttpClient's timeout; this deadline also covers streaming the body.
+        using var deadline = CancellationTokenSource.CreateLinkedTokenSource(ct);
+        deadline.CancelAfter(_config.RequestTimeout);
         HttpResponseMessage response;
         try
         {
-            response = await _http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false);
+            response = await _http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, deadline.Token).ConfigureAwait(false);
         }
         catch (OperationCanceledException) when (ct.IsCancellationRequested)
         {
@@ -154,11 +160,20 @@ public sealed class ElevateoApiClient : IElevateoApiClient, IDisposable
             string text;
             try
             {
-                text = await ReadBoundedAsync(response, ct).ConfigureAwait(false);
+                text = await ReadBoundedAsync(response, deadline.Token).ConfigureAwait(false);
             }
-            catch (InvalidDataException)
+            catch (Exception ex) when (ex is InvalidDataException or DecoderFallbackException)
             {
-                return ApiResult<T>.Fail(new ApiError(ApiErrorKind.InvalidResponse, "Response exceeded the size limit."));
+                return ApiResult<T>.Fail(new ApiError(ApiErrorKind.InvalidResponse, "Response exceeded the size limit or contained invalid UTF-8."));
+            }
+            catch (OperationCanceledException) when (!ct.IsCancellationRequested)
+            {
+                return ApiResult<T>.Fail(new ApiError(ApiErrorKind.Unavailable, "The request timed out."));
+            }
+            catch (Exception ex) when (ex is HttpRequestException or IOException)
+            {
+                ct.ThrowIfCancellationRequested();
+                return ApiResult<T>.Fail(new ApiError(ApiErrorKind.Unavailable, "The response could not be read."));
             }
 
             if (!response.IsSuccessStatusCode)
@@ -169,11 +184,21 @@ public sealed class ElevateoApiClient : IElevateoApiClient, IDisposable
             try
             {
                 var value = JsonSerializer.Deserialize(text, typeInfo);
-                if (value is null)
+                if (value is null || !ApiResponseValidation.IsValid(value))
                 {
-                    return ApiResult<T>.Fail(new ApiError(ApiErrorKind.InvalidResponse, "Response body was null."));
+                    return ApiResult<T>.Fail(new ApiError(ApiErrorKind.InvalidResponse, "Response violated the API contract."));
                 }
 
+                var contextMatches = value switch
+                {
+                    MailboxPage page => page.ContextId == expectedContext && page.AuthorizationVersion == expectedVersion,
+                    ThreadPage page => page.ContextId == expectedContext && page.AuthorizationVersion == expectedVersion,
+                    ThreadDetailPage page => page.ContextId == expectedContext && page.AuthorizationVersion == expectedVersion,
+                    _ => true,
+                };
+                if (!contextMatches)
+                    return ApiResult<T>.Fail(new ApiError(ApiErrorKind.ContextChanged,
+                        "Your access changed. Sign in again to reload authorized data."));
                 return ApiResult<T>.Ok(value);
             }
             catch (JsonException)
@@ -200,7 +225,8 @@ public sealed class ElevateoApiClient : IElevateoApiClient, IDisposable
             }
         }
 
-        return Encoding.UTF8.GetString(buffer.ToArray());
+        // AIDEV-NOTE: replacement decoding can turn corrupted message bytes into apparently valid JSON.
+        return new UTF8Encoding(false, true).GetString(buffer.ToArray());
     }
 
     private static ApiError MapError(HttpResponseMessage response, string body)

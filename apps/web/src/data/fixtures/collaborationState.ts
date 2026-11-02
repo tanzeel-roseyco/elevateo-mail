@@ -332,10 +332,15 @@ export class CollaborationState {
     return { ...this.envelope(), thread_id: threadId, mailbox_id: mailboxId, assignee_id: a.assigneeId, assignment_version: a.version, updated_at: a.updatedAt }
   }
 
+  // AIDEV-NOTE: The picker and assignment writes share the fixture's two eligible organization members.
+  assigneeIds(): string[] {
+    return [CD_FIXTURE.actorId, CD_FIXTURE.readerId]
+  }
+
   setAssignment(threadId: string, mailboxId: string, assigneeId: string | null, expectedVersion: number): ThreadAssignment {
     const current = this.assignments.get(threadId) ?? { assigneeId: null, version: 0, updatedAt: null }
     // Only current members of the fixture organization are eligible targets (§6).
-    if (assigneeId !== null && assigneeId !== CD_FIXTURE.actorId && assigneeId !== CD_FIXTURE.readerId) fail(404, 'not_available', NOT_AVAILABLE)
+    if (assigneeId !== null && !this.assigneeIds().includes(assigneeId)) fail(404, 'not_available', NOT_AVAILABLE)
     if (expectedVersion !== current.version) fail(409, 'assignment_conflict')
     const next = current.assigneeId === assigneeId ? current : { assigneeId, version: current.version + 1, updatedAt: this.clock.next() }
     this.assignments.set(threadId, next)

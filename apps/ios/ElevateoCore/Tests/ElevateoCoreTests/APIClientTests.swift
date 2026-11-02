@@ -1,4 +1,8 @@
 import XCTest
+#if canImport(FoundationNetworking)
+// AIDEV-NOTE: Linux exposes URLRequest and HTTPURLResponse in a separate Foundation module.
+import FoundationNetworking
+#endif
 @testable import ElevateoCore
 
 /// Minimal identifiable item for pager tests.
