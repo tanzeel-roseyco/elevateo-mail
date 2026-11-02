@@ -19,7 +19,9 @@ the full history is in `archive/` branches (see [docs/history](docs/history/READ
 
 - **Unified inbox** across a team's company mailboxes: threads, folders, snooze, stars, reply all and forward.
   Message content is always rendered as plain text, never as HTML.
-- **Human-approved sending.** Every send is reviewed and approved. Outbound mail goes through the self-hosted
+- **Reviewed sending.** Each send passes a review step, but a separate human approver is not required: anyone
+  with the mailbox's `approve_send` capability, including the person who wrote the draft, can approve their
+  own send in one step. Outbound mail goes through the self-hosted
   Mox server or, optionally, Resend. The ledger enforces at most 30 sends per mailbox and 300 per user per day.
   Outbound starts in `held` mode.
 - **Outreach:** campaigns, short sequences, contacts with explicit consent, and permanent suppression of
