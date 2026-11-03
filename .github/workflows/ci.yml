@@ -22,7 +22,7 @@ jobs:
       run:
         working-directory: apps/web
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -42,7 +42,7 @@ jobs:
       run:
         working-directory: apps/server
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - run: sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends libpq-dev libyaml-dev
       - uses: ruby/setup-ruby@v1
         with:
@@ -56,7 +56,7 @@ jobs:
     name: Secret scan (gitleaks)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Scan history
