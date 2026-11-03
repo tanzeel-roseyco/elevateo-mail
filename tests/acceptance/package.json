@@ -15,14 +15,14 @@
     "test:selenium": "node dist/selenium/run.js"
   },
   "dependencies": {
-    "zod": "4.6.5",
-    "@playwright/test": "1.64.0",
-    "puppeteer-core": "25.13.0",
-    "selenium-webdriver": "4.49.0"
+    "zod": "4.6.7",
+    "@playwright/test": "1.64.1",
+    "puppeteer-core": "25.16.0",
+    "selenium-webdriver": "4.51.0"
   },
   "devDependencies": {
-    "@types/node": "24.19.2",
+    "@types/node": "26.6.6",
     "@types/selenium-webdriver": "4.35.7",
-    "typescript": "5.9.3"
+    "typescript": "7.0.2"
   }
 }
