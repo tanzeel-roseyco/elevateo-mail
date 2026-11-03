@@ -10,6 +10,6 @@
     "@redocly/ajv": "8.11.2",
     "ajv-formats": "2.1.1",
     "openapi-typescript": "7.13.0",
-    "typescript": "5.9.3"
+    "typescript": "7.0.2"
   }
 }
